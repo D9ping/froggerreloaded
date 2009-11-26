@@ -28,9 +28,9 @@ namespace Frogger
 
             btns = new HoverButton[4];
 
-            CreateOptionsMenu();
+            //CreateOptionsMenu();
             //CreateLvlButtons();
-            //CreateMainMenu();
+            CreateMainMenu();
         }
 
 
@@ -38,15 +38,15 @@ namespace Frogger
         /// Create main menu buttons
         /// </summary>
         private void CreateMainMenu()
-        {
-            //HoverButton[] btn = new HoverButton[4];
+        {           
             btns[0] = new HoverButton("Newgame");
             btns[1] = new HoverButton("Highscore");
             btns[2] = new HoverButton("Options");
             btns[3] = new HoverButton("Exit");
         
-            //create events           
-            btns[0].Click += new EventHandler(StartNewGame);
+            //create events                       
+            btns[0].Click += new EventHandler(StartNewGame); //mist event args etc. uitzoeken hoe dit moet vanuit
+                                                            //constructor wordt createmainmenu aangeroepen dus
             btns[1].Click += new EventHandler(ShowHighScore);
             btns[2].Click += new EventHandler(ShowOptions);
             btns[3].Click += new EventHandler(Shutdown);
@@ -110,40 +110,62 @@ namespace Frogger
         private void StartNewGame(object sender, EventArgs e)
         {
             MessageBox.Show("Test");
+            ClearBtns();
+
             CreateLvlButtons();
-            /*
+            
             FrmGame game = new FrmGame();
             game.Show();
 
             this.Hide();
-             */
+            
         }
 
         private void ShowHighScore(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            
         }
 
+        /// <summary>
+        /// The options button is pressed, show options screen.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ShowOptions(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            CreateOptionsMenu();
         }
 
+        /// <summary>
+        /// exit button is presed, shutdown application.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Shutdown(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Application.Exit();
         }
 
+        /// <summary>
+        /// Form is resized.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrmMenu_ResizeEnd(object sender, EventArgs e)
         {
             ClearBtns();
-            if (menustate == MenuState.main)
+            switch (menustate)
             {
-                CreateMainMenu();                
-            }
-            
+                case MenuState.main:
+                    CreateMainMenu();
+                    break;                
+            }                
         }  
 
+        /// <summary>
+        /// Clear all buttons from the Form.
+        /// </summary>
+        /// <returns></returns>
         private bool ClearBtns()
         {
             for (int i = 0; i < 4; i++)

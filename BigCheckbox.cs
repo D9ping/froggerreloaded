@@ -11,7 +11,7 @@ namespace Frogger
 {
     public partial class BigCheckbox : UserControl
     {
-        private bool ischecked = false;
+        private bool ischecked = true;
 
         public BigCheckbox(String textoption, bool ischecked)
         {
@@ -19,12 +19,6 @@ namespace Frogger
             this.lbTextBigcheckbox.Text = textoption;
             this.ischecked = ischecked;
             this.Refresh();
-        }
-
-        private void BigCheckbox_MouseDown(object sender, MouseEventArgs e)
-        {
-            this.ischecked = !this.ischecked;
-            this.Refresh();            
         }
 
         private void BigCheckbox_Paint(object sender, PaintEventArgs e)
@@ -35,9 +29,15 @@ namespace Frogger
             }
             else
             {
-                this.pbBigheck.Image = global::Frogger.Properties.Resources.checkbox_on;
+                this.pbBigheck.Image = global::Frogger.Properties.Resources.checkbox_off;
             }
 
+        }
+
+        private void pbBigheck_Click(object sender, EventArgs e)
+        {
+            this.ischecked = !this.ischecked;
+            this.Refresh();  
         }
 
     }

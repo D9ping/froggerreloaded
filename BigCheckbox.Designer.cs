@@ -28,20 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pbBigheck = new System.Windows.Forms.PictureBox();
             this.lbTextBigcheckbox = new System.Windows.Forms.Label();
+            this.pbBigheck = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbBigheck)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pbBigheck
-            // 
-            this.pbBigheck.Image = global::Frogger.Properties.Resources.checkbox_on;
-            this.pbBigheck.Location = new System.Drawing.Point(3, 3);
-            this.pbBigheck.Name = "pbBigheck";
-            this.pbBigheck.Size = new System.Drawing.Size(61, 55);
-            this.pbBigheck.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbBigheck.TabIndex = 0;
-            this.pbBigheck.TabStop = false;
             // 
             // lbTextBigcheckbox
             // 
@@ -53,6 +43,18 @@
             this.lbTextBigcheckbox.Size = new System.Drawing.Size(51, 55);
             this.lbTextBigcheckbox.TabIndex = 1;
             this.lbTextBigcheckbox.Text = "?";
+            this.lbTextBigcheckbox.Click += new System.EventHandler(this.pbBigheck_Click);
+            // 
+            // pbBigheck
+            // 
+            this.pbBigheck.Image = global::Frogger.Properties.Resources.checkbox_on;
+            this.pbBigheck.Location = new System.Drawing.Point(3, 3);
+            this.pbBigheck.Name = "pbBigheck";
+            this.pbBigheck.Size = new System.Drawing.Size(61, 55);
+            this.pbBigheck.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbBigheck.TabIndex = 0;
+            this.pbBigheck.TabStop = false;
+            this.pbBigheck.Click += new System.EventHandler(this.pbBigheck_Click);
             // 
             // BigCheckbox
             // 
@@ -64,7 +66,7 @@
             this.Name = "BigCheckbox";
             this.Size = new System.Drawing.Size(342, 62);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.BigCheckbox_Paint);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BigCheckbox_MouseDown);
+            this.Click += new System.EventHandler(this.pbBigheck_Click);
             ((System.ComponentModel.ISupportInitialize)(this.pbBigheck)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
