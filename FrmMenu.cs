@@ -17,6 +17,7 @@ namespace Frogger
         {
             InitializeComponent();
             hovbuttons = new HoverButtons();
+            
         }
 
         private void pbNewGame_Click(object sender, EventArgs e)
@@ -25,11 +26,6 @@ namespace Frogger
             game.Show();
 
             this.Hide();
-        }
-
-        private void pbNewGame_MouseHover(object sender, EventArgs e)
-        {
-            pbNewGame.Image = hovbuttons.newgame_selected;
         }
 
     }

@@ -16,7 +16,7 @@ namespace Frogger
         public HoverButton(string menuitem)
         {
             InitializeComponent();
-
+            
             switch (menuitem)
 	        {
                 case "newgame":
@@ -43,8 +43,26 @@ namespace Frogger
         /// <param name="e"></param>
         void pbKnop_MouseHover(object sender, EventArgs e)
         {
-            //todo
-            //pbKnop.    
+            //Graphics g = new Graphics();
+            //Brushes.Black
+            //g.DrawRectangle(new Pen(
+
+            switch (menuitem)
+            {
+                case "new game":
+                    this.pbKnop.Image = global::Frogger.Properties.Resources.btn_new_game_selected;
+                    break;
+                case "highscore":
+                    this.pbKnop.Image = global::Frogger.Properties.Resources.btn_new_game_selected;
+                    break;
+                case "options":
+                    this.pbKnop.Image = global::Frogger.Properties.Resources.btn_new_game_selected;
+                    break;
+                case "exit":
+                    this.pbKnop.Image = global::Frogger.Properties.Resources.btn_new_game_selected;
+                    break;                
+            }
+              
         }
 
         protected override void OnPaint(PaintEventArgs pe)

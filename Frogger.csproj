@@ -12,6 +12,8 @@
     <AssemblyName>Frogger</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <StartupObject>Frogger.Program</StartupObject>
+    <ApplicationIcon>icon_frog.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Car.cs" />
     <Compile Include="FrmMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +69,7 @@
     <Compile Include="HoverButton.Designer.cs">
       <DependentUpon>HoverButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="MovingObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmGame.resx">
@@ -96,7 +100,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="HoverButtons.cs" />
+    <Compile Include="Tree.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="img\logo_frogger_reloaded.png" />
@@ -115,6 +119,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="img\btn_exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon_frog.ico" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
