@@ -14,8 +14,7 @@ namespace Frogger
     {
         public FrmGame()
         {
-            InitializeComponent();
-            this.Refresh();
+            InitializeComponent();                        
         }
 
         private void FrmGame_Paint(object sender, PaintEventArgs e)
@@ -24,22 +23,19 @@ namespace Frogger
             int hoogteweg = 100;            
 
             Graphics g = e.Graphics;
-            
-            // Create solid brush.
-            SolidBrush brushStrook = new SolidBrush(Color.Blue);
+                        
+            //SolidBrush brushStrook = new SolidBrush(Color.Blue);
             SolidBrush brushWeg = new SolidBrush(Color.Black);
-
-            // Create rectangle.                                    
-            Rectangle rectStrook = new Rectangle(0, this.Height - hoogtestrook, this.Width, hoogtestrook);
+            
+            //Rectangle rectStrook = new Rectangle(0, this.Height - hoogtestrook, this.Width, hoogtestrook);
             Rectangle rectWeg = new Rectangle(0, this.Height - hoogtestrook - hoogteweg, this.Width, hoogteweg);
 
-            g.FillRectangle(brushStrook, rectStrook);
+            //g.FillRectangle(brushStrook, rectStrook);
             g.FillRectangle(brushWeg, rectWeg);
         }
 
         private void FrmGame_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            //base.Close();
+        {            
             Application.Exit();
         }
     }

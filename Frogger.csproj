@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BigCheckbox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BigCheckbox.Designer.cs">
+      <DependentUpon>BigCheckbox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Car.cs" />
     <Compile Include="FrmMenu.cs">
       <SubType>Form</SubType>
@@ -64,7 +70,7 @@
       <DependentUpon>FrmGame.cs</DependentUpon>
     </Compile>
     <Compile Include="HoverButton.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="HoverButton.Designer.cs">
       <DependentUpon>HoverButton.cs</DependentUpon>
@@ -72,6 +78,9 @@
     <Compile Include="MovingObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BigCheckbox.resx">
+      <DependentUpon>BigCheckbox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmGame.resx">
       <DependentUpon>FrmGame.cs</DependentUpon>
     </EmbeddedResource>
@@ -122,9 +131,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_frog.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
+    <None Include="img\checkbox_off.png" />
+    <None Include="img\checkbox_on.png" />
+    <None Include="img\btn_options_selected.png" />
+    <None Include="img\btn_highscore_selected.png" />
+    <None Include="img\btn_exit_selected.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

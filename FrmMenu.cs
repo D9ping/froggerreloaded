@@ -9,24 +9,154 @@ using System.Windows.Forms;
 
 namespace Frogger
 {
+    public enum MenuState
+    {
+        main,
+        highscore,
+        options,
+        level
+    }
+
     public partial class FrmMenu : Form
     {
-        private HoverButtons hovbuttons;
+        private MenuState menustate;
+        private HoverButton[] btns;
 
         public FrmMenu()
         {
-            InitializeComponent();
-            hovbuttons = new HoverButtons();
-            
+            InitializeComponent();            
+
+            btns = new HoverButton[4];
+
+            CreateOptionsMenu();
+            //CreateLvlButtons();
+            //CreateMainMenu();
         }
 
-        private void pbNewGame_Click(object sender, EventArgs e)
+
+        /// <summary>
+        /// Create main menu buttons
+        /// </summary>
+        private void CreateMainMenu()
         {
+            //HoverButton[] btn = new HoverButton[4];
+            btns[0] = new HoverButton("Newgame");
+            btns[1] = new HoverButton("Highscore");
+            btns[2] = new HoverButton("Options");
+            btns[3] = new HoverButton("Exit");
+        
+            //create events           
+            btns[0].Click += new EventHandler(StartNewGame);
+            btns[1].Click += new EventHandler(ShowHighScore);
+            btns[2].Click += new EventHandler(ShowOptions);
+            btns[3].Click += new EventHandler(Shutdown);
+            
+            int ypos = 200;
+            int xpos = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                xpos = this.Width/2 - (btns[0].Width/2);
+                btns[i].Location = new Point(xpos, ypos);
+                ypos += 80;
+            }         
+            
+            this.Controls.AddRange(btns);            
+        }
+
+        /// <summary>
+        /// Creer the option menu
+        /// </summary>
+        private void CreateOptionsMenu()
+        {
+            ClearBtns();
+            
+            //todo: haal setting uit register op, nu standaard aan.
+
+            BigCheckbox chx = new BigCheckbox("sound", true);
+            chx.Location = new Point(this.Width / 2 - (chx.Width / 2), this.Height / 2 - (chx.Height / 2));
+            this.Controls.Add(chx);
+        }
+
+        void FrmMenu_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Test");
+            //throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Create the buttons for level selection.
+        /// </summary>
+        private void CreateLvlButtons()
+        {
+            ClearBtns();
+
+            btns[0] = new HoverButton("level1");
+            btns[1] = new HoverButton("level2");
+            btns[2] = new HoverButton("level3");
+            
+            int ypos = 250;
+            int xpos = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                xpos = this.Width / 2 - (btns[0].Width / 2);
+                btns[i].Location = new Point(xpos, ypos);
+                ypos += 90;
+            }
+            this.Controls.AddRange(btns);   
+        }
+
+        //private void 
+
+        private void StartNewGame(object sender, EventArgs e)
+        {
+            MessageBox.Show("Test");
+            CreateLvlButtons();
+            /*
             FrmGame game = new FrmGame();
             game.Show();
 
             this.Hide();
+             */
         }
+
+        private void ShowHighScore(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ShowOptions(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Shutdown(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void FrmMenu_ResizeEnd(object sender, EventArgs e)
+        {
+            ClearBtns();
+            if (menustate == MenuState.main)
+            {
+                CreateMainMenu();                
+            }
+            
+        }  
+
+        private bool ClearBtns()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                if (btns[i] != null)
+                {
+                    btns[i].Dispose();
+                }
+                else return false;
+            }            
+            return true;
+        }
+ 
 
     }
 }

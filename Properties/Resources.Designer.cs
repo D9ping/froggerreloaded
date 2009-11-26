@@ -67,9 +67,23 @@ namespace Frogger.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap btn_exit_selected {
+            get {
+                object obj = ResourceManager.GetObject("btn_exit_selected", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap btn_highscore {
             get {
                 object obj = ResourceManager.GetObject("btn_highscore", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap btn_highscore_selected {
+            get {
+                object obj = ResourceManager.GetObject("btn_highscore_selected", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -91,6 +105,27 @@ namespace Frogger.Properties {
         public static System.Drawing.Bitmap btn_options {
             get {
                 object obj = ResourceManager.GetObject("btn_options", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap btn_options_selected {
+            get {
+                object obj = ResourceManager.GetObject("btn_options_selected", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap checkbox_off {
+            get {
+                object obj = ResourceManager.GetObject("checkbox_off", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap checkbox_on {
+            get {
+                object obj = ResourceManager.GetObject("checkbox_on", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
