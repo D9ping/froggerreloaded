@@ -91,53 +91,35 @@
       <DependentUpon>HoverButton.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Tree.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="img\logo_frogger_reloaded.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="img\btn_new_game.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="img\btn_highscore.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="img\btn_new_game_selected.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="img\btn_options.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="img\btn_exit.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="icon_frog.ico" />
     <None Include="img\checkbox_off.png" />
     <None Include="img\checkbox_on.png" />
     <None Include="img\btn_options_selected.png" />
     <None Include="img\btn_highscore_selected.png" />
     <None Include="img\btn_exit_selected.png" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Content Include="icon_frog.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -1,4 +1,21 @@
-﻿using System;
+/*
+Copyright (C) 2009  Tom Postma, Gertjan Buijs
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,18 +37,22 @@ namespace Frogger
     public partial class FrmMenu : Form
     {
         private MenuState menustate;
+		
         private HoverButton[] btns;
 
         public FrmMenu()
         {
             InitializeComponent();            
-
+			menustate = MenuState.main;
             btns = new HoverButton[4];
 
             //CreateOptionsMenu();
             //CreateLvlButtons();
             CreateMainMenu();
         }
+
+        //public delegate void MyEventHandler(object sender);
+        //public event MyEventHandler MyEvent;
 
 
         /// <summary>
@@ -43,15 +64,14 @@ namespace Frogger
             btns[1] = new HoverButton("Highscore");
             btns[2] = new HoverButton("Options");
             btns[3] = new HoverButton("Exit");
-        
-            //create events                       
-            btns[0].Click += new EventHandler(StartNewGame); //mist event args etc. uitzoeken hoe dit moet vanuit
-                                                            //constructor wordt createmainmenu aangeroepen dus
+                  
+            //hook events  
+            btns[0].Click += new EventHandler(StartNewGame);                                                            
             btns[1].Click += new EventHandler(ShowHighScore);
             btns[2].Click += new EventHandler(ShowOptions);
             btns[3].Click += new EventHandler(Shutdown);
             
-            int ypos = 200;
+            int ypos = 220;
             int xpos = 0;
             for (int i = 0; i < 4; i++)
             {
@@ -105,25 +125,21 @@ namespace Frogger
             this.Controls.AddRange(btns);   
         }
 
-        //private void 
-
         private void StartNewGame(object sender, EventArgs e)
-        {
-            MessageBox.Show("Test");
+        {            
             ClearBtns();
 
             CreateLvlButtons();
             
-            FrmGame game = new FrmGame();
-            game.Show();
-
-            this.Hide();
+            //FrmGame game = new FrmGame();
+            //game.Show();
+            //this.Hide();
             
         }
 
         private void ShowHighScore(object sender, EventArgs e)
         {
-            
+            ClearBtns();
         }
 
         /// <summary>
@@ -133,6 +149,7 @@ namespace Frogger
         /// <param name="e"></param>
         private void ShowOptions(object sender, EventArgs e)
         {
+            ClearBtns();
             CreateOptionsMenu();
         }
 

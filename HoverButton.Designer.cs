@@ -28,23 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbButtonText = new System.Windows.Forms.Label();
+            this.lbButton = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // lbButtonText
+            // lbButton
             // 
-            this.lbButtonText.BackColor = System.Drawing.Color.Transparent;
-            this.lbButtonText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbButtonText.Font = new System.Drawing.Font("Flubber", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbButtonText.Location = new System.Drawing.Point(0, 0);
-            this.lbButtonText.Margin = new System.Windows.Forms.Padding(0);
-            this.lbButtonText.Name = "lbButtonText";
-            this.lbButtonText.Size = new System.Drawing.Size(300, 72);
-            this.lbButtonText.TabIndex = 0;
-            this.lbButtonText.Text = "?";
-            this.lbButtonText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbButtonText.MouseLeave += new System.EventHandler(this.HoverButton_MouseLeave);
-            this.lbButtonText.MouseEnter += new System.EventHandler(this.HoverButton_MouseEnter);
+            this.lbButton.BackColor = System.Drawing.Color.Transparent;
+            this.lbButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbButton.Location = new System.Drawing.Point(0, 0);
+            this.lbButton.Margin = new System.Windows.Forms.Padding(0);
+            this.lbButton.Name = "lbButton";
+            this.lbButton.Size = new System.Drawing.Size(300, 72);
+            this.lbButton.TabIndex = 0;
+            this.lbButton.Text = "?";
+            this.lbButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbButton.MouseLeave += new System.EventHandler(this.HoverButton_MouseLeave);
+            this.lbButton.Click += new System.EventHandler(this.lbButtonText_Click);
+            this.lbButton.MouseEnter += new System.EventHandler(this.HoverButton_MouseEnter);
             // 
             // HoverButton
             // 
@@ -53,7 +54,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LimeGreen;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.lbButtonText);
+            this.Controls.Add(this.lbButton);
             this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.Black;
             this.Margin = new System.Windows.Forms.Padding(0);
@@ -68,6 +69,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lbButtonText;
+        private System.Windows.Forms.Label lbButton;
     }
 }
