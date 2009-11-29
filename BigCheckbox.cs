@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -84,7 +83,9 @@ namespace Frogger
         private void pbBigheck_Click(object sender, EventArgs e)
         {
             this.ischecked = !this.ischecked;
-            this.Refresh();  
+            this.Refresh();
+
+            this.OnClick(e);
         }
 
     }

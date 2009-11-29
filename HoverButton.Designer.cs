@@ -35,7 +35,7 @@
             // 
             this.lbButton.BackColor = System.Drawing.Color.Transparent;
             this.lbButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbButton.Font = new System.Drawing.Font("Flubber", 42F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbButton.Location = new System.Drawing.Point(0, 0);
             this.lbButton.Margin = new System.Windows.Forms.Padding(0);
             this.lbButton.Name = "lbButton";

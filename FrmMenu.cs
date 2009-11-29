@@ -23,6 +23,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+
 
 namespace Frogger
 {
@@ -37,120 +39,124 @@ namespace Frogger
     public partial class FrmMenu : Form
     {
         private MenuState menustate;
-		
-        private HoverButton[] btns;
+
+        private HoverButton[] menu;
+        private BigCheckbox[] options;
+
+        private bool fullscreen = false;
 
         public FrmMenu()
         {
-            InitializeComponent();            
-			menustate = MenuState.main;
-            btns = new HoverButton[4];
+            InitializeComponent();
+            menustate = MenuState.main;
 
+            CreateMainMenu(this, EventArgs.Empty);
             //CreateOptionsMenu();
-            //CreateLvlButtons();
-            CreateMainMenu();
+            //CreateLvlButtons();                       
+
+            SetScreenSize();
         }
-
-        //public delegate void MyEventHandler(object sender);
-        //public event MyEventHandler MyEvent;
-
 
         /// <summary>
         /// Create main menu buttons
         /// </summary>
-        private void CreateMainMenu()
-        {           
-            btns[0] = new HoverButton("Newgame");
-            btns[1] = new HoverButton("Highscore");
-            btns[2] = new HoverButton("Options");
-            btns[3] = new HoverButton("Exit");
-                  
+        private void CreateMainMenu(object sender, EventArgs e)
+        {
+            menustate = MenuState.main;
+
+            menu = new HoverButton[4];
+            menu[0] = new HoverButton("Newgame");
+            menu[1] = new HoverButton("Highscore");
+            menu[2] = new HoverButton("Options");
+            menu[3] = new HoverButton("Exit");
+
             //hook events  
-            btns[0].Click += new EventHandler(StartNewGame);                                                            
-            btns[1].Click += new EventHandler(ShowHighScore);
-            btns[2].Click += new EventHandler(ShowOptions);
-            btns[3].Click += new EventHandler(Shutdown);
-            
+            menu[0].Click += new EventHandler(CreateLevelMenu);
+            menu[1].Click += new EventHandler(CreateHighScore);
+            menu[2].Click += new EventHandler(CreateOptions);
+            menu[3].Click += new EventHandler(Shutdown);
+
             int ypos = 220;
             int xpos = 0;
             for (int i = 0; i < 4; i++)
             {
-                xpos = this.Width/2 - (btns[0].Width/2);
-                btns[i].Location = new Point(xpos, ypos);
+                xpos = this.Width / 2 - (menu[0].Width / 2);
+                menu[i].Location = new Point(xpos, ypos);
                 ypos += 80;
-            }         
-            
-            this.Controls.AddRange(btns);            
+            }
+
+            this.Controls.AddRange(menu);
         }
+
+
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndIntertAfter, int X, int Y, int cx, int cy, int uFlags);
+        [DllImport("user32.dll")]
+        private static extern int GetSystemMetrics(int Which);
+        private const int SM_CXSCREEN = 0;
+        private const int SM_CYSCREEN = 1;
+        private IntPtr HWND_TOP = IntPtr.Zero;
+        private const int SWP_SHOWWINDOW = 64;
 
         /// <summary>
-        /// Creer the option menu
+        /// Create level selection screen.
         /// </summary>
-        private void CreateOptionsMenu()
+        private void CreateLevelMenu(object sender, EventArgs e)
         {
-            ClearBtns();
-            
-            //todo: haal setting uit register op, nu standaard aan.
+            ClearScreen();
+            menustate = MenuState.level;
+            menu[0] = new HoverButton("level1");
+            menu[1] = new HoverButton("level2");
+            menu[2] = new HoverButton("level3");
 
-            BigCheckbox chx = new BigCheckbox("sound", true);
-            chx.Location = new Point(this.Width / 2 - (chx.Width / 2), this.Height / 2 - (chx.Height / 2));
-            this.Controls.Add(chx);
-        }
-
-        void FrmMenu_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Test");
-            //throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Create the buttons for level selection.
-        /// </summary>
-        private void CreateLvlButtons()
-        {
-            ClearBtns();
-
-            btns[0] = new HoverButton("level1");
-            btns[1] = new HoverButton("level2");
-            btns[2] = new HoverButton("level3");
-            
-            int ypos = 250;
+            int ypos = 220;
             int xpos = 0;
+            int margin = 20;
             for (int i = 0; i < 3; i++)
             {
-                xpos = this.Width / 2 - (btns[0].Width / 2);
-                btns[i].Location = new Point(xpos, ypos);
-                ypos += 90;
+                xpos = this.Width / 2 - (menu[0].Width / 2);
+                menu[i].Location = new Point(xpos, ypos);
+                ypos += menu[0].Height + margin;
             }
-            this.Controls.AddRange(btns);   
-        }
+            this.Controls.AddRange(menu);
 
-        private void StartNewGame(object sender, EventArgs e)
-        {            
-            ClearBtns();
-
-            CreateLvlButtons();
-            
-            //FrmGame game = new FrmGame();
-            //game.Show();
-            //this.Hide();
-            
-        }
-
-        private void ShowHighScore(object sender, EventArgs e)
-        {
-            ClearBtns();
+            CreateBackBtn();
         }
 
         /// <summary>
-        /// The options button is pressed, show options screen.
+        /// Creer highscore menu
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ShowOptions(object sender, EventArgs e)
+        private void CreateHighScore(object sender, EventArgs e)
         {
-            ClearBtns();
-            CreateOptionsMenu();
+            ClearScreen();
+            menustate = MenuState.highscore;
+            CreateBackBtn();
+        }
+
+        /// <summary>
+        /// Creer option menu
+        /// </summary>
+        private void CreateOptions(object sender, EventArgs e)
+        {
+            ClearScreen();
+            menustate = MenuState.options;
+            //todo: haal setting uit register op, nu standaard aan.
+
+            int margin = 20;
+            options = new BigCheckbox[2];
+
+            options[0] = new BigCheckbox("sound", true);
+            options[0].Location = new Point(this.Width / 2 - (options[0].Width / 2), this.Height / 2 - (options[0].Height / 2));
+
+            options[1] = new BigCheckbox("full screen", false);
+            options[1].Location = new Point(this.Width / 2 - (options[1].Width / 2), this.Height / 2 - (options[1].Height / 2) + options[1].Height + margin);
+            options[1].Click += new EventHandler(ToggleFullScreen);
+
+            this.Controls.AddRange(options);
+
+            CreateBackBtn();
         }
 
         /// <summary>
@@ -163,6 +169,51 @@ namespace Frogger
             Application.Exit();
         }
 
+        private void CreateBackBtn()
+        {
+            menu[3] = new HoverButton("back");
+            menu[3].Click += new EventHandler(backMainMenu);
+            int margin = 50;
+            menu[3].Location = new Point(this.Width / 2 - menu[0].Width / 2, this.Height - menu[0].Height - margin);
+            this.Controls.Add(menu[3]);
+        }
+
+        void backMainMenu(object sender, EventArgs e)
+        {
+            ClearScreen();
+            CreateMainMenu(sender, e);
+        }
+
+        private void ToggleFullScreen(object sender, EventArgs e)
+        {
+            fullscreen = !fullscreen;
+
+            SetScreenSize();
+        }
+
+        /// <summary>
+        /// Set the size of this window.
+        /// If full screen is true then go to onttop fullscreen window with hidden taskbar.
+        /// </summary>
+        private void SetScreenSize()
+        {
+            if (fullscreen)
+            {
+                this.WindowState = FormWindowState.Maximized;
+                this.FormBorderStyle = FormBorderStyle.None;
+                this.TopMost = true;
+                SetWindowPos(this.Handle, HWND_TOP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), SWP_SHOWWINDOW);                
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Normal;
+                this.FormBorderStyle = FormBorderStyle.Sizable;
+                this.TopMost = false;
+            }
+            OnResizeEnd(EventArgs.Empty);
+
+        }
+
         /// <summary>
         /// Form is resized.
         /// </summary>
@@ -170,32 +221,47 @@ namespace Frogger
         /// <param name="e"></param>
         private void FrmMenu_ResizeEnd(object sender, EventArgs e)
         {
-            ClearBtns();
+            ClearScreen();
+
             switch (menustate)
             {
                 case MenuState.main:
-                    CreateMainMenu();
-                    break;                
-            }                
-        }  
+                    CreateMainMenu(sender, e);
+                    break;
+                case MenuState.options:
+                    CreateOptions(sender, e);
+                    break;
+                case MenuState.level:
+                    CreateLevelMenu(sender, e);
+                    break;
+                case MenuState.highscore:
+                    CreateHighScore(sender, e);
+                    break;
+            }
+        }
 
         /// <summary>
         /// Clear all buttons from the Form.
         /// </summary>
         /// <returns></returns>
-        private bool ClearBtns()
+        private void ClearScreen()
         {
-            for (int i = 0; i < 4; i++)
+            if (menu != null)
             {
-                if (btns[i] != null)
+                foreach (HoverButton curbtn in menu)
                 {
-                    btns[i].Dispose();
+                    curbtn.Dispose();
                 }
-                else return false;
-            }            
-            return true;
+            }
+            if (options != null)
+            {
+                foreach (BigCheckbox curcbx in options)
+                {
+                    curcbx.Dispose();
+                }
+            }
         }
- 
+
 
     }
 }
