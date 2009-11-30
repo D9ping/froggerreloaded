@@ -60,58 +60,30 @@ namespace Frogger.Properties {
             }
         }
         
-        public static System.Drawing.Bitmap btn_exit {
+        public static System.Drawing.Bitmap car_grey_east {
             get {
-                object obj = ResourceManager.GetObject("btn_exit", resourceCulture);
+                object obj = ResourceManager.GetObject("car_grey_east", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap btn_exit_selected {
+        public static System.Drawing.Bitmap car_grey_west {
             get {
-                object obj = ResourceManager.GetObject("btn_exit_selected", resourceCulture);
+                object obj = ResourceManager.GetObject("car_grey_west", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap btn_highscore {
+        public static System.Drawing.Bitmap car_yellow_east {
             get {
-                object obj = ResourceManager.GetObject("btn_highscore", resourceCulture);
+                object obj = ResourceManager.GetObject("car_yellow_east", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap btn_highscore_selected {
+        public static System.Drawing.Bitmap car_yellow_west {
             get {
-                object obj = ResourceManager.GetObject("btn_highscore_selected", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        public static System.Drawing.Bitmap btn_new_game {
-            get {
-                object obj = ResourceManager.GetObject("btn_new_game", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        public static System.Drawing.Bitmap btn_new_game_selected {
-            get {
-                object obj = ResourceManager.GetObject("btn_new_game_selected", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        public static System.Drawing.Bitmap btn_options {
-            get {
-                object obj = ResourceManager.GetObject("btn_options", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        public static System.Drawing.Bitmap btn_options_selected {
-            get {
-                object obj = ResourceManager.GetObject("btn_options_selected", resourceCulture);
+                object obj = ResourceManager.GetObject("car_yellow_west", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -130,9 +102,44 @@ namespace Frogger.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap kikker_east {
+            get {
+                object obj = ResourceManager.GetObject("kikker_east", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap kikker_west {
+            get {
+                object obj = ResourceManager.GetObject("kikker_west", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap logo_frogger_reloaded {
             get {
                 object obj = ResourceManager.GetObject("logo_frogger_reloaded", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap texture_water {
+            get {
+                object obj = ResourceManager.GetObject("texture_water", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap texure_grass {
+            get {
+                object obj = ResourceManager.GetObject("texure_grass", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap treetrunk {
+            get {
+                object obj = ResourceManager.GetObject("treetrunk", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

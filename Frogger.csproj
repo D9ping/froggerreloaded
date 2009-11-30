@@ -95,30 +95,36 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
     </None>
+    <Compile Include="Properties\Resources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Tree.cs" />
-    <None Include="img\logo_frogger_reloaded.png" />
-    <None Include="img\btn_new_game.png" />
-    <None Include="img\btn_highscore.png" />
-    <None Include="img\btn_new_game_selected.png" />
-    <None Include="img\btn_options.png" />
-    <None Include="img\btn_exit.png" />
-    <None Include="img\checkbox_off.png" />
-    <None Include="img\checkbox_on.png" />
-    <None Include="img\btn_options_selected.png" />
-    <None Include="img\btn_highscore_selected.png" />
-    <None Include="img\btn_exit_selected.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_frog.ico" />
+    <Content Include="Resources\car_grey_east.png" />
+    <Content Include="Resources\car_grey_west.png" />
+    <Content Include="Resources\flubber_font_license.txt" />
+    <Content Include="Resources\icon_frog.ico" />
+    <None Include="Resources\Flubber.ttf" />
+    <None Include="Resources\logo_frogger_reloaded.png" />
+    <None Include="Resources\checkbox_on.png" />
+    <None Include="Resources\checkbox_off.png" />
+    <None Include="Resources\treetrunk.png" />
+    <None Include="Resources\kikker_west.png" />
+    <None Include="Resources\kikker_east.png" />
+    <None Include="Resources\car_yellow_west.png" />
+    <None Include="Resources\car_yellow_east.png" />
+    <None Include="Resources\texure_grass.jpg" />
+    <None Include="Resources\texture_water.JPG" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

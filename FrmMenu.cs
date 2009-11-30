@@ -109,6 +109,8 @@ namespace Frogger
             menu[1] = new HoverButton("level2");
             menu[2] = new HoverButton("level3");
 
+            menu[0].Click += new EventHandler(LoadLevel1);
+
             int ypos = 220;
             int xpos = 0;
             int margin = 20;
@@ -157,6 +159,13 @@ namespace Frogger
             this.Controls.AddRange(options);
 
             CreateBackBtn();
+        }
+
+        private void LoadLevel1(object sender, EventArgs e)
+        {
+            this.Hide();
+            FrmGame game = new FrmGame();
+            game.Show();
         }
 
         /// <summary>

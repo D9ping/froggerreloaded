@@ -35,19 +35,33 @@ namespace Frogger
 
         private void FrmGame_Paint(object sender, PaintEventArgs e)
         {
-            int hoogtestrook = 30;
-            int hoogteweg = 100;            
+            int hoogteRiver = 100;
+            int heightRoad = 100;
+            int breedtegras = 100;
+            int LineDistanse = 100;
 
             Graphics g = e.Graphics;
-                        
-            //SolidBrush brushStrook = new SolidBrush(Color.Blue);
-            SolidBrush brushWeg = new SolidBrush(Color.Black);
+
+            SolidBrush brushRoad = new SolidBrush(Color.Black);
+            SolidBrush brushRiver = new SolidBrush(Color.Blue);
+            SolidBrush brushRoadLine = new SolidBrush(Color.White);
             
             //Rectangle rectStrook = new Rectangle(0, this.Height - hoogtestrook, this.Width, hoogtestrook);
-            Rectangle rectWeg = new Rectangle(0, this.Height - hoogtestrook - hoogteweg, this.Width, hoogteweg);
+            Rectangle rectWeg = new Rectangle(0, this.Height - heightRoad - breedtegras, this.Width, heightRoad);
+            Rectangle rectRiver = new Rectangle(0, 80, this.Width, hoogteRiver);
 
-            //g.FillRectangle(brushStrook, rectStrook);
-            g.FillRectangle(brushWeg, rectWeg);
+            g.FillRectangle(brushRoad, rectWeg);
+            g.FillRectangle(brushRiver, rectRiver);
+            for (int xpos = 0; xpos < this.Height; xpos += LineDistanse)
+            {
+                Rectangle rectRoadLine = new Rectangle(xpos, this.Height - heightRoad - breedtegras + (heightRoad / 2), 20, 5);
+                g.FillRectangle(brushRoadLine, rectRoadLine);
+            }
+
+            
+            
+
+
         }
 
         private void FrmGame_FormClosed(object sender, FormClosedEventArgs e)
