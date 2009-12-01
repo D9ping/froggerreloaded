@@ -28,45 +28,95 @@ namespace Frogger
 {
     public partial class FrmGame : Form
     {
-        public FrmGame()
+		#region Fields (1) 
+
+        private int level = 1;
+
+		#endregion Fields 
+
+		#region Constructors (1) 
+
+        /// <summary>
+        /// Creating a new instance of FrmGame.
+        /// </summary>
+        /// <param name="level"></param>
+        public FrmGame(int level)
         {
-            InitializeComponent();                        
+            InitializeComponent();
+            this.level = level;
         }
 
-        private void FrmGame_Paint(object sender, PaintEventArgs e)
-        {
-            int hoogteRiver = 100;
-            int heightRoad = 100;
-            int breedtegras = 100;
-            int LineDistanse = 100;
+		#endregion Constructors 
 
-            Graphics g = e.Graphics;
+		#region Methods (3) 
+
+		// Private Methods (3) 
+
+        /// <summary>
+        /// Teken een weg.        
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="locy">de locatie van Y cooridinaat van het venster.</param>
+        private void DrawRoad(Graphics g, int locy)
+        {
+            int lineDistance = 100, heightRoad = 100;
 
             SolidBrush brushRoad = new SolidBrush(Color.Black);
-            SolidBrush brushRiver = new SolidBrush(Color.Blue);
             SolidBrush brushRoadLine = new SolidBrush(Color.White);
-            
-            //Rectangle rectStrook = new Rectangle(0, this.Height - hoogtestrook, this.Width, hoogtestrook);
-            Rectangle rectWeg = new Rectangle(0, this.Height - heightRoad - breedtegras, this.Width, heightRoad);
-            Rectangle rectRiver = new Rectangle(0, 80, this.Width, hoogteRiver);
+            Rectangle rectWeg = new Rectangle(0, locy, this.Width, heightRoad);
 
             g.FillRectangle(brushRoad, rectWeg);
-            g.FillRectangle(brushRiver, rectRiver);
-            for (int xpos = 0; xpos < this.Height; xpos += LineDistanse)
+            for (int xpos = 0; xpos < this.Height; xpos += lineDistance)
             {
-                Rectangle rectRoadLine = new Rectangle(xpos, this.Height - heightRoad - breedtegras + (heightRoad / 2), 20, 5);
+                Rectangle rectRoadLine = new Rectangle(xpos, locy + (heightRoad / 2), 20, 5);
                 g.FillRectangle(brushRoadLine, rectRoadLine);
-            }
+            } 
+        }
 
-            
-            
+        private void DrawRivir(Graphics g, int locy)
+        {
+            int hoogteRiver = 100;
 
-
+            SolidBrush brushRiver = new SolidBrush(Color.Blue);
+            Rectangle rectRiver = new Rectangle(0, locy, this.Width, hoogteRiver);
+            g.FillRectangle(brushRiver, rectRiver);
         }
 
         private void FrmGame_FormClosed(object sender, FormClosedEventArgs e)
         {            
             Application.Exit();
         }
-    }
+
+        /// <summary>
+        /// Draw everything of the game.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FrmGame_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;            
+
+            switch (level)
+            {
+                case 1:
+                    DrawRivir(g, 80);
+                    DrawRoad(g, 250);
+                    DrawRoad(g, 405);
+                    break;
+                case 2:
+                    DrawRoad(g, 150);
+                    DrawRoad(g, 300);
+                    DrawRivir(g, 405);
+                    break;
+            }
+                              
+        }
+
+		#endregion Methods 
+
+        private void FrmGame_ResizeEnd(object sender, EventArgs e)
+        {
+            this.Refresh();
+        }
+     }
 }
