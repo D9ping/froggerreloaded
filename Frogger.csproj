@@ -79,6 +79,7 @@
       <DependentUpon>HoverButton.cs</DependentUpon>
     </Compile>
     <Compile Include="MenuLevel.cs" />
+    <Compile Include="MenuMain.cs" />
     <Compile Include="MenuScreen.cs" />
     <Compile Include="MenuState.cs" />
     <Compile Include="MovingObject.cs" />
