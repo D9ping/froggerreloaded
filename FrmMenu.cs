@@ -207,6 +207,17 @@ namespace Frogger
         }
 
         /// <summary>
+        /// Toggle between normal size and fullscreen size.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToggleFullScreen(object sender, EventArgs e)
+        {
+            fullscreen = !fullscreen;
+            SetScreenSize();
+        }
+
+        /// <summary>
         /// Create options menu
         /// </summary>
         private void CreateOptions(object sender, EventArgs e)
@@ -241,7 +252,59 @@ namespace Frogger
         /// <param name="e"></param>
         private void FrmMenu_ResizeEnd(object sender, EventArgs e)
         {
+            ClearScreen();
 
+            switch (menustate)
+            {
+                case MenuState.main:
+                    CreateMainMenu(sender, e);
+                    break;
+                case MenuState.options:
+                    CreateOptions(sender, e);
+                    break;
+                case MenuState.level:
+                    CreateLevelMenu(sender, e);
+                    break;
+                case MenuState.highscore:
+                    CreateHighScore(sender, e);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Event for level button click
+        /// figure out whitch button was clicked.
+        /// and create FrmGame with right parameter.
+        /// </summary>
+        /// <param name="sender">the level x hoverbutton</param>
+        /// <param name="e"></param>
+        private void LoadLevel(object sender, EventArgs e)
+        {
+            this.Hide();
+            HoverButton btn = (HoverButton)sender;
+
+
+            switch (btn.Name)
+            {
+                case "btnLvl1":
+                    FrmGame game = new FrmGame(1);
+                    game = new FrmGame(1);
+                    game.Show();
+                    break;
+                case "btnLvl2":
+                    game = new FrmGame(1);
+                    game = new FrmGame(2);
+                    game.Show();
+                    break;
+                case "btnLvl3":
+                    game = new FrmGame(1);
+                    game = new FrmGame(3);
+                    game.Show();
+                    break;
+                default:
+                    MessageBox.Show("Error: level unknow.");
+                    break;
+            }
         }
 
         /// <summary>
@@ -255,9 +318,9 @@ namespace Frogger
             {
                 this.WindowState = FormWindowState.Maximized;
                 this.FormBorderStyle = FormBorderStyle.None;
-#if Release                 
+                #if Release                 
                 this.TopMost = true; //watch out this is actually annoying while debugging, switching back to your IDE with fullscreen will be inpossible.
-#endif
+                #endif
                 SetWindowPos(this.Handle, HWND_TOP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), SWP_SHOWWINDOW);                
             }
             else
@@ -267,22 +330,27 @@ namespace Frogger
                 this.TopMost = false;
             }
             OnResizeEnd(EventArgs.Empty);
-
         }
 
-        private void FrmMenu_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         /// <summary>
-        /// Toggle between normal size and fullscreen size.
+        /// Hier moet dus afhankelijk van de state het juiste menu getekent worden.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ToggleFullScreen(object sender, EventArgs e)
+        private void FrmMenu_Paint(object sender, PaintEventArgs e)
         {
-            this.fullscreen = !this.fullscreen;
+            //todo
+        }
+
+        /// <summary>
+        /// exit button is presed, shutdown application.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Shutdown(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         //This is unmangement code needed for real fullscreen. hidden taskbar etc.
