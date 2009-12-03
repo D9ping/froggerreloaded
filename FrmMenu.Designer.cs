@@ -54,6 +54,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmMenu";
             this.Text = "Frogger Reloaded";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmMenu_Paint);
             this.ResizeEnd += new System.EventHandler(this.FrmMenu_ResizeEnd);
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.ResumeLayout(false);

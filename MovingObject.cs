@@ -24,12 +24,7 @@ namespace Frogger
 {
 
     public class MovingObject
-    {
-        public enum Direction
-        {
-            East,
-            West
-        }
+    {    
 
         private int speed;
         private Direction direction;

@@ -57,6 +57,7 @@
       <DependentUpon>BigCheckbox.cs</DependentUpon>
     </Compile>
     <Compile Include="Car.cs" />
+    <Compile Include="Direction.cs" />
     <Compile Include="FrmMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,13 +70,17 @@
     <Compile Include="FrmGame.Designer.cs">
       <DependentUpon>FrmGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameEngine.cs" />
+    <Compile Include="MenuHighscore.cs" />
     <Compile Include="HoverButton.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="HoverButton.Designer.cs">
       <DependentUpon>HoverButton.cs</DependentUpon>
     </Compile>
+    <Compile Include="MenuLevel.cs" />
     <Compile Include="MovingObject.cs" />
+    <Compile Include="MenuOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="BigCheckbox.resx">
@@ -114,6 +119,7 @@
     <Content Include="Resources\car_grey_west.png" />
     <Content Include="Resources\flubber_font_license.txt" />
     <Content Include="Resources\icon_frog.ico" />
+    <None Include="ClassDiagram_v0.5.cd" />
     <None Include="Resources\Flubber.ttf" />
     <None Include="Resources\logo_frogger_reloaded.png" />
     <None Include="Resources\checkbox_on.png" />

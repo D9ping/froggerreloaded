@@ -31,7 +31,7 @@ namespace Frogger
 		#region Fields (1) 
 
         private int level = 1;
-
+        private GameEngine game;
 		#endregion Fields 
 
 		#region Constructors (1) 
@@ -44,9 +44,15 @@ namespace Frogger
         {
             InitializeComponent();
             this.level = level;
+            this.game = new GameEngine();
         }
 
 		#endregion Constructors 
+
+        public FrmGame()
+        {
+            throw new System.NotImplementedException();
+        }
 
 		#region Methods (3) 
 
@@ -100,7 +106,7 @@ namespace Frogger
             {
                 case 1:
                     DrawRivir(g, 80);
-                    DrawRoad(g, 250);
+                    DrawRoad(g, 250);                    
                     DrawRoad(g, 405);
                     break;
                 case 2:

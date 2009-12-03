@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 
 namespace Frogger
@@ -41,10 +42,15 @@ namespace Frogger
 		#region Fields (8) 
 
         private bool fullscreen = false;
+
         private IntPtr HWND_TOP = IntPtr.Zero;
+
         private HoverButton[] menu;
-                private MenuState menustate;
+
+        private MenuState menustate;
+
         private BigCheckbox[] options;
+
         private const int SM_CXSCREEN = 0;
         private const int SM_CYSCREEN = 1;
         private const int SWP_SHOWWINDOW = 64;
@@ -65,6 +71,8 @@ namespace Frogger
                                                    //But we still have to match EventHandler delegate.            
             SetScreenSize(); //check full screen
         }
+
+       
 
 		#endregion Constructors 
 
@@ -144,6 +152,7 @@ namespace Frogger
             menu[0] = new HoverButton("level1");
             menu[1] = new HoverButton("level2");
             menu[2] = new HoverButton("level3");
+            //
             menu[0].Name= "btnLvl1";
             menu[1].Name = "btnLvl2";
             menu[2].Name = "btnLvl3";
@@ -206,6 +215,9 @@ namespace Frogger
             menustate = MenuState.options;
             
             //todo: get settings from windows registery.
+            
+            //RegistryKey.RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Frogger\\", true);
+            //key.GetValue("fullscreen", null);
 
             int margin = 20;
             options = new BigCheckbox[2];
@@ -229,62 +241,7 @@ namespace Frogger
         /// <param name="e"></param>
         private void FrmMenu_ResizeEnd(object sender, EventArgs e)
         {
-            ClearScreen();
 
-            switch (menustate)
-            {
-                case MenuState.main:
-                    CreateMainMenu(sender, e);
-                    break;
-                case MenuState.options:
-                    CreateOptions(sender, e);
-                    break;
-                case MenuState.level:
-                    CreateLevelMenu(sender, e);
-                    break;
-                case MenuState.highscore:
-                    CreateHighScore(sender, e);
-                    break;
-            }
-        }
-
-        
-        /// <summary>
-        /// Event for level button click
-        /// figure out whitch button was clicked.
-        /// and create FrmGame with right parameter.
-        /// </summary>
-        /// <param name="sender">the level x hoverbutton</param>
-        /// <param name="e"></param>
-        private void LoadLevel(object sender, EventArgs e)
-        {
-            this.Hide();
-            HoverButton btn = (HoverButton)sender;
-
-            
-            switch (btn.Name)
-            {                    
-                case "btnLvl1":
-                    FrmGame game = new FrmGame(1);             
-                    game = new FrmGame(1);
-                    game.Show();
-                    break;
-                case "btnLvl2":
-                    game = new FrmGame(1);             
-                    game = new FrmGame(2);
-                    game.Show();
-                    break;
-                case "btnLvl3":
-                    game = new FrmGame(1);             
-                    game = new FrmGame(3);
-                    game.Show();
-                    break;
-                default:
-                    MessageBox.Show("Error: level unknow.");
-                    break;
-            }
-                        
-            
         }
 
         /// <summary>
@@ -313,14 +270,9 @@ namespace Frogger
 
         }
 
-        /// <summary>
-        /// exit button is presed, shutdown application.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Shutdown(object sender, EventArgs e)
+        private void FrmMenu_Paint(object sender, PaintEventArgs e)
         {
-            Application.Exit();
+
         }
 
         /// <summary>
@@ -330,9 +282,7 @@ namespace Frogger
         /// <param name="e"></param>
         private void ToggleFullScreen(object sender, EventArgs e)
         {
-            fullscreen = !fullscreen;
-
-            SetScreenSize();
+            this.fullscreen = !this.fullscreen;
         }
 
         //This is unmangement code needed for real fullscreen. hidden taskbar etc.
@@ -343,5 +293,7 @@ namespace Frogger
         private static extern int GetSystemMetrics(int Which);
 
 		#endregion Methods 
+
+
     }
 }
