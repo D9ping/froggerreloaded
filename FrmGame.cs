@@ -23,6 +23,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Media;
+using System.Runtime.InteropServices;
 
 namespace Frogger
 {
@@ -30,7 +31,6 @@ namespace Frogger
     {
 		#region Fields (1) 
 
-        private int level = 1;
         private GameEngine game;
 		#endregion Fields 
 
@@ -42,51 +42,15 @@ namespace Frogger
         /// <param name="level"></param>
         public FrmGame(int level)
         {
-            InitializeComponent();
-            this.level = level;
-            this.game = new GameEngine();
+            InitializeComponent();            
+            this.game = new GameEngine(level);
         }
 
 		#endregion Constructors 
 
-        public FrmGame()
-        {
-            throw new System.NotImplementedException();
-        }
-
 		#region Methods (3) 
 
 		// Private Methods (3) 
-
-        /// <summary>
-        /// Teken een weg.        
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="locy">de locatie van Y cooridinaat van het venster.</param>
-        private void DrawRoad(Graphics g, int locy)
-        {
-            int lineDistance = 100, heightRoad = 100;
-
-            SolidBrush brushRoad = new SolidBrush(Color.Black);
-            SolidBrush brushRoadLine = new SolidBrush(Color.White);
-            Rectangle rectWeg = new Rectangle(0, locy, this.Width, heightRoad);
-
-            g.FillRectangle(brushRoad, rectWeg);
-            for (int xpos = 0; xpos < this.Height; xpos += lineDistance)
-            {
-                Rectangle rectRoadLine = new Rectangle(xpos, locy + (heightRoad / 2), 20, 5);
-                g.FillRectangle(brushRoadLine, rectRoadLine);
-            } 
-        }
-
-        private void DrawRivir(Graphics g, int locy)
-        {
-            int hoogteRiver = 100;
-
-            SolidBrush brushRiver = new SolidBrush(Color.Blue);
-            Rectangle rectRiver = new Rectangle(0, locy, this.Width, hoogteRiver);
-            g.FillRectangle(brushRiver, rectRiver);
-        }
 
         private void FrmGame_FormClosed(object sender, FormClosedEventArgs e)
         {            
@@ -100,29 +64,16 @@ namespace Frogger
         /// <param name="e"></param>
         private void FrmGame_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;            
+            Graphics g = e.Graphics;
 
-            switch (level)
-            {
-                case 1:
-                    DrawRivir(g, 80);
-                    DrawRoad(g, 250);                    
-                    DrawRoad(g, 405);
-                    break;
-                case 2:
-                    DrawRoad(g, 150);
-                    DrawRoad(g, 300);
-                    DrawRivir(g, 405);
-                    break;
-            }
-                              
-        }
-
-		#endregion Methods 
+            game.DrawScreen(g);                              
+        }		 
 
         private void FrmGame_ResizeEnd(object sender, EventArgs e)
         {
             this.Refresh();
         }
-     }
+
+        #endregion Methods
+    }
 }

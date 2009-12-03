@@ -20,40 +20,26 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using Microsoft.Win32;
-
 
 namespace Frogger
 {
-    public enum MenuState
-    {
-        main,
-        highscore,
-        options,
-        level
-    }
-
     public partial class FrmMenu : Form
     {
 		#region Fields (8) 
 
         private bool fullscreen = false;
 
-        private IntPtr HWND_TOP = IntPtr.Zero;
-
         private HoverButton[] menu;
-
-        private MenuState menustate;
-
         private BigCheckbox[] options;
 
-        private const int SM_CXSCREEN = 0;
-        private const int SM_CYSCREEN = 1;
-        private const int SWP_SHOWWINDOW = 64;
+        private MenuState menustate;
+        private MenuScreen curmenu;
+
+        
 
 		#endregion Fields 
 
@@ -114,6 +100,7 @@ namespace Frogger
             }
         }
 
+        
         /// <summary>
         /// Draw a back button. 
         /// </summary>
@@ -136,9 +123,8 @@ namespace Frogger
             ClearScreen();
             menustate = MenuState.highscore;
 
-            //todo draw level highscore selection here.
-
-            CreateBackBtn();
+            //curmenu = new MenuHighscore();
+            //todo draw level highscore selection here.                                   
         }
 
         /// <summary>
@@ -283,21 +269,17 @@ namespace Frogger
             this.Hide();
             HoverButton btn = (HoverButton)sender;
 
-
             switch (btn.Name)
             {
                 case "btnLvl1":
-                    FrmGame game = new FrmGame(1);
-                    game = new FrmGame(1);
+                    FrmGame game = new FrmGame(1);                    
                     game.Show();
                     break;
-                case "btnLvl2":
-                    game = new FrmGame(1);
+                case "btnLvl2":                    
                     game = new FrmGame(2);
                     game.Show();
                     break;
-                case "btnLvl3":
-                    game = new FrmGame(1);
+                case "btnLvl3":                    
                     game = new FrmGame(3);
                     game.Show();
                     break;
@@ -305,6 +287,39 @@ namespace Frogger
                     MessageBox.Show("Error: level unknow.");
                     break;
             }
+        }
+
+
+        /// <summary>
+        /// Hier moet dus afhankelijk van de state het juiste menu getekent worden.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FrmMenu_Paint(object sender, PaintEventArgs e)
+        {
+            switch (menustate)
+            {
+                case MenuState.main:                    
+                    break;
+                case MenuState.highscore:
+                    break;
+                case MenuState.options:
+                    break;
+                case MenuState.level:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// exit button is presed, shutdown application.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Shutdown(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         /// <summary>
@@ -318,10 +333,10 @@ namespace Frogger
             {
                 this.WindowState = FormWindowState.Maximized;
                 this.FormBorderStyle = FormBorderStyle.None;
-                #if Release                 
+#if Release                 
                 this.TopMost = true; //watch out this is actually annoying while debugging, switching back to your IDE with fullscreen will be inpossible.
-                #endif
-                SetWindowPos(this.Handle, HWND_TOP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), SWP_SHOWWINDOW);                
+#endif
+                SetWindowPos(this.Handle, HWND_TOP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), SWP_SHOWWINDOW);
             }
             else
             {
@@ -332,26 +347,10 @@ namespace Frogger
             OnResizeEnd(EventArgs.Empty);
         }
 
-
-        /// <summary>
-        /// Hier moet dus afhankelijk van de state het juiste menu getekent worden.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FrmMenu_Paint(object sender, PaintEventArgs e)
-        {
-            //todo
-        }
-
-        /// <summary>
-        /// exit button is presed, shutdown application.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Shutdown(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
+        private IntPtr HWND_TOP = IntPtr.Zero;
+        private const int SM_CXSCREEN = 0;
+        private const int SM_CYSCREEN = 1;
+        private const int SWP_SHOWWINDOW = 64;
 
         //This is unmangement code needed for real fullscreen. hidden taskbar etc.
         [DllImport("user32.dll")]
@@ -359,6 +358,7 @@ namespace Frogger
         //This is also unmangement code, for getting the real screen size with taskbar.
         [DllImport("user32.dll")]
         private static extern int GetSystemMetrics(int Which);
+
 
 		#endregion Methods 
 

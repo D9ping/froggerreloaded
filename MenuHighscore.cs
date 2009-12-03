@@ -8,7 +8,21 @@ namespace Frogger
     /// <summary>
     /// todo
     /// </summary>
-    class MenuHighscore
+    class MenuHighscore : MenuScreen
     {
+        public MenuHighscore(FrmMenu menu, MenuState state)
+            :base(menu, state)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void GetHighscores(int level)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        override public void ClearScreen()
+        {
+        }
     }
 }
