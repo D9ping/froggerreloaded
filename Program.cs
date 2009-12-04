@@ -24,6 +24,8 @@ namespace Frogger
 {
     static class Program
     {
+        public static Boolean fullscreen = false;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

@@ -31,7 +31,7 @@ namespace Frogger
     {
 		#region Fields (1) 
 
-        private GameEngine game;
+        private GameEngine game;        
 		#endregion Fields 
 
 		#region Constructors (1) 
@@ -42,7 +42,7 @@ namespace Frogger
         /// <param name="level"></param>
         public FrmGame(int level)
         {
-            InitializeComponent();            
+            InitializeComponent();
             this.game = new GameEngine(level);
         }
 
@@ -65,11 +65,15 @@ namespace Frogger
         private void FrmGame_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-
             game.DrawScreen(g);                              
         }		 
 
         private void FrmGame_ResizeEnd(object sender, EventArgs e)
+        {
+            this.Refresh();
+        }
+        
+        private void timerUpdateGame_Tick(object sender, EventArgs e)
         {
             this.Refresh();
         }

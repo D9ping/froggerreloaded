@@ -18,5 +18,6 @@ onze ontwikkelomg. is c#
 
 als iemand de applicatie wil runnen, heb je windows (xp/vista/7) nodig
 
-ms access nodig?
+ms access nodig? nee, windows obdc is voldoende. Het is niet de bedoeling
+ dat de highscore direct aangepast kan worden door de eindgebruiker.
 

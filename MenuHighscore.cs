@@ -10,10 +10,11 @@ namespace Frogger
     /// </summary>
     class MenuHighscore : MenuScreen
     {
-        public MenuHighscore(FrmMenu menu, MenuState state)
-            :base(menu, state)
+        public MenuHighscore(FrmMenu frmmenu, MenuState state)
+            :base(frmmenu, state)
         {
-            throw new System.NotImplementedException();
+            state = MenuState.highscore;
+            //todo
         }
 
         public void GetHighscores(int level)
