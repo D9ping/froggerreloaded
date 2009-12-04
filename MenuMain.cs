@@ -21,10 +21,9 @@ namespace Frogger
 
 		#region Constructors (1) 
 
-        public MenuMain(FrmMenu frmmenu, MenuState state)
-            : base(frmmenu, state)
-        {
-            this.
+        public MenuMain(FrmMenu frmmenu)
+            : base(frmmenu)
+        {            
             hoofdmenuknoppen = new HoverButton[4];
             hoofdmenuknoppen[0] = new HoverButton("Newgame");
             hoofdmenuknoppen[1] = new HoverButton("Highscore");

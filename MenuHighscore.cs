@@ -6,15 +6,26 @@ using System.Text;
 namespace Frogger
 {
     /// <summary>
-    /// todo
+    /// Highscores screen
     /// </summary>
     class MenuHighscore : MenuScreen
     {
-        public MenuHighscore(FrmMenu frmmenu, MenuState state)
-            :base(frmmenu, state)
-        {
-            state = MenuState.highscore;
+		#region Constructors (1) 
+
+        public MenuHighscore(FrmMenu frmmenu)
+            :base(frmmenu)
+        {            
             //todo
+        }
+
+		#endregion Constructors 
+
+		#region Methods (2) 
+
+		// Public Methods (2) 
+
+        override public void ClearScreen()
+        {
         }
 
         public void GetHighscores(int level)
@@ -22,8 +33,6 @@ namespace Frogger
             throw new System.NotImplementedException();
         }
 
-        override public void ClearScreen()
-        {
-        }
+		#endregion Methods 
     }
 }

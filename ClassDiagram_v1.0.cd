@@ -101,7 +101,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Frogger.Program">
-    <Position X="4" Y="0.5" Width="1.5" />
+    <Position X="3.75" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
@@ -131,6 +131,14 @@
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
+    <InheritanceLine Type="Frogger.MenuScreen" ManuallyRouted="true">
+      <Path>
+        <Point X="4.625" Y="5.132" />
+        <Point X="4.625" Y="5.635" />
+        <Point X="7.375" Y="5.635" />
+        <Point X="7.375" Y="5.75" />
+      </Path>
+    </InheritanceLine>
     <AssociationLine Name="game" Type="Frogger.FrmGame" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="7.812" Y="5.75" />
@@ -151,6 +159,14 @@
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
+    <InheritanceLine Type="Frogger.MenuScreen" ManuallyRouted="true">
+      <Path>
+        <Point X="4.625" Y="5.132" />
+        <Point X="4.625" Y="5.614" />
+        <Point X="3.125" Y="5.614" />
+        <Point X="3.125" Y="5.75" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>MenuHighscore.cs</FileName>
@@ -162,6 +178,14 @@
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
+    <InheritanceLine Type="Frogger.MenuScreen" ManuallyRouted="true">
+      <Path>
+        <Point X="4.625" Y="5.132" />
+        <Point X="4.625" Y="5.604" />
+        <Point X="5.25" Y="5.604" />
+        <Point X="5.25" Y="5.75" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AEAAAAAAIAIAAIAQAAAAAAAAAgAACAAAAAAAAgQQAAA=</HashCode>
       <FileName>MenuOptions.cs</FileName>
@@ -185,7 +209,7 @@
   <Class Name="Frogger.MenuScreen">
     <Position X="3.75" Y="3" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAIAAAAAAAAQAAAAAAEACAAACAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAEACAAACAAAAAAAAAAAAAA=</HashCode>
       <FileName>MenuScreen.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -195,6 +219,14 @@
       <Compartment Name="Methods" Collapsed="true" />
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
+    <InheritanceLine Type="Frogger.MenuScreen" ManuallyRouted="true">
+      <Path>
+        <Point X="4.625" Y="5.132" />
+        <Point X="4.625" Y="5.614" />
+        <Point X="1.25" Y="5.614" />
+        <Point X="1.25" Y="5.75" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAQAAAAAQAAAAAAAAAAAEAAAACAAAA=</HashCode>
       <FileName>MenuMain.cs</FileName>

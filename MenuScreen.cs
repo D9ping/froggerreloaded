@@ -8,14 +8,24 @@ namespace Frogger
 {
     public abstract class MenuScreen
     {
-        private FrmMenu frmmenu;
-        private MenuState menustate;
+		#region Fields (1) 
 
-        public MenuScreen(FrmMenu frmmenu, MenuState menustate)
+        private FrmMenu frmmenu;
+
+		#endregion Fields 
+
+		#region Constructors (1) 
+
+                public MenuScreen(FrmMenu frmmenu)
         {
-            this.frmmenu = frmmenu;
-            this.menustate = menustate;
+            this.frmmenu = frmmenu;            
         }
+
+		#endregion Constructors 
+
+		#region Methods (3) 
+
+		// Public Methods (2) 
 
         public abstract void ClearScreen();
 
@@ -31,6 +41,7 @@ namespace Frogger
             backbtn.Location = new Point(frmmenu.Width / 2 - frmmenu.Width / 2, frmmenu.Height - frmmenu.Height - margin);
             frmmenu.Controls.Add(backbtn);
         }
+		// Private Methods (1) 
 
         /// <summary>
         /// This methode is fired if back button is pressed.
@@ -42,5 +53,7 @@ namespace Frogger
         {
             frmmenu.CreateMainMenu(sender, e);
         }
+
+		#endregion Methods 
     }
 }

@@ -21,11 +21,10 @@ namespace Frogger
 
 		#region Constructors (1) 
 
-        public MenuLevel(FrmMenu frmmenu, MenuState menustate)
-            : base(frmmenu, menustate)
+        public MenuLevel(FrmMenu frmmenu)
+            : base(frmmenu)
         {
-            levelbtn = new HoverButton[4];
-            menustate = MenuState.level;
+            levelbtn = new HoverButton[4];            
 
             levelbtn[0] = new HoverButton("level1");
             levelbtn[1] = new HoverButton("level2");

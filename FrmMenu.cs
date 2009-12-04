@@ -53,22 +53,37 @@ namespace Frogger
             InitializeComponent();
 
             menustate = MenuState.main;
-            curmenu = new MenuMain(this, menustate);
+
+            this.Refresh();            
             
             //SetScreenSize(); //check full screen
-        }
-
-       
+        }        
 
 		#endregion Constructors 
+        
 
 		#region Methods (14) 
 
         // Private Methods (14) 
 
+        /// <summary>
+        /// Create main menu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void CreateMainMenu(object sender, EventArgs e)
         {
-            curmenu = new MenuMain(this, menustate);
+            menustate = MenuState.main;
+            this.Refresh();            
+        }
+
+        /// <summary>
+        /// Create level selection screen.
+        /// </summary>
+        public void CreateLevelMenu(object sender, EventArgs e)
+        {
+            menustate = MenuState.level;
+            this.Refresh();
         }
 
         /// <summary>
@@ -77,16 +92,9 @@ namespace Frogger
         /// <param name="sender"></param>
         /// <param name="e"></param>
         public void CreateHighScore(object sender, EventArgs e)
-        {            
-            curmenu = new MenuHighscore(this, menustate);            
-        }
-
-        /// <summary>
-        /// Create level selection screen.
-        /// </summary>
-        public void CreateLevelMenu(object sender, EventArgs e)
-        {                       
-            curmenu = new MenuLevel(this, menustate);            
+        {
+            menustate = MenuState.highscore;
+            this.Refresh();            
         }
 
         /// <summary>
@@ -94,7 +102,8 @@ namespace Frogger
         /// </summary>
         public void CreateOptions(object sender, EventArgs e)
         {
-            curmenu = new MenuOptions(this, menustate); 
+            menustate = MenuState.options;
+            this.Refresh();            
         }
 
         /// <summary>
@@ -117,16 +126,16 @@ namespace Frogger
             switch (menustate)
             {
                 case MenuState.main:
-                    curmenu = new MenuMain(this, menustate);
+                    curmenu = new MenuMain(this);
                     break;
                 case MenuState.highscore:
-                    curmenu = new MenuHighscore(this, menustate);
+                    curmenu = new MenuHighscore(this);
                     break;
                 case MenuState.options:
-                    curmenu = new MenuOptions(this, menustate);
+                    curmenu = new MenuOptions(this);
                     break;
                 case MenuState.level:
-                    curmenu = new MenuLevel(this, menustate);
+                    curmenu = new MenuLevel(this);
                     break;                
             }
         }  
