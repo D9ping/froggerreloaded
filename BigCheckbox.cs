@@ -27,7 +27,7 @@ namespace Frogger
 {
     public partial class BigCheckbox : UserControl
     {
-        private bool ischecked = false;
+        private bool ischecked =true;
 
         /// <summary>
         /// This constructor the designer use.

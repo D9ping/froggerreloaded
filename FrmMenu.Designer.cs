@@ -51,6 +51,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(125)))), ((int)(((byte)(0)))));
             this.ClientSize = new System.Drawing.Size(792, 573);
             this.Controls.Add(this.pbLogo);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmMenu";
             this.Text = "Frogger Reloaded";

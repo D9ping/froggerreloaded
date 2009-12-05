@@ -14,8 +14,8 @@ namespace Frogger
     {
 		#region Fields (2) 
 
-        private FrmGame game;
-                private HoverButton[] levelbtn;
+        private FrmMenu frmmenu;        
+        private HoverButton[] levelbtn;
 
 		#endregion Fields 
 
@@ -24,6 +24,8 @@ namespace Frogger
         public MenuLevel(FrmMenu frmmenu)
             : base(frmmenu)
         {
+            this.frmmenu = frmmenu;
+
             levelbtn = new HoverButton[4];            
 
             levelbtn[0] = new HoverButton("level1");
@@ -55,21 +57,26 @@ namespace Frogger
 
 		#region Methods (3) 
 
-		// Public Methods (2) 
+		// Public Methods (1) 
 
         override public void ClearScreen()
         {
+            foreach (HoverButton curbtn in levelbtn)
+            {
+                if (curbtn != null) { curbtn.Dispose(); }
+            }
         }
+		// Private Methods (2) 
 
-        public void LoadLevel(object sender, EventArgs e)
+        private void LoadLevel(object sender, EventArgs e)
         {
             int levelnr = whichlevel(sender);
-            game = new FrmGame(levelnr);
+            frmmenu.Hide();
+            FrmGame game = new FrmGame(levelnr);
             game.Show();
         }
-		// Private Methods (1) 
 
-        private int whichlevel(object button)
+		private int whichlevel(object button)
         {
             HoverButton btn = (HoverButton)button;
 
@@ -85,40 +92,6 @@ namespace Frogger
                     throw new Exception("level unknow");                    
             }
         }
-
-        /*
-        /// <summary>
-        /// Event for level button click
-        /// figure out whitch button was clicked.
-        /// and create FrmGame with right parameter.
-        /// </summary>
-        /// <param name="sender">the level x hoverbutton</param>
-        /// <param name="e"></param>
-        private void LoadLevel(object sender, EventArgs e)
-        {
-            this.Hide();
-            HoverButton btn = (HoverButton)sender;
-
-            switch (btn.Name)
-            {
-                case "btnLvl1":
-                    FrmGame game = new FrmGame(1);
-                    game.Show();
-                    break;
-                case "btnLvl2":
-                    game = new FrmGame(2);
-                    game.Show();
-                    break;
-                case "btnLvl3":
-                    game = new FrmGame(3);
-                    game.Show();
-                    break;
-                default:
-                    MessageBox.Show("Error: level unknow.");
-                    break;
-            }
-        }
-        */
 
 		#endregion Methods 
     }

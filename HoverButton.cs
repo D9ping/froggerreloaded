@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (C) <year>  <name of author>
+Copyright (C) Tom Postma
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,12 +17,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using System.Threading;

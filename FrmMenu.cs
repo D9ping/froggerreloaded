@@ -29,17 +29,11 @@ namespace Frogger
 {
     public partial class FrmMenu : Form
     {
-		#region Fields (8) 
+		#region Fields (3) 
 
-        private bool fullscreen = false;
-
-        private HoverButton[] menu;
-        private BigCheckbox[] options;
-
-        private MenuState menustate;
+        private HoverButton backbtn;
         private MenuScreen curmenu;
-
-        
+        private MenuState menustate;
 
 		#endregion Fields 
 
@@ -52,58 +46,96 @@ namespace Frogger
         {
             InitializeComponent();
 
+            Program.CheckFullScreen(this);
+
             menustate = MenuState.main;
 
-            this.Refresh();            
+            this.Refresh();
+
+            this.backbtn = CreateBackBtn();
+
             
-            //SetScreenSize(); //check full screen
-        }        
+        }
 
 		#endregion Constructors 
-        
 
-		#region Methods (14) 
+		#region Properties (1) 
 
-        // Private Methods (14) 
+                public MenuState Menustate
+        {
+            get
+            {
+                return this.menustate;
+            }
+            set
+            {
+                menustate = value;
+            }
+        }
+
+		#endregion Properties 
+
+		#region Methods (4) 
+
+		// Public Methods (1) 
 
         /// <summary>
-        /// Create main menu
+        /// Draw a back button. 
+        /// </summary>
+        public HoverButton CreateBackBtn()
+        {
+            int margin = 50;
+            HoverButton backbtn = new HoverButton("back");
+            backbtn.Click += new EventHandler(backMainMenu);
+            backbtn.Location = new Point(this.Width / 2 - backbtn.Width / 2, this.Height - backbtn.Height - margin);
+            backbtn.Visible = true;
+            this.Controls.Add(backbtn);
+            return backbtn;            
+        }
+		// Private Methods (3) 
+
+        /// <summary>
+        /// This methode is fired if back button is pressed.
+        /// it clears all buttons etc. and recreates the main menu.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void CreateMainMenu(object sender, EventArgs e)
+        private void backMainMenu(object sender, EventArgs e)
         {
-            menustate = MenuState.main;
-            this.Refresh();            
+            this.Menustate = MenuState.main;
+            Refresh();
         }
 
         /// <summary>
-        /// Create level selection screen.
-        /// </summary>
-        public void CreateLevelMenu(object sender, EventArgs e)
-        {
-            menustate = MenuState.level;
-            this.Refresh();
-        }
-
-        /// <summary>
-        /// Create highscore menu
+        /// Hier moet dus afhankelijk van de state het juiste menu getekent worden.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void CreateHighScore(object sender, EventArgs e)
+        private void FrmMenu_Paint(object sender, PaintEventArgs e)
         {
-            menustate = MenuState.highscore;
-            this.Refresh();            
-        }
+            if (curmenu != null) { curmenu.ClearScreen(); }
 
-        /// <summary>
-        /// Create options menu
-        /// </summary>
-        public void CreateOptions(object sender, EventArgs e)
-        {
-            menustate = MenuState.options;
-            this.Refresh();            
+            switch (menustate)
+            {
+                case MenuState.main:
+                    curmenu = new MenuMain(this);
+                    backbtn.Visible = false;
+                    break;
+                case MenuState.highscore:
+                    curmenu = new MenuHighscore(this);
+                    backbtn.Visible = true;
+                    break;
+                case MenuState.options:
+                    curmenu = new MenuOptions(this);
+                    backbtn.Visible = true;
+                    break;
+                case MenuState.level:
+                    curmenu = new MenuLevel(this);
+                    backbtn.Visible = true;
+                    break;                
+            }
+            int margin = 50;
+            backbtn.Location = new Point(this.Width / 2 - backbtn.Width / 2, this.Height - backbtn.Height - margin);
         }
 
         /// <summary>
@@ -116,30 +148,6 @@ namespace Frogger
             this.Refresh();
         }
 
-        /// <summary>
-        /// Hier moet dus afhankelijk van de state het juiste menu getekent worden.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FrmMenu_Paint(object sender, PaintEventArgs e)
-        {
-            switch (menustate)
-            {
-                case MenuState.main:
-                    curmenu = new MenuMain(this);
-                    break;
-                case MenuState.highscore:
-                    curmenu = new MenuHighscore(this);
-                    break;
-                case MenuState.options:
-                    curmenu = new MenuOptions(this);
-                    break;
-                case MenuState.level:
-                    curmenu = new MenuLevel(this);
-                    break;                
-            }
-        }  
-
-		#endregion Methods
-    }
+		#endregion Methods 
+	 }
 }

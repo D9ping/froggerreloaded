@@ -39,7 +39,7 @@
             this.lbButton.Location = new System.Drawing.Point(0, 0);
             this.lbButton.Margin = new System.Windows.Forms.Padding(0);
             this.lbButton.Name = "lbButton";
-            this.lbButton.Size = new System.Drawing.Size(300, 72);
+            this.lbButton.Size = new System.Drawing.Size(320, 72);
             this.lbButton.TabIndex = 0;
             this.lbButton.Text = "?";
             this.lbButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -59,7 +59,7 @@
             this.ForeColor = System.Drawing.Color.Black;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "HoverButton";
-            this.Size = new System.Drawing.Size(300, 72);
+            this.Size = new System.Drawing.Size(320, 72);
             this.MouseLeave += new System.EventHandler(this.HoverButton_MouseLeave);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.HoverButton_Paint);
             this.MouseEnter += new System.EventHandler(this.HoverButton_MouseEnter);

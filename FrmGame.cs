@@ -29,28 +29,34 @@ namespace Frogger
 {
     public partial class FrmGame : Form
     {
-		#region Fields (1) 
+		#region Fields (5) 
 
-        private GameEngine game;        
+        private GameEngine game;
+        private IntPtr HWND_TOP = IntPtr.Zero;
+        private const int SM_CXSCREEN = 0;
+        private const int SM_CYSCREEN = 1;
+        private const int SWP_SHOWWINDOW = 64;
+
 		#endregion Fields 
 
 		#region Constructors (1) 
 
-        /// <summary>
+                /// <summary>
         /// Creating a new instance of FrmGame.
         /// </summary>
         /// <param name="level"></param>
         public FrmGame(int level)
         {
             InitializeComponent();
-            this.game = new GameEngine(level);
+            this.game = new GameEngine(level);            
+            Program.CheckFullScreen(this);
         }
 
 		#endregion Constructors 
-        
-		#region Methods (3) 
 
-		// Private Methods (3) 
+		#region Methods (7) 
+		
+		// Private Methods (6) 
 
         private void FrmGame_FormClosed(object sender, FormClosedEventArgs e)
         {            
@@ -66,18 +72,27 @@ namespace Frogger
         {
             Graphics g = e.Graphics;
             game.DrawScreen(g);                              
-        }		 
+        }
 
+		 
         private void FrmGame_ResizeEnd(object sender, EventArgs e)
         {
             this.Refresh();
         }
-        
+
+        //This is also unmangement code, for getting the real screen size with taskbar.
+        [DllImport("user32.dll")]
+        private static extern int GetSystemMetrics(int Which);
+
+        //This is unmangement code needed for real fullscreen. hidden taskbar etc.
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndIntertAfter, int X, int Y, int cx, int cy, int uFlags);
+
         private void timerUpdateGame_Tick(object sender, EventArgs e)
         {
             this.Refresh();
         }
 
-        #endregion Methods
+		#endregion Methods 
     }
 }

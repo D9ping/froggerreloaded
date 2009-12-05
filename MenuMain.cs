@@ -15,7 +15,7 @@ namespace Frogger
 		#region Fields (1) 
 
         private HoverButton[] hoofdmenuknoppen;
-        private FrmMenu frmmain;
+        private FrmMenu frmmenu;
 
 		#endregion Fields 
 
@@ -23,16 +23,18 @@ namespace Frogger
 
         public MenuMain(FrmMenu frmmenu)
             : base(frmmenu)
-        {            
+        {
+            this.frmmenu = frmmenu;
             hoofdmenuknoppen = new HoverButton[4];
+
             hoofdmenuknoppen[0] = new HoverButton("Newgame");
-            hoofdmenuknoppen[1] = new HoverButton("Highscore");
+            hoofdmenuknoppen[1] = new HoverButton("Highscores");
             hoofdmenuknoppen[2] = new HoverButton("Options");
             hoofdmenuknoppen[3] = new HoverButton("Exit");
             //hook events  
-            //hoofdmenuknoppen[0].Click += new EventHandler(frmmain.CreateLevelMenu);
-            //hoofdmenuknoppen[1].Click += new EventHandler(frmmain.CreateHighScore);
-            //hoofdmenuknoppen[2].Click += new EventHandler(frmmain.CreateOptions);
+            hoofdmenuknoppen[0].Click += new EventHandler(CreateLevelMenu);
+            hoofdmenuknoppen[1].Click += new EventHandler(CreateHighScore);
+            hoofdmenuknoppen[2].Click += new EventHandler(CreateOptions);
             hoofdmenuknoppen[3].Click += new EventHandler(Shutdown);
 
             int ypos = 220;
@@ -47,6 +49,7 @@ namespace Frogger
             frmmenu.Controls.AddRange(hoofdmenuknoppen);
         }
 
+
 		#endregion Constructors 
 
 		#region Methods (1) 
@@ -55,6 +58,50 @@ namespace Frogger
 
         override public void ClearScreen()
         {
+            foreach (HoverButton curbtn in hoofdmenuknoppen)
+            {
+                curbtn.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Create main menu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CreateMainMenu(object sender, EventArgs e)
+        {
+            frmmenu.Menustate = MenuState.main;
+            frmmenu.Refresh();
+        }
+
+        /// <summary>
+        /// Create level selection screen.
+        /// </summary>
+        private void CreateLevelMenu(object sender, EventArgs e)
+        {
+            frmmenu.Menustate = MenuState.level;
+            frmmenu.Refresh();
+        }
+
+        /// <summary>
+        /// Create highscore menu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CreateHighScore(object sender, EventArgs e)
+        {
+            frmmenu.Menustate = MenuState.highscore;
+            frmmenu.Refresh();
+        }
+
+        /// <summary>
+        /// Create options menu
+        /// </summary>
+        private void CreateOptions(object sender, EventArgs e)
+        {
+            frmmenu.Menustate = MenuState.options;
+            frmmenu.Refresh();
         }
 
         /// <summary>
@@ -66,6 +113,7 @@ namespace Frogger
         {
             Application.Exit();
         }
+
 
 		#endregion Methods 
     }
