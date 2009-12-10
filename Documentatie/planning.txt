@@ -3,3 +3,5 @@ naam				datum		tijd
 functionele eisen		04 dec 09	13:00
 uitleg acceptatietestplan	10 dec 09	10:45
 acceptatietestplan		11 dec 09	13:00
+2 klassen specificeren		11 dec 09	13:00
+unit test moet uitgevoerd zijn	18 dec 09	13:00
