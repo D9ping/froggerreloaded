@@ -10,12 +10,11 @@ namespace Frogger
 		#region Fields (7) 
 
         private FrmGame frmgame;
-        private Timer gametime;
+        private Timer gameupdate;
         private int level = -1;
-        private int min = 0;
         private List<MovingObject> movingobjs;
         private Niveau niveau;
-        private int sec = 0;
+        private int tick = 0;
 
 		#endregion Fields 
 
@@ -29,12 +28,12 @@ namespace Frogger
 
             movingobjs = new List<MovingObject>();
 
-            gametime = new Timer
+            gameupdate = new Timer
             {
                 Enabled = true,
-                Interval = 1000
+                Interval = 50
             };
-            gametime.Tick += new EventHandler(gametime_Tick);
+            gameupdate.Tick += new EventHandler(gametime_Tick);
         }
 
 		#endregion Constructors 
@@ -44,6 +43,17 @@ namespace Frogger
         public String GameTime { get; set; }
 
 		#endregion Properties 
+
+        public int lives
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
 
 		#region Methods (10) 
 
@@ -78,7 +88,6 @@ namespace Frogger
         public void DrawScreen(Graphics g)
         {
             DrawLevel(g);
-            UpdateGameTime();
         }
 
         public void GameOver()
@@ -153,44 +162,42 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Teken nieuwe autos / boomstammen en update de speel tijd.
+        /// Teken nieuwe autos / boomstammen.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void gametime_Tick(object sender, EventArgs e)
         {
-            this.sec++;
-            if (sec > 59)
-            {
-                this.sec = 0;
-                this.min++;
-            }
-            UpdateGameTime();
-
+            tick++;
             switch (level)
             {
                 case 1:
-                    movingobjs.Add(CreateCarRandomColor(3, Direction.East));
+                    if (tick == 20)
+                    {
+                        movingobjs.Add(CreateCarRandomColor(3, Direction.East));
+                    }
                     break;
                 default:
                     break;
             }
 
-            
+            UpdatePosObjecten();
         }
 
-        /// <summary>
-        /// Teken speel tijd string
-        /// </summary>
-        /// <param name="g"></param>
-        private void UpdateGameTime()
+        private void UpdatePosObjecten()
         {
-            String time = this.min.ToString() + ":";
-            if (this.sec < 10) { time += "0" + this.sec.ToString(); }
-            else { time += this.sec.ToString(); }
-            this.GameTime = time;
         }
 
 		#endregion Methods 
+
+        public Boolean DetectCollision()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void CheckLives()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

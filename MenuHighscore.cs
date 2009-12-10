@@ -60,15 +60,6 @@ namespace Frogger
         }
 		// Private Methods (1) 
 
-        /// <summary>
-        /// Creer een database connectie.
-        /// </summary>
-        /// <returns></returns>
-        private SqlConnection CreateDBconnection()
-        {
-            return null;
-        }
-
 		#endregion Methods 
     }
 }

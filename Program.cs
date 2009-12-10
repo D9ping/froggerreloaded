@@ -64,6 +64,15 @@ namespace Frogger
             }
         }
 
+        /// <summary>
+        /// Creer een database connectie.
+        /// </summary>
+        /// <returns></returns>
+        private SqlConnection CreateDBconnection()
+        {
+            return null;
+        }
+
         //This is unmangement code needed for real fullscreen. hidden taskbar etc.
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndIntertAfter, int X, int Y, int cx, int cy, int uFlags);

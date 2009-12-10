@@ -31,6 +31,9 @@ namespace Frogger
     {
 		#region Fields (5) 
 
+        private int min = 0;
+        private int sec = 0;
+
         private GameEngine game;
         private IntPtr HWND_TOP = IntPtr.Zero;
         private const int SM_CXSCREEN = 0;
@@ -84,6 +87,18 @@ namespace Frogger
             
             lbTime.Text = game.GameTime;
             lbTime.Refresh();
+        }
+
+        /// <summary>
+        /// Teken speel tijd string
+        /// </summary>
+        /// <param name="g"></param>
+        private void UpdateGameTime()
+        {
+            String time = this.min.ToString() + ":";
+            if (this.sec < 10) { time += "0" + this.sec.ToString(); }
+            else { time += this.sec.ToString(); }
+            lbTime.Text = time;
         }
 
         private void timerUpdateGame_Tick(object sender, EventArgs e)
