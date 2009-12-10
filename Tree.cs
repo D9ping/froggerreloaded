@@ -23,7 +23,7 @@ using System.Text;
 namespace Frogger
 {
     /// <summary>
-    /// 
+    /// A tree trunk obj.
     /// </summary>
     class Tree : MovingObject
     {
@@ -32,9 +32,10 @@ namespace Frogger
         /// </summary>
         /// <param name="speed"></param>
         /// <param name="direction"></param>
-        public Tree(int speed, Direction direction)
-            :base(speed, direction)
+        public Tree(int ypos, int speed, Direction direction)
+            :base(ypos, speed, direction)
         {
+            base.pic = global::Frogger.Properties.Resources.treetrunk;
         }
     }
 }

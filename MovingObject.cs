@@ -19,24 +19,76 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+using System.Drawing;
 
 namespace Frogger
 {
-
-    public class MovingObject
+    public class MovingObject : UserControl
     {    
-
-        private int speed;
+        private int speed = 0;
         private Direction direction;
+        private PictureBox pbObject;
 
         /// <summary>
         /// Creating a new instance of a movingobj.
         /// </summary>
-        public MovingObject(int speed, Direction direction)
+        public MovingObject(int ypos, int speed, Direction direction)
         {
             this.speed = speed;
             this.direction = direction;
-        }        
+            this.Y = ypos;
+            InitializeComponent();
+        }
+
+        public int X { get; set; }
+        public int Y { get; set; }
+
+        /// <summary>
+        /// De texture.
+        /// </summary>
+        public Bitmap pic
+        {
+            set
+            {
+                this.pbObject.Image = value;
+            }
+        }
+
+        /// <summary>
+        /// Maak control even groot als picturebox
+        /// </summary>
+        public void SetSize()
+        {
+            this.Size = pbObject.Size;
+        }
+
+        private void InitializeComponent()
+        {
+            this.pbObject = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pbObject)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // pictureBox1
+            // 
+            this.pbObject.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbObject.Location = new System.Drawing.Point(0, 0);
+            this.pbObject.Name = "pbObject";
+            this.pbObject.Size = new System.Drawing.Size(116, 62);
+            this.pbObject.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbObject.TabIndex = 0;
+            this.pbObject.TabStop = false;
+            // 
+            // MovingObject
+            // 
+            this.Controls.Add(this.pbObject);
+            this.Name = "MovingObject";
+            this.Size = new System.Drawing.Size(116, 62);
+            ((System.ComponentModel.ISupportInitialize)(this.pbObject)).EndInit();
+            this.ResumeLayout(false);
+
+        }
+  
 
     }
 }

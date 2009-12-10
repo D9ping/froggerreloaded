@@ -56,7 +56,9 @@
     <Compile Include="BigCheckbox.Designer.cs">
       <DependentUpon>BigCheckbox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Car.cs" />
+    <Compile Include="Car.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Direction.cs" />
     <Compile Include="FrmMenu.cs">
       <SubType>Form</SubType>
@@ -82,7 +84,9 @@
     <Compile Include="MenuMain.cs" />
     <Compile Include="MenuScreen.cs" />
     <Compile Include="MenuState.cs" />
-    <Compile Include="MovingObject.cs" />
+    <Compile Include="MovingObject.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="MenuOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -97,6 +101,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HoverButton.resx">
       <DependentUpon>HoverButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MovingObject.resx">
+      <DependentUpon>MovingObject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
@@ -114,7 +121,9 @@
     <Compile Include="Properties\Settings.Designer.cs">
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Tree.cs" />
+    <Compile Include="Tree.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon_frog.ico" />

@@ -1,35 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
 using System.Drawing;
-//using System.Windows.Forms;
-//using System.Threading;
+using System.Windows.Forms;
 
 namespace Frogger
 {
     public class GameEngine
     {
-		#region Fields (1) 
+        #region Fields (5)
 
-        private List<MovingObject> movingobjs;        
-        private int level, sec = 0, min = 0;
-        //private Timer gametime;
+        private Timer gametime;
+        private int level = -1;
+        private int min = 0;
+        private List<MovingObject> movingobjs;
+        private int sec = 0;
+        private FrmGame frmgame;
 
-		#endregion Fields 
+        #endregion Fields
 
-		#region Constructors (1) 
+        #region Constructors (1)
 
-        public GameEngine(int level)
-        {            
+        public GameEngine(int level, FrmGame frmgame)
+        {
             this.level = level;
+            this.frmgame = frmgame;
+
+            gametime = new Timer
+            {
+                Enabled = true,
+                Interval = 1000
+            };
+            gametime.Tick += new EventHandler(gametime_Tick);
         }
 
-		#endregion Constructors 
+        #endregion Constructors
 
-		#region Methods (5) 
+        #region Methods (6)
 
-		// Public Methods (2) 
+        // Public Methods (2) 
 
         /// <summary>
         /// Teken het level.
@@ -61,7 +69,7 @@ namespace Frogger
             DrawLevel(g);
             DrawTimeStr(g);
         }
-		// Private Methods (3) 
+        // Private Methods (4) 
 
         /// <summary>
         /// Teken een rivier.
@@ -78,7 +86,7 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Teken een weg.        
+        /// Teken een weg
         /// </summary>
         /// <param name="g"></param>
         /// <param name="locy">de locatie van Y cooridinaat van het venster.</param>
@@ -104,16 +112,55 @@ namespace Frogger
         /// <param name="g"></param>
         private void DrawTimeStr(Graphics g)
         {
-            String time = this.min.ToString()+":";
+            String time = this.min.ToString() + ":";
             if (this.sec < 10) { time += "0" + this.sec.ToString(); }
             else { time += this.sec.ToString(); }
-            
+
             Font myfont = new Font("Sans serif", 14.0f);
             g.DrawString(time, myfont, Brushes.Black, new Point(FrmGame.ActiveForm.Width - 80, 10));
         }
 
-		#endregion Methods 
+        private void gametime_Tick(object sender, EventArgs e)
+        {
+            this.sec++;
+            if (sec > 59)
+            {
+                this.sec = 0;
+                this.min++;
+            }
 
-        
+            switch (level)
+            {
+                case 1:
+                    movingobjs.Add(CreateCar());
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        /// <summary>
+        /// Create a new car.with random color
+        /// </summary>
+        /// <returns>the car obj.</returns>
+        private MovingObject CreateCarRndClr(int ypos, int speed, Direction dir)
+        {
+            int color = new Random().Next(1, 3);
+            Car car = new Car(ypos, color, speed, dir);
+            return car;
+        }
+
+        /// <summary>
+        /// Create a new tree trunk
+        /// </summary>
+        /// <returns></returns>
+        private MovingObject CreateTreeTrunk(int ypos, int speed, Direction dir)
+        {
+            Tree treetrunk = new Tree(ypos, 3, dir);
+            return treetrunk;
+        }
+
+        #endregion Methods
     }
 }

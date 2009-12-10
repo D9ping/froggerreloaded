@@ -48,18 +48,18 @@ namespace Frogger
         public FrmGame(int level)
         {
             InitializeComponent();
-            this.game = new GameEngine(level);            
+            this.game = new GameEngine(level, this);
             Program.CheckFullScreen(this);
         }
 
 		#endregion Constructors 
 
-		#region Methods (7) 
-		
+		#region Methods (6) 
+
 		// Private Methods (6) 
 
         private void FrmGame_FormClosed(object sender, FormClosedEventArgs e)
-        {            
+        {
             Application.Exit();
         }
 
@@ -71,10 +71,9 @@ namespace Frogger
         private void FrmGame_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            game.DrawScreen(g);                              
+            game.DrawScreen(g);
         }
 
-		 
         private void FrmGame_ResizeEnd(object sender, EventArgs e)
         {
             this.Refresh();

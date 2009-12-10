@@ -19,17 +19,73 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace Frogger
 {
     class Car : MovingObject
     {
+        private int carcolor;
+
         /// <summary>
         /// Creating a new instance of a car.
         /// </summary>
-        public Car(int carcolor, int speed, Direction direction) :base(speed, direction)
+        public Car(int ypos, int carcolor, int speed, Direction direction) 
+            :base(ypos, speed, direction)
         {
-        }        
-            
+            this.carcolor = carcolor;
+
+            switch (direction)
+            {
+                case Direction.East:
+                    base.pic = CreateCarEast(carcolor);
+                    break;
+                case Direction.West:
+                    base.pic = CreateCarWest(carcolor);
+                    break;
+            }
+        }
+
+        public int Color
+        {
+            get
+            {
+                return this.carcolor;
+            }
+        }
+
+        private Bitmap CreateCarEast(int carcolor)
+        {
+            switch (carcolor)
+            {
+                case 1:
+                    return global::Frogger.Properties.Resources.car_grey_east;
+                case 2:
+                    return global::Frogger.Properties.Resources.car_yellow_east;
+                default:
+                    ThrowCarColorNotFoundExc();
+                    return null;
+            }
+        }
+
+        private Bitmap CreateCarWest(int carcolor)
+        {
+            switch (carcolor)
+            {
+                case 1:
+                    return global::Frogger.Properties.Resources.car_grey_west;
+                case 2:
+                    return global::Frogger.Properties.Resources.car_yellow_west;
+                default:
+                    ThrowCarColorNotFoundExc();
+                    return null;
+            }
+        }
+
+
+        private void ThrowCarColorNotFoundExc()
+        {
+            throw new Exception("car color not found");
+        }
     }
 }
