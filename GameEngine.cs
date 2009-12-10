@@ -132,7 +132,7 @@ namespace Frogger
             switch (level)
             {
                 case 1:
-                    movingobjs.Add(CreateCar());
+                    movingobjs.Add(CreateCarRandomColor(3, Direction.East));
                     break;
                 default:
                     break;
@@ -144,10 +144,10 @@ namespace Frogger
         /// Create a new car.with random color
         /// </summary>
         /// <returns>the car obj.</returns>
-        private MovingObject CreateCarRndClr(int ypos, int speed, Direction dir)
+        private MovingObject CreateCarRandomColor(int speed, Direction dir)
         {
             int color = new Random().Next(1, 3);
-            Car car = new Car(ypos, color, speed, dir);
+            Car car = new Car(color, speed, dir);
             return car;
         }
 
@@ -155,9 +155,9 @@ namespace Frogger
         /// Create a new tree trunk
         /// </summary>
         /// <returns></returns>
-        private MovingObject CreateTreeTrunk(int ypos, int speed, Direction dir)
+        private MovingObject CreateTreeTrunk(int speed, Direction dir)
         {
-            Tree treetrunk = new Tree(ypos, 3, dir);
+            Tree treetrunk = new Tree(3, dir);
             return treetrunk;
         }
 

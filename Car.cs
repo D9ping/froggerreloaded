@@ -30,8 +30,8 @@ namespace Frogger
         /// <summary>
         /// Creating a new instance of a car.
         /// </summary>
-        public Car(int ypos, int carcolor, int speed, Direction direction) 
-            :base(ypos, speed, direction)
+        public Car(int carcolor, int speed, Direction direction) 
+            :base(speed, direction)
         {
             this.carcolor = carcolor;
 

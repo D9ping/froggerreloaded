@@ -1,10 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Comment CommentText="FrmGame_Paint tekent wat GameEngine heeft.">
-    <Position X="10.173" Y="1.631" Height="0.5" Width="1.89" />
-  </Comment>
   <Class Name="Frogger.BigCheckbox" Collapsed="true">
-    <Position X="0.5" Y="9.25" Width="1.5" />
+    <Position X="3.75" Y="9.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
@@ -15,7 +12,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Frogger.FrmGame">
-    <Position X="8.75" Y="0.75" Width="2.25" />
+    <Position X="9.5" Y="0.75" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
@@ -53,7 +50,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Frogger.HoverButton" Collapsed="true">
-    <Position X="2.25" Y="9.25" Width="1.5" />
+    <Position X="5.5" Y="9.25" Width="1.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
@@ -64,17 +61,17 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Frogger.MovingObject">
-    <Position X="8.75" Y="6.25" Width="2" />
+    <Position X="9.75" Y="6.25" Width="2" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <AssociationLine Name="direction" Type="Frogger.Direction" FixedToPoint="true">
       <Path>
-        <Point X="10.75" Y="7.023" />
-        <Point X="12.5" Y="7.023" />
+        <Point X="11.75" Y="6.965" />
+        <Point X="13.25" Y="6.965" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.221" Y="0.28" />
+        <Position X="0.043" Y="0.184" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -86,10 +83,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Frogger.Tree">
-    <Position X="10.25" Y="9.25" Width="1.75" />
-    <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
+    <Position X="10" Y="9.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Tree.cs</FileName>
@@ -106,7 +100,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Frogger.Car">
-    <Position X="8" Y="9.25" Width="1.75" />
+    <Position X="8" Y="9.5" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
@@ -117,34 +111,40 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Frogger.MenuLevel">
-    <Position X="6.5" Y="5.75" Width="1.75" />
+    <Position X="7" Y="5.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAQAAAAAAQEAAAACgAAAAAAAAAAAAA=</HashCode>
       <FileName>MenuLevel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Frogger.MenuHighscore">
-    <Position X="2.25" Y="5.75" Width="1.75" />
+    <Position X="2.5" Y="5.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABACAAAA=</HashCode>
       <FileName>MenuHighscore.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Frogger.MenuOptions">
-    <Position X="4.25" Y="5.75" Width="2" />
+    <Position X="4.75" Y="5.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>AEAAAAAAAAAAAAAQAAAAAAAAAAAACAAAAAAAAgAAAAA=</HashCode>
       <FileName>MenuOptions.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Frogger.GameEngine">
-    <Position X="8.75" Y="2.5" Width="2.25" />
+    <Position X="9.5" Y="2.5" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <AssociationLine Name="movingobjs" Type="Frogger.MovingObject">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-2.424" Y="0.293" />
+        <Position X="-2.281" Y="0.46" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -156,28 +156,47 @@
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Frogger.MenuScreen">
-    <Position X="3.5" Y="3.25" Width="1.75" />
+    <Position X="3.5" Y="3.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
       <FileName>MenuScreen.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Frogger.MenuMain">
-    <Position X="0.5" Y="5.75" Width="1.5" />
+    <Position X="0.5" Y="5.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAQAAAAAQAAAEAAGACAAAAAgACAAAA=</HashCode>
       <FileName>MenuMain.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Enum Name="Frogger.Direction">
-    <Position X="12.5" Y="6.5" Width="1.5" />
+  <Class Name="Frogger.Frog">
+    <Position X="12" Y="9.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAQ=</HashCode>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Frog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Windows.Forms.UserControl" Collapsed="true">
+    <Position X="4.75" Y="8" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Forms.Form" Collapsed="true">
+    <Position X="6" Y="1" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Enum Name="Frogger.Direction">
+    <Position X="13.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAABAAQ=</HashCode>
       <FileName>Direction.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="Frogger.MenuState">
-    <Position X="0.5" Y="2.25" Width="1.5" />
+    <Position X="0.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEAAAAAAIAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>MenuState.cs</FileName>

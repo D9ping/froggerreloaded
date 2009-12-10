@@ -6,8 +6,10 @@ using System.Text;
 namespace Frogger
 {
     public enum Direction
-    {        
-         East,
-         West        
+    {    
+        North,
+        East,
+        West,
+        South
     }
 }

@@ -33,11 +33,11 @@ namespace Frogger
         /// <summary>
         /// Creating a new instance of a movingobj.
         /// </summary>
-        public MovingObject(int ypos, int speed, Direction direction)
+        public MovingObject(int speed, Direction direction)
         {
             this.speed = speed;
             this.direction = direction;
-            this.Y = ypos;
+            //this.Y = ypos;
             InitializeComponent();
         }
 
@@ -62,6 +62,8 @@ namespace Frogger
         {
             this.Size = pbObject.Size;
         }
+
+
 
         private void InitializeComponent()
         {

@@ -72,6 +72,9 @@
     <Compile Include="FrmGame.Designer.cs">
       <DependentUpon>FrmGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="Frog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="GameEngine.cs" />
     <Compile Include="MenuHighscore.cs" />
     <Compile Include="HoverButton.cs">

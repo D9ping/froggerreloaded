@@ -62,9 +62,14 @@ namespace Frogger
             }
         }
 
+        /// <summary>
+        /// Wissel tussen volledigscherm
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ToggleFullscreen(object sender, EventArgs e)
         {
-            Program.fullscreen = !Program.fullscreen;            
+            Program.fullscreen = !Program.fullscreen;
             Program.CheckFullScreen(frmmenu);
         }
     }
