@@ -23,7 +23,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAIhAAoCAAAYAAABmAQAACAgAAAAAIQEAgAgRQAAA=</HashCode>
+      <HashCode>AAAAAAAApCAAAIAAABmAAAACAgAAAAAIAEAAAgQQAAA=</HashCode>
       <FileName>FrmGame.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -103,7 +103,6 @@
     <Position X="8" Y="9.5" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
-      <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAIAAAAAAAQAAAAAAAAAAAAAAAAAAEAAAgAAAQAA=</HashCode>
@@ -123,7 +122,7 @@
   <Class Name="Frogger.MenuHighscore">
     <Position X="2.5" Y="5.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAABACAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAABAAgAAABAABACAAAA=</HashCode>
       <FileName>MenuHighscore.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -133,7 +132,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AEAAAAAAAAAAAAAQAAAAAAAAAAAACAAAAAAAAgAAAAA=</HashCode>
+      <HashCode>AEAAAAAAAAAAAAAQAAAAAAAQAAAACAAAAAAAAgAAAAA=</HashCode>
       <FileName>MenuOptions.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -143,14 +142,17 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <AssociationLine Name="movingobjs" Type="Frogger.MovingObject">
-      <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-2.281" Y="0.46" />
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-2.336" Y="0.157" Height="0.182" Width="2.258" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>YIAAAAAACAAQIAAAAAQAAAAAAAEQAGAAAAAAgBAAAAA=</HashCode>
+      <HashCode>YIAAgAAAAAAQIAAAAAQIAAAAAAEQAEAAAAAIgBAAAAA=</HashCode>
       <FileName>GameEngine.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="niveau" />
+    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Field Name="movingobjs" />
     </ShowAsCollectionAssociation>
@@ -181,7 +183,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="System.Windows.Forms.UserControl" Collapsed="true">
-    <Position X="4.75" Y="8" Width="1.5" />
+    <Position X="6" Y="8.25" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Class Name="System.Windows.Forms.Form" Collapsed="true">
@@ -200,6 +202,13 @@
     <TypeIdentifier>
       <HashCode>AEAAAAAAIAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>MenuState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Frogger.Niveau">
+    <Position X="13" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQBAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Niveau.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

@@ -72,5 +72,10 @@ namespace Frogger
             Program.fullscreen = !Program.fullscreen;
             Program.CheckFullScreen(frmmenu);
         }
+
+        public void ToggleSound()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

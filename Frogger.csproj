@@ -91,6 +91,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="MenuOptions.cs" />
+    <Compile Include="Niveau.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="BigCheckbox.resx">

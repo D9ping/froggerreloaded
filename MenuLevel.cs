@@ -14,7 +14,7 @@ namespace Frogger
     {
 		#region Fields (2) 
 
-        private FrmMenu frmmenu;        
+        private FrmMenu frmmenu;
         private HoverButton[] levelbtn;
 
 		#endregion Fields 
@@ -26,7 +26,7 @@ namespace Frogger
         {
             this.frmmenu = frmmenu;
 
-            levelbtn = new HoverButton[4];            
+            levelbtn = new HoverButton[4];
 
             levelbtn[0] = new HoverButton("level1");
             levelbtn[1] = new HoverButton("level2");
@@ -72,7 +72,7 @@ namespace Frogger
         {
             int levelnr = whichlevel(sender);
             frmmenu.Hide();
-            FrmGame game = new FrmGame(levelnr);
+            FrmGame game = new FrmGame(levelnr, Niveau.medium);
             game.Show();
         }
 
@@ -83,13 +83,13 @@ namespace Frogger
             switch (btn.Name)
             {
                 case "btnLvl1":
-                    return 1;                    
+                    return 1;
                 case "btnLvl2":
                     return 2;
                 case "btnLvl3":
                     return 3;
                 default:
-                    throw new Exception("level unknow");                    
+                    throw new Exception("level unknow");
             }
         }
 

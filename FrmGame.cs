@@ -45,22 +45,31 @@ namespace Frogger
         /// Creating a new instance of FrmGame.
         /// </summary>
         /// <param name="level"></param>
-        public FrmGame(int level)
+        public FrmGame(int level, Niveau niv)
         {
             InitializeComponent();
-            this.game = new GameEngine(level, this);
+            this.game = new GameEngine(level, this, niv);
             Program.CheckFullScreen(this);
         }
 
 		#endregion Constructors 
 
-		#region Methods (6) 
+		#region Methods (7) 
 
-		// Private Methods (6) 
+		// Private Methods (7) 
 
         private void FrmGame_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void FrmGame_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //todo
+            if (e.KeyChar == (Char)Keys.Escape)
+            {
+                MessageBox.Show("Test");
+            }
         }
 
         /// <summary>
@@ -72,6 +81,14 @@ namespace Frogger
         {
             Graphics g = e.Graphics;
             game.DrawScreen(g);
+            
+            lbTime.Text = game.GameTime;
+            lbTime.Refresh();
+        }
+
+        private void timerUpdateGame_Tick(object sender, EventArgs e)
+        {
+            this.Refresh();
         }
 
         private void FrmGame_ResizeEnd(object sender, EventArgs e)
@@ -86,11 +103,6 @@ namespace Frogger
         //This is unmangement code needed for real fullscreen. hidden taskbar etc.
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndIntertAfter, int X, int Y, int cx, int cy, int uFlags);
-
-        private void timerUpdateGame_Tick(object sender, EventArgs e)
-        {
-            this.Refresh();
-        }
 
 		#endregion Methods 
     }

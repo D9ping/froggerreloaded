@@ -7,23 +7,27 @@ namespace Frogger
 {
     public class GameEngine
     {
-        #region Fields (5)
+		#region Fields (7) 
 
+        private FrmGame frmgame;
         private Timer gametime;
         private int level = -1;
         private int min = 0;
         private List<MovingObject> movingobjs;
+        private Niveau niveau;
         private int sec = 0;
-        private FrmGame frmgame;
 
-        #endregion Fields
+		#endregion Fields 
 
-        #region Constructors (1)
+		#region Constructors (1) 
 
-        public GameEngine(int level, FrmGame frmgame)
+        public GameEngine(int level, FrmGame frmgame, Niveau niv)
         {
             this.level = level;
             this.frmgame = frmgame;
+            this.niveau = niv;
+
+            movingobjs = new List<MovingObject>();
 
             gametime = new Timer
             {
@@ -33,11 +37,17 @@ namespace Frogger
             gametime.Tick += new EventHandler(gametime_Tick);
         }
 
-        #endregion Constructors
+		#endregion Constructors 
 
-        #region Methods (6)
+		#region Properties (1) 
 
-        // Public Methods (2) 
+        public String GameTime { get; set; }
+
+		#endregion Properties 
+
+		#region Methods (10) 
+
+		// Public Methods (4) 
 
         /// <summary>
         /// Teken het level.
@@ -49,8 +59,9 @@ namespace Frogger
             {
                 case 1:
                     DrawRivir(g, 80);
-                    DrawRoad(g, 250);
-                    DrawRoad(g, 405);
+                    DrawRoad(g, 240);
+                    DrawRoad(g, 320);
+                    DrawRoad(g, 400);
                     break;
                 case 2:
                     DrawRoad(g, 150);
@@ -67,78 +78,23 @@ namespace Frogger
         public void DrawScreen(Graphics g)
         {
             DrawLevel(g);
-            DrawTimeStr(g);
+            UpdateGameTime();
         }
-        // Private Methods (4) 
 
-        /// <summary>
-        /// Teken een rivier.
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="locy"></param>
-        private void DrawRivir(Graphics g, int locy)
+        public void GameOver()
         {
-            int hoogteRiver = 100;
-
-            SolidBrush brushRiver = new SolidBrush(Color.Blue);
-            Rectangle rectRiver = new Rectangle(0, locy, FrmGame.ActiveForm.Width, hoogteRiver);
-            g.FillRectangle(brushRiver, rectRiver);
+            throw new System.NotImplementedException();
         }
 
         /// <summary>
-        /// Teken een weg
+        /// Er is een nieuwe highscore behaald.
+        /// Teken een textbox vragen voor je naam etc.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="locy">de locatie van Y cooridinaat van het venster.</param>
-        private void DrawRoad(Graphics g, int locy)
+        public void SaveHighscoreScreen()
         {
-            int lineDistance = 100, heightRoad = 100;
-
-            SolidBrush brushRoad = new SolidBrush(Color.Black);
-            SolidBrush brushRoadLine = new SolidBrush(Color.White);
-            Rectangle rectWeg = new Rectangle(0, locy, FrmGame.ActiveForm.Width, heightRoad);
-
-            g.FillRectangle(brushRoad, rectWeg);
-            for (int xpos = 0; xpos < FrmGame.ActiveForm.Height; xpos += lineDistance)
-            {
-                Rectangle rectRoadLine = new Rectangle(xpos, locy + (heightRoad / 2), 20, 5);
-                g.FillRectangle(brushRoadLine, rectRoadLine);
-            }
+            throw new System.NotImplementedException();
         }
-
-        /// <summary>
-        /// Teken speel tijd.
-        /// </summary>
-        /// <param name="g"></param>
-        private void DrawTimeStr(Graphics g)
-        {
-            String time = this.min.ToString() + ":";
-            if (this.sec < 10) { time += "0" + this.sec.ToString(); }
-            else { time += this.sec.ToString(); }
-
-            Font myfont = new Font("Sans serif", 14.0f);
-            g.DrawString(time, myfont, Brushes.Black, new Point(FrmGame.ActiveForm.Width - 80, 10));
-        }
-
-        private void gametime_Tick(object sender, EventArgs e)
-        {
-            this.sec++;
-            if (sec > 59)
-            {
-                this.sec = 0;
-                this.min++;
-            }
-
-            switch (level)
-            {
-                case 1:
-                    movingobjs.Add(CreateCarRandomColor(3, Direction.East));
-                    break;
-                default:
-                    break;
-            }
-        }
-
+		// Private Methods (6) 
 
         /// <summary>
         /// Create a new car.with random color
@@ -161,6 +117,80 @@ namespace Frogger
             return treetrunk;
         }
 
-        #endregion Methods
+        /// <summary>
+        /// Teken een rivier.
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="locy"></param>
+        private void DrawRivir(Graphics g, int locy)
+        {
+            int hoogteRiver = 100;
+
+            SolidBrush brushRiver = new SolidBrush(Color.Blue);
+            Rectangle rectRiver = new Rectangle(0, locy, FrmGame.ActiveForm.Width, hoogteRiver);
+            g.FillRectangle(brushRiver, rectRiver);
+        }
+
+        /// <summary>
+        /// Teken een weg
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="locy">de locatie van Y cooridinaat van het venster.</param>
+        private void DrawRoad(Graphics g, int locy)
+        {
+            int lineDistance = 100, heightRoad = 60;
+
+            SolidBrush brushRoad = new SolidBrush(Color.Black);
+            SolidBrush brushRoadLine = new SolidBrush(Color.White);
+            Rectangle rectWeg = new Rectangle(0, locy, FrmGame.ActiveForm.Width, heightRoad);
+
+            g.FillRectangle(brushRoad, rectWeg);
+            for (int xpos = 0; xpos < FrmGame.ActiveForm.Height; xpos += lineDistance)
+            {
+                Rectangle rectRoadLine = new Rectangle(xpos, locy + (heightRoad / 2), 20, 5);
+                g.FillRectangle(brushRoadLine, rectRoadLine);
+            }
+        }
+
+        /// <summary>
+        /// Teken nieuwe autos / boomstammen en update de speel tijd.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void gametime_Tick(object sender, EventArgs e)
+        {
+            this.sec++;
+            if (sec > 59)
+            {
+                this.sec = 0;
+                this.min++;
+            }
+            UpdateGameTime();
+
+            switch (level)
+            {
+                case 1:
+                    movingobjs.Add(CreateCarRandomColor(3, Direction.East));
+                    break;
+                default:
+                    break;
+            }
+
+            
+        }
+
+        /// <summary>
+        /// Teken speel tijd string
+        /// </summary>
+        /// <param name="g"></param>
+        private void UpdateGameTime()
+        {
+            String time = this.min.ToString() + ":";
+            if (this.sec < 10) { time += "0" + this.sec.ToString(); }
+            else { time += this.sec.ToString(); }
+            this.GameTime = time;
+        }
+
+		#endregion Methods 
     }
 }
