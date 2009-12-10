@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Data.SqlClient;
 
 namespace Frogger
 {
@@ -68,7 +69,7 @@ namespace Frogger
         /// Creer een database connectie.
         /// </summary>
         /// <returns></returns>
-        private SqlConnection CreateDBconnection()
+        public static SqlConnection CreateDBconnection()
         {
             return null;
         }

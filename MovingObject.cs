@@ -37,7 +37,6 @@ namespace Frogger
         {
             this.speed = speed;
             this.direction = direction;
-            //this.Y = ypos;
             InitializeComponent();
         }
 

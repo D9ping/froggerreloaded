@@ -22,6 +22,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 namespace Frogger
 {
@@ -31,6 +32,11 @@ namespace Frogger
 
         private Color highlightcolor = Color.YellowGreen;
         private Color normalcolor = Color.LimeGreen;
+
+        [DllImport("winmm.dll")]
+        public static extern int sndPlaySound(string sFile, int sMode);
+        public const int sndAsync = 1;
+        public const int sndSync = 0;
 
         /// <summary>
         /// Constructor for creating HoverButton at runtime.
@@ -85,12 +91,12 @@ namespace Frogger
             {
                 int margin = 0;
                 if (clicked)
-                {                   
+                {
                     Rectangle rect = new Rectangle(new Point(margin, margin), new Size(this.Width - 2 * margin, this.Height - 2 * margin));                  
                     g.FillRectangle(new SolidBrush(Color.DarkRed), rect);
                 }
                 else
-                {                    
+                {
                     Rectangle rect = new Rectangle(new Point(margin, margin), new Size(this.Width - 2 * margin, this.Height - 2 * margin));
 
                     LinearGradientBrush lgradientbrush = new LinearGradientBrush(new Point(0, 0), new Point(0, this.Height), Color.Red, Color.Brown);
@@ -102,9 +108,10 @@ namespace Frogger
 
         private void lbButtonText_Click(object sender, EventArgs e)
         {           
-            this.clicked = true;            
+            this.clicked = true;
             this.Refresh();
-            Thread.Sleep(100);             
+            sndPlaySound(Application.StartupPath + "\\sounds\\beep.wav", sndAsync);
+            Thread.Sleep(100);
             this.OnClick(e); //raise click event for obj. because text is in front.
         }
 

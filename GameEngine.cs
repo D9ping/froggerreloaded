@@ -38,12 +38,6 @@ namespace Frogger
 
 		#endregion Constructors 
 
-		#region Properties (1) 
-
-        public String GameTime { get; set; }
-
-		#endregion Properties 
-
         public int lives
         {
             get
@@ -82,14 +76,8 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Teken nieuwe dingen
+        /// Toon gameover scherm
         /// </summary>
-        /// <param name="g"></param>
-        public void DrawScreen(Graphics g)
-        {
-            DrawLevel(g);
-        }
-
         public void GameOver()
         {
             throw new System.NotImplementedException();
@@ -162,7 +150,7 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Teken nieuwe autos / boomstammen.
+        /// Teken nieuwe autos / boomstammen. Roep UpdatePosObject aan.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -188,16 +176,22 @@ namespace Frogger
         {
         }
 
-		#endregion Methods 
-
+        /// <summary>
+        /// kikker bots met ..
+        /// </summary>
         public Boolean DetectCollision()
         {
             throw new System.NotImplementedException();
         }
 
-        public void CheckLives()
+        /// <summary>
+        /// Controlleer levens, als minder dan 1 dan voer gameover uit
+        /// </summary>
+        private void CheckLives()
         {
             throw new System.NotImplementedException();
         }
+
+        #endregion Methods
     }
 }

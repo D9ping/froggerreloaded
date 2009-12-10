@@ -83,29 +83,44 @@ namespace Frogger
         private void FrmGame_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            game.DrawScreen(g);
-            
-            lbTime.Text = game.GameTime;
-            lbTime.Refresh();
+            game.DrawLevel(g);
+            UpdateGameTime();
+            lbTime.Text = UpdateGameTime();
         }
 
         /// <summary>
         /// Teken speel tijd string
         /// </summary>
         /// <param name="g"></param>
-        private void UpdateGameTime()
+        private String UpdateGameTime()
         {
             String time = this.min.ToString() + ":";
             if (this.sec < 10) { time += "0" + this.sec.ToString(); }
             else { time += this.sec.ToString(); }
-            lbTime.Text = time;
+            return time;
         }
 
+        /// <summary>
+        /// Hier gebeurt het..
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void timerUpdateGame_Tick(object sender, EventArgs e)
         {
-            this.Refresh();
+            sec++;
+            if (sec > 59)
+            {
+                min++;
+                sec = 0;
+            }
+            lbTime.Refresh();
         }
 
+        /// <summary>
+        /// repaint form resized.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrmGame_ResizeEnd(object sender, EventArgs e)
         {
             this.Refresh();

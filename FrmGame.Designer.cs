@@ -37,6 +37,7 @@
             // timerUpdateGame
             // 
             this.timerUpdateGame.Enabled = true;
+            this.timerUpdateGame.Interval = 1000;
             this.timerUpdateGame.Tick += new System.EventHandler(this.timerUpdateGame_Tick);
             // 
             // lbTime
@@ -75,8 +76,8 @@
 
         #endregion
 
-        public System.Windows.Forms.Timer timerUpdateGame;
         private System.Windows.Forms.Label lbTime;
+        private System.Windows.Forms.Timer timerUpdateGame;
 
     }
 }
