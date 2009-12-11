@@ -13,6 +13,23 @@ namespace Frogger
         public Frog(int velocity, Direction dir)
             :base(velocity, dir)
         {
+            switch (dir)
+            {
+                case Direction.North:
+                    this.pic = global::Frogger.Properties.Resources.kikker_east;
+                    break;
+                case Direction.East:
+                    this.pic = global::Frogger.Properties.Resources.kikker_east;
+                    break;
+                case Direction.West:
+                    this.pic = global::Frogger.Properties.Resources.kikker_west;
+                    break;
+                case Direction.South:
+                    this.pic = global::Frogger.Properties.Resources.kikker_west;
+                    break;
+                default:
+                    break;
+            }
         }
 
         public Boolean Jump()

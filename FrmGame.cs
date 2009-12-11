@@ -41,14 +41,11 @@ namespace Frogger
 		#region Constructors (1) 
 
         /// <summary>
-        /// Creates a new instance of FrmGame.
-        /// The FrmMenu is being stored in the FrmGame, for use in the FrmGame.
-        /// FrmGame automatically creates a new GameEngine.
-        /// The selected level and tier are called by the GameEngine, so it is able to use the variables.
-        /// FrmGame automatically checks whether it should be drawn full screen.
+        /// Creating a new instance of FrmGame.
         /// </summary>
-        /// <param name="level">The number of the level that the game will start.</param>
-        /// <param name="tier">The tier that has to be used for the game.</param>
+        /// <param name="level">the level number, each numbers draws a other level.</param>
+        /// <param name="niveau">the niveau enumaration. freeplay you won't go gameover.
+        /// then there is easy, medium, hard and elite.</param>
         public FrmGame(FrmMenu frmmenu, int level, Niveau tier)
         {
             InitializeComponent();
@@ -64,17 +61,18 @@ namespace Frogger
 		// Private Methods (6) 
 
         /// <summary>
-        /// Closes the FrmGame and shows the main menu.
+        /// Hide the frmGame and show the frmMenu in MenuState main again.
         /// </summary>
         public void CloseGame()
         {
+            game.StopEngine();
             this.frmmenu.Menustate = MenuState.main;
             this.frmmenu.Show();
-            this.Close();
+            this.Hide();
         }
 
         /// <summary>
-        /// The player will be sent back to the main menu, whenever the Escape button is pressed.
+        /// If Escape is pressed get the player back to the main menu.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -89,7 +87,7 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Draws every aspect of the game.
+        /// Draw every aspect of the game.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -102,7 +100,8 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Repaints FrmGame. When fullscreen is toggled, frmGame will show up correctly according to the new size.        /// </summary>
+        /// repaint the form, so thing show up correctly a the new size.
+        /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void FrmGame_ResizeEnd(object sender, EventArgs e)
@@ -111,25 +110,25 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Updates the gametime. Every second, the gametime will decrease with 1 second.
-        /// When the gametime reaches zero, the player will be shown the Game Over screen.
+        /// Update the game time, and check if time
+        /// for the current tier is over.
+        /// if so, the gameover methode from the GameEngine get excuted..
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-
         private void timerUpdateGame_Tick(object sender, EventArgs e)
         {
-            sec++;
-            if (sec > 59)
+            sec--;
+            if (sec < 0)
             {
-                min++;
+                min--;
                 game.CheckGameTime(min);
-                sec = 0;
+                sec = 59;
             }
         }
 
         /// <summary>
-        /// Closes the current GameEngine.
+        /// Form is closed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -139,11 +138,10 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Formats the game time string, so that seconds are always displayed as two numbers.
-        /// A zero is added in front, if the amount of seconds is lower than 10.
-        /// A ":" character will be added between the amount of minutes and the amount of seconds.        
+        /// Format the game time string so seconds are always displayed with two numbers,
+        /// a lead zero if seconds lower then 10seconds is added.
+        /// And there is a : charcter between the minuts and seconds.
         /// </summary>
-        /// <param name="g"></param>
         private String UpdateGameTime()
         {
             String time = this.min.ToString() + ":";

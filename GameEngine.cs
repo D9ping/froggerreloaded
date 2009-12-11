@@ -13,6 +13,8 @@ namespace Frogger
         private Timer gameupdate;
         private int level = -1;
         private List<MovingObject> movingobjs;
+        private List<int> roads;
+        private List<int> rivirs;
         private Niveau tier;
         private int tick = 0;
         private int lives;
@@ -34,6 +36,8 @@ namespace Frogger
             this.frmgame = frmgame;
 
             movingobjs = new List<MovingObject>();
+            roads = new List<int>();
+            rivirs = new List<int>();
 
             gameupdate = new Timer
             {
@@ -41,6 +45,8 @@ namespace Frogger
                 Interval = 50
             };
             gameupdate.Tick += new EventHandler(gameupdate_Tick);
+
+            movingobjs.Add(CreateFrog());
         }
 
 		#endregion Constructors
@@ -68,11 +74,12 @@ namespace Frogger
 
         // Public Methods (3) 
 
-
+        /// <summary>
+        /// disable the gameupdate timer.
+        /// </summary>
         public void StopEngine()
         {
-            //todo
-            throw new System.NotImplementedException();
+            gameupdate.Enabled = false;
         }
 
         /// <summary>
@@ -90,16 +97,13 @@ namespace Frogger
                     DrawRoad(g, 400);
                     break;
                 case 2:
-                    DrawRoad(g, 150);
-                    DrawRoad(g, 300);
-                    DrawRiver(g, 405);
                     break;
             }
         }
 
         /// <summary>
         /// Checks if game time is up for the current tier.
-        /// if so then go to GameOver methode
+        /// if so then excute the GameOver methode
         /// </summary>
         /// <param name="min"></param>
         /// <param name="sec"></param>
@@ -149,12 +153,36 @@ namespace Frogger
         /// </summary>
         /// <param name="velocity">The velocity of the car</param>
         /// <param name="dir">The direction of the car</param>
+        /// <param name="dir">The number of the road to added the car to</param>
         /// <returns></returns>
-        private MovingObject CreateCarRandomColor(int vel, Direction dir)
+        private MovingObject CreateCarRandomColor(int vel, Direction dir, int numroad)
         {
             int color = new Random().Next(1, 3); // color is 1 or 2
             Car car = new Car(color, vel, dir);
+            if (dir == Direction.East)
+            {
+                car.X = 0;
+            }
+            else if (dir == Direction.West)
+            {
+                car.X = frmgame.Width;
+            }
+            car.Y = roads[numroad];
+
             return car;
+        }
+
+        /// <summary>
+        /// Create a frog (the player) and calculate start position.
+        /// </summary>
+        /// <returns></returns>
+        private MovingObject CreateFrog()
+        {
+            int bottommargin = 5;
+            Frog frog = new Frog(0, Direction.North);
+            frog.X = (frmgame.Width / 2) - (frog.Width/2);
+            frog.Y = frmgame.Height - frog.Height - bottommargin;
+            return frog;
         }
 
         /// <summary>
@@ -166,6 +194,14 @@ namespace Frogger
         private MovingObject CreateTreeTrunk(int vel, Direction dir)
         {
             Tree treetrunk = new Tree(vel, dir);
+            if (dir == Direction.East)
+            {
+                treetrunk.X = 0;
+            }
+            else if (dir == Direction.West)
+            {
+                treetrunk.X = frmgame.Width;
+            }
             return treetrunk;
         }
 
@@ -176,6 +212,7 @@ namespace Frogger
         /// <param name="locy">The y-coördinate the river is created at</param>
         private void DrawRiver(Graphics g, int locy)
         {
+            rivirs.Add(locy);
             int hoogteRiver = 100;
 
             SolidBrush brushRiver = new SolidBrush(Color.Blue);
@@ -190,6 +227,7 @@ namespace Frogger
         /// <param name="locy">The y-coördinate the road is created at</param>
         private void DrawRoad(Graphics g, int locy)
         {
+            roads.Add(locy);
             int lineDistance = 100, heightRoad = 60;
 
             SolidBrush brushRoad = new SolidBrush(Color.Black); // the color of the road
@@ -197,7 +235,7 @@ namespace Frogger
             Rectangle rectWeg = new Rectangle(0, locy, FrmGame.ActiveForm.Width, heightRoad);
 
             g.FillRectangle(brushRoad, rectWeg);
-            for (int xpos = 0; xpos < FrmGame.ActiveForm.Height; xpos += lineDistance)
+            for (int xpos = 0; xpos < frmgame.Width; xpos += lineDistance)
             {
                 Rectangle rectRoadLine = new Rectangle(xpos, locy + (heightRoad / 2), 20, 5);
                 g.FillRectangle(brushRoadLine, rectRoadLine);
@@ -214,12 +252,17 @@ namespace Frogger
         private void gameupdate_Tick(object sender, EventArgs e)
         {
             tick++;
+            
             switch (level)
             {
                 case 1:
                     if (tick == 20)
                     {
-                        movingobjs.Add(CreateCarRandomColor(3, Direction.East));
+
+
+                        //todo
+                        movingobjs.Add(CreateCarRandomColor(3, Direction.East, 0));
+                        tick = 0;
                     }
                     break;
                 default:
@@ -235,8 +278,11 @@ namespace Frogger
         {
             foreach (MovingObject obj in movingobjs)
             {
-                // todo
-                throw new System.NotImplementedException();
+                obj.Location = new Point(obj.X, obj.Y);
+
+                //first find it, if not add.
+                frmgame.Controls.Add(obj);
+                
             }
         }
 
@@ -260,7 +306,6 @@ namespace Frogger
             if (currentLives < 1)
             {
                 GameOver(false, true);
-                // todo: return to main menu 
             }
             else
             {

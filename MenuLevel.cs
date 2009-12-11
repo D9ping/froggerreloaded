@@ -16,6 +16,7 @@ namespace Frogger
 
         private FrmMenu frmmenu;
         private HoverButton[] levelbtn;
+        private FrmGame game;
 
 		#endregion Fields 
 
@@ -72,7 +73,7 @@ namespace Frogger
         {
             int levelnr = whichlevel(sender);
             frmmenu.Hide();
-            FrmGame game = new FrmGame(frmmenu, levelnr, Niveau.medium);
+            game = new FrmGame(frmmenu, levelnr, Niveau.medium);
             game.Show();
         }
 
