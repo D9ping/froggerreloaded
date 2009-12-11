@@ -43,7 +43,7 @@ namespace Frogger
             gameupdate.Tick += new EventHandler(gameupdate_Tick);
         }
 
-		#endregion Constructors 
+		#endregion Constructors
 
         #region Properties (1)
 
@@ -67,6 +67,13 @@ namespace Frogger
         #region Methods (10)
 
         // Public Methods (3) 
+
+
+        public void StopEngine()
+        {
+            //todo
+            throw new System.NotImplementedException();
+        }
 
         /// <summary>
         /// Draws a level.
@@ -199,9 +206,8 @@ namespace Frogger
 
         /// <summary>
         /// Occurs when the gameupdate timer ticks.
-        /// Every 20 times this method is recalled, a car with a random color is added.
-        /// The position
-        /// Teken nieuwe autos / boomstammen. Roep UpdatePosObject aan.
+        /// A car with a random color is being added to the list of movingobjects, every 20 times this method is recalled.
+        /// Finally this method will update the position of every moving object.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -219,14 +225,13 @@ namespace Frogger
                 default:
                     break;
             }
-
-            UpdatePosObjecten();
+            UpdatePositionMovingObjects();
         }
 
         /// <summary>
         /// Updates the position of every moving object.
         /// </summary>
-        private void UpdatePosObjecten()
+        private void UpdatePositionMovingObjects()
         {
             foreach (MovingObject obj in movingobjs)
             {
@@ -255,14 +260,12 @@ namespace Frogger
             if (currentLives < 1)
             {
                 GameOver(false, true);
-                // todo: return to main menu
-                
+                // todo: return to main menu 
             }
             else
             {
                 Lives--;
             }
-
         }
 
         #endregion Methods
