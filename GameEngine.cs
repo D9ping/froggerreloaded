@@ -15,6 +15,7 @@ namespace Frogger
         private List<MovingObject> movingobjs;
         private Niveau tier;
         private int tick = 0;
+        private int lives;
 
 		#endregion Fields 
 
@@ -39,7 +40,7 @@ namespace Frogger
                 Enabled = true,
                 Interval = 50
             };
-            gameupdate.Tick += new EventHandler(gametime_Tick);
+            gameupdate.Tick += new EventHandler(gameupdate_Tick);
         }
 
 		#endregion Constructors 
@@ -49,14 +50,15 @@ namespace Frogger
         /// <summary>
         /// Returns the number of lives the player has left.
         /// </summary>
-        public int lives
+        public int Lives
         {
             get
             {
-                throw new System.NotImplementedException();
+                return lives;
             }
             set
             {
+                lives = value;
             }
         }
 
@@ -89,7 +91,7 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Check if game time is up for the current tier.
+        /// Checks if game time is up for the current tier.
         /// if so then go to GameOver methode
         /// </summary>
         /// <param name="min"></param>
@@ -196,13 +198,14 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Occurs when the gametime timer ticks.
-        /// Every time the Adds new cars and tree trunks to the list of moving objects. 
+        /// Occurs when the gameupdate timer ticks.
+        /// Every 20 times this method is recalled, a car with a random color is added.
+        /// The position
         /// Teken nieuwe autos / boomstammen. Roep UpdatePosObject aan.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void gametime_Tick(object sender, EventArgs e)
+        private void gameupdate_Tick(object sender, EventArgs e)
         {
             tick++;
             switch (level)
@@ -220,24 +223,46 @@ namespace Frogger
             UpdatePosObjecten();
         }
 
+        /// <summary>
+        /// Updates the position of every moving object.
+        /// </summary>
         private void UpdatePosObjecten()
         {
+            foreach (MovingObject obj in movingobjs)
+            {
+                // todo
+                throw new System.NotImplementedException();
+            }
         }
 
         /// <summary>
-        /// kikker bots met ..
+        /// Detects collision when Frogger collides.
         /// </summary>
+        /// <returns>Whether or not Frogger collides with a moving object</returns>
         public Boolean DetectCollision()
         {
             throw new System.NotImplementedException();
         }
 
         /// <summary>
-        /// Controlleer levens, als minder dan 1 dan voer gameover uit
+        /// Checks the amount of lives the player has.
+        /// If this amount is less than 1, it will inform the player that the game is over.
+        /// If that is the case, the GameEngine will close, and the main menu will open.
         /// </summary>
         private void CheckLives()
         {
-            throw new System.NotImplementedException();
+            int currentLives = this.Lives;
+            if (currentLives < 1)
+            {
+                GameOver(false, true);
+                // todo: return to main menu
+                
+            }
+            else
+            {
+                Lives--;
+            }
+
         }
 
         #endregion Methods
