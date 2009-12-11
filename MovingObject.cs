@@ -79,6 +79,7 @@ namespace Frogger
             this.pbObject.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbObject.TabIndex = 0;
             this.pbObject.TabStop = false;
+            this.pbObject.BackColor = Color.Transparent;
             // 
             // MovingObject
             // 

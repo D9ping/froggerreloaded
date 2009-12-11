@@ -155,7 +155,7 @@ namespace Frogger
         /// <param name="dir">The direction of the car</param>
         /// <param name="dir">The number of the road to added the car to</param>
         /// <returns></returns>
-        private MovingObject CreateCarRandomColor(int vel, Direction dir, int numroad)
+        private MovingObject CreateCarRandomColor(int vel, Direction dir, int locY)
         {
             int color = new Random().Next(1, 3); // color is 1 or 2
             Car car = new Car(color, vel, dir);
@@ -167,7 +167,7 @@ namespace Frogger
             {
                 car.X = frmgame.Width;
             }
-            car.Y = roads[numroad];
+            car.Y = locY;
 
             return car;
         }
@@ -191,7 +191,7 @@ namespace Frogger
         /// <param name="vel">The velocity of the tree trunk</param>
         /// <param name="dir">The direction of the tree trunk</param>
         /// <returns></returns>
-        private MovingObject CreateTreeTrunk(int vel, Direction dir)
+        private MovingObject CreateTreeTrunk(int vel, Direction dir, int locY)
         {
             Tree treetrunk = new Tree(vel, dir);
             if (dir == Direction.East)
@@ -202,6 +202,7 @@ namespace Frogger
             {
                 treetrunk.X = frmgame.Width;
             }
+            treetrunk.Y = locY;
             return treetrunk;
         }
 
@@ -216,7 +217,7 @@ namespace Frogger
             int hoogteRiver = 100;
 
             SolidBrush brushRiver = new SolidBrush(Color.Blue);
-            Rectangle rectRiver = new Rectangle(0, locy, FrmGame.ActiveForm.Width, hoogteRiver);
+            Rectangle rectRiver = new Rectangle(0, locy, frmgame.Width, hoogteRiver);
             g.FillRectangle(brushRiver, rectRiver);
         }
 
@@ -227,12 +228,22 @@ namespace Frogger
         /// <param name="locy">The y-coördinate the road is created at</param>
         private void DrawRoad(Graphics g, int locy)
         {
-            roads.Add(locy);
+            //roads.Add(locy);
+            bool roadexist = false;
+            foreach (int curroad in roads)
+            {
+                if (curroad == locy) roadexist = true;
+            }
+            if ((!roadexist) && (locy!=0))
+            {
+                roads.Add(locy);
+            }
+
             int lineDistance = 100, heightRoad = 60;
 
             SolidBrush brushRoad = new SolidBrush(Color.Black); // the color of the road
             SolidBrush brushRoadLine = new SolidBrush(Color.White); // the color of the lines on the road
-            Rectangle rectWeg = new Rectangle(0, locy, FrmGame.ActiveForm.Width, heightRoad);
+            Rectangle rectWeg = new Rectangle(0, locy, frmgame.Width, heightRoad);
 
             g.FillRectangle(brushRoad, rectWeg);
             for (int xpos = 0; xpos < frmgame.Width; xpos += lineDistance)
@@ -244,7 +255,7 @@ namespace Frogger
 
         /// <summary>
         /// Occurs when the gameupdate timer ticks.
-        /// A car with a random color is being added to the list of movingobjects, every 20 times this method is recalled.
+        /// A car with a random color is being added to the list of movingobjects,
         /// Finally this method will update the position of every moving object.
         /// </summary>
         /// <param name="sender"></param>
@@ -252,16 +263,25 @@ namespace Frogger
         private void gameupdate_Tick(object sender, EventArgs e)
         {
             tick++;
-            
+            int maxtick = 1000 / gameupdate.Interval; //1s
+
             switch (level)
             {
                 case 1:
-                    if (tick == 20)
+                    int sectime = 3;
+
+                    if (tick == maxtick * sectime)
                     {
-
-
+                        foreach (int roady in roads)
+                        {
+                            movingobjs.Add(CreateCarRandomColor(2, Direction.East, roady));
+                        }
+                        foreach (int riviry in rivirs)
+                        {
+                            movingobjs.Add(CreateTreeTrunk(2, Direction.East, riviry));
+                        }
                         //todo
-                        movingobjs.Add(CreateCarRandomColor(3, Direction.East, 0));
+                        
                         tick = 0;
                     }
                     break;
@@ -278,9 +298,8 @@ namespace Frogger
         {
             foreach (MovingObject obj in movingobjs)
             {
+                frmgame.Controls.Remove(obj);
                 obj.Location = new Point(obj.X, obj.Y);
-
-                //first find it, if not add.
                 frmgame.Controls.Add(obj);
                 
             }
