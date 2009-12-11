@@ -26,16 +26,16 @@ namespace Frogger
 {
     public class MovingObject : UserControl
     {    
-        private int speed = 0;
+        private int velocity = 0;
         private Direction direction;
         private PictureBox pbObject;
 
         /// <summary>
         /// Creating a new instance of a movingobj.
         /// </summary>
-        public MovingObject(int speed, Direction direction)
+        public MovingObject(int velocity, Direction direction)
         {
-            this.speed = speed;
+            this.velocity = velocity;
             this.direction = direction;
             InitializeComponent();
         }

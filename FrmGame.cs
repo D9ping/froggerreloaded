@@ -76,7 +76,7 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Draw everything of the game.
+        /// Draw every aspect of the game.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

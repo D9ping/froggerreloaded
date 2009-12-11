@@ -20,6 +20,12 @@ namespace Frogger
 
 		#region Constructors (1) 
 
+        /// <summary>
+        /// Creates a GameEngine.
+        /// </summary>
+        /// <param name="level">The Level that should be started in the GameEngine</param>
+        /// <param name="frmgame">The Form the GameEngine should use for this game</param>
+        /// <param name="niv">The Niveau that is selected to use with the level</param>
         public GameEngine(int level, FrmGame frmgame, Niveau niv)
         {
             this.level = level;
@@ -38,6 +44,11 @@ namespace Frogger
 
 		#endregion Constructors 
 
+        #region Properties (1)
+
+        /// <summary>
+        /// Returns the number of lives the player has left.
+        /// </summary>
         public int lives
         {
             get
@@ -49,20 +60,22 @@ namespace Frogger
             }
         }
 
-		#region Methods (10) 
+        #endregion
 
-		// Public Methods (4) 
+        #region Methods (10)
+
+        // Public Methods (3) 
 
         /// <summary>
-        /// Teken het level.
+        /// Draws a level.
         /// </summary>
-        /// <param name="g"></param>
+        /// <param name="g">The graphics component that should be used</param>
         public void DrawLevel(Graphics g)
         {
             switch (level)
             {
                 case 1:
-                    DrawRivir(g, 80);
+                    DrawRiver(g, 80);
                     DrawRoad(g, 240);
                     DrawRoad(g, 320);
                     DrawRoad(g, 400);
@@ -70,13 +83,13 @@ namespace Frogger
                 case 2:
                     DrawRoad(g, 150);
                     DrawRoad(g, 300);
-                    DrawRivir(g, 405);
+                    DrawRiver(g, 405);
                     break;
             }
         }
 
         /// <summary>
-        /// Toon gameover scherm
+        /// Shows the user that the game is over.
         /// </summary>
         public void GameOver()
         {
@@ -84,42 +97,47 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Er is een nieuwe highscore behaald.
-        /// Teken een textbox vragen voor je naam etc.
+        /// When the user has gained a highscore, the 'SaveHighscoreScreen' asks the user for his username.
+        /// The highscore will be combined with the username, and will then be stored in the database.
         /// </summary>
         public void SaveHighscoreScreen()
         {
             throw new System.NotImplementedException();
         }
+
 		// Private Methods (6) 
 
         /// <summary>
-        /// Create a new car.with random color
+        /// Creates a new car with a random color.
         /// </summary>
-        /// <returns>the car obj.</returns>
-        private MovingObject CreateCarRandomColor(int speed, Direction dir)
+        /// <param name="velocity">The velocity of the car</param>
+        /// <param name="dir">The direction of the car</param>
+        /// <returns></returns>
+        private MovingObject CreateCarRandomColor(int vel, Direction dir)
         {
-            int color = new Random().Next(1, 3);
-            Car car = new Car(color, speed, dir);
+            int color = new Random().Next(1, 3); // color is 1 or 2
+            Car car = new Car(color, vel, dir);
             return car;
         }
 
         /// <summary>
-        /// Create a new tree trunk
+        /// Creates a new tree trunk.
         /// </summary>
+        /// <param name="vel">The velocity of the tree trunk</param>
+        /// <param name="dir">The direction of the tree trunk</param>
         /// <returns></returns>
-        private MovingObject CreateTreeTrunk(int speed, Direction dir)
+        private MovingObject CreateTreeTrunk(int vel, Direction dir)
         {
-            Tree treetrunk = new Tree(3, dir);
+            Tree treetrunk = new Tree(vel, dir);
             return treetrunk;
         }
 
         /// <summary>
-        /// Teken een rivier.
+        /// Draws a river.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="locy"></param>
-        private void DrawRivir(Graphics g, int locy)
+        /// <param name="g">The graphics component that should be used</param>
+        /// <param name="locy">The y-coördinate the river is created at</param>
+        private void DrawRiver(Graphics g, int locy)
         {
             int hoogteRiver = 100;
 
@@ -129,16 +147,16 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Teken een weg
+        /// Draws a road.
         /// </summary>
-        /// <param name="g"></param>
-        /// <param name="locy">de locatie van Y cooridinaat van het venster.</param>
+        /// <param name="g">The graphics component that should be used</param>
+        /// <param name="locy">The y-coördinate the road is created at</param>
         private void DrawRoad(Graphics g, int locy)
         {
             int lineDistance = 100, heightRoad = 60;
 
-            SolidBrush brushRoad = new SolidBrush(Color.Black);
-            SolidBrush brushRoadLine = new SolidBrush(Color.White);
+            SolidBrush brushRoad = new SolidBrush(Color.Black); // the color of the road
+            SolidBrush brushRoadLine = new SolidBrush(Color.White); // the color of the lines on the road
             Rectangle rectWeg = new Rectangle(0, locy, FrmGame.ActiveForm.Width, heightRoad);
 
             g.FillRectangle(brushRoad, rectWeg);
@@ -150,6 +168,8 @@ namespace Frogger
         }
 
         /// <summary>
+        /// Occurs when the gametime timer ticks.
+        /// Every time the Adds new cars and tree trunks to the list of moving objects. 
         /// Teken nieuwe autos / boomstammen. Roep UpdatePosObject aan.
         /// </summary>
         /// <param name="sender"></param>

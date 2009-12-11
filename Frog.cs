@@ -10,8 +10,8 @@ namespace Frogger
         /// <summary>
         /// create a frog.
         /// </summary>
-        public Frog(int speed, Direction dir)
-            :base(speed, dir)
+        public Frog(int velocity, Direction dir)
+            :base(velocity, dir)
         {
         }
 

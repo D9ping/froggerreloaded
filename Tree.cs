@@ -30,10 +30,10 @@ namespace Frogger
         /// <summary>
         /// Creating a new instance of a new tree obj.
         /// </summary>
-        /// <param name="speed"></param>
+        /// <param name="velocity"></param>
         /// <param name="direction"></param>
-        public Tree(int speed, Direction direction)
-            :base(speed, direction)
+        public Tree(int velocity, Direction direction)
+            :base(velocity, direction)
         {
             base.pic = global::Frogger.Properties.Resources.treetrunk;
         }
