@@ -61,14 +61,13 @@ namespace Frogger
 		// Private Methods (6) 
 
         /// <summary>
-        /// Shutdown the whole application. 
-        /// Even if frmMenu was not visible.
+        /// Hide the frmGame and show the frmMenu in MenuState main again.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FrmGame_FormClosed(object sender, FormClosedEventArgs e)
+        public void CloseGame()
         {
-            Application.Exit();
+            this.frmmenu.Menustate = MenuState.main;
+            this.frmmenu.Show();
+            this.Close();
         }
 
         /// <summary>
@@ -82,7 +81,7 @@ namespace Frogger
             {
                 this.frmmenu.Menustate = MenuState.main;
                 this.frmmenu.Show();
-                this.Hide();
+                this.Close();
             }
         }
 
@@ -127,12 +126,16 @@ namespace Frogger
             }
         }
 
+        private void FrmGame_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            CloseGame();
+        }
+
         /// <summary>
         /// Format the game time string so seconds are always displayed with two numbers,
         /// a lead zero if lower then 10seconds is added.
         /// And there is a : charcter between the minuts and seconds.
         /// </summary>
-        /// <param name="g"></param>
         private String UpdateGameTime()
         {
             String time = this.min.ToString() + ":";
