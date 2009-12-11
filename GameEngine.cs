@@ -13,7 +13,7 @@ namespace Frogger
         private Timer gameupdate;
         private int level = -1;
         private List<MovingObject> movingobjs;
-        private Niveau niveau;
+        private Niveau tier;
         private int tick = 0;
 
 		#endregion Fields 
@@ -26,11 +26,11 @@ namespace Frogger
         /// <param name="level">The Level that should be started in the GameEngine</param>
         /// <param name="frmgame">The Form the GameEngine should use for this game</param>
         /// <param name="niv">The Niveau that is selected to use with the level</param>
-        public GameEngine(int level, FrmGame frmgame, Niveau niv)
+        public GameEngine(int level, FrmGame frmgame, Niveau tier)
         {
             this.level = level;
+            this.tier = tier;
             this.frmgame = frmgame;
-            this.niveau = niv;
 
             movingobjs = new List<MovingObject>();
 
@@ -89,9 +89,37 @@ namespace Frogger
         }
 
         /// <summary>
+        /// Check if game time is up for the current tier.
+        /// if so then go to GameOver methode
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="sec"></param>
+        public void CheckGameTime(int min)
+        {
+            switch (tier)
+            {
+                case Niveau.freeplay:
+                    //never gameover
+                    break;
+                case Niveau.easy:
+                    if (min == 10) GameOver(true, false);
+                    break;
+                case Niveau.medium:
+                    if (min == 6) GameOver(true, false);
+                    break;
+                case Niveau.hard:
+                    if (min == 3) GameOver(true, false);
+                    break;
+                case Niveau.elite:
+                    if (min == 2) GameOver(true, false);
+                    break;
+            }
+        }
+
+        /// <summary>
         /// Shows the user that the game is over.
         /// </summary>
-        public void GameOver()
+        public void GameOver(bool timeup, bool nomorelive)
         {
             throw new System.NotImplementedException();
         }

@@ -29,49 +29,60 @@ namespace Frogger
 {
     public partial class FrmGame : Form
     {
-		#region Fields (5) 
+		#region Fields (4) 
 
+        private FrmMenu frmmenu;
+        private GameEngine game;
         private int min = 0;
         private int sec = 0;
-
-        private GameEngine game;
-        private IntPtr HWND_TOP = IntPtr.Zero;
-        private const int SM_CXSCREEN = 0;
-        private const int SM_CYSCREEN = 1;
-        private const int SWP_SHOWWINDOW = 64;
 
 		#endregion Fields 
 
 		#region Constructors (1) 
 
-                /// <summary>
+        /// <summary>
         /// Creating a new instance of FrmGame.
         /// </summary>
-        /// <param name="level"></param>
-        public FrmGame(int level, Niveau niv)
+        /// <param name="level">the level number, each numbers draws a other level.</param>
+        /// <param name="niveau">the niveau enumaration. freeplay you won't go gameover.
+        /// then there is easy, medium, hard and elite.</param>
+        public FrmGame(FrmMenu frmmenu, int level, Niveau tier)
         {
             InitializeComponent();
-            this.game = new GameEngine(level, this, niv);
+            this.frmmenu = frmmenu;
+            this.game = new GameEngine(level, this, tier);
             Program.CheckFullScreen(this);
         }
 
 		#endregion Constructors 
 
-		#region Methods (7) 
+		#region Methods (6) 
 
-		// Private Methods (7) 
+		// Private Methods (6) 
 
+        /// <summary>
+        /// Shutdown the whole application. 
+        /// Even if frmMenu was not visible.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrmGame_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
         }
 
+        /// <summary>
+        /// If Escape is pressed get the player back to the main menu.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrmGame_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //todo
             if (e.KeyChar == (Char)Keys.Escape)
             {
-                MessageBox.Show("Test");
+                this.frmmenu.Menustate = MenuState.main;
+                this.frmmenu.Show();
+                this.Hide();
             }
         }
 
@@ -89,19 +100,19 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Teken speel tijd string
+        /// repaint the form, so thing show up correctly a the new size.
         /// </summary>
-        /// <param name="g"></param>
-        private String UpdateGameTime()
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FrmGame_ResizeEnd(object sender, EventArgs e)
         {
-            String time = this.min.ToString() + ":";
-            if (this.sec < 10) { time += "0" + this.sec.ToString(); }
-            else { time += this.sec.ToString(); }
-            return time;
+            this.Refresh();
         }
 
         /// <summary>
-        /// Hier gebeurt het..
+        /// Update the game time, and check the game up for the current tier in
+        /// if the time for the current tier is over then excute 
+        /// the gameover methode from the GameEngine.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -111,28 +122,24 @@ namespace Frogger
             if (sec > 59)
             {
                 min++;
+                game.CheckGameTime(min);
                 sec = 0;
             }
-            lbTime.Refresh();
         }
 
         /// <summary>
-        /// repaint form resized.
+        /// Format the game time string so seconds are always displayed with two numbers,
+        /// a lead zero if lower then 10seconds is added.
+        /// And there is a : charcter between the minuts and seconds.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FrmGame_ResizeEnd(object sender, EventArgs e)
+        /// <param name="g"></param>
+        private String UpdateGameTime()
         {
-            this.Refresh();
+            String time = this.min.ToString() + ":";
+            if (this.sec < 10) { time += "0" + this.sec.ToString(); }
+            else { time += this.sec.ToString(); }
+            return time;
         }
-
-        //This is also unmangement code, for getting the real screen size with taskbar.
-        [DllImport("user32.dll")]
-        private static extern int GetSystemMetrics(int Which);
-
-        //This is unmangement code needed for real fullscreen. hidden taskbar etc.
-        [DllImport("user32.dll")]
-        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndIntertAfter, int X, int Y, int cx, int cy, int uFlags);
 
 		#endregion Methods 
     }
