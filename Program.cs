@@ -52,7 +52,7 @@ namespace Frogger
             {
                 curfrm.WindowState = FormWindowState.Maximized;
                 curfrm.FormBorderStyle = FormBorderStyle.None;
-#if Release                 
+#if Release
                 this.TopMost = true; //watch out this is actually annoying while debugging, switching back to your IDE with fullscreen will be impossible.
 #endif
                 SetWindowPos(curfrm.Handle, IntPtr.Zero, 0, 0, GetSystemMetrics(0), GetSystemMetrics(1), 64);                

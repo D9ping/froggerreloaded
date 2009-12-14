@@ -40,8 +40,21 @@ namespace Frogger
             InitializeComponent();
         }
 
-        public int X { get; set; }
-        public int Y { get; set; }
+        public Direction Dir
+        {
+            get
+            {
+                return this.direction;
+            }
+        }
+
+        public int Velocity
+        {
+            get
+            {
+                return this.velocity;
+            }
+        }
 
         /// <summary>
         /// De texture.

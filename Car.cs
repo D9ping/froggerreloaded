@@ -46,6 +46,11 @@ namespace Frogger
             }
         }
 
+        /// <summary>
+        /// Color number of the car
+        /// 1 grey car
+        /// 2 yellow car
+        /// </summary>
         public int Color
         {
             get

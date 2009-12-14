@@ -159,16 +159,17 @@ namespace Frogger
         {
             int color = new Random().Next(1, 3); // color is 1 or 2
             Car car = new Car(color, vel, dir);
+
+            int locX = -100;
             if (dir == Direction.East)
             {
-                car.X = 0;
+                locX = 0;
             }
             else if (dir == Direction.West)
             {
-                car.X = frmgame.Width;
+                locX = frmgame.Width;
             }
-            car.Y = locY;
-
+            car.Location = new Point(locX, locY);
             return car;
         }
 
@@ -180,8 +181,9 @@ namespace Frogger
         {
             int bottommargin = 5;
             Frog frog = new Frog(0, Direction.North);
-            frog.X = (frmgame.Width / 2) - (frog.Width/2);
-            frog.Y = frmgame.Height - frog.Height - bottommargin;
+            int locX = (frmgame.Width / 2) - (frog.Width/2);
+            int locY = frmgame.Height - frog.Height - bottommargin;
+            frog.Location = new Point(locX, locY);
             return frog;
         }
 
@@ -194,15 +196,16 @@ namespace Frogger
         private MovingObject CreateTreeTrunk(int vel, Direction dir, int locY)
         {
             Tree treetrunk = new Tree(vel, dir);
+            int locX = -100;
             if (dir == Direction.East)
             {
-                treetrunk.X = 0;
+                locX = 0;
             }
             else if (dir == Direction.West)
             {
-                treetrunk.X = frmgame.Width;
+                locX = frmgame.Width;
             }
-            treetrunk.Y = locY;
+            treetrunk.Location = new Point(locX, locY);
             return treetrunk;
         }
 
@@ -268,7 +271,7 @@ namespace Frogger
             switch (level)
             {
                 case 1:
-                    int sectime = 3;
+                    int sectime = 5;
 
                     if (tick == maxtick * sectime)
                     {
@@ -298,9 +301,23 @@ namespace Frogger
         {
             foreach (MovingObject obj in movingobjs)
             {
-                frmgame.Controls.Remove(obj);
-                obj.Location = new Point(obj.X, obj.Y);
-                frmgame.Controls.Add(obj);
+                if (frmgame.Controls.Contains(obj))
+                {
+                    
+                    switch (obj.Dir)
+                    {
+                        case Direction.East:
+                            obj.Location = new Point(obj.Location.X + obj.Velocity, obj.Location.Y);
+                            break;
+                        case Direction.West:
+                            obj.Location = new Point(obj.Location.X - obj.Velocity, obj.Location.Y);
+                            break;
+                    }
+                }
+                else
+                {
+                    frmgame.Controls.Add(obj);
+                }
                 
             }
         }
