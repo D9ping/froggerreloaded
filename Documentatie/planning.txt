@@ -1,7 +1,8 @@
 naam				datum		tijd	afgerond	opgestuurd
 
 functionele eisen		04 dec 09	13:00	v		v
-klassediagram			11 dec 09	13:00	v
-acceptatietestplan		11 dec 09	13:00
-2 klassen specificeren		11 dec 09	13:00
-unit test moet uitgevoerd zijn	18 dec 09	13:00
+klassediagram			11 dec 09	13:00	v		v
+acceptatietestplan		11 dec 09	13:00	v		v
+2 klassen specificeren		11 dec 09	13:00	v		v
+unit test moet uitgevoerd zijn	04 jan 10	12:00
+source code programmeren	.........	.....
