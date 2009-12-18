@@ -155,7 +155,7 @@ namespace Frogger
         /// <param name="dir">The direction of the car</param>
         /// <param name="dir">The number of the road to added the car to</param>
         /// <returns></returns>
-        private MovingObject CreateCarRandomColor(int vel, Direction dir, int locY)
+        public MovingObject CreateCarRandomColor(int vel, Direction dir, int locY)
         {
             int color = new Random().Next(1, 3); // color is 1 or 2
             Car car = new Car(color, vel, dir);
@@ -177,7 +177,7 @@ namespace Frogger
         /// Create a frog (the player) and calculate start position.
         /// </summary>
         /// <returns></returns>
-        private MovingObject CreateFrog()
+        public MovingObject CreateFrog()
         {
             int bottommargin = 5;
             Frog frog = new Frog(0, Direction.North);
@@ -193,7 +193,7 @@ namespace Frogger
         /// <param name="vel">The velocity of the tree trunk</param>
         /// <param name="dir">The direction of the tree trunk</param>
         /// <returns></returns>
-        private MovingObject CreateTreeTrunk(int vel, Direction dir, int locY)
+        public MovingObject CreateTreeTrunk(int vel, Direction dir, int locY)
         {
             Tree treetrunk = new Tree(vel, dir);
             int locX = -100;
