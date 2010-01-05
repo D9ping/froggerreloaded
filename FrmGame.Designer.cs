@@ -42,6 +42,7 @@
             // 
             // lbTime
             // 
+            this.lbTime.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lbTime.AutoSize = true;
             this.lbTime.BackColor = System.Drawing.Color.Transparent;
             this.lbTime.Font = new System.Drawing.Font("Flubber", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -57,7 +58,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.BackColor = System.Drawing.Color.Green;
-            this.BackgroundImage = global::Frogger.Properties.Resources.texure_grass;
+            this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(792, 573);
             this.Controls.Add(this.lbTime);
             this.DoubleBuffered = true;
@@ -66,8 +67,8 @@
             this.Name = "FrmGame";
             this.Text = "FrmGame";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmGame_Paint);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FrmGame_KeyPress);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmGame_FormClosing);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.FrmGame_PreviewKeyDown);
             this.ResizeEnd += new System.EventHandler(this.FrmGame_ResizeEnd);
             this.ResumeLayout(false);
             this.PerformLayout();

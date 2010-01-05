@@ -56,9 +56,9 @@ namespace Frogger
 
 		#endregion Constructors 
 
-		#region Methods (6) 
+		#region Methods (8) 
 
-		// Private Methods (6) 
+		// Public Methods (1) 
 
         /// <summary>
         /// Hide the frmGame and show the frmMenu in MenuState main again.
@@ -70,20 +70,16 @@ namespace Frogger
             this.frmmenu.Show();
             this.Hide();
         }
+		// Private Methods (7) 
 
         /// <summary>
-        /// If Escape is pressed get the player back to the main menu.
+        /// Form is closed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void FrmGame_KeyPress(object sender, KeyPressEventArgs e)
+        private void FrmGame_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (e.KeyChar == (Char)Keys.Escape)
-            {
-                this.frmmenu.Menustate = MenuState.main;
-                this.frmmenu.Show();
-                this.Close();
-            }
+            CloseGame();
         }
 
         /// <summary>
@@ -97,6 +93,31 @@ namespace Frogger
             game.DrawLevel(g);
             UpdateGameTime();
             lbTime.Text = UpdateGameTime();
+        }
+
+        private void FrmGame_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            switch (e.KeyCode)
+            {                
+                case Keys.Back:
+                    break;
+                case Keys.Down:
+                    break;
+                case Keys.Escape:
+                    this.frmmenu.Menustate = MenuState.main;
+                    this.frmmenu.Show();
+                    this.Close();
+                    break;
+                case Keys.Left:
+                    break;
+                case Keys.Menu:
+                    break;
+                case Keys.Right:
+                    break;
+                case Keys.Up:
+                    break;
+            }
+
         }
 
         /// <summary>
@@ -125,16 +146,6 @@ namespace Frogger
                 game.CheckGameTime(min);
                 sec = 59;
             }
-        }
-
-        /// <summary>
-        /// Form is closed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FrmGame_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            CloseGame();
         }
 
         /// <summary>

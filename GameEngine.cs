@@ -1,4 +1,21 @@
-﻿using System;
+﻿/*
+Copyright (C) 2009  Tom Postma, Gertjan Buijs
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -7,22 +24,24 @@ namespace Frogger
 {
     public class GameEngine
     {
-		#region Fields (7) 
+        #region Fields (10)
 
         private FrmGame frmgame;
+        public const int frogbottommargin = 5;
         private Timer gameupdate;
         private int level = -1;
-        private List<MovingObject> movingobjs;
-        private List<int> roads;
-        private List<int> rivirs;
-        private Niveau tier;
-        private int tick = 0;
         private int lives;
+        private List<MovingObject> movingobjs;
+        private List<int> rivirs;
+        private List<int> roads;
+        private int tick = 0;
+        private Niveau tier;
 
-		#endregion Fields 
+        #endregion Fields
 
-		#region Constructors (1) 
+        #region Constructors (1)
 
+        //not supposed to change without recompile.
         /// <summary>
         /// Creates a GameEngine.
         /// </summary>
@@ -49,7 +68,7 @@ namespace Frogger
             movingobjs.Add(CreateFrog());
         }
 
-		#endregion Constructors
+        #endregion Constructors
 
         #region Properties (1)
 
@@ -68,45 +87,28 @@ namespace Frogger
             }
         }
 
-        #endregion
-
-        #region Methods (10)
-
-        // Public Methods (3) 
-
         /// <summary>
-        /// disable the gameupdate timer.
+        /// Returns if GameUpdate timer is still running. Needed for tests.
         /// </summary>
-        public void StopEngine()
+        public bool GameUpdateStatus
         {
-            gameupdate.Enabled = false;
-        }
-
-        /// <summary>
-        /// Draws a level.
-        /// </summary>
-        /// <param name="g">The graphics component that should be used</param>
-        public void DrawLevel(Graphics g)
-        {
-            switch (level)
+            get
             {
-                case 1:
-                    DrawRiver(g, 80);
-                    DrawRoad(g, 240);
-                    DrawRoad(g, 320);
-                    DrawRoad(g, 400);
-                    break;
-                case 2:
-                    break;
+                return gameupdate.Enabled;
             }
         }
+
+        #endregion
+
+        #region Methods (15)
+
+        // Public Methods (9) 
 
         /// <summary>
         /// Checks if game time is up for the current tier.
         /// if so then excute the GameOver methode
         /// </summary>
         /// <param name="min"></param>
-        /// <param name="sec"></param>
         public void CheckGameTime(int min)
         {
             switch (tier)
@@ -130,59 +132,48 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Shows the user that the game is over.
-        /// </summary>
-        public void GameOver(bool timeup, bool nomorelive)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
-        /// When the user has gained a highscore, the 'SaveHighscoreScreen' asks the user for his username.
-        /// The highscore will be combined with the username, and will then be stored in the database.
-        /// </summary>
-        public void SaveHighscoreScreen()
-        {
-            throw new System.NotImplementedException();
-        }
-
-		// Private Methods (6) 
-
-        /// <summary>
         /// Creates a new car with a random color.
         /// </summary>
         /// <param name="velocity">The velocity of the car</param>
         /// <param name="dir">The direction of the car</param>
         /// <param name="dir">The number of the road to added the car to</param>
-        /// <returns></returns>
+        /// <returns>a car moving object</returns>
         public MovingObject CreateCarRandomColor(int vel, Direction dir, int locY)
         {
             int color = new Random().Next(1, 3); // color is 1 or 2
             Car car = new Car(color, vel, dir);
 
-            int locX = -100;
+            int locX = 0;
+            int hcar = CalcHeightRivir() / 2;
+            int wcar = frmgame.Width / 10;
+
             if (dir == Direction.East)
             {
                 locX = 0;
+                car.Location = new Point(locX, locY + hcar);
             }
             else if (dir == Direction.West)
             {
                 locX = frmgame.Width;
+                car.Location = new Point(locX, locY);
             }
-            car.Location = new Point(locX, locY);
+            car.Size = new Size(wcar, hcar);
             return car;
         }
 
         /// <summary>
         /// Create a frog (the player) and calculate start position.
+        /// The start position is the middle of the width of the form
+        /// and the 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>a frog moving object</returns>
         public MovingObject CreateFrog()
         {
-            int bottommargin = 5;
             Frog frog = new Frog(0, Direction.North);
-            int locX = (frmgame.Width / 2) - (frog.Width/2);
-            int locY = frmgame.Height - frog.Height - bottommargin;
+
+            int locX = (frmgame.Width / 2) - (frog.Width / 2);
+            int locY = frmgame.Height - frog.Height - frogbottommargin;
+
             frog.Location = new Point(locX, locY);
             return frog;
         }
@@ -192,7 +183,7 @@ namespace Frogger
         /// </summary>
         /// <param name="vel">The velocity of the tree trunk</param>
         /// <param name="dir">The direction of the tree trunk</param>
-        /// <returns></returns>
+        /// <returns>a tree trunk moving object</returns>
         public MovingObject CreateTreeTrunk(int vel, Direction dir, int locY)
         {
             Tree treetrunk = new Tree(vel, dir);
@@ -210,6 +201,88 @@ namespace Frogger
         }
 
         /// <summary>
+        /// Detects collision when Frogger collides.
+        /// </summary>
+        /// <returns>Whether or not Frogger collides with a moving object</returns>
+        public Boolean DetectCollision()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Draws a level.
+        /// </summary>
+        /// <param name="g">The graphics component that should be used</param>
+        public void DrawLevel(Graphics g)
+        {
+            switch (level)
+            {
+                case 1:
+                    DrawRiver(g, 80);
+                    DrawRoad(g, 240);
+                    DrawRoad(g, 320);
+                    DrawRoad(g, 400);
+                    break;
+                case 2:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Shows the user that the game is over.
+        /// </summary>
+        public void GameOver(bool timeup, bool nomorelive)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// When the user has gained a highscore, the 'SaveHighscoreScreen' asks the user for his username.
+        /// The highscore will be combined with the username, and will then be stored in the database.
+        /// </summary>
+        public void SaveHighscoreScreen()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// disable the gameupdate timer.
+        /// </summary>
+        public void StopEngine()
+        {
+            gameupdate.Enabled = false;
+        }
+        // Private Methods (6) 
+
+        /// <summary>
+        /// Calculate the height of the rivir.
+        /// </summary>
+        /// <returns>the height in number of pixels</returns>
+        private int CalcHeightRivir()
+        {
+            int hrivir = frmgame.Height / 10;
+            return hrivir;
+        }
+
+        /// <summary>
+        /// Checks the amount of lives the player has.
+        /// If this amount is less than 1, it will inform the player that the game is over.
+        /// If that is the case, the GameEngine will close, and the main menu will open.
+        /// </summary>
+        private void CheckLives()
+        {
+            int currentLives = this.Lives;
+            if (currentLives < 1)
+            {
+                GameOver(false, true);
+            }
+            else
+            {
+                Lives--;
+            }
+        }
+
+        /// <summary>
         /// Draws a river.
         /// </summary>
         /// <param name="g">The graphics component that should be used</param>
@@ -217,10 +290,9 @@ namespace Frogger
         private void DrawRiver(Graphics g, int locy)
         {
             rivirs.Add(locy);
-            int hoogteRiver = 100;
 
             SolidBrush brushRiver = new SolidBrush(Color.Blue);
-            Rectangle rectRiver = new Rectangle(0, locy, frmgame.Width, hoogteRiver);
+            Rectangle rectRiver = new Rectangle(0, locy, frmgame.Width, CalcHeightRivir());
             g.FillRectangle(brushRiver, rectRiver);
         }
 
@@ -237,7 +309,7 @@ namespace Frogger
             {
                 if (curroad == locy) roadexist = true;
             }
-            if ((!roadexist) && (locy!=0))
+            if ((!roadexist) && (locy != 0))
             {
                 roads.Add(locy);
             }
@@ -284,7 +356,7 @@ namespace Frogger
                             movingobjs.Add(CreateTreeTrunk(2, Direction.East, riviry));
                         }
                         //todo
-                        
+
                         tick = 0;
                     }
                     break;
@@ -303,7 +375,7 @@ namespace Frogger
             {
                 if (frmgame.Controls.Contains(obj))
                 {
-                    
+
                     switch (obj.Dir)
                     {
                         case Direction.East:
@@ -313,39 +385,16 @@ namespace Frogger
                             obj.Location = new Point(obj.Location.X - obj.Velocity, obj.Location.Y);
                             break;
                     }
+                    if ((obj.Location.X + obj.Width < 0) || (obj.Location.X > frmgame.Width + obj.Width))
+                    {
+                        frmgame.Controls.Remove(obj);
+                    }
                 }
                 else
                 {
                     frmgame.Controls.Add(obj);
                 }
-                
-            }
-        }
 
-        /// <summary>
-        /// Detects collision when Frogger collides.
-        /// </summary>
-        /// <returns>Whether or not Frogger collides with a moving object</returns>
-        public Boolean DetectCollision()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        /// <summary>
-        /// Checks the amount of lives the player has.
-        /// If this amount is less than 1, it will inform the player that the game is over.
-        /// If that is the case, the GameEngine will close, and the main menu will open.
-        /// </summary>
-        private void CheckLives()
-        {
-            int currentLives = this.Lives;
-            if (currentLives < 1)
-            {
-                GameOver(false, true);
-            }
-            else
-            {
-                Lives--;
             }
         }
 

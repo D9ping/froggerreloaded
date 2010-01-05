@@ -36,6 +36,11 @@ namespace Frogger
         {
             this.velocity = velocity;
             this.direction = direction;
+            //Add transparancy support
+            this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            //Make transparant
+            this.BackColor = Color.Transparent;
+            this.DoubleBuffered = true;
             InitializeComponent();
         }
 
@@ -66,6 +71,7 @@ namespace Frogger
             }
         }
 
+        /*
         /// <summary>
         /// Maak control even groot als picturebox
         /// </summary>
@@ -73,8 +79,7 @@ namespace Frogger
         {
             this.Size = pbObject.Size;
         }
-
-
+         */
 
         private void InitializeComponent()
         {
