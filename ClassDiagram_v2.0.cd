@@ -37,7 +37,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAApCAQAIAAAB2IAAACAgAAAAAIAEAAAgQQAAA=</HashCode>
+      <HashCode>AAAAAAAAhCAQAAACAByIAAAGAAAACAAIAEACAAAAAAA=</HashCode>
       <FileName>FrmGame.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -97,14 +97,6 @@
       <Compartment Name="Methods" Collapsed="true" />
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
-    <InheritanceLine Type="System.Windows.Forms.UserControl" ManuallyRouted="true" FixedToPoint="true">
-      <Path>
-        <Point X="14.75" Y="7" />
-        <Point X="14.75" Y="6.828" />
-        <Point X="14.938" Y="6.828" />
-        <Point X="14.938" Y="6.636" />
-      </Path>
-    </InheritanceLine>
     <AssociationLine Name="direction" Type="Frogger.Direction" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="15.375" Y="4.5" />
@@ -117,7 +109,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAIAIAAAAIAACCAAAAAQAAAAAAAAAAYAA=</HashCode>
+      <HashCode>AAAAAAAAACAAIAIgAAAIABACAAAAAAAAAAQAAAAEAAA=</HashCode>
       <FileName>MovingObject.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -128,8 +120,8 @@
     <Position X="17.5" Y="5" Width="1.75" />
     <InheritanceLine Type="Frogger.MovingObject" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="16" Y="5.562" />
-        <Point X="16.625" Y="5.562" />
+        <Point X="16" Y="5.658" />
+        <Point X="16.625" Y="5.658" />
         <Point X="16.625" Y="5.812" />
         <Point X="17.5" Y="5.812" />
       </Path>
@@ -157,8 +149,8 @@
     </Compartments>
     <InheritanceLine Type="Frogger.MovingObject" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="16" Y="5" />
-        <Point X="16.375" Y="5" />
+        <Point X="16" Y="5.045" />
+        <Point X="16.375" Y="5.045" />
         <Point X="16.375" Y="3.625" />
         <Point X="17.75" Y="3.625" />
       </Path>
@@ -174,7 +166,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQEAAAACgAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAQEAAAACgAIAAAAAAAAAAA=</HashCode>
       <FileName>MenuLevel.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -202,29 +194,19 @@
     </Compartments>
     <AssociationLine Name="movingobjs" Type="Frogger.MovingObject" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.5" Y="6.965" />
-        <Point X="11.875" Y="6.965" />
-        <Point X="11.875" Y="6.25" />
-        <Point X="14" Y="6.25" />
+        <Point X="11.5" Y="7.042" />
+        <Point X="11.875" Y="7.042" />
+        <Point X="11.875" Y="6.408" />
+        <Point X="14" Y="6.408" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
         <Position X="-0.457" Y="-0.644" Height="0.182" Width="2.258" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="niveau" Type="Frogger.Niveau" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="11.5" Y="5.25" />
-        <Point X="12.88" Y="5.25" />
-        <Point X="12.88" Y="4.123" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>YIBAgAAEAAAAAAAAAAAAAAAAAgMQEEAAAAAIgBAgAAA=</HashCode>
+      <HashCode>YIFAgAAEAAAAABCIAAABAABAAgNBEEACgAAogBQIAIA=</HashCode>
       <FileName>GameEngine.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="niveau" />
-    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Field Name="movingobjs" />
     </ShowAsCollectionAssociation>
@@ -250,14 +232,14 @@
     <Position X="17.5" Y="7.25" Width="1.5" />
     <InheritanceLine Type="Frogger.MovingObject" ManuallyRouted="true" FixedFromPoint="true">
       <Path>
-        <Point X="16" Y="6.312" />
-        <Point X="16.375" Y="6.312" />
-        <Point X="16.375" Y="7.963" />
-        <Point X="17.5" Y="7.963" />
+        <Point X="16" Y="6.475" />
+        <Point X="16.375" Y="6.475" />
+        <Point X="16.375" Y="8.189" />
+        <Point X="17.5" Y="8.189" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
       <FileName>Frog.cs</FileName>
     </TypeIdentifier>
   </Class>

@@ -46,7 +46,7 @@
             this.lbTime.AutoSize = true;
             this.lbTime.BackColor = System.Drawing.Color.Transparent;
             this.lbTime.Font = new System.Drawing.Font("Flubber", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbTime.Location = new System.Drawing.Point(702, 9);
+            this.lbTime.Location = new System.Drawing.Point(698, 9);
             this.lbTime.Name = "lbTime";
             this.lbTime.Size = new System.Drawing.Size(78, 33);
             this.lbTime.TabIndex = 0;
@@ -59,11 +59,12 @@
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.BackColor = System.Drawing.Color.Green;
             this.CausesValidation = false;
-            this.ClientSize = new System.Drawing.Size(792, 573);
+            this.ClientSize = new System.Drawing.Size(784, 602);
             this.Controls.Add(this.lbTime);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.MinimumSize = new System.Drawing.Size(800, 640);
             this.Name = "FrmGame";
             this.Text = "FrmGame";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmGame_Paint);

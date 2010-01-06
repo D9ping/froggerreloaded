@@ -91,7 +91,6 @@ namespace Frogger
         {
             Graphics g = e.Graphics;
             game.DrawLevel(g);
-            UpdateGameTime();
             lbTime.Text = UpdateGameTime();
         }
 

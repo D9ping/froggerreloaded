@@ -28,6 +28,7 @@ namespace Frogger
 
         private FrmGame frmgame;
         public const int frogbottommargin = 5;
+        public const int roadlineheight = 5;
         private Timer gameupdate;
         private int level = -1;
         private int lives;
@@ -137,27 +138,29 @@ namespace Frogger
         /// <param name="velocity">The velocity of the car</param>
         /// <param name="dir">The direction of the car</param>
         /// <param name="dir">The number of the road to added the car to</param>
+        /// <param name="dir">The random generator this to prevent getting right and left always the same color.</param>
         /// <returns>a car moving object</returns>
-        public MovingObject CreateCarRandomColor(int vel, Direction dir, int locY)
+        public MovingObject CreateCarRandomColor(int vel, Direction dir, int roadLocY, Random rndgen)
         {
-            int color = new Random().Next(1, 3); // color is 1 or 2
+            int color = rndgen.Next(1, 3); // color is 1 or 2
             Car car = new Car(color, vel, dir);
 
-            int locX = 0;
-            int hcar = CalcHeightRivir() / 2;
-            int wcar = frmgame.Width / 10;
+            int posX = 0;
+            int initheightcar = CalcHeightRoad() / 2 - roadlineheight;
+            int initwidthcar = frmgame.ClientRectangle.Width / 10;
 
             if (dir == Direction.East)
             {
-                locX = 0;
-                car.Location = new Point(locX, locY + hcar);
+                posX = 0;
+                car.Location = new Point(posX, roadLocY + roadlineheight + initheightcar);
             }
             else if (dir == Direction.West)
             {
-                locX = frmgame.Width;
-                car.Location = new Point(locX, locY);
+                posX = frmgame.Width;
+                car.Location = new Point(posX, roadLocY);
             }
-            car.Size = new Size(wcar, hcar);
+            //car.Size = new Size(wcar, hcar);
+            car.SetSize();
             return car;
         }
 
@@ -171,10 +174,15 @@ namespace Frogger
         {
             Frog frog = new Frog(0, Direction.North);
 
-            int locX = (frmgame.Width / 2) - (frog.Width / 2);
-            int locY = frmgame.Height - frog.Height - frogbottommargin;
+            int locX = (frmgame.ClientRectangle.Width / 2) - (frog.Width / 2);
+            int locY = frmgame.ClientRectangle.Height - frog.Height - frogbottommargin;
+            int sizeX = frmgame.ClientRectangle.Width / 10;
+            int sizeY = frmgame.ClientRectangle.Height / 10;
 
             frog.Location = new Point(locX, locY);
+            frog.Size = new Size(sizeX, sizeY);
+
+            frog.SetSize();
             return frog;
         }
 
@@ -187,16 +195,24 @@ namespace Frogger
         public MovingObject CreateTreeTrunk(int vel, Direction dir, int locY)
         {
             Tree treetrunk = new Tree(vel, dir);
-            int locX = -100;
+            
+            int locX = -treetrunk.Width;
+            /*
             if (dir == Direction.East)
             {
-                locX = 0;
+                locX = -treetrunk.Width;
             }
-            else if (dir == Direction.West)
+            else
+             */
+            if (dir == Direction.West)
             {
-                locX = frmgame.Width;
+                locX = frmgame.ClientRectangle.Width + treetrunk.Width;
             }
             treetrunk.Location = new Point(locX, locY);
+            int htree = CalcHeightRivir(1);
+            int wtree = CalcHeightRivir(1) * 2;
+            treetrunk.Size = new Size(wtree, htree);
+            treetrunk.SetSize();
             return treetrunk;
         }
 
@@ -218,7 +234,7 @@ namespace Frogger
             switch (level)
             {
                 case 1:
-                    DrawRiver(g, 80);
+                    DrawRiver(g, 80, 1);
                     DrawRoad(g, 240);
                     DrawRoad(g, 320);
                     DrawRoad(g, 400);
@@ -258,10 +274,16 @@ namespace Frogger
         /// Calculate the height of the rivir.
         /// </summary>
         /// <returns>the height in number of pixels</returns>
-        private int CalcHeightRivir()
+        private int CalcHeightRivir(int baans)
         {
-            int hrivir = frmgame.Height / 10;
+            int hrivir = (frmgame.ClientRectangle.Height / 10) * baans;
             return hrivir;
+        }
+
+        private int CalcHeightRoad()
+        {
+            int hroad = frmgame.ClientRectangle.Height / 10;
+            return hroad;
         }
 
         /// <summary>
@@ -287,13 +309,20 @@ namespace Frogger
         /// </summary>
         /// <param name="g">The graphics component that should be used</param>
         /// <param name="locy">The y-coördinate the river is created at</param>
-        private void DrawRiver(Graphics g, int locy)
+        private void DrawRiver(Graphics g, int locy, int aantalbaans)
         {
             rivirs.Add(locy);
 
             SolidBrush brushRiver = new SolidBrush(Color.Blue);
-            Rectangle rectRiver = new Rectangle(0, locy, frmgame.Width, CalcHeightRivir());
-            g.FillRectangle(brushRiver, rectRiver);
+            if ((aantalbaans < 9) && (aantalbaans > 0))
+            {
+                Rectangle rectRiver = new Rectangle(0, locy, frmgame.Width, CalcHeightRivir(aantalbaans));
+                g.FillRectangle(brushRiver, rectRiver);
+            }
+            else
+            {
+                throw new Exception("aantalbaans riviren niet goed.");
+            }
         }
 
         /// <summary>
@@ -318,12 +347,13 @@ namespace Frogger
 
             SolidBrush brushRoad = new SolidBrush(Color.Black); // the color of the road
             SolidBrush brushRoadLine = new SolidBrush(Color.White); // the color of the lines on the road
-            Rectangle rectWeg = new Rectangle(0, locy, frmgame.Width, heightRoad);
+            Rectangle rectWeg = new Rectangle(0, locy, frmgame.ClientRectangle.Width, heightRoad);
 
             g.FillRectangle(brushRoad, rectWeg);
-            for (int xpos = 0; xpos < frmgame.Width; xpos += lineDistance)
+            int lineloc = locy + (heightRoad / 2);
+            for (int xpos = 0; xpos < frmgame.ClientRectangle.Width; xpos += lineDistance)
             {
-                Rectangle rectRoadLine = new Rectangle(xpos, locy + (heightRoad / 2), 20, 5);
+                Rectangle rectRoadLine = new Rectangle(xpos, lineloc, 20, roadlineheight);
                 g.FillRectangle(brushRoadLine, rectRoadLine);
             }
         }
@@ -347,14 +377,30 @@ namespace Frogger
 
                     if (tick == maxtick * sectime)
                     {
-                        foreach (int roady in roads)
+                        Random rndgen = new Random();
+
+                        for (int curroad = 0; curroad < roads.Count; curroad++)
                         {
-                            movingobjs.Add(CreateCarRandomColor(2, Direction.East, roady));
+                            int rnddir = rndgen.Next(0, 2);
+                            if (rnddir == 0)
+                            {
+                                movingobjs.Add(CreateCarRandomColor(2, Direction.East, roads[curroad], rndgen));
+                            }
+                            else
+                            {
+                                movingobjs.Add(CreateCarRandomColor(2, Direction.West,  roads[curroad], rndgen));
+                            }
+
                         }
+
+                        movingobjs.Add(CreateTreeTrunk(1, Direction.East, rivirs[0]));
+                        /*
                         foreach (int riviry in rivirs)
                         {
                             movingobjs.Add(CreateTreeTrunk(2, Direction.East, riviry));
                         }
+                         */
+                        
                         //todo
 
                         tick = 0;
@@ -388,6 +434,11 @@ namespace Frogger
                     if ((obj.Location.X + obj.Width < 0) || (obj.Location.X > frmgame.Width + obj.Width))
                     {
                         frmgame.Controls.Remove(obj);
+                    }
+                    else
+                    {
+                        //obj.Refresh();
+                        obj.Invalidate();
                     }
                 }
                 else

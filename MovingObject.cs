@@ -27,7 +27,7 @@ namespace Frogger
     {    
         private int velocity = 0;
         private Direction direction;
-        private PictureBox pbObject;
+        //private PictureBox pbObject;
 
         /// <summary>
         /// Creating a new instance of a movingobj.
@@ -40,7 +40,9 @@ namespace Frogger
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             //Make transparant
             this.BackColor = Color.Transparent;
+            //this.BackColor = Color.Red;
             this.DoubleBuffered = true;
+            this.BringToFront();
             InitializeComponent();
         }
 
@@ -63,51 +65,49 @@ namespace Frogger
         /// <summary>
         /// De texture.
         /// </summary>
-        public Bitmap pic
-        {
-            set
-            {
-                this.pbObject.Image = value;
-            }
-        }
+        public Bitmap pic { get; set; }
 
-        /*
+
         /// <summary>
-        /// Maak control even groot als picturebox
+        /// cleanup memory
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
+        
+        /// <summary>
+        /// Maak control even groot als bitmap
         /// </summary>
         public void SetSize()
         {
-            this.Size = pbObject.Size;
+            this.Size = pic.Size;
         }
-         */
+        
 
         private void InitializeComponent()
         {
-            this.pbObject = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pbObject)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pictureBox1
-            // 
-            this.pbObject.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbObject.Location = new System.Drawing.Point(0, 0);
-            this.pbObject.Name = "pbObject";
-            this.pbObject.Size = new System.Drawing.Size(116, 62);
-            this.pbObject.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbObject.TabIndex = 0;
-            this.pbObject.TabStop = false;
-            this.pbObject.BackColor = Color.Transparent;
             // 
             // MovingObject
             // 
-            this.Controls.Add(this.pbObject);
+            this.DoubleBuffered = true;
             this.Name = "MovingObject";
-            this.Size = new System.Drawing.Size(116, 62);
-            ((System.ComponentModel.ISupportInitialize)(this.pbObject)).EndInit();
+            this.Size = new System.Drawing.Size(112, 66);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MovingObject_Paint);
             this.ResumeLayout(false);
 
         }
-  
+
+        private void MovingObject_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = new Rectangle(new Point(0, 0), new Size(this.Width, this.Height));
+            //image scaling is cpu costly, so DrawImageUnscaled is used instead.
+            //prescale image when it is first draw, then get the scaled image out of memory.
+            g.DrawImageUnscaled((Image)this.pic, rect);
+        }
 
     }
 }
