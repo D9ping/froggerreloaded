@@ -46,6 +46,7 @@
             this.lbTime.AutoSize = true;
             this.lbTime.BackColor = System.Drawing.Color.Transparent;
             this.lbTime.Font = new System.Drawing.Font("Flubber", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbTime.ForeColor = System.Drawing.Color.LightGray;
             this.lbTime.Location = new System.Drawing.Point(698, 9);
             this.lbTime.Name = "lbTime";
             this.lbTime.Size = new System.Drawing.Size(78, 33);
@@ -58,6 +59,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.BackColor = System.Drawing.Color.Green;
+            this.BackgroundImage = global::Frogger.Properties.Resources.texure_grass;
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(784, 602);
             this.Controls.Add(this.lbTime);

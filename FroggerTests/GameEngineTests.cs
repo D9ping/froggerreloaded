@@ -1,5 +1,6 @@
 ﻿using Frogger;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 namespace FroggerTest
 {
     
@@ -128,7 +129,7 @@ namespace FroggerTest
             for (int times = 0; times < 10; times++)
             {
                 //Create object from methode.
-                MovingObject actual = target.CreateCarRandomColor(1, direction, 0);
+                MovingObject actual = target.CreateCarRandomColor(1, direction, 0, new Random());
                 //Test: are object created.
                 Assert.IsNotNull(actual, "cannot create object from methode.");
             }
@@ -156,35 +157,47 @@ namespace FroggerTest
         }
 
         /// <summary>
-        ///A test for StopEngine
-        ///</summary>
-        [TestMethod()]
-        public void StopEngineTest()
-        {
-            
-
-            int level = 0; // TODO: Initialize to an appropriate value
-            FrmGame frmgame = null; // TODO: Initialize to an appropriate value
-            Niveau tier = new Niveau(); // TODO: Initialize to an appropriate value
-            GameEngine target = new GameEngine(level, frmgame, tier); // TODO: Initialize to an appropriate value
-            target.StopEngine();
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
-        }
-
-        /// <summary>
         ///A test for CreateFrog
         ///</summary>
         [TestMethod()]
         [DeploymentItem("Frogger.exe")]
         public void CreateFrogTest()
         {
-            PrivateObject param0 = null; // TODO: Initialize to an appropriate value
-            GameEngine_Accessor target = new GameEngine_Accessor(param0); // TODO: Initialize to an appropriate value
-            MovingObject expected = null; // TODO: Initialize to an appropriate value
-            MovingObject actual;
-            actual = target.CreateFrog();
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            //Initialize to an appropriate value
+            int level = 1;
+            Niveau tier = Niveau.easy;
+            FrmMenu frmmenu = new FrmMenu();
+            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
+            //create target
+            GameEngine target = new GameEngine(level, frmgame, tier);
+
+            MovingObject testfrog = target.CreateFrog();
+            Assert.IsNotNull(testfrog, "cannot create a test frog.");
+            int exceptedPosX = (frmgame.ClientRectangle.Width / 2) - (testfrog.Width / 2);
+            int exceptedPosY = (frmgame.ClientRectangle.Height - testfrog.Height - 5); // target.frogbottommargin
+            if ((testfrog.Location.X != exceptedPosX) && (testfrog.Location.Y == exceptedPosY))
+            {
+                Assert.Fail("Position test frog is not what is excepted.");
+            }
+        }
+
+        /// <summary>
+        ///A test for StopEngine
+        ///</summary>
+        [TestMethod()]
+        public void StopEngineTest()
+        {
+            int level = 1;
+            Niveau tier = Niveau.easy;
+            FrmMenu frmmenu = new FrmMenu();
+            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
+
+            GameEngine target = new GameEngine(level, frmgame, tier); // TODO: Initialize to an appropriate value
+            target.StopEngine();
+            if (target.GameUpdateStatus != false)
+            {
+                Assert.Fail("Game Engine has not stopped.");
+            }
         }
 
         /// <summary>

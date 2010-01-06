@@ -155,8 +155,15 @@ namespace Frogger
         private String UpdateGameTime()
         {
             String time = this.min.ToString() + ":";
-            if (this.sec < 10) { time += "0" + this.sec.ToString(); }
-            else { time += this.sec.ToString(); }
+            if (this.sec < 10) { time += "0" + this.sec.ToString(); 
+             if (this.min == 0)
+             {
+                 lbTime.ForeColor = Color.Red;
+            } 
+             }
+            else { time += this.sec.ToString();
+            lbTime.ForeColor = Color.LightGray;
+            }
             return time;
         }
 

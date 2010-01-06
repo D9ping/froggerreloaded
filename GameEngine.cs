@@ -152,7 +152,8 @@ namespace Frogger
             if (dir == Direction.East)
             {
                 posX = 0;
-                car.Location = new Point(posX, roadLocY + roadlineheight + initheightcar);
+                int posY = roadLocY + 2*roadlineheight + initheightcar;
+                car.Location = new Point(posX, posY);
             }
             else if (dir == Direction.West)
             {
@@ -231,13 +232,14 @@ namespace Frogger
         /// <param name="g">The graphics component that should be used</param>
         public void DrawLevel(Graphics g)
         {
+            int space = frmgame.ClientRectangle.Height / 10;
             switch (level)
             {
                 case 1:
-                    DrawRiver(g, 80, 1);
-                    DrawRoad(g, 240);
-                    DrawRoad(g, 320);
-                    DrawRoad(g, 400);
+                    DrawRiver(g, space* 1, 1);
+                    DrawRoad(g, space * 3);
+                    DrawRoad(g, space * 5);
+                    DrawRoad(g, space * 7);
                     break;
                 case 2:
                     break;
@@ -309,19 +311,19 @@ namespace Frogger
         /// </summary>
         /// <param name="g">The graphics component that should be used</param>
         /// <param name="locy">The y-coördinate the river is created at</param>
-        private void DrawRiver(Graphics g, int locy, int aantalbaans)
+        private void DrawRiver(Graphics g, int locy, int numcourses)
         {
             rivirs.Add(locy);
 
             SolidBrush brushRiver = new SolidBrush(Color.Blue);
-            if ((aantalbaans < 9) && (aantalbaans > 0))
+            if ((numcourses < 9) && (numcourses > 0))
             {
-                Rectangle rectRiver = new Rectangle(0, locy, frmgame.Width, CalcHeightRivir(aantalbaans));
+                Rectangle rectRiver = new Rectangle(0, locy, frmgame.Width, CalcHeightRivir(numcourses));
                 g.FillRectangle(brushRiver, rectRiver);
             }
             else
             {
-                throw new Exception("aantalbaans riviren niet goed.");
+                throw new Exception("number of courses not valid.");
             }
         }
 
@@ -390,10 +392,9 @@ namespace Frogger
                             {
                                 movingobjs.Add(CreateCarRandomColor(2, Direction.West,  roads[curroad], rndgen));
                             }
-
                         }
 
-                        movingobjs.Add(CreateTreeTrunk(1, Direction.East, rivirs[0]));
+                        movingobjs.Add(CreateTreeTrunk(3, Direction.East, rivirs[0]));
                         /*
                         foreach (int riviry in rivirs)
                         {

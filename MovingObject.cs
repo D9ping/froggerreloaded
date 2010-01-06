@@ -27,7 +27,6 @@ namespace Frogger
     {    
         private int velocity = 0;
         private Direction direction;
-        //private PictureBox pbObject;
 
         /// <summary>
         /// Creating a new instance of a movingobj.
@@ -94,19 +93,19 @@ namespace Frogger
             // 
             this.DoubleBuffered = true;
             this.Name = "MovingObject";
-            this.Size = new System.Drawing.Size(112, 66);
+            this.Size = new System.Drawing.Size(136, 84);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MovingObject_Paint);
             this.ResumeLayout(false);
-
         }
 
         private void MovingObject_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             Rectangle rect = new Rectangle(new Point(0, 0), new Size(this.Width, this.Height));
-            //image scaling is cpu costly, so DrawImageUnscaled is used instead.
-            //prescale image when it is first draw, then get the scaled image out of memory.
+            //image scaling is cpu costly, so DrawImageUnscaled is used instead of drawimage too make sure it does not happen.
+            //Prescale the image when it is first draw and then get the scaled image out of memory.
             g.DrawImageUnscaled((Image)this.pic, rect);
+            //and GDI+ is faster than picturebox..
         }
 
     }
