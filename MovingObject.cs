@@ -102,10 +102,10 @@ namespace Frogger
         {
             Graphics g = e.Graphics;
             Rectangle rect = new Rectangle(new Point(0, 0), new Size(this.Width, this.Height));
-            //image scaling is cpu costly, so DrawImageUnscaled is used instead of drawimage too make sure it does not happen.
+            //image scaling is cpu costly.
             //Prescale the image when it is first draw and then get the scaled image out of memory.
-            g.DrawImageUnscaled((Image)this.pic, rect);
-            //and GDI+ is faster than picturebox..
+            g.DrawImage((Image)this.pic, rect);
+            //using GDI+ is faster than picturebox.
         }
 
     }
