@@ -37,6 +37,8 @@ namespace Frogger
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            fullscreen = Frogger.Properties.Settings.Default.fullscreen;
+            sound = Frogger.Properties.Settings.Default.sound;
             Application.Run(new FrmMenu());
         }
 

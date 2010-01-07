@@ -26,7 +26,7 @@ namespace Frogger
     class MenuOptions : MenuScreen
     {
         private FrmMenu frmmenu;
-        private BigCheckbox[] options;        
+        private BigCheckbox[] options;
 
         public MenuOptions(FrmMenu frmmenu)
             : base(frmmenu)
@@ -38,18 +38,18 @@ namespace Frogger
             //todo: get settings from windows registery.
             //RegistryKey.RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Frogger\\", true);
             //key.GetValue("fullscreen", null);
-            bool sound = false;
-            bool fullscreen = false;
+            bool sound = Frogger.Properties.Settings.Default.sound;
+            bool fullscreen = Frogger.Properties.Settings.Default.fullscreen;
 
-            options = new BigCheckbox[2];            
+            options = new BigCheckbox[2];
             options[0] = new BigCheckbox("sound", sound);
-            options[0].Location = new Point(frmmenu.Width / 2 - (options[0].Width / 2), frmmenu.Height / 2 - (options[0].Height / 2));            
+            options[0].Location = new Point(frmmenu.Width / 2 - (options[0].Width / 2), frmmenu.Height / 2 - (options[0].Height / 2));
+            options[0].Click += new EventHandler(ToggleSound);
+
             options[1] = new BigCheckbox("full screen", fullscreen);
             options[1].Location = new Point(frmmenu.Width / 2 - (options[1].Width / 2), frmmenu.Height / 2 - (options[1].Height / 2) + options[1].Height + margin);
             
             options[1].Click += new EventHandler(ToggleFullscreen);
-
-     
 
             frmmenu.Controls.AddRange(options);
         }
@@ -63,19 +63,26 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Wissel tussen volledigscherm
+        /// Toggle between fulscreen and not.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ToggleFullscreen(object sender, EventArgs e)
         {
             Program.fullscreen = !Program.fullscreen;
+            Frogger.Properties.Settings.Default.fullscreen = Program.fullscreen;
+            Frogger.Properties.Settings.Default.Save();
             Program.CheckFullScreen(frmmenu);
         }
 
-        public void ToggleSound()
+        /// <summary>
+        /// Toggle between sound on and off.
+        /// </summary>
+        public void ToggleSound(object sender, EventArgs e)
         {
-            throw new System.NotImplementedException();
+            Program.sound = !Program.sound; //in memory, fast to access
+            Frogger.Properties.Settings.Default.sound = Program.sound; //on disk, slow to access
+            Frogger.Properties.Settings.Default.Save();
         }
     }
 }

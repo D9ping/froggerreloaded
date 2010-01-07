@@ -47,7 +47,7 @@
             this.lbTime.BackColor = System.Drawing.Color.Transparent;
             this.lbTime.Font = new System.Drawing.Font("Flubber", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbTime.ForeColor = System.Drawing.Color.LightGray;
-            this.lbTime.Location = new System.Drawing.Point(698, 9);
+            this.lbTime.Location = new System.Drawing.Point(703, 9);
             this.lbTime.Name = "lbTime";
             this.lbTime.Size = new System.Drawing.Size(78, 33);
             this.lbTime.TabIndex = 0;
@@ -60,14 +60,17 @@
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.BackColor = System.Drawing.Color.Green;
             this.BackgroundImage = global::Frogger.Properties.Resources.texure_grass;
-            this.CausesValidation = false;
-            this.ClientSize = new System.Drawing.Size(784, 602);
+            this.ClientSize = new System.Drawing.Size(794, 612);
             this.Controls.Add(this.lbTime);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(800, 640);
             this.Name = "FrmGame";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FrmGame";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmGame_Paint);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmGame_FormClosing);

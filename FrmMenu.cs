@@ -34,6 +34,7 @@ namespace Frogger
         private HoverButton backbtn;
         private MenuScreen curmenu;
         private MenuState menustate;
+        public const int bottommarginbackbtn = 50;
 
 		#endregion Fields 
 
@@ -119,7 +120,7 @@ namespace Frogger
             {
                 case MenuState.main:
                     curmenu = new MenuMain(this);
-                    backbtn.Visible = false;
+                    if (backbtn != null) { backbtn.Visible = false; }
                     break;
                 case MenuState.highscore:
                     curmenu = new MenuHighscore(this);
@@ -132,10 +133,12 @@ namespace Frogger
                 case MenuState.level:
                     curmenu = new MenuLevel(this);
                     backbtn.Visible = true;
-                    break;                
+                    break;
             }
-            int margin = 50;
-            backbtn.Location = new Point(this.Width / 2 - backbtn.Width / 2, this.Height - backbtn.Height - margin);
+            if (backbtn != null)
+            {
+                backbtn.Location = new Point(this.Width / 2 - backbtn.Width / 2, this.Height - backbtn.Height - bottommarginbackbtn);
+            }
         }
 
         /// <summary>

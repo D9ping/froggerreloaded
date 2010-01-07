@@ -99,13 +99,19 @@ namespace FroggerTest
         [TestMethod()]
         public void CheckGameTimeTest()
         {
-            int level = 0; // TODO: Initialize to an appropriate value
-            FrmGame frmgame = null; // TODO: Initialize to an appropriate value
-            Niveau tier = new Niveau(); // TODO: Initialize to an appropriate value
-            GameEngine target = new GameEngine(level, frmgame, tier); // TODO: Initialize to an appropriate value
-            int min = 0; // TODO: Initialize to an appropriate value
-            target.CheckGameTime(min);
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+            int level = 1;
+            Niveau tier = Niveau.easy;
+            Direction direction = Direction.East;
+            FrmMenu frmmenu = new FrmMenu();
+            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
+            //create target
+            GameEngine target = new GameEngine(level, frmgame, tier);
+
+            for (int min = 20; min >= 0; min--)
+            {
+                if (target.CheckGameTime(min)) { Assert.Fail("Should not be gameover yet, " + (min+1)+" minuts to go."); }
+            }
+            if (target.CheckGameTime(-1)==false) { Assert.Fail("Should be Game Over because time is up."); }
         }
 
         /// <summary>
@@ -207,10 +213,23 @@ namespace FroggerTest
         [DeploymentItem("Frogger.exe")]
         public void CheckLivesTest()
         {
-            PrivateObject param0 = null; // TODO: Initialize to an appropriate value
-            GameEngine_Accessor target = new GameEngine_Accessor(param0); // TODO: Initialize to an appropriate value
-            target.CheckLives();
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+            int level = 1;
+            Niveau tier = Niveau.easy;
+            FrmMenu frmmenu = new FrmMenu();
+            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
+            GameEngine target = new GameEngine(level, frmgame, tier);
+
+            for (int lives = 8; lives > 0; lives--)
+            {
+                if (target.CheckLives(lives))
+                {
+                    Assert.Fail("shouldnt be game over yet, still " + lives + " over.");
+                }
+            }
+            if (!target.CheckLives(0))
+            {
+                Assert.Fail("should be game over because there are no lives more left.");
+            }
         }
     }
 }

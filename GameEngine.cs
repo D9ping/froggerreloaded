@@ -37,6 +37,7 @@ namespace Frogger
         private List<int> roads;
         private int tick = 0;
         private Niveau tier;
+        private List<Bitmap> prescaledimages;
 
         #endregion Fields
 
@@ -110,25 +111,16 @@ namespace Frogger
         /// if so then excute the GameOver methode
         /// </summary>
         /// <param name="min"></param>
-        public void CheckGameTime(int min)
+        /// <returns>true if time is up.</returns>
+        public bool CheckGameTime(int min)
         {
-            switch (tier)
+            if (min < 0)
             {
-                case Niveau.freeplay:
-                    //never gameover
-                    break;
-                case Niveau.easy:
-                    if (min == 10) GameOver(true, false);
-                    break;
-                case Niveau.medium:
-                    if (min == 6) GameOver(true, false);
-                    break;
-                case Niveau.hard:
-                    if (min == 3) GameOver(true, false);
-                    break;
-                case Niveau.elite:
-                    if (min == 2) GameOver(true, false);
-                    break;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -177,11 +169,11 @@ namespace Frogger
 
             int locX = (frmgame.ClientRectangle.Width / 2) - (frog.Width / 2);
             int locY = frmgame.ClientRectangle.Height - frog.Height - frogbottommargin;
-            int sizeX = frmgame.ClientRectangle.Width / 10;
-            int sizeY = frmgame.ClientRectangle.Height / 10;
+            //int sizeX = frmgame.ClientRectangle.Width / 10;
+            //int sizeY = frmgame.ClientRectangle.Height / 10;
 
             frog.Location = new Point(locX, locY);
-            frog.Size = new Size(sizeX, sizeY);
+            //frog.Size = new Size(sizeX, sizeY);
 
             frog.SetSize();
             return frog;
@@ -246,11 +238,27 @@ namespace Frogger
             }
         }
 
+        public void DrawTextbox(Graphics g, String text)
+        {
+            int trycentre = text.Length * 10;
+            Font font = new Font("Arial", 24);
+            SolidBrush sbred = new SolidBrush(System.Drawing.Color.Red);
+            SolidBrush sbdarkorange = new SolidBrush(System.Drawing.Color.DarkOrange);
+            Rectangle box = new Rectangle(new Point(50, 50), new Size(frmgame.ClientRectangle.Width - 100, frmgame.ClientRectangle.Height - 100));
+            g.DrawRectangle(Pens.Black, box);
+            g.FillRectangle(sbdarkorange, box); 
+            g.DrawString("Game Over", font, sbred, new PointF(frmgame.ClientRectangle.Width / 2 - trycentre, frmgame.ClientRectangle.Height / 2));
+        }
+
         /// <summary>
         /// Shows the user that the game is over.
         /// </summary>
-        public void GameOver(bool timeup, bool nomorelive)
+        public void GameOver(Graphics g, bool timeup, bool nomorelive)
         {
+            if (timeup)
+            {
+                DrawTextbox(g, "Game Over");
+            }
             throw new System.NotImplementedException();
         }
 
@@ -293,16 +301,16 @@ namespace Frogger
         /// If this amount is less than 1, it will inform the player that the game is over.
         /// If that is the case, the GameEngine will close, and the main menu will open.
         /// </summary>
-        private void CheckLives()
+        public bool CheckLives(int currentLives)
         {
-            int currentLives = this.Lives;
             if (currentLives < 1)
             {
-                GameOver(false, true);
+                return true;
             }
             else
             {
                 Lives--;
+                return false;
             }
         }
 

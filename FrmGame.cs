@@ -33,6 +33,7 @@ namespace Frogger
 
         private FrmMenu frmmenu;
         private GameEngine game;
+        private bool timeup = false;
         private int min = 0;
         private int sec = 0;
 
@@ -91,7 +92,14 @@ namespace Frogger
         {
             Graphics g = e.Graphics;
             game.DrawLevel(g);
-            lbTime.Text = UpdateGameTime();
+            if (timeup)
+            {
+                game.GameOver(g, true, false);
+            }
+            else
+            {
+                lbTime.Text = UpdateGameTime();
+            }
         }
 
         private void FrmGame_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -142,8 +150,14 @@ namespace Frogger
             if (sec < 0)
             {
                 min--;
-                game.CheckGameTime(min);
-                sec = 59;
+                if (game.CheckGameTime(min))
+                {
+
+                }
+                else
+                {
+                    sec = 59;
+                }
             }
         }
 
@@ -168,5 +182,7 @@ namespace Frogger
         }
 
 		#endregion Methods 
+
+        
     }
 }

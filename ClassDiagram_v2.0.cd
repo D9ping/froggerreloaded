@@ -37,7 +37,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAhCAQAAACAByIAAAGAAAACAAIAEACAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAhCAQAAACAByIAAAGAAAACAAIAEACAACAAAA=</HashCode>
       <FileName>FrmGame.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -64,7 +64,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AgAAQEMAACAAAAACAACAAAECCAAAAAAIAAAAAAAAAAA=</HashCode>
+      <HashCode>EgAAQEMAACAAAAACAACAAAECCAAAAAAIAAAAAAAAAAA=</HashCode>
       <FileName>FrmMenu.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -194,8 +194,8 @@
     </Compartments>
     <AssociationLine Name="movingobjs" Type="Frogger.MovingObject" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.5" Y="7.042" />
-        <Point X="11.875" Y="7.042" />
+        <Point X="11.5" Y="7.119" />
+        <Point X="11.875" Y="7.119" />
         <Point X="11.875" Y="6.408" />
         <Point X="14" Y="6.408" />
       </Path>
@@ -204,7 +204,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>YIFAgAAEAAAAABCIAAABAABAAgNBEEACgAAogBQIAIA=</HashCode>
+      <HashCode>YIFAgAIEAAAAABCIAAABAABAAgNBEEACgAA4gBQIAIA=</HashCode>
       <FileName>GameEngine.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>

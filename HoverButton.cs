@@ -107,10 +107,13 @@ namespace Frogger
         }
 
         private void lbButtonText_Click(object sender, EventArgs e)
-        {           
+        { 
             this.clicked = true;
             this.Refresh();
-            sndPlaySound(Application.StartupPath + "\\sounds\\beep.wav", sndAsync);
+            if (Program.sound)
+            {
+                sndPlaySound(Application.StartupPath + "\\sounds\\beep.wav", sndAsync);
+            }
             Thread.Sleep(100);
             this.OnClick(e); //raise click event for obj. because text is in front.
         }
