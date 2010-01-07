@@ -8,9 +8,9 @@
     </Compartments>
     <InheritanceLine Type="System.Windows.Forms.UserControl" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="14.5" Y="7.691" />
-        <Point X="14.5" Y="8.125" />
-        <Point X="13.75" Y="8.125" />
+        <Point X="14.75" Y="7.941" />
+        <Point X="14.75" Y="8.2" />
+        <Point X="13.75" Y="8.2" />
         <Point X="13.75" Y="8.5" />
       </Path>
     </InheritanceLine>
@@ -37,7 +37,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAhCAQAAACAByIAAAGAAAICAAIAEACAACAAAA=</HashCode>
+      <HashCode>AAAAAAAAhCAQAAQCAByIAAACAAAICAAIAEACAACAAAA=</HashCode>
       <FileName>FrmGame.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -80,28 +80,27 @@
     </Compartments>
     <InheritanceLine Type="System.Windows.Forms.UserControl" ManuallyRouted="true" FixedFromPoint="true">
       <Path>
-        <Point X="15.062" Y="7.691" />
-        <Point X="15.062" Y="8.125" />
+        <Point X="15.312" Y="7.941" />
+        <Point X="15.312" Y="8.125" />
         <Point X="15.5" Y="8.125" />
         <Point X="15.5" Y="8.5" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AACAABAAACAAAAADAACAAJACEAABAAAACgAgAIEAAAA=</HashCode>
+      <HashCode>AACAABAAACAAAAADAACAAJACEAAAAAAACgAgAIAAAAA=</HashCode>
       <FileName>HoverButton.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Frogger.MovingObject">
-    <Position X="14" Y="4.5" Width="2" />
+    <Position X="14" Y="4.5" Width="2.25" />
     <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
       <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
     </Compartments>
     <AssociationLine Name="direction" Type="Frogger.Direction" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="15.375" Y="4.5" />
-        <Point X="15.375" Y="4.125" />
-        <Point X="15.312" Y="4.125" />
+        <Point X="15.312" Y="4.5" />
+        <Point X="15.312" Y="4.5" />
         <Point X="15.312" Y="3.181" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
@@ -120,8 +119,8 @@
     <Position X="17.5" Y="5" Width="1.75" />
     <InheritanceLine Type="Frogger.MovingObject" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="16" Y="5.658" />
-        <Point X="16.625" Y="5.658" />
+        <Point X="16.25" Y="5.866" />
+        <Point X="16.625" Y="5.866" />
         <Point X="16.625" Y="5.812" />
         <Point X="17.5" Y="5.812" />
       </Path>
@@ -149,9 +148,9 @@
     </Compartments>
     <InheritanceLine Type="Frogger.MovingObject" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="16" Y="5.045" />
-        <Point X="16.375" Y="5.045" />
-        <Point X="16.375" Y="3.625" />
+        <Point X="16.25" Y="5.143" />
+        <Point X="16.779" Y="5.143" />
+        <Point X="16.779" Y="3.625" />
         <Point X="17.75" Y="3.625" />
       </Path>
     </InheritanceLine>
@@ -194,17 +193,17 @@
     </Compartments>
     <AssociationLine Name="movingobjs" Type="Frogger.MovingObject" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.5" Y="7.196" />
-        <Point X="11.875" Y="7.196" />
-        <Point X="11.875" Y="6.408" />
-        <Point X="14" Y="6.408" />
+        <Point X="11.5" Y="7.273" />
+        <Point X="11.875" Y="7.273" />
+        <Point X="11.875" Y="6.752" />
+        <Point X="14" Y="6.752" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
         <Position X="-0.457" Y="-0.644" Height="0.182" Width="2.258" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>YIFAgAIEAAAAABCIAAABAABAEgNBEEACgAA4gBQIAIA=</HashCode>
+      <HashCode>YIHAgAIEAAAAABCIAAABAABAEgPBEEACgAA4gBQIAIA=</HashCode>
       <FileName>GameEngine.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
@@ -232,9 +231,9 @@
     <Position X="17.5" Y="7.25" Width="1.5" />
     <InheritanceLine Type="Frogger.MovingObject" ManuallyRouted="true" FixedFromPoint="true">
       <Path>
-        <Point X="16" Y="6.475" />
-        <Point X="16.375" Y="6.475" />
-        <Point X="16.375" Y="8.189" />
+        <Point X="16.25" Y="6.375" />
+        <Point X="16.932" Y="6.375" />
+        <Point X="16.932" Y="8.189" />
         <Point X="17.5" Y="8.189" />
       </Path>
     </InheritanceLine>
@@ -244,7 +243,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="System.Windows.Forms.UserControl" Collapsed="true">
-    <Position X="14" Y="7" Width="1.5" />
+    <Position X="14.25" Y="7.25" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Class Name="System.Windows.Forms.Form" Collapsed="true">

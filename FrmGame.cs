@@ -29,13 +29,13 @@ namespace Frogger
 {
     public partial class FrmGame : Form
     {
-		#region Fields (4) 
+		#region Fields (5) 
 
         private FrmMenu frmmenu;
         private GameEngine game;
-        private bool timeup = false;
         private int min = 0;
         private int sec = 0;
+        private bool timeup = false;
 
 		#endregion Fields 
 
@@ -74,6 +74,17 @@ namespace Frogger
 		// Private Methods (7) 
 
         /// <summary>
+        /// quickly test game over.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            timeup = true;
+            this.Refresh();
+        }
+
+        /// <summary>
         /// Form is closed.
         /// </summary>
         /// <param name="sender"></param>
@@ -81,6 +92,31 @@ namespace Frogger
         private void FrmGame_FormClosing(object sender, FormClosingEventArgs e)
         {
             CloseGame();
+        }
+
+        private void FrmGame_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Escape:
+                    game.StopEngine();
+                    this.frmmenu.Menustate = MenuState.main;
+                    this.frmmenu.Show();
+                    this.Close();
+                    break;
+                case Keys.Back:
+                    break;
+                case Keys.Down:
+                    break;
+                case Keys.Left:
+                    break;
+                case Keys.Menu:
+                    break;
+                case Keys.Right:
+                    break;
+                case Keys.Up:
+                    break;
+            }
         }
 
         /// <summary>
@@ -100,31 +136,6 @@ namespace Frogger
             {
                 lbTime.Text = UpdateGameTime();
             }
-        }
-
-        private void FrmGame_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            switch (e.KeyCode)
-            {                
-                case Keys.Back:
-                    break;
-                case Keys.Down:
-                    break;
-                case Keys.Escape:
-                    this.frmmenu.Menustate = MenuState.main;
-                    this.frmmenu.Show();
-                    this.Close();
-                    break;
-                case Keys.Left:
-                    break;
-                case Keys.Menu:
-                    break;
-                case Keys.Right:
-                    break;
-                case Keys.Up:
-                    break;
-            }
-
         }
 
         /// <summary>
@@ -182,13 +193,5 @@ namespace Frogger
         }
 
 		#endregion Methods 
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            timeup = true;
-            this.Refresh();
-        }
-
-        
     }
 }

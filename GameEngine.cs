@@ -31,7 +31,7 @@ namespace Frogger
         private Timer gameupdate;
         private int level = -1;
         private int lives;
-        private List<MovingObject> movingobjs;
+        public List<MovingObject> movingobjs;
         private List<int> rivirs;
         private List<int> roads;
         private int tick = 0;
@@ -93,6 +93,14 @@ namespace Frogger
             set
             {
                 lives = value;
+            }
+        }
+
+        public int NumObjects
+        {
+            get
+            {
+                return this.movingobjs.Count;
             }
         }
 
@@ -171,7 +179,7 @@ namespace Frogger
         /// <returns>a frog moving object</returns>
         public MovingObject CreateFrog()
         {
-            Frog frog = new Frog(0, Direction.North);
+            frog = new Frog(0, Direction.North);
 
             int locX = (frmgame.ClientRectangle.Width / 2) - (frog.Width / 2);
             int locY = frmgame.ClientRectangle.Height - frog.Height - frogbottommargin;
@@ -182,6 +190,7 @@ namespace Frogger
             //frog.Size = new Size(sizeX, sizeY);
 
             frog.SetSize();
+            if (frog == null) { throw new Exception("frog not created."); }
             return frog;
         }
 
@@ -202,7 +211,7 @@ namespace Frogger
                 locX = -treetrunk.Width;
             }
             else
-             */
+            */
             if (dir == Direction.West)
             {
                 locX = frmgame.ClientRectangle.Width + treetrunk.Width;
@@ -221,14 +230,15 @@ namespace Frogger
         /// <returns>Whether or not Frogger collides with a moving object</returns>
         public Boolean DetectCollision()
         {
-            if (frog == null) return false;
+            if (frog == null) { throw new Exception("no frog created."); }
 
             foreach (MovingObject mvobj in movingobjs)
             {
                 int frogxpos = frog.Location.X + frog.Size.Width;
                 int frogypos = frog.Location.Y + frog.Size.Height;
 
-                if ((frog.Location.X >= mvobj.Location.X) && (frogxpos <= mvobj.Location.X) || (frog.Location.Y >= mvobj.Location.Y) && (frogypos <= mvobj.Location.Y))
+                if ((frog.Location.X >= mvobj.Location.X) && (frogxpos <= mvobj.Location.X) || 
+                    (frog.Location.Y >= mvobj.Location.Y) && (frogypos <= mvobj.Location.Y))
                 {
                     if (Program.sound)
                     {
@@ -239,7 +249,6 @@ namespace Frogger
             }
 
             return false;
-
         }
 
         /// <summary>
@@ -262,16 +271,21 @@ namespace Frogger
             }
         }
 
-        public void DrawTextbox(Graphics g, String textregel1)
+        /// <summary>
+        /// Draw a box with text.
+        /// </summary>
+        /// <param name="g">graphics object</param>
+        /// <param name="textregel1">the first line, big text</param>
+        public void DrawTextbox(Graphics g, String textline1)
         {
-            int margincentre = textregel1.Length * 10;
+            int margincentre = textline1.Length * 10;
             Font fontregel1 = new Font("Flubber", 32);
             SolidBrush sbred = new SolidBrush(System.Drawing.Color.Red);
             SolidBrush sbdarkorange = new SolidBrush(System.Drawing.Color.DarkOrange);
             Rectangle box = new Rectangle(new Point(50, 50), new Size(frmgame.ClientRectangle.Width - 100, frmgame.ClientRectangle.Height - 100));
             g.DrawRectangle(Pens.Black, box);
             g.FillRectangle(sbdarkorange, box);
-            g.DrawString(textregel1, fontregel1, sbred, new PointF(frmgame.ClientRectangle.Width / 2 - margincentre, frmgame.ClientRectangle.Height / 2));
+            g.DrawString(textline1, fontregel1, sbred, new PointF(frmgame.ClientRectangle.Width / 2 - margincentre, frmgame.ClientRectangle.Height / 2));
         }
 
         /// <summary>

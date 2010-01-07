@@ -53,6 +53,7 @@
             this.Controls.Add(this.pbLogo);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Name = "FrmMenu";
             this.Text = "Frogger Reloaded";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmMenu_Paint);

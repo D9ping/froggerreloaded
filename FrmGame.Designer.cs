@@ -86,7 +86,7 @@
             this.Text = "FrmGame";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmGame_Paint);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmGame_FormClosing);
-            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.FrmGame_PreviewKeyDown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmGame_KeyDown);
             this.ResizeEnd += new System.EventHandler(this.FrmGame_ResizeEnd);
             this.ResumeLayout(false);
             this.PerformLayout();

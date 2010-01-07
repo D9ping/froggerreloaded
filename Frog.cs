@@ -78,7 +78,6 @@ namespace Frogger
                     break;
                 default:
                     throw new Exception("direction unknow.");
-                    break;
             }
         }
     }

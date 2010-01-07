@@ -105,11 +105,18 @@ namespace FroggerTest
             Assert.IsNotNull(testfrog, "cannot create frog.");
             
             MovingObject car = target.CreateCarRandomColor(0, direction, 100, new Random()); //velocity is 0
-            Assert.IsNotNull(testfrog, "cannot create car.");
+            Assert.IsNotNull(car, "cannot create car.");
 
-            testfrog.Location = car.Location;
+            target.movingobjs.Add(car);
 
-            Assert.IsTrue(target.DetectCollision(), "Their should be a collision.");
+            testfrog.Location = new Point(car.Location.X, car.Location.Y);
+            if (target.NumObjects == 0) { Assert.Fail("no objects."); }
+
+            if (target.DetectCollision()==false)
+            {
+                Assert.Fail("There should be a collision.");
+            }
+            //Assert.IsFalse(target.DetectCollision(), "There should be a collision.");
         }
 
         /// <summary>
