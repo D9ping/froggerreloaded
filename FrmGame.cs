@@ -33,7 +33,7 @@ namespace Frogger
 
         private FrmMenu frmmenu;
         private GameEngine game;
-        private int min = 0;
+        private int min = 1;
         private int sec = 10;
         private bool timeup = false;
 
