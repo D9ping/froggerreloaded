@@ -340,6 +340,10 @@ namespace Frogger
         private int CalcHeightRoad()
         {
             int hroad = frmgame.ClientRectangle.Height / 10;
+            if (!Program.fullscreen)
+            {
+                hroad = Screen.PrimaryScreen.WorkingArea.Height / 10;
+            }
             return hroad;
         }
 
@@ -400,23 +404,14 @@ namespace Frogger
                 roads.Add(locy);
             }
 
-            int lineDistance = 100, heightRoad = 60;
+            int lineDistance = 100;
 
             SolidBrush brushRoad = new SolidBrush(Color.Black); // the color of the road
             SolidBrush brushRoadLine = new SolidBrush(Color.White); // the color of the lines on the road
-            if (Program.fullscreen)
-            {
-                Rectangle rectWeg = new Rectangle(0, locy, frmgame.ClientRectangle.Width, heightRoad);
-            }
-            else
-            {
-                Rectangle rectWeg = new Rectangle(0, locy, frmgame.ClientRectangle.Width, heightRoad);
-            }
-                
-            
-
+            Rectangle rectWeg;
+            rectWeg = new Rectangle(0, locy, frmgame.ClientRectangle.Width, CalcHeightRoad());
             g.FillRectangle(brushRoad, rectWeg);
-            int lineloc = locy + (heightRoad / 2);
+            int lineloc = locy + (CalcHeightRoad() / 2);
             for (int xpos = 0; xpos < frmgame.ClientRectangle.Width; xpos += lineDistance)
             {
                 Rectangle rectRoadLine = new Rectangle(xpos, lineloc, 20, roadlineheight);
