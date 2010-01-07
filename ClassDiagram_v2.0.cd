@@ -194,8 +194,8 @@
     </Compartments>
     <AssociationLine Name="movingobjs" Type="Frogger.MovingObject" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.5" Y="7.119" />
-        <Point X="11.875" Y="7.119" />
+        <Point X="11.5" Y="7.196" />
+        <Point X="11.875" Y="7.196" />
         <Point X="11.875" Y="6.408" />
         <Point X="14" Y="6.408" />
       </Path>
@@ -204,7 +204,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>YIFAgAIEAAAAABCIAAABAABAAgNBEEACgAA4gBQIAIA=</HashCode>
+      <HashCode>YIFAgAIEAAAAABCIAAABAABAEgNBEEACgAA4gBQIAIA=</HashCode>
       <FileName>GameEngine.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>

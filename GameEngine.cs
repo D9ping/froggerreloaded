@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace Frogger
 {
@@ -36,15 +37,19 @@ namespace Frogger
         private int tick = 0;
         private Niveau tier;
         private List<Bitmap> prescaledimages;
+        private Frog frog;
 
-        public const int frogbottommargin = 5;
+        [DllImport("winmm.dll")]
+        public static extern int sndPlaySound(string sFile, int sMode);
+
+        public const int frogbottommargin = 5; //not supposed to change without recompile.
         public const int roadlineheight = 5;
 
         #endregion Fields
 
         #region Constructors (1)
 
-        //not supposed to change without recompile.
+        
         /// <summary>
         /// Creates a GameEngine.
         /// </summary>
@@ -68,7 +73,8 @@ namespace Frogger
             };
             gameupdate.Tick += new EventHandler(gameupdate_Tick);
 
-            movingobjs.Add(CreateFrog());
+            //movingobjs.Add(CreateFrog());
+            frog = (Frog)CreateFrog();
         }
 
         #endregion Constructors
@@ -106,7 +112,6 @@ namespace Frogger
         #region Methods (15)
 
         // Public Methods (9) 
-
         /// <summary>
         /// Checks if game time is up for the current tier.
         /// if so then excute the GameOver methode
@@ -216,8 +221,25 @@ namespace Frogger
         /// <returns>Whether or not Frogger collides with a moving object</returns>
         public Boolean DetectCollision()
         {
-            //throw new System.NotImplementedException();
+            if (frog == null) return false;
+
+            foreach (MovingObject mvobj in movingobjs)
+            {
+                int frogxpos = frog.Location.X + frog.Size.Width;
+                int frogypos = frog.Location.Y + frog.Size.Height;
+
+                if ((frog.Location.X >= mvobj.Location.X) && (frogxpos <= mvobj.Location.X) || (frog.Location.Y >= mvobj.Location.Y) && (frogypos <= mvobj.Location.Y))
+                {
+                    if (Program.sound)
+                    {
+                        sndPlaySound(Application.StartupPath + "\\sounds\\beep.wav", 1); //1 = Async
+                    }
+                    return true;
+                }
+            }
+
             return false;
+
         }
 
         /// <summary>
@@ -240,16 +262,16 @@ namespace Frogger
             }
         }
 
-        public void DrawTextbox(Graphics g, String text)
+        public void DrawTextbox(Graphics g, String textregel1)
         {
-            int trycentre = text.Length * 10;
-            Font font = new Font("Arial", 24);
+            int margincentre = textregel1.Length * 10;
+            Font fontregel1 = new Font("Flubber", 32);
             SolidBrush sbred = new SolidBrush(System.Drawing.Color.Red);
             SolidBrush sbdarkorange = new SolidBrush(System.Drawing.Color.DarkOrange);
             Rectangle box = new Rectangle(new Point(50, 50), new Size(frmgame.ClientRectangle.Width - 100, frmgame.ClientRectangle.Height - 100));
             g.DrawRectangle(Pens.Black, box);
-            g.FillRectangle(sbdarkorange, box); 
-            g.DrawString("Game Over", font, sbred, new PointF(frmgame.ClientRectangle.Width / 2 - trycentre, frmgame.ClientRectangle.Height / 2));
+            g.FillRectangle(sbdarkorange, box);
+            g.DrawString(textregel1, fontregel1, sbred, new PointF(frmgame.ClientRectangle.Width / 2 - margincentre, frmgame.ClientRectangle.Height / 2));
         }
 
         /// <summary>
@@ -259,6 +281,7 @@ namespace Frogger
         {
             if (timeup)
             {
+                StopEngine();
                 DrawTextbox(g, "Game Over");
             }
             //throw new System.NotImplementedException();
@@ -279,6 +302,10 @@ namespace Frogger
         public void StopEngine()
         {
             gameupdate.Enabled = false;
+            foreach (MovingObject mvobj in movingobjs)
+            {
+                mvobj.Dispose();
+            }
         }
         // Private Methods (6) 
 
@@ -426,7 +453,7 @@ namespace Frogger
         /// <summary>
         /// Updates the position of every moving object.
         /// </summary>
-        private void UpdatePositionMovingObjects()
+        public void UpdatePositionMovingObjects()
         {
             foreach (MovingObject obj in movingobjs)
             {

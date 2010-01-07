@@ -1,6 +1,7 @@
 ﻿using Frogger;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Drawing;
 namespace FroggerTest
 {
     
@@ -12,8 +13,6 @@ namespace FroggerTest
     [TestClass()]
     public class GameEngineTest
     {
-
-
         private TestContext testContextInstance;
 
         /// <summary>
@@ -70,10 +69,22 @@ namespace FroggerTest
         [DeploymentItem("Frogger.exe")]
         public void UpdatePositionMovingObjectsTest()
         {
-            PrivateObject param0 = null; // TODO: Initialize to an appropriate value
-            GameEngine_Accessor target = new GameEngine_Accessor(param0); // TODO: Initialize to an appropriate value
+            //Initialize to an appropriate value
+            int level = 1;
+            Niveau tier = Niveau.easy;
+            Direction direction = Direction.East;
+
+            FrmMenu frmmenu = new FrmMenu();
+            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
+            GameEngine target = new GameEngine(level, frmgame, tier);
+
+            int velocity = 2;
+            MovingObject car = target.CreateCarRandomColor(velocity, direction, 100, new Random());
+            Point oldpos = car.Location;
             target.UpdatePositionMovingObjects();
-            Assert.Inconclusive("A method that does not return a value cannot be verified.");
+            Assert.AreEqual(oldpos, new Point(oldpos.X, oldpos.Y));
+
+            //Assert.Inconclusive("A method that does not return a value cannot be verified.");
         }
 
         /// <summary>
@@ -109,7 +120,6 @@ namespace FroggerTest
         {
             int level = 1;
             Niveau tier = Niveau.easy;
-            Direction direction = Direction.East;
             FrmMenu frmmenu = new FrmMenu();
             FrmGame frmgame = new FrmGame(frmmenu, level, tier);
             //create target

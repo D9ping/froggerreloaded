@@ -35,8 +35,6 @@ namespace Frogger
 
         [DllImport("winmm.dll")]
         public static extern int sndPlaySound(string sFile, int sMode);
-        public const int sndAsync = 1;
-        public const int sndSync = 0;
 
         /// <summary>
         /// Constructor for creating HoverButton at runtime.
@@ -112,7 +110,7 @@ namespace Frogger
             this.Refresh();
             if (Program.sound)
             {
-                sndPlaySound(Application.StartupPath + "\\sounds\\beep.wav", sndAsync);
+                sndPlaySound(Application.StartupPath + "\\sounds\\beep.wav", 1); //1 = Async
             }
             Thread.Sleep(100);
             this.OnClick(e); //raise click event for obj. because text is in front.
