@@ -94,8 +94,39 @@ namespace Frogger
             CloseGame();
         }
 
+
+        /// <summary>
+        /// Makes arrow keys work.
+        /// </summary>
+        /// <param name="keyData"></param>
+        /// <returns></returns>
+      protected override bool ProcessDialogKey (Keys keyData)
+      {
+          switch (keyData)
+          {
+                    case Keys.Down:
+                  MessageBox.Show("Down");
+                    break;
+                case Keys.Left:
+                    MessageBox.Show("Left");
+                    break;
+                case Keys.Right:
+                    MessageBox.Show("Right");
+                    break;
+                case Keys.Up:
+                    MessageBox.Show("Up");
+                    break;
+            }
+          return true;
+      } 
+
+
+
+
         private void FrmGame_KeyDown(object sender, KeyEventArgs e)
         {
+            MessageBox.Show(e.KeyData.ToString());
+
             switch (e.KeyCode)
             {
                 case Keys.Escape:
@@ -104,19 +135,7 @@ namespace Frogger
                     this.frmmenu.Show();
                     this.Close();
                     break;
-                case Keys.Back:
-                    break;
-                case Keys.Down:
-                    break;
-                case Keys.Left:
-                    break;
-                case Keys.Menu:
-                    break;
-                case Keys.Right:
-                    break;
-                case Keys.Up:
-                    break;
-            }
+}
         }
 
         /// <summary>
