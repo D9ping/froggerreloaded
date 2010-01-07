@@ -27,8 +27,6 @@ namespace Frogger
         #region Fields (10)
 
         private FrmGame frmgame;
-        public const int frogbottommargin = 5;
-        public const int roadlineheight = 5;
         private Timer gameupdate;
         private int level = -1;
         private int lives;
@@ -38,6 +36,9 @@ namespace Frogger
         private int tick = 0;
         private Niveau tier;
         private List<Bitmap> prescaledimages;
+
+        public const int frogbottommargin = 5;
+        public const int roadlineheight = 5;
 
         #endregion Fields
 
@@ -215,7 +216,8 @@ namespace Frogger
         /// <returns>Whether or not Frogger collides with a moving object</returns>
         public Boolean DetectCollision()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
+            return false;
         }
 
         /// <summary>
@@ -259,7 +261,7 @@ namespace Frogger
             {
                 DrawTextbox(g, "Game Over");
             }
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
 
         /// <summary>

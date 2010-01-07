@@ -27,8 +27,8 @@
     <InheritanceLine Type="System.Windows.Forms.Form" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="7.812" Y="1.941" />
-        <Point X="7.812" Y="2.25" />
-        <Point X="9.5" Y="2.25" />
+        <Point X="7.812" Y="2.354" />
+        <Point X="9.5" Y="2.354" />
       </Path>
     </InheritanceLine>
     <AssociationLine Name="game" Type="Frogger.GameEngine">
@@ -37,7 +37,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAhCAQAAACAByIAAAGAAAACAAIAEACAACAAAA=</HashCode>
+      <HashCode>AAAAAAAAhCAQAAACAByIAAAGAAAICAAIAEACAACAAAA=</HashCode>
       <FileName>FrmGame.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

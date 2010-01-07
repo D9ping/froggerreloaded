@@ -82,15 +82,23 @@ namespace FroggerTest
         [TestMethod()]
         public void DetectCollisionTest()
         {
-            int level = 0; // TODO: Initialize to an appropriate value
-            FrmGame frmgame = null; // TODO: Initialize to an appropriate value
-            Niveau tier = new Niveau(); // TODO: Initialize to an appropriate value
-            GameEngine target = new GameEngine(level, frmgame, tier); // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
-            bool actual;
-            actual = target.DetectCollision();
-            Assert.AreEqual(expected, actual);
-            Assert.Inconclusive("Verify the correctness of this test method.");
+            //Initialize to an appropriate value
+            int level = 1;
+            Niveau tier = Niveau.easy;
+            Direction direction = Direction.East;
+            FrmMenu frmmenu = new FrmMenu();
+            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
+            GameEngine target = new GameEngine(level, frmgame, tier);
+
+            MovingObject testfrog = target.CreateFrog();
+            Assert.IsNotNull(testfrog, "cannot create frog.");
+            
+            MovingObject car = target.CreateCarRandomColor(0, direction, 100, new Random()); //velocity is 0
+            Assert.IsNotNull(testfrog, "cannot create car.");
+
+            testfrog.Location = car.Location;
+
+            Assert.IsTrue(target.DetectCollision(), "Their should be a collision.");
         }
 
         /// <summary>

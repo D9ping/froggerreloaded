@@ -183,6 +183,12 @@ namespace Frogger
 
 		#endregion Methods 
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            timeup = true;
+            this.Refresh();
+        }
+
         
     }
 }
