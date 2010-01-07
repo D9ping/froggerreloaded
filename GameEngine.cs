@@ -74,7 +74,7 @@ namespace Frogger
             gameupdate.Tick += new EventHandler(gameupdate_Tick);
 
             //movingobjs.Add(CreateFrog());
-            frog = (Frog)CreateFrog();
+            frog = CreateFrog();
         }
 
         #endregion Constructors
@@ -177,7 +177,7 @@ namespace Frogger
         /// and the 
         /// </summary>
         /// <returns>a frog moving object</returns>
-        public MovingObject CreateFrog()
+        public Frog CreateFrog()
         {
             frog = new Frog(0, Direction.North);
 
