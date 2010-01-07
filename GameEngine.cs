@@ -37,7 +37,7 @@ namespace Frogger
         private int tick = 0;
         private Niveau tier;
         private List<Bitmap> prescaledimages;
-        private Frog frog;
+        public Frog frog;
 
         [DllImport("winmm.dll")]
         public static extern int sndPlaySound(string sFile, int sMode);
@@ -183,8 +183,8 @@ namespace Frogger
 
             int locX = (frmgame.ClientRectangle.Width / 2) - (frog.Width / 2);
             int locY = frmgame.ClientRectangle.Height - frog.Height - frogbottommargin;
-            //int sizeX = frmgame.ClientRectangle.Width / 10;
-            //int sizeY = frmgame.ClientRectangle.Height / 10;
+            int sizeX = frmgame.ClientRectangle.Width / 10;
+            int sizeY = frmgame.ClientRectangle.Height / 10;
 
             frog.Location = new Point(locX, locY);
             //frog.Size = new Size(sizeX, sizeY);
@@ -330,6 +330,10 @@ namespace Frogger
         private int CalcHeightRivir(int baans)
         {
             int hrivir = (frmgame.ClientRectangle.Height / 10) * baans;
+            if (Program.fullscreen)
+            {
+                hrivir = Screen.PrimaryScreen.WorkingArea.Height / 10 * baans;
+            }
             return hrivir;
         }
 
@@ -400,7 +404,16 @@ namespace Frogger
 
             SolidBrush brushRoad = new SolidBrush(Color.Black); // the color of the road
             SolidBrush brushRoadLine = new SolidBrush(Color.White); // the color of the lines on the road
-            Rectangle rectWeg = new Rectangle(0, locy, frmgame.ClientRectangle.Width, heightRoad);
+            if (Program.fullscreen)
+            {
+                Rectangle rectWeg = new Rectangle(0, locy, frmgame.ClientRectangle.Width, heightRoad);
+            }
+            else
+            {
+                Rectangle rectWeg = new Rectangle(0, locy, frmgame.ClientRectangle.Width, heightRoad);
+            }
+                
+            
 
             g.FillRectangle(brushRoad, rectWeg);
             int lineloc = locy + (heightRoad / 2);
