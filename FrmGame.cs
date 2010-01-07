@@ -34,7 +34,7 @@ namespace Frogger
         private FrmMenu frmmenu;
         private GameEngine game;
         private int min = 0;
-        private int sec = 0;
+        private int sec = 10;
         private bool timeup = false;
 
 		#endregion Fields 
@@ -131,6 +131,7 @@ namespace Frogger
             if (timeup)
             {
                 game.GameOver(g, true, false);
+                this.Invalidate();
             }
             else
             {
@@ -163,7 +164,7 @@ namespace Frogger
                 min--;
                 if (game.CheckGameTime(min))
                 {
-
+                    timeup = true;
                 }
                 else
                 {
