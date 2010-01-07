@@ -25,31 +25,27 @@ namespace Frogger
 {
     public class GameEngine
     {
-        #region Fields (10)
+		#region Fields (12) 
 
         private FrmGame frmgame;
+        //private List<Bitmap> prescaledimages;
+        public Frog frog;
+        public const int frogbottommargin = 5;
         private Timer gameupdate;
         private int level = -1;
         private int lives;
         public List<MovingObject> movingobjs;
         private List<int> rivirs;
+ //not supposed to change without recompile.
+        public const int roadlineheight = 5;
         private List<int> roads;
         private int tick = 0;
         private Niveau tier;
-        private List<Bitmap> prescaledimages;
-        public Frog frog;
 
-        [DllImport("winmm.dll")]
-        public static extern int sndPlaySound(string sFile, int sMode);
+		#endregion Fields 
 
-        public const int frogbottommargin = 5; //not supposed to change without recompile.
-        public const int roadlineheight = 5;
+		#region Constructors (1) 
 
-        #endregion Fields
-
-        #region Constructors (1)
-
-        
         /// <summary>
         /// Creates a GameEngine.
         /// </summary>
@@ -73,53 +69,16 @@ namespace Frogger
             };
             gameupdate.Tick += new EventHandler(gameupdate_Tick);
 
-            //movingobjs.Add(CreateFrog());
             frog = CreateFrog();
+            frmgame.Controls.Add(frog);
         }
 
-        #endregion Constructors
+		#endregion Constructors 
 
-        #region Properties (1)
+		#region Methods (18) 
 
-        /// <summary>
-        /// Returns the number of lives the player has left.
-        /// </summary>
-        public int Lives
-        {
-            get
-            {
-                return lives;
-            }
-            set
-            {
-                lives = value;
-            }
-        }
+		// Public Methods (13) 
 
-        public int NumObjects
-        {
-            get
-            {
-                return this.movingobjs.Count;
-            }
-        }
-
-        /// <summary>
-        /// Returns if GameUpdate timer is still running. Needed for tests.
-        /// </summary>
-        public bool GameUpdateStatus
-        {
-            get
-            {
-                return gameupdate.Enabled;
-            }
-        }
-
-        #endregion
-
-        #region Methods (15)
-
-        // Public Methods (9) 
         /// <summary>
         /// Checks if game time is up for the current tier.
         /// if so then excute the GameOver methode
@@ -134,6 +93,24 @@ namespace Frogger
             }
             else
             {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Checks the amount of lives the player has.
+        /// If this amount is less than 1, it will inform the player that the game is over.
+        /// If that is the case, the GameEngine will close, and the main menu will open.
+        /// </summary>
+        public bool CheckLives(int currentLives)
+        {
+            if (currentLives < 1)
+            {
+                return true;
+            }
+            else
+            {
+                Lives--;
                 return false;
             }
         }
@@ -310,6 +287,9 @@ namespace Frogger
             throw new System.NotImplementedException();
         }
 
+        [DllImport("winmm.dll")]
+        public static extern int sndPlaySound(string sFile, int sMode);
+
         /// <summary>
         /// disable the gameupdate timer.
         /// </summary>
@@ -321,7 +301,44 @@ namespace Frogger
                 mvobj.Dispose();
             }
         }
-        // Private Methods (6) 
+
+        /// <summary>
+        /// Updates the position of every moving object.
+        /// </summary>
+        public void UpdatePositionMovingObjects()
+        {
+            foreach (MovingObject obj in movingobjs)
+            {
+                if (frmgame.Controls.Contains(obj))
+                {
+
+                    switch (obj.Dir)
+                    {
+                        case Direction.East:
+                            obj.Location = new Point(obj.Location.X + obj.Velocity, obj.Location.Y);
+                            break;
+                        case Direction.West:
+                            obj.Location = new Point(obj.Location.X - obj.Velocity, obj.Location.Y);
+                            break;
+                    }
+                    if ((obj.Location.X + obj.Width < 0) || (obj.Location.X > frmgame.Width + obj.Width))
+                    {
+                        frmgame.Controls.Remove(obj);
+                    }
+                    else
+                    {
+                        //obj.Refresh();
+                        obj.Invalidate();
+                    }
+                }
+                else
+                {
+                    frmgame.Controls.Add(obj);
+                }
+
+            }
+        }
+		// Private Methods (5) 
 
         /// <summary>
         /// Calculate the height of the rivir.
@@ -345,24 +362,6 @@ namespace Frogger
                 hroad = Screen.PrimaryScreen.WorkingArea.Height / 10;
             }
             return hroad;
-        }
-
-        /// <summary>
-        /// Checks the amount of lives the player has.
-        /// If this amount is less than 1, it will inform the player that the game is over.
-        /// If that is the case, the GameEngine will close, and the main menu will open.
-        /// </summary>
-        public bool CheckLives(int currentLives)
-        {
-            if (currentLives < 1)
-            {
-                return true;
-            }
-            else
-            {
-                Lives--;
-                return false;
-            }
         }
 
         /// <summary>
@@ -472,43 +471,44 @@ namespace Frogger
             UpdatePositionMovingObjects();
         }
 
+		#endregion Methods 
+
+        #region Properties (1)
+
         /// <summary>
-        /// Updates the position of every moving object.
+        /// Returns the number of lives the player has left.
         /// </summary>
-        public void UpdatePositionMovingObjects()
+        public int Lives
         {
-            foreach (MovingObject obj in movingobjs)
+            get
             {
-                if (frmgame.Controls.Contains(obj))
-                {
-
-                    switch (obj.Dir)
-                    {
-                        case Direction.East:
-                            obj.Location = new Point(obj.Location.X + obj.Velocity, obj.Location.Y);
-                            break;
-                        case Direction.West:
-                            obj.Location = new Point(obj.Location.X - obj.Velocity, obj.Location.Y);
-                            break;
-                    }
-                    if ((obj.Location.X + obj.Width < 0) || (obj.Location.X > frmgame.Width + obj.Width))
-                    {
-                        frmgame.Controls.Remove(obj);
-                    }
-                    else
-                    {
-                        //obj.Refresh();
-                        obj.Invalidate();
-                    }
-                }
-                else
-                {
-                    frmgame.Controls.Add(obj);
-                }
-
+                return lives;
+            }
+            set
+            {
+                lives = value;
             }
         }
 
-        #endregion Methods
+        public int NumObjects
+        {
+            get
+            {
+                return this.movingobjs.Count;
+            }
+        }
+
+        /// <summary>
+        /// Returns if GameUpdate timer is still running. Needed for tests.
+        /// </summary>
+        public bool GameUpdateStatus
+        {
+            get
+            {
+                return gameupdate.Enabled;
+            }
+        }
+
+        #endregion
     }
 }
