@@ -23,6 +23,7 @@ using System.Windows.Forms;
 using System.Drawing.Drawing2D;
 using System.Threading;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace Frogger
 {
@@ -110,7 +111,19 @@ namespace Frogger
             this.Refresh();
             if (Program.sound)
             {
-                sndPlaySound(Application.StartupPath + "\\sounds\\beep.wav", 1); //1 = Async
+                string soundbeep = Application.StartupPath + "\\sounds\\beep.wav";
+                if (File.Exists(soundbeep))
+                {
+                    sndPlaySound(Application.StartupPath + "\\sounds\\beep.wav", 1); //1 = Async
+                }
+                else
+                {
+                    DialogResult dlgres = MessageBox.Show("Sound file beep.wav not found.\r\nDo you want to disable the sound completly?", "missing sound file", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                    if (dlgres == DialogResult.Yes)
+                    {
+                        Program.sound = false;
+                    }
+                }
             }
             Thread.Sleep(100);
             this.OnClick(e); //raise click event for obj. because text is in front.

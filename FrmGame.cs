@@ -104,8 +104,8 @@ namespace Frogger
       {
           switch (keyData)
           {
-                    case Keys.Down:
-                  MessageBox.Show("Down");
+                case Keys.Down:
+                    MessageBox.Show("Down");
                     break;
                 case Keys.Left:
                     MessageBox.Show("Left");
@@ -116,27 +116,16 @@ namespace Frogger
                 case Keys.Up:
                     MessageBox.Show("Up");
                     break;
-            }
-          return true;
-      } 
-
-
-
-
-        private void FrmGame_KeyDown(object sender, KeyEventArgs e)
-        {
-            MessageBox.Show(e.KeyData.ToString());
-
-            switch (e.KeyCode)
-            {
                 case Keys.Escape:
                     game.StopEngine();
                     this.frmmenu.Menustate = MenuState.main;
                     this.frmmenu.Show();
                     this.Close();
                     break;
-}
-        }
+            }
+          return true;
+      }
+
 
         /// <summary>
         /// Draw every aspect of the game.
