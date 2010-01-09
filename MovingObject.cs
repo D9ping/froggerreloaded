@@ -77,11 +77,11 @@ namespace Frogger
         }
         
         /// <summary>
-        /// Maak control even groot als bitmap
+        /// Resize frog
         /// </summary>
-        public void SetSize()
+        public void SetSize(int wfrog, int hfrog)
         {
-            this.Size = pic.Size;
+            this.Size = new Size(wfrog, hfrog);
         }
         
 

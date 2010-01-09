@@ -25,26 +25,30 @@ namespace Frogger
 {
     public class GameEngine
     {
-		#region Fields (12) 
+		#region Fields (11) 
 
         private FrmGame frmgame;
+        private Niveau tier;
+        private Boolean setup = false;
         //private List<Bitmap> prescaledimages;
         public Frog frog;
-        public const int frogbottommargin = 5;
         private Timer gameupdate;
-        private int level = -1;
-        private int lives;
         public List<MovingObject> movingobjs;
         private List<int> rivirs;
- //not supposed to change without recompile.
-        public const int roadlineheight = 5;
         private List<int> roads;
-        private int tick = 0;
-        private Niveau tier;
 
-		#endregion Fields 
+        private int timesecnewobj = 0, level = -1, lives = -1, tick = 0;
+        
 
-		#region Constructors (1) 
+        #endregion Fields
+
+        #region game const settings
+        private const int roadlineheight = 5;//not supposed to change without recompile.
+        private const int frogbottommargin = 5;
+        private const int lineDistance = 100;
+        #endregion
+
+        #region Constructors (1)
 
         /// <summary>
         /// Creates a GameEngine.
@@ -74,6 +78,43 @@ namespace Frogger
         }
 
 		#endregion Constructors 
+        #region Properties (1)
+
+        /// <summary>
+        /// Returns the number of lives the player has left.
+        /// </summary>
+        public int Lives
+        {
+            get
+            {
+                return lives;
+            }
+            set
+            {
+                lives = value;
+            }
+        }
+
+        public int NumObjects
+        {
+            get
+            {
+                return this.movingobjs.Count;
+            }
+        }
+
+        /// <summary>
+        /// Returns if GameUpdate timer is still running. Needed for tests.
+        /// </summary>
+        public bool GameUpdateStatus
+        {
+            get
+            {
+                return gameupdate.Enabled;
+            }
+        }
+
+        #endregion
 
 		#region Methods (18) 
 
@@ -144,7 +185,7 @@ namespace Frogger
                 car.Location = new Point(posX, roadLocY);
             }
             //car.Size = new Size(wcar, hcar);
-            car.SetSize();
+            car.SetSize(initwidthcar, initheightcar);
             return car;
         }
 
@@ -156,17 +197,19 @@ namespace Frogger
         /// <returns>a frog moving object</returns>
         public Frog CreateFrog()
         {
-            frog = new Frog(0, Direction.North);
+            int space = frmgame.ClientSize.Height / 20;
+            frog = new Frog(0, Direction.North, space);
 
-            int locX = (frmgame.ClientRectangle.Width / 2) - (frog.Width / 2);
-            int locY = frmgame.ClientRectangle.Height - frog.Height - frogbottommargin;
-            int sizeX = frmgame.ClientRectangle.Width / 10;
-            int sizeY = frmgame.ClientRectangle.Height / 10;
+            int locX = (frmgame.ClientSize.Width / 2) - (frog.Width / 2);
+            int locY = frmgame.ClientSize.Height - frog.Height - frogbottommargin;
+            
+            int sizeX = frmgame.ClientSize.Width / 20;
+            int sizeY = frmgame.ClientSize.Height / 20;
 
             frog.Location = new Point(locX, locY);
-            //frog.Size = new Size(sizeX, sizeY);
+            //Image imgfrog = (Image)frog.pic;
 
-            frog.SetSize();
+            frog.SetSize(sizeX, sizeY);
             if (frog == null) { throw new Exception("frog not created."); }
             return frog;
         }
@@ -182,22 +225,22 @@ namespace Frogger
             Tree treetrunk = new Tree(vel, dir);
             
             int locX = -treetrunk.Width;
-            /*
-            if (dir == Direction.East)
-            {
-                locX = -treetrunk.Width;
-            }
-            else
-            */
+            
             if (dir == Direction.West)
             {
-                locX = frmgame.ClientRectangle.Width + treetrunk.Width;
+                locX = frmgame.ClientSize.Width + treetrunk.Width;
+            }
+            else
+            
+            if (dir == Direction.West)
+            {
+                locX = frmgame.ClientSize.Width + treetrunk.Width;
             }
             treetrunk.Location = new Point(locX, locY);
             int htree = CalcHeightRivir(1);
-            int wtree = CalcHeightRivir(1) * 2;
+            int wtree = CalcHeightRivir(1) * 3;
             treetrunk.Size = new Size(wtree, htree);
-            treetrunk.SetSize();
+            treetrunk.SetSize(wtree, htree);
             return treetrunk;
         }
 
@@ -234,18 +277,27 @@ namespace Frogger
         /// <param name="g">The graphics component that should be used</param>
         public void DrawLevel(Graphics g)
         {
-            int space = frmgame.ClientRectangle.Height / 10;
-            switch (level)
-            {
-                case 1:
-                    DrawRiver(g, space* 1, 1);
-                    DrawRoad(g, space * 3);
-                    DrawRoad(g, space * 5);
-                    DrawRoad(g, space * 7);
-                    break;
-                case 2:
-                    break;
-            }
+            int space = frmgame.ClientSize.Height / 10;
+                switch (level)
+                {
+                    case 1:
+                        DrawRiver(g, space * 1, 1); //this is the level design.
+                        DrawRoad(g, space * 3);
+                        DrawRoad(g, space * 5);
+                        DrawRoad(g, space * 7);
+                        break;
+                    case 2:
+                        DrawRiver(g, space * 1, 2); //even rivieren testen.
+                        DrawRoad(g, space * 5);
+                        DrawRoad(g, space * 7);
+                        break;
+                    case 3:
+                        DrawRiver(g, space * 1, 4);
+                        DrawRoad(g, space/2 * 11);
+                        DrawRoad(g, space * 7);
+                        break;
+                }
+                setup = true;
         }
 
         /// <summary>
@@ -346,7 +398,7 @@ namespace Frogger
         /// <returns>the height in number of pixels</returns>
         private int CalcHeightRivir(int baans)
         {
-            int hrivir = (frmgame.ClientRectangle.Height / 10) * baans;
+            int hrivir = (frmgame.ClientSize.Height / 10) * baans;
             if (Program.fullscreen)
             {
                 hrivir = Screen.PrimaryScreen.WorkingArea.Height / 10 * baans;
@@ -354,9 +406,13 @@ namespace Frogger
             return hrivir;
         }
 
+        /// <summary>
+        /// Calculate the height of the road to draw
+        /// </summary>
+        /// <returns></returns>
         private int CalcHeightRoad()
         {
-            int hroad = frmgame.ClientRectangle.Height / 10;
+            int hroad = frmgame.ClientSize.Height / 10;
             if (!Program.fullscreen)
             {
                 hroad = Screen.PrimaryScreen.WorkingArea.Height / 10;
@@ -371,7 +427,13 @@ namespace Frogger
         /// <param name="locy">The y-coördinate the river is created at</param>
         private void DrawRiver(Graphics g, int locy, int numcourses)
         {
-            rivirs.Add(locy);
+            if (!setup)
+            {
+                for (int curcourse = 0; curcourse < numcourses; curcourse++)
+                {
+                    rivirs.Add(locy + curcourse * CalcHeightRivir(1));
+                }
+            }
 
             SolidBrush brushRiver = new SolidBrush(Color.Blue);
             if ((numcourses < 9) && (numcourses > 0))
@@ -403,15 +465,13 @@ namespace Frogger
                 roads.Add(locy);
             }
 
-            int lineDistance = 100;
-
             SolidBrush brushRoad = new SolidBrush(Color.Black); // the color of the road
             SolidBrush brushRoadLine = new SolidBrush(Color.White); // the color of the lines on the road
             Rectangle rectWeg;
-            rectWeg = new Rectangle(0, locy, frmgame.ClientRectangle.Width, CalcHeightRoad());
+            rectWeg = new Rectangle(0, locy, frmgame.ClientSize.Width, CalcHeightRoad());
             g.FillRectangle(brushRoad, rectWeg);
             int lineloc = locy + (CalcHeightRoad() / 2);
-            for (int xpos = 0; xpos < frmgame.ClientRectangle.Width; xpos += lineDistance)
+            for (int xpos = 0; xpos < frmgame.ClientSize.Width; xpos += lineDistance)
             {
                 Rectangle rectRoadLine = new Rectangle(xpos, lineloc, 20, roadlineheight);
                 g.FillRectangle(brushRoadLine, rectRoadLine);
@@ -427,15 +487,9 @@ namespace Frogger
         /// <param name="e"></param>
         private void gameupdate_Tick(object sender, EventArgs e)
         {
-            tick++;
             int maxtick = 1000 / gameupdate.Interval; //1s
 
-            switch (level)
-            {
-                case 1:
-                    int sectime = 5;
-
-                    if (tick == maxtick * sectime)
+            if (tick >= maxtick * timesecnewobj)
                     {
                         Random rndgen = new Random();
 
@@ -451,64 +505,43 @@ namespace Frogger
                                 movingobjs.Add(CreateCarRandomColor(2, Direction.West,  roads[curroad], rndgen));
                             }
                         }
-
-                        movingobjs.Add(CreateTreeTrunk(3, Direction.East, rivirs[0]));
-                        /*
-                        foreach (int riviry in rivirs)
-                        {
-                            movingobjs.Add(CreateTreeTrunk(2, Direction.East, riviry));
-                        }
-                         */
-                        
-                        //todo
-
-                        tick = 0;
+                    
+                for (int curriver = 0; curriver < rivirs.Count; curriver++)
+                {
+                    if (curriver % 2 == 0) //even
+                    {
+                        movingobjs.Add(CreateTreeTrunk(4, Direction.East, rivirs[curriver]));
                     }
+                    else if (curriver != 0) //odd and not 0
+                    {
+                        movingobjs.Add(CreateTreeTrunk(4, Direction.West, rivirs[curriver]));
+                    }
+                }
+                tick = 0;
+            }
+            else
+            {
+                tick++;
+            }
+            
+            switch (level)
+            {
+                case 1:
+                    timesecnewobj = 5;
                     break;
-                default:
+                case 2:
+                    timesecnewobj = 4;
+                    break;
+                case 3:
+                    timesecnewobj = 3;
                     break;
             }
+
             UpdatePositionMovingObjects();
         }
 
 		#endregion Methods 
 
-        #region Properties (1)
 
-        /// <summary>
-        /// Returns the number of lives the player has left.
-        /// </summary>
-        public int Lives
-        {
-            get
-            {
-                return lives;
-            }
-            set
-            {
-                lives = value;
-            }
-        }
-
-        public int NumObjects
-        {
-            get
-            {
-                return this.movingobjs.Count;
-            }
-        }
-
-        /// <summary>
-        /// Returns if GameUpdate timer is still running. Needed for tests.
-        /// </summary>
-        public bool GameUpdateStatus
-        {
-            get
-            {
-                return gameupdate.Enabled;
-            }
-        }
-
-        #endregion
     }
 }

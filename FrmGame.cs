@@ -73,6 +73,7 @@ namespace Frogger
         }
 		// Private Methods (7) 
 
+#if DEBUG
         /// <summary>
         /// quickly test game over.
         /// </summary>
@@ -83,6 +84,7 @@ namespace Frogger
             timeup = true;
             this.Refresh();
         }
+#endif
 
         /// <summary>
         /// Form is closed.
@@ -103,18 +105,22 @@ namespace Frogger
       protected override bool ProcessDialogKey (Keys keyData)
       {
           switch (keyData)
-          {
+          {               
                 case Keys.Down:
-                    MessageBox.Show("Down");
+                  game.frog.Jump(Direction.South);
+                    
                     break;
                 case Keys.Left:
-                    MessageBox.Show("Left");
+                    game.frog.Jump(Direction.East);
+                    
                     break;
                 case Keys.Right:
-                    MessageBox.Show("Right");
+                    game.frog.Jump(Direction.West);
+                    
                     break;
                 case Keys.Up:
-                    MessageBox.Show("Up");
+                    game.frog.Jump(Direction.North);
+                    
                     break;
                 case Keys.Escape:
                     game.StopEngine();
