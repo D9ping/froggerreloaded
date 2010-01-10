@@ -218,7 +218,7 @@ namespace Frogger
         /// Creates a new tree trunk.
         /// </summary>
         /// <param name="vel">The velocity of the tree trunk</param>
-        /// <param name="dir">The direction of the tree trunk</param>
+        /// <param name="dir">The direction of the tree trunk</param>dd
         /// <returns>a tree trunk moving object</returns>
         public MovingObject CreateTreeTrunk(int vel, Direction dir, int locY)
         {
@@ -241,6 +241,7 @@ namespace Frogger
             int wtree = CalcHeightRivir(1) * 3;
             treetrunk.Size = new Size(wtree, htree);
             treetrunk.SetSize(wtree, htree);
+
             return treetrunk;
         }
 
