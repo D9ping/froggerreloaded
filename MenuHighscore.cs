@@ -18,6 +18,22 @@ namespace Frogger
             :base(frmmenu)
         {            
             //todo
+            HoverButton hovbtn = new HoverButton("test highscore bvow");
+            hovbtn.Click +=new EventHandler(hovbtn_Click);
+            frmmenu.Controls.Add(hovbtn);
+        }
+
+        void hovbtn_Click(object sender, EventArgs e)
+        {
+            DateTime testdatum = new DateTime();
+            testdatum.AddDays(11);
+            testdatum.AddHours(14);
+            testdatum.AddMinutes(20);
+            testdatum.AddMonths(1);
+            testdatum.AddYears(2010);
+
+
+            DBConnection.VoegHighscoreToe(testdatum, "Gertjan", 20, 1);
         }
 
 		#endregion Constructors 

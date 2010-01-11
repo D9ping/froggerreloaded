@@ -10,7 +10,7 @@ namespace Frogger
 	{
 		public static SqlDataReader GetData(string query)
 		{
-			string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\highscores.accdb;Persist Security Info=False;";
+			string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\highscores.accdb;Persist Security Info=False;";
 
             SqlConnection myConnection = null;
             SqlDataReader reader;
@@ -31,7 +31,7 @@ namespace Frogger
 
 		public static void SetData(string query)
 		{
-			string connectionString = "???";
+            string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\highscores.accdb;Persist Security Info=False;";
 
 			SqlConnection myConnection = new SqlConnection(connectionString);
 			myConnection.Open();
@@ -42,5 +42,23 @@ namespace Frogger
 
 			myConnection.Close();
 		}
+
+        public static void VoegHighscoreToe(DateTime tijddatum, string naam, int speeltijd, int level)
+        {
+            string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\highscores.accdb;Persist Security Info=False;";
+
+            SqlConnection myConnection = new SqlConnection(connectionString);
+            myConnection.Open();
+
+            //INSERT INTO table_name
+            //VALUES (value1, value2, value3,...)
+            string query = "INSERT INTO HIGHSCORES VALUES ('" + tijddatum.ToString() + "', '" + naam + "', '" + speeltijd.ToString() + "', '" + level.ToString() + "')";
+
+            SqlCommand command = new SqlCommand(query, myConnection);
+
+            command.ExecuteNonQuery();
+
+            myConnection.Close();
+        }
 	}
 }
