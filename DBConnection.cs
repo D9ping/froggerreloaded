@@ -10,7 +10,7 @@ namespace Frogger
 	{
 		public static SqlDataReader GetData(string query)
 		{
-			string connectionString = "???";
+			string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\highscores.accdb;Persist Security Info=False;";
 
             SqlConnection myConnection = null;
             SqlDataReader reader;

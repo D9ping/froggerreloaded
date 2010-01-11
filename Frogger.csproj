@@ -52,6 +52,7 @@
     <Compile Include="Car.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="DBConnection.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="FrmMenu.cs">
       <SubType>Form</SubType>
