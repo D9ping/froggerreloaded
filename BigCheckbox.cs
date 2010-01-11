@@ -34,7 +34,7 @@ namespace Frogger
         /// </summary>
         public BigCheckbox()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         /// <summary>

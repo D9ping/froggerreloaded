@@ -79,7 +79,7 @@ namespace FroggerTest
             GameEngine target = new GameEngine(level, frmgame, tier);
 
             int velocity = 2;
-            MovingObject car = target.CreateCarRandomColor(velocity, direction, 100, new Random());
+            MovingObject car = target.CreateCarRandomColor(velocity, direction, 100, 100,new Random());
             Point oldpos = car.Location;
             target.UpdatePositionMovingObjects();
             Assert.AreEqual(oldpos, new Point(oldpos.X, oldpos.Y));
@@ -104,7 +104,7 @@ namespace FroggerTest
             MovingObject testfrog = target.CreateFrog();
             Assert.IsNotNull(testfrog, "cannot create frog.");
             
-            MovingObject car = target.CreateCarRandomColor(0, direction, 100, new Random()); //velocity is 0
+            MovingObject car = target.CreateCarRandomColor(0, direction, 100, 100, new Random()); //velocity is 0
             Assert.IsNotNull(car, "cannot create car.");
 
             target.movingobjs.Add(car);
@@ -112,11 +112,10 @@ namespace FroggerTest
             testfrog.Location = new Point(car.Location.X, car.Location.Y);
             if (target.NumObjects == 0) { Assert.Fail("no objects."); }
 
-            if (target.DetectCollision()==false)
+            if (target.DetectCollision(car) == false)
             {
                 Assert.Fail("There should be a collision.");
             }
-            //Assert.IsFalse(target.DetectCollision(), "There should be a collision.");
         }
 
         /// <summary>
@@ -160,7 +159,7 @@ namespace FroggerTest
             for (int times = 0; times < 10; times++)
             {
                 //Create object from methode.
-                MovingObject actual = target.CreateCarRandomColor(1, direction, 0, new Random());
+                MovingObject actual = target.CreateCarRandomColor(1, direction, 0, 100, new Random());
                 //Test: are object created.
                 Assert.IsNotNull(actual, "cannot create object from methode.");
             }

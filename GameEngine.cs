@@ -25,7 +25,7 @@ namespace Frogger
 {
     public class GameEngine
     {
-		#region Fields (11) 
+        #region Fields (11)
 
         private FrmGame frmgame;
         private Niveau tier;
@@ -38,13 +38,13 @@ namespace Frogger
         private List<int> roads;
 
         private int timesecnewobj = 0, level = -1, lives = -1, tick = 0;
-        
+
 
         #endregion Fields
 
         #region game const settings
-        private const int roadlineheight = 5;//not supposed to change without recompile.
-        private const int frogbottommargin = 5;
+        private const int roadlineheight = 5; //not supposed to change integers without recompile.
+        private const int frogbottommargin = 16;
         private const int lineDistance = 100;
         #endregion
 
@@ -77,7 +77,8 @@ namespace Frogger
             frmgame.Controls.Add(frog);
         }
 
-		#endregion Constructors 
+        #endregion Constructors
+
         #region Properties (1)
 
         /// <summary>
@@ -116,9 +117,9 @@ namespace Frogger
 
         #endregion
 
-		#region Methods (18) 
+        #region Methods (18)
 
-		// Public Methods (13) 
+        // Public Methods (13) 
 
         /// <summary>
         /// Checks if game time is up for the current tier.
@@ -164,25 +165,22 @@ namespace Frogger
         /// <param name="dir">The number of the road to added the car to</param>
         /// <param name="dir">The random generator this to prevent getting right and left always the same color.</param>
         /// <returns>a car moving object</returns>
-        public MovingObject CreateCarRandomColor(int vel, Direction dir, int roadLocY, Random rndgen)
+        public MovingObject CreateCarRandomColor(int vel, Direction dir, int roadLocY, int locX,  Random rndgen)
         {
             int color = rndgen.Next(1, 3); // color is 1 or 2
             Car car = new Car(color, vel, dir);
 
-            int posX = 0;
             int initheightcar = CalcHeightRoad() / 2 - roadlineheight;
             int initwidthcar = frmgame.ClientRectangle.Width / 10;
 
             if (dir == Direction.East)
             {
-                posX = 0;
-                int posY = roadLocY + 2*roadlineheight + initheightcar;
-                car.Location = new Point(posX, posY);
+                int locY = roadLocY + 2 * roadlineheight + initheightcar;
+                car.Location = new Point(locX, locY);
             }
             else if (dir == Direction.West)
             {
-                posX = frmgame.Width;
-                car.Location = new Point(posX, roadLocY);
+                car.Location = new Point(locX, roadLocY);
             }
             //car.Size = new Size(wcar, hcar);
             car.SetSize(initwidthcar, initheightcar);
@@ -202,7 +200,7 @@ namespace Frogger
 
             int locX = (frmgame.ClientSize.Width / 2) - (frog.Width / 2);
             int locY = frmgame.ClientSize.Height - frog.Height - frogbottommargin;
-            
+
             int sizeX = frmgame.ClientSize.Width / 20;
             int sizeY = frmgame.ClientSize.Height / 20;
 
@@ -223,19 +221,19 @@ namespace Frogger
         public MovingObject CreateTreeTrunk(int vel, Direction dir, int locY)
         {
             Tree treetrunk = new Tree(vel, dir);
-            
+
             int locX = -treetrunk.Width;
-            
+
             if (dir == Direction.West)
             {
                 locX = frmgame.ClientSize.Width + treetrunk.Width;
             }
             else
-            
+
             if (dir == Direction.West)
-            {
-                locX = frmgame.ClientSize.Width + treetrunk.Width;
-            }
+                {
+                    locX = frmgame.ClientSize.Width + treetrunk.Width;
+                }
             treetrunk.Location = new Point(locX, locY);
             int htree = CalcHeightRivir(1);
             int wtree = CalcHeightRivir(1) * 3;
@@ -249,26 +247,25 @@ namespace Frogger
         /// Detects collision when Frogger collides.
         /// </summary>
         /// <returns>Whether or not Frogger collides with a moving object</returns>
-        public Boolean DetectCollision()
+        public Boolean DetectCollision(MovingObject mvobj)
         {
             if (frog == null) { throw new Exception("no frog created."); }
 
-            foreach (MovingObject mvobj in movingobjs)
-            {
-                int frogxpos = frog.Location.X + frog.Size.Width;
-                int frogypos = frog.Location.Y + frog.Size.Height;
+            int frogXrechtsboven = frog.Location.X + frog.Size.Width;
+            int frogYlinksboven = frog.Location.Y;
+            int mvobjXrechtsboven = mvobj.Location.X + mvobj.Size.Width;
+            int frogXlinksboven = frog.Location.X - 5;
 
-                if ((frog.Location.X >= mvobj.Location.X) && (frogxpos <= mvobj.Location.X) || 
-                    (frog.Location.Y >= mvobj.Location.Y) && (frogypos <= mvobj.Location.Y))
+            if ((mvobj.Location.X <= frogXrechtsboven) && (mvobjXrechtsboven >= frogXlinksboven))
+            {
+                int frogYlinksonder = frog.Location.Y + frog.Size.Height;
+                int mvobjYlinksonder = mvobj.Location.Y + mvobj.Size.Height + 10;
+
+                if ((mvobj.Location.Y <= frogYlinksboven) && (mvobjYlinksonder >= frogYlinksonder))
                 {
-                    if (Program.sound)
-                    {
-                        sndPlaySound(Application.StartupPath + "\\sounds\\beep.wav", 1); //1 = Async
-                    }
                     return true;
                 }
             }
-
             return false;
         }
 
@@ -279,26 +276,55 @@ namespace Frogger
         public void DrawLevel(Graphics g)
         {
             int space = frmgame.ClientSize.Height / 10;
-                switch (level)
+            switch (level)
+            {
+                case 1:
+                    DrawRiver(g, space * 1, 1); //this is the level design.
+                    DrawRoad(g, space * 3);
+                    DrawRoad(g, space * 5);
+                    DrawRoad(g, space * 7);
+                    break;
+                case 2:
+                    DrawRiver(g, space * 1, 2); //even rivieren testen.
+                    DrawRoad(g, space * 5);
+                    DrawRoad(g, space * 7);
+                    break;
+                case 3:
+                    DrawRiver(g, space * 1, 4);
+                    DrawRoad(g, space / 2 * 11);
+                    DrawRoad(g, space * 7);
+                    break;
+            }
+            if (!setup)
+            {
+                InitSomeObjs();
+            }
+            setup = true;
+        }
+
+        /// <summary>
+        /// Create some object on startup.
+        /// </summary>
+        private void InitSomeObjs()
+        {
+            Random rndgen = new Random();
+            for (int curroad = 0; curroad < roads.Count; curroad++)
+            {
+                int rnddir = rndgen.Next(0, 2);
+                if (rnddir == 0)
                 {
-                    case 1:
-                        DrawRiver(g, space * 1, 1); //this is the level design.
-                        DrawRoad(g, space * 3);
-                        DrawRoad(g, space * 5);
-                        DrawRoad(g, space * 7);
-                        break;
-                    case 2:
-                        DrawRiver(g, space * 1, 2); //even rivieren testen.
-                        DrawRoad(g, space * 5);
-                        DrawRoad(g, space * 7);
-                        break;
-                    case 3:
-                        DrawRiver(g, space * 1, 4);
-                        DrawRoad(g, space/2 * 11);
-                        DrawRoad(g, space * 7);
-                        break;
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, roads[curroad], frmgame.ClientSize.Width / 2, rndgen));
                 }
-                setup = true;
+                else
+                {
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, roads[curroad], frmgame.ClientSize.Width/2, rndgen));
+                }
+            }
+
+            foreach (int curriver in rivirs)
+            {
+                
+            }
         }
 
         /// <summary>
@@ -308,6 +334,8 @@ namespace Frogger
         /// <param name="textregel1">the first line, big text</param>
         public void DrawTextbox(Graphics g, String textline1)
         {
+            frmgame.Controls.Remove(frog);
+
             int margincentre = textline1.Length * 10;
             Font fontregel1 = new Font("Flubber", 32);
             SolidBrush sbred = new SolidBrush(System.Drawing.Color.Red);
@@ -316,6 +344,16 @@ namespace Frogger
             g.DrawRectangle(Pens.Black, box);
             g.FillRectangle(sbdarkorange, box);
             g.DrawString(textline1, fontregel1, sbred, new PointF(frmgame.ClientRectangle.Width / 2 - margincentre, frmgame.ClientRectangle.Height / 2));
+
+            HoverButton hovbtnBack = new HoverButton("Back");
+            hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
+            hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
+            frmgame.Controls.Add(hovbtnBack);
+        }
+
+        private void hovbtnBack_Click(object sender, EventArgs e)
+        {
+            frmgame.CloseGame();
         }
 
         /// <summary>
@@ -328,7 +366,6 @@ namespace Frogger
                 StopEngine();
                 DrawTextbox(g, "Game Over");
             }
-            //throw new System.NotImplementedException();
         }
 
         /// <summary>
@@ -364,7 +401,6 @@ namespace Frogger
             {
                 if (frmgame.Controls.Contains(obj))
                 {
-
                     switch (obj.Dir)
                     {
                         case Direction.East:
@@ -383,15 +419,22 @@ namespace Frogger
                         //obj.Refresh();
                         obj.Invalidate();
                     }
+
+                    if (DetectCollision(obj))
+                    {
+                        if (Program.sound)
+                        {
+                            sndPlaySound(Application.StartupPath + @"\sounds\beep.wav", 1); //1 = Async
+                        }
+                    }
                 }
                 else
                 {
                     frmgame.Controls.Add(obj);
                 }
-
             }
         }
-		// Private Methods (5) 
+        // Private Methods (5) 
 
         /// <summary>
         /// Calculate the height of the rivir.
@@ -491,40 +534,44 @@ namespace Frogger
             int maxtick = 1000 / gameupdate.Interval; //1s
 
             if (tick >= maxtick * timesecnewobj)
+            {
+                Random rndgen = new Random();
+                //if (this.NumObjects < 255) //protects against heavy cpu stress on hardest tier and settings.
+                //{
+                    for (int curroad = 0; curroad < roads.Count; curroad++)
                     {
-                        Random rndgen = new Random();
-
-                        for (int curroad = 0; curroad < roads.Count; curroad++)
+                        int rnddir = rndgen.Next(0, 2);
+                        if (rnddir == 0)
                         {
-                            int rnddir = rndgen.Next(0, 2);
-                            if (rnddir == 0)
-                            {
-                                movingobjs.Add(CreateCarRandomColor(2, Direction.East, roads[curroad], rndgen));
-                            }
-                            else
-                            {
-                                movingobjs.Add(CreateCarRandomColor(2, Direction.West,  roads[curroad], rndgen));
-                            }
+
+                            movingobjs.Add(CreateCarRandomColor(2, Direction.East, roads[curroad], 0, rndgen));
+
                         }
-                    
-                for (int curriver = 0; curriver < rivirs.Count; curriver++)
-                {
-                    if (curriver % 2 == 0) //even
-                    {
-                        movingobjs.Add(CreateTreeTrunk(4, Direction.East, rivirs[curriver]));
+                        else
+                        {
+                            movingobjs.Add(CreateCarRandomColor(2, Direction.West, roads[curroad], frmgame.ClientSize.Width, rndgen));
+                        }
                     }
-                    else if (curriver != 0) //odd and not 0
+
+                    for (int curriver = 0; curriver < rivirs.Count; curriver++)
                     {
-                        movingobjs.Add(CreateTreeTrunk(4, Direction.West, rivirs[curriver]));
+                        if (curriver % 2 == 0) //even
+                        {
+                            movingobjs.Add(CreateTreeTrunk(4, Direction.East, rivirs[curriver]));
+                        }
+                        else if (curriver != 0) //odd and not 0
+                        {
+                            movingobjs.Add(CreateTreeTrunk(4, Direction.West, rivirs[curriver]));
+                        }
                     }
-                }
-                tick = 0;
+                    tick = 0;
+                //}
             }
             else
             {
                 tick++;
             }
-            
+
             switch (level)
             {
                 case 1:
@@ -541,7 +588,7 @@ namespace Frogger
             UpdatePositionMovingObjects();
         }
 
-		#endregion Methods 
+        #endregion Methods
 
 
     }

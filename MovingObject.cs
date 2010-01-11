@@ -24,7 +24,7 @@ using System.Drawing;
 namespace Frogger
 {
     public class MovingObject : UserControl
-    {    
+    {
         private int velocity = 0;
         private Direction direction;
 

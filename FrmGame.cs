@@ -96,7 +96,6 @@ namespace Frogger
             CloseGame();
         }
 
-
         /// <summary>
         /// Makes arrow keys work.
         /// </summary>
@@ -123,10 +122,7 @@ namespace Frogger
                     
                     break;
                 case Keys.Escape:
-                    game.StopEngine();
-                    this.frmmenu.Menustate = MenuState.main;
-                    this.frmmenu.Show();
-                    this.Close();
+                    CloseGame();
                     break;
             }
           return true;
