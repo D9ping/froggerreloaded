@@ -74,6 +74,20 @@ namespace Frogger
             }
         }
 
+        public bool ToonLogo
+        {
+            get
+            {
+                if (this.pbLogo.Visible) return true;
+                else return false;
+            }
+            set
+            {
+                this.pbLogo.Visible = value;
+                this.pbKikker.Visible = value;
+            }
+        }
+
 		#endregion Properties 
 
 		#region Methods (4) 

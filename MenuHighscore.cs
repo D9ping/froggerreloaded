@@ -15,7 +15,6 @@ namespace Frogger
     class MenuHighscore : MenuScreen
     {
         private HoverButton[] highscoremenuknoppen;
-        private HoverButton[] showhighscoremenuknoppen;
         private FrmMenu frmMenu = null;
 
 		#region Constructors (1) 
@@ -40,21 +39,24 @@ namespace Frogger
                 highscoremenuknoppen[i].Location = new Point(xpos, ypos);
                 ypos += 80;
             }
-
+            frmmenu.ToonLogo = false;
             frmmenu.Controls.AddRange(highscoremenuknoppen);
         }
 
-        void ShowHighscores(object sender, EventArgs e)
+        public void ShowHighscores(object sender, EventArgs e)
         {
-            showhighscoremenuknoppen = new HoverButton[3];
+            highscoremenuknoppen = new HoverButton[3];
 
-            showhighscoremenuknoppen[0] = new HoverButton("Level 1");
-            showhighscoremenuknoppen[1] = new HoverButton("Level 2");
-            showhighscoremenuknoppen[2] = new HoverButton("Level 3");
+            highscoremenuknoppen[0] = new HoverButton("Level 1");
+            highscoremenuknoppen[0].Tag = 0;
+            highscoremenuknoppen[1] = new HoverButton("Level 2");
+            highscoremenuknoppen[1].Tag = 1;
+            highscoremenuknoppen[2] = new HoverButton("Level 3");
+            highscoremenuknoppen[2].Tag = 2;
             // hook events
-            highscoremenuknoppen[0].Click += new EventHandler(GetHighscores(1));
-            highscoremenuknoppen[1].Click += new EventHandler(GetHighscores(2));
-            highscoremenuknoppen[2].Click += new EventHandler(GetHighscores(3));
+            highscoremenuknoppen[0].Click += new EventHandler(GetHighscores);
+            highscoremenuknoppen[1].Click += new EventHandler(GetHighscores);
+            highscoremenuknoppen[2].Click += new EventHandler(GetHighscores);
 
             int ypos = 220;
             int xpos = 0;
@@ -115,9 +117,16 @@ namespace Frogger
             throw new System.NotImplementedException();
         }
 
-        public void GetHighscores(int level)
+        /// <summary>
+        /// Verkrijg highscore, (methode moet aan sjabooltje delegate EventHandler voldoen.)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void GetHighscores(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + level.ToString() + " ORDER BY SPEELTIJD DESC";
+            HoverButton btnclicked = (HoverButton)sender;
+
+            string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + btnclicked.Tag.ToString() + " ORDER BY SPEELTIJD DESC";
             DataTable dt = DBConnection.ExecuteQuery(query, 4);
 
             string tijddatum = "";

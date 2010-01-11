@@ -86,9 +86,9 @@ namespace Frogger
             {
                 conn.Open();
             }
-            catch (Exception ex)
+            catch (Exception exc)
             {
-                throw ex;
+                System.Windows.Forms.MessageBox.Show(exc.Message);
             }
 
             OleDbCommand cmd = new OleDbCommand(queryString);
@@ -110,17 +110,14 @@ namespace Frogger
                     table.Rows.Add(Dr);
                 }
             }
-
-
-            catch (Exception ex)
+            catch (Exception exc)
             {
-                throw ex;
+                System.Windows.Forms.MessageBox.Show(exc.Message);
             }
-
             finally
             {
-                cmd.Dispose();
                 conn.Close();
+                cmd.Dispose();
                 conn.Dispose();
             }
             return table;
