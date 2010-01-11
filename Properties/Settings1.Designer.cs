@@ -46,5 +46,15 @@ namespace Frogger.Properties {
                 this["sound"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\highscores.accdb")]
+        public string highscoresConnectionString {
+            get {
+                return ((string)(this["highscoresConnectionString"]));
+            }
+        }
     }
 }

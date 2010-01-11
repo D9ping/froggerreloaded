@@ -132,7 +132,6 @@
     <Content Include="Resources\flubber_font_license.txt" />
     <Content Include="Resources\icon_frog.ico" />
     <None Include="Resources\treetrunk.png" />
-    <None Include="app.config" />
     <None Include="ClassDiagram_v2.0.cd" />
     <None Include="Resources\Flubber.ttf" />
     <None Include="Resources\logo_frogger_reloaded.png" />
