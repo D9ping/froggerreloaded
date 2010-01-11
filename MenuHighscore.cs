@@ -14,12 +14,14 @@ namespace Frogger
     /// </summary>
     class MenuHighscore : MenuScreen
     {
+        private FrmMenu frmMenu = null;
+
 		#region Constructors (1) 
 
         public MenuHighscore(FrmMenu frmmenu)
             :base(frmmenu)
         {            
-            //todo
+            this.frmMenu = frmmenu;
             HoverButton highscoresLevelEen = new HoverButton("Level 1");
             highscoresLevelEen.Click +=new EventHandler(hovbtn_Click);
             highscoresLevelEen.Location = new Point(300, 200);
@@ -70,31 +72,52 @@ namespace Frogger
         {
 
             string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = 1 ORDER BY SPEELTIJD DESC";
-            // String query = "SELECT * FROM scoren ORDER BY Score DESC";
-            OleDbDataReader reader = DBConnection.GetData(query);
+            DataTable dt = DBConnection.ExecuteQuery(query, 4);
 
-            int positie = 1;
-            int ypos = 50;
-            while (reader.Read())
+            string tijddatum = "";
+            string naam = "";
+            string speeltijd = "";
+
+            int positie = 0; 
+            int ypos = 50; // ypos is de Y-coordinaat van de label van de highscore
+
+            foreach (DataRow row in dt.Rows)
             {
-                if (positie < 11)
+                if (positie < 10)
                 {
-                    Label lbscore = new Label();
-                    String tijddatum = Convert.ToString(reader["Tijddatum"]);
-                    String naam = Convert.ToString(reader["Naam"]);
-                    String speeltijd = Convert.ToString(reader["Speeltijd"]);
-                    String level = Convert.ToString(reader["Level"]);
-                    lbscore.Text = positie.ToString() + ".\t" + tijddatum + "\t" + naam + "\t" + speeltijd + "\t";
-                    lbscore.AutoSize = true;
-                    lbscore.ForeColor = Color.Lime;
-                    lbscore.Location = new Point(300, ypos);
-                    lbscore.TextAlign = ContentAlignment.MiddleCenter;
+                    Label lbHighscore = new Label();
+                    tijddatum = row[0].ToString();
+                    naam = row[1].ToString();
+                    speeltijd = row[2].ToString();
+                    lbHighscore.Text = positie.ToString() + ".\t" + tijddatum + "\t" + naam + "\t" + speeltijd;
+                    lbHighscore.AutoSize = true;
+                    lbHighscore.ForeColor = Color.Lime;
+                    lbHighscore.Location = new Point(300, ypos);
+                    lbHighscore.TextAlign = ContentAlignment.MiddleCenter;
                     ypos = ypos + 40;
-                    //this.gbxHighscoren.Controls.Add(lbscore);
+                    frmMenu.Controls.Add(lbHighscore);  //  <<<<<<<<<<<<<<<--------------------------
                     
                 }
                 positie++;
             }
+
+            /*
+            lbOverzicht.Items.Clear();
+          DataTable dt = new DataTable();
+          dt = DatabaseConnection.ExecuteQuery("SELECT A.INTAKEID , B.DATEINTAKE, C.MACHINEID  FROM APP_WAREHOUSE A, APP_INTAKE B, APP_MACHINE C WHERE A.INTAKEID = B.INTAKEID AND B.INTAKEID = C.INTAKEID AND A.KLAARZETID ='0'", 3);
+          string ID = "0";
+          string DateIntake = "0";
+          string MachineId = "0";
+
+          foreach (DataRow row in dt.Rows)
+          {
+              ID = row[0].ToString();
+              DateIntake = row[1].ToString();
+              MachineId = row[2].ToString();
+              string AddString = ID + "," + MachineId;
+              lbOverzicht.Items.Add(AddString);
+          }
+          */
 
 
         }
