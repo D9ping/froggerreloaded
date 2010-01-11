@@ -15,6 +15,7 @@ namespace Frogger
     class MenuHighscore : MenuScreen
     {
         private HoverButton[] highscoremenuknoppen;
+        private HoverButton[] showhighscoremenuknoppen;
         private FrmMenu frmMenu = null;
 
 		#region Constructors (1) 
@@ -45,13 +46,26 @@ namespace Frogger
 
         void ShowHighscores(object sender, EventArgs e)
         {
-            HoverButton highscoresLevelEen = new HoverButton("Level 1");
-            highscoresLevelEen.Click +=new EventHandler(hovbtn_Click);
-            highscoresLevelEen.Location = new Point((frmMenu.Size.Width/2)-(highscoresLevelEen.Size.Width/2), 200);
-            HoverButton highscoresLevelTwee = new HoverButton("Level 2");
-            highscoresLevelTwee.Click += new EventHandler(highscoresLevelTwee_Click);
-            highscoresLevelTwee.Location = new Point(highscoresLevelEen.Location.X, 250);
-            frmMenu.Controls.Add(highscoresLevelEen);
+            showhighscoremenuknoppen = new HoverButton[3];
+
+            showhighscoremenuknoppen[0] = new HoverButton("Level 1");
+            showhighscoremenuknoppen[1] = new HoverButton("Level 2");
+            showhighscoremenuknoppen[2] = new HoverButton("Level 3");
+            // hook events
+            highscoremenuknoppen[0].Click += new EventHandler(GetHighscores(1));
+            highscoremenuknoppen[1].Click += new EventHandler(GetHighscores(2));
+            highscoremenuknoppen[2].Click += new EventHandler(GetHighscores(3));
+
+            int ypos = 220;
+            int xpos = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                xpos = frmMenu.Width / 2 - (highscoremenuknoppen[0].Width / 2);
+                highscoremenuknoppen[i].Location = new Point(xpos, ypos);
+                ypos += 80;
+            }
+
+            frmMenu.Controls.AddRange(highscoremenuknoppen);
         }
 
         void DeleteHighscores(object sender, EventArgs e)
@@ -133,12 +147,7 @@ namespace Frogger
                 }
             }
         }
-		// Private Methods (1) 
-
-        void hovbtn_Click(object sender, EventArgs e)
-        {
-            GetHighscores(1);
-        }
+		// Private Methods (1)
 
 #endregion Methods 
     }
