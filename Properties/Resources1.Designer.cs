@@ -60,6 +60,20 @@ namespace Frogger.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap car_green_east {
+            get {
+                object obj = ResourceManager.GetObject("car_green_east", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap car_green_west {
+            get {
+                object obj = ResourceManager.GetObject("car_green_west", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap car_grey_east {
             get {
                 object obj = ResourceManager.GetObject("car_grey_east", resourceCulture);
@@ -102,6 +116,27 @@ namespace Frogger.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap frogdead_east {
+            get {
+                object obj = ResourceManager.GetObject("frogdead_east", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap frogdead_west {
+            get {
+                object obj = ResourceManager.GetObject("frogdead_west", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap kikker_crazy {
+            get {
+                object obj = ResourceManager.GetObject("kikker_crazy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap kikker_east {
             get {
                 object obj = ResourceManager.GetObject("kikker_east", resourceCulture);
@@ -116,16 +151,16 @@ namespace Frogger.Properties {
             }
         }
         
-        public static System.Drawing.Bitmap logo_frogger_reloaded {
+        public static System.Drawing.Bitmap live {
             get {
-                object obj = ResourceManager.GetObject("logo_frogger_reloaded", resourceCulture);
+                object obj = ResourceManager.GetObject("live", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
-        public static System.Drawing.Bitmap texture_water {
+        public static System.Drawing.Bitmap logo_frogger_reloaded {
             get {
-                object obj = ResourceManager.GetObject("texture_water", resourceCulture);
+                object obj = ResourceManager.GetObject("logo_frogger_reloaded", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -140,6 +175,20 @@ namespace Frogger.Properties {
         public static System.Drawing.Bitmap treetrunk {
             get {
                 object obj = ResourceManager.GetObject("treetrunk", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap truck_east {
+            get {
+                object obj = ResourceManager.GetObject("truck_east", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap truck_west {
+            get {
+                object obj = ResourceManager.GetObject("truck_west", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -50,6 +50,8 @@ namespace Frogger
                 ypos += levelbtn[0].Height + margin;
             }
             frmmenu.Controls.AddRange(levelbtn);
+
+            frmmenu.ShowTierChoice = true;
          
         }
 
@@ -72,7 +74,25 @@ namespace Frogger
         {
             int levelnr = whichlevel(sender);
             frmmenu.Hide();
-            game = new FrmGame(frmmenu, levelnr, Niveau.medium);
+
+            switch (frmmenu.SelectedTier)
+            {
+                case 0:
+                    game = new FrmGame(frmmenu, levelnr, Niveau.freeplay);
+                    break;
+                case 1:
+                    game = new FrmGame(frmmenu, levelnr, Niveau.easy);
+                    break;
+                case 2:
+                    game = new FrmGame(frmmenu, levelnr, Niveau.medium);
+                    break;
+                case 3:
+                    game = new FrmGame(frmmenu, levelnr, Niveau.hard);
+                    break;
+                case 4:
+                    game = new FrmGame(frmmenu, levelnr, Niveau.elite);
+                    break;
+            }
             game.Show();
         }
 

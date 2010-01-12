@@ -14,70 +14,42 @@ namespace Frogger
     /// </summary>
     class MenuHighscore : MenuScreen
     {
-        private HoverButton[] highscoremenuknoppen;
-        private FrmMenu frmMenu = null;
+        private HoverButton[] highscoremenubtn;
+        private FrmMenu frmmenu = null;
+        private Label[] entries;
 
 		#region Constructors (1) 
 
         public MenuHighscore(FrmMenu frmmenu)
             :base(frmmenu)
         {    
-            this.frmMenu = frmmenu;
-            highscoremenuknoppen = new HoverButton[2];
-
-            highscoremenuknoppen[0] = new HoverButton("Show highscores");
-            highscoremenuknoppen[1] = new HoverButton("Delete highscores");
-            // hook events
-            highscoremenuknoppen[0].Click +=new EventHandler(ShowHighscores);
-            highscoremenuknoppen[1].Click +=new EventHandler(DeleteHighscores);
-
-            int ypos = 220;
-            int xpos = 0;
-            for (int i = 0; i < 2; i++)
-            {
-                xpos = frmmenu.Width / 2 - (highscoremenuknoppen[0].Width / 2);
-                highscoremenuknoppen[i].Location = new Point(xpos, ypos);
-                ypos += 80;
-            }
+            this.frmmenu = frmmenu;
             frmmenu.ToonLogo = false;
-            frmmenu.Controls.AddRange(highscoremenuknoppen);
-        }
 
-        public void ShowHighscores(object sender, EventArgs e)
-        {
-            highscoremenuknoppen = new HoverButton[3];
-
-            highscoremenuknoppen[0] = new HoverButton("Level 1");
-            highscoremenuknoppen[0].Tag = 0;
-            highscoremenuknoppen[1] = new HoverButton("Level 2");
-            highscoremenuknoppen[1].Tag = 1;
-            highscoremenuknoppen[2] = new HoverButton("Level 3");
-            highscoremenuknoppen[2].Tag = 2;
-            // hook events
-            highscoremenuknoppen[0].Click += new EventHandler(GetHighscores);
-            highscoremenuknoppen[1].Click += new EventHandler(GetHighscores);
-            highscoremenuknoppen[2].Click += new EventHandler(GetHighscores);
-
-            int ypos = 220;
-            int xpos = 0;
-            for (int i = 0; i < 3; i++)
+            highscoremenubtn = new HoverButton[4];
+            highscoremenubtn[0] = new HoverButton("Level 1");
+            highscoremenubtn[0].Tag = 1;
+            highscoremenubtn[0].Click += new EventHandler(GetHighscores);
+            
+            highscoremenubtn[1] = new HoverButton("Level 2");
+            highscoremenubtn[1].Tag = 2;
+            highscoremenubtn[1].Click += new EventHandler(GetHighscores);
+            
+            highscoremenubtn[2] = new HoverButton("Level 3");
+            highscoremenubtn[2].Tag = 3;
+            highscoremenubtn[2].Click += new EventHandler(GetHighscores);
+            
+            highscoremenubtn[3] = new HoverButton("Delete all");
+            highscoremenubtn[3].Click += new EventHandler(DeleteHighscoreAll);
+            int ypos = 80;
+            int xpos = 20; //frmmenu.Width / 2 - (highscoremenubtn[0].Width / 2);
+            for (int i = 0; i < highscoremenubtn.Length; i++)
             {
-                xpos = frmMenu.Width / 2 - (highscoremenuknoppen[0].Width / 2);
-                highscoremenuknoppen[i].Location = new Point(xpos, ypos);
+                highscoremenubtn[i].Location = new Point(xpos, ypos);
                 ypos += 80;
             }
 
-            frmMenu.Controls.AddRange(highscoremenuknoppen);
-        }
-
-        void DeleteHighscores(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        void highscoresLevelTwee_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
+            frmmenu.Controls.AddRange(highscoremenubtn);
         }
 
 		#endregion Constructors 
@@ -91,9 +63,19 @@ namespace Frogger
         /// </summary>
         override public void ClearScreen()
         {
-            foreach (HoverButton curbtn in highscoremenuknoppen)
+            foreach (HoverButton curbtn in highscoremenubtn)
             {
-                curbtn.Dispose();
+                if (curbtn != null) { curbtn.Dispose(); }
+            }
+            if (entries != null)
+            {
+                foreach (Label curlbl in entries)
+                {
+                    if (curlbl != null)
+                    {
+                        curlbl.Dispose();
+                    }
+                }
             }
         }
 
@@ -102,9 +84,19 @@ namespace Frogger
             throw new System.NotImplementedException();
         }
 
-        public Boolean DeleteHighscoreAll()
+        /// <summary>
+        /// Delete all highscore entries.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void DeleteHighscoreAll(Object sender, EventArgs e)
         {
-            throw new System.NotImplementedException();
+            DialogResult dlgres = MessageBox.Show("Are you sure you want to clear all highscores?", "sure?", MessageBoxButtons.YesNo);
+            if (dlgres == DialogResult.Yes)
+            {
+                DBConnection.SetData("DELETE * FROM HIGHSCORES");
+                MessageBox.Show("Highscore table is now empty.");
+            }
         }
 
         public Boolean DeleteHighscoreOneLevel(int level)
@@ -124,8 +116,20 @@ namespace Frogger
         /// <param name="e"></param>
         public void GetHighscores(object sender, EventArgs e)
         {
-            HoverButton btnclicked = (HoverButton)sender;
+            if (entries != null)
+            {
+                foreach (Label curlbl in entries)
+                {
+                    if (curlbl != null)
+                    {
+                        curlbl.Text = "";
+                        curlbl.Width = 0;
+                    }
+                }
+            }
 
+            HoverButton btnclicked = (HoverButton)sender;
+            
             string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + btnclicked.Tag.ToString() + " ORDER BY SPEELTIJD DESC";
             DataTable dt = DBConnection.ExecuteQuery(query, 4);
 
@@ -133,25 +137,28 @@ namespace Frogger
             string naam = "";
             string speeltijd = "";
 
+            
+            int ypos = 80; // ypos is de Y-coordinaat van de label van de highscore
             int positie = 0;
-            int ypos = 300; // ypos is de Y-coordinaat van de label van de highscore
-
+            entries = new Label[10];
             foreach (DataRow row in dt.Rows)
             {
                 if (positie < 10)
                 {
-                    Label lbHighscore = new Label();
-                    lbHighscore.Font = new Font("Flubber", 20);
+                    entries[positie] = new Label();
+                    entries[positie].Font = new Font("Flubber", 18);
                     tijddatum = row[0].ToString();
                     naam = row[1].ToString();
                     speeltijd = row[2].ToString();
-                    lbHighscore.Text = positie.ToString() + ".     " + tijddatum + "     " + naam + "     " + speeltijd;
-                    lbHighscore.AutoSize = true;
-                    lbHighscore.ForeColor = Color.Lime;
-                    lbHighscore.Location = new Point(175, ypos);
-                    lbHighscore.TextAlign = ContentAlignment.MiddleCenter;
+                    int posnr = positie +1;
+                    entries[positie].Text = posnr.ToString() + ". " + tijddatum + "  " + naam + "  " + speeltijd;
+                    entries[positie].AutoSize = true;
+                    entries[positie].ForeColor = Color.Yellow;
+                    entries[positie].Location = new Point(350, ypos);
+                    entries[positie].AutoSize = true;
+                    entries[positie].TextAlign = ContentAlignment.MiddleCenter;
                     ypos = ypos + 40;
-                    frmMenu.Controls.Add(lbHighscore);
+                    frmmenu.Controls.Add(entries[positie]);
                     positie++;
                 }
             }

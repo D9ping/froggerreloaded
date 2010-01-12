@@ -9,71 +9,34 @@ namespace Frogger
 {
 	public static class DBConnection
 	{
-        /*
-		public static OleDbDataReader GetData(string query)
+        /// <summary>
+        /// Executes query.
+        /// </summary>
+        /// <param name="query">SQL query</param>
+		public static void SetData(string query)
 		{
-			//string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\highscores.accdb;Persist Security Info=False;";
-
+            string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\\highscores.mdb;Persist Security Info=False;";
             OleDbConnection myConnection = null;
-            OleDbDataReader reader;
             try
             {
-                
                 myConnection = new OleDbConnection(connectionString);
                 myConnection.Open();
-                OleDbCommand command = new OleDbCommand(query, myConnection);
-                DataTable table = new DataTable();
-                DataRow dr;
-                reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    dr = table.NewRow();
-                    for (int i = 0; i <
-                }
-                foreach (DataRow row in reader)
-                
-            }
-            
-            try
-            {
-                OracleDataReader reader = cmd.ExecuteReader();
 
-                while (reader.Read())
-                {
-                    Dr = table.NewRow();
-                    for (int i = 0; i < kolomaantal; i++)
-                    {
-                        if (table.Columns.Count != kolomaantal)
-                            table.Columns.Add(Convert.ToString(i), typeof(string));
-                        Dr[i] = reader.GetValue(i);
-                    }
-                    table.Rows.Add(Dr);
-                }
+                OleDbCommand command = new OleDbCommand(query, myConnection);
+                command.ExecuteNonQuery();
             }
-            
             finally
             {
                 myConnection.Close();
             }
-
-			return reader;
-		}
-*/
-
-		public static void SetData(string query)
-		{
-            string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\\highscores.mdb;Persist Security Info=False;";
-
-            OleDbConnection myConnection = new OleDbConnection(connectionString);
-            myConnection.Open();
-
-			OleDbCommand command = new OleDbCommand(query, myConnection);
-
-			command.ExecuteNonQuery();
-
-			myConnection.Close();
 		}
 
+        /// <summary>
+        /// Execute query and returns a datables
+        /// </summary>
+        /// <param name="query">SQL query</param>
+        /// <param name="kolomaantal">number coloms datatable</param>
+        /// <returns>the DataTable</returns>
         public static DataTable ExecuteQuery(string query, int kolomaantal)
         {
             OleDbConnection conn = GetConnection();

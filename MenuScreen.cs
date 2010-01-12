@@ -9,7 +9,7 @@ namespace Frogger
     {
 		#region Fields (2) 
         
-        private FrmMenu frmmenu;        
+        private FrmMenu frmmenu;
 
 		#endregion Fields 
 
@@ -17,7 +17,7 @@ namespace Frogger
 
         public MenuScreen(FrmMenu frmmenu)
         {
-            this.frmmenu = frmmenu;            
+            this.frmmenu = frmmenu; 
         }
 
 		#endregion Constructors 

@@ -127,11 +127,21 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\sounds\beep.wav" />
+    <Content Include="bin\Debug\sounds\carcrash.wav" />
     <Content Include="icon_frog.ico" />
+    <None Include="Resources\car_green_east.png" />
+    <None Include="Resources\car_green_west.png" />
     <Content Include="Resources\car_grey_east.png" />
     <Content Include="Resources\car_grey_west.png" />
+    <None Include="Resources\dead_east.png" />
+    <None Include="Resources\dead_west.png" />
     <Content Include="Resources\flubber_font_license.txt" />
+    <None Include="Resources\froglive.png" />
     <Content Include="Resources\icon_frog.ico" />
+    <None Include="Resources\truck_west.png" />
+    <None Include="Resources\truck_east.png" />
+    <None Include="Resources\kikker_crazy.png" />
     <None Include="app.config" />
     <None Include="Resources\treetrunk.png" />
     <None Include="ClassDiagram_v2.0.cd" />

@@ -25,6 +25,7 @@ namespace Frogger
     public class Frog : MovingObject
     {
         private int jumpdistance;
+        private Boolean canmove = true;
 
         /// <summary>
         /// create a frog.
@@ -37,8 +38,21 @@ namespace Frogger
             this.BackColor = Color.Transparent;
 
             this.pic = global::Frogger.Properties.Resources.kikker_west;
+            this.pic.MakeTransparent();
 
             this.jumpdistance = jumpdistance;
+        }
+
+        public Boolean CanMove
+        {
+            get
+            {
+                return this.canmove;
+            }
+            set
+            {
+                this.canmove = value;
+            }
         }
 
         /// <summary>
@@ -49,43 +63,45 @@ namespace Frogger
         {
             int newposY = this.Location.Y;
             int newposX = this.Location.X;
-
-            switch (dir)
+            if (this.canmove)
             {
-                case Direction.North:
-                    this.pic = global::Frogger.Properties.Resources.kikker_west;
-                    newposY =  this.Location.Y - jumpdistance;
-                    if (newposY >= 0)
-                    {
-                        this.Location = new System.Drawing.Point(newposX, newposY);
-                    }
-                    break;
-                case Direction.East:
-                    this.pic = global::Frogger.Properties.Resources.kikker_west;
-                    newposX = this.Location.X - jumpdistance;
-                    if (newposX >= 0)
-                    {
-                        this.Location = new System.Drawing.Point(newposX, newposY);
-                    }
-                    break;
-                case Direction.West:
-                    this.pic = global::Frogger.Properties.Resources.kikker_east;
-                    newposX = this.Location.X + jumpdistance;
-                    if (newposX < 2000) //todo
-                    {
-                        this.Location = new System.Drawing.Point(newposX, newposY);
-                    }
-                    break;
-                case Direction.South:
-                    this.pic = global::Frogger.Properties.Resources.kikker_east;
-                    newposY =  this.Location.Y + jumpdistance;
-                    if (newposY < 2000) //todo
-                    {
-                        this.Location = new System.Drawing.Point(newposX, newposY);
-                    }
-                    break;
-                default:
-                    throw new Exception("direction unknow.");
+                switch (dir)
+                {
+                    case Direction.North:
+                        this.pic = ResizesResources.images["kikker_west"]; //global::Frogger.Properties.Resources.kikker_west;
+                        newposY = this.Location.Y - jumpdistance;
+                        if (newposY >= 0)
+                        {
+                            this.Location = new System.Drawing.Point(newposX, newposY);
+                        }
+                        break;
+                    case Direction.East:
+                        this.pic = ResizesResources.images["kikker_west"];
+                        newposX = this.Location.X - jumpdistance;
+                        if (newposX >= 0)
+                        {
+                            this.Location = new System.Drawing.Point(newposX, newposY);
+                        }
+                        break;
+                    case Direction.West:
+                        this.pic = ResizesResources.images["kikker_east"]; //global::Frogger.Properties.Resources.kikker_east;
+                        newposX = this.Location.X + jumpdistance;
+                        if (newposX < 2000) //todo
+                        {
+                            this.Location = new System.Drawing.Point(newposX, newposY);
+                        }
+                        break;
+                    case Direction.South:
+                        this.pic = ResizesResources.images["kikker_east"]; //global::Frogger.Properties.Resources.kikker_east;
+                        newposY = this.Location.Y + jumpdistance;
+                        if (newposY < 2000) //todo
+                        {
+                            this.Location = new System.Drawing.Point(newposX, newposY);
+                        }
+                        break;
+                    default:
+                        throw new Exception("direction unknow.");
+                }
             }
         }
     }

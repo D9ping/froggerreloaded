@@ -25,6 +25,7 @@ namespace Frogger
     class Car : MovingObject
     {
         private int carcolor;
+        private Boolean istruck = false;
 
         /// <summary>
         /// Creating a new instance of a car.
@@ -58,14 +59,26 @@ namespace Frogger
             }
         }
 
+        public Boolean IsTruck { 
+            get 
+            {
+                return this.istruck;
+            }
+        }
+
         private Bitmap CreateCarEast(int carcolor)
         {
             switch (carcolor)
             {
                 case 1:
-                    return global::Frogger.Properties.Resources.car_grey_east;
+                    return ResizesResources.images["car_grey_east"]; //Frogger.Properties.Resources.car_grey_east;
                 case 2:
-                    return global::Frogger.Properties.Resources.car_yellow_east;
+                    return ResizesResources.images["car_yellow_east"]; //Frogger.Properties.Resources.car_yellow_east;
+                case 3:
+                    return ResizesResources.images["car_green_east"]; //Frogger.Properties.Resources.car_green_east;
+                case 4:
+                    istruck = true;
+                    return ResizesResources.images["truck_east"]; //Frogger.Properties.Resources.truck_east;
                 default:
                     ThrowCarColorNotFoundExc();
                     return null;
@@ -77,9 +90,14 @@ namespace Frogger
             switch (carcolor)
             {
                 case 1:
-                    return global::Frogger.Properties.Resources.car_grey_west;
+                    return ResizesResources.images["car_grey_west"]; //Frogger.Properties.Resources.car_grey_west;
                 case 2:
-                    return global::Frogger.Properties.Resources.car_yellow_west;
+                    return ResizesResources.images["car_yellow_west"]; //Frogger.Properties.Resources.car_yellow_west;
+                case 3:
+                    return ResizesResources.images["car_green_west"]; //Frogger.Properties.Resources.car_green_west;
+                case 4:
+                    istruck = true;
+                    return ResizesResources.images["truck_west"];//Frogger.Properties.Resources.truck_west;
                 default:
                     ThrowCarColorNotFoundExc();
                     return null;

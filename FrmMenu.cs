@@ -55,14 +55,14 @@ namespace Frogger
 
             this.backbtn = CreateBackBtn();
 
-            
+            cbxTier.SelectedIndex = 2;
         }
 
 		#endregion Constructors 
 
 		#region Properties (1) 
 
-                public MenuState Menustate
+        public MenuState Menustate
         {
             get
             {
@@ -71,6 +71,22 @@ namespace Frogger
             set
             {
                 menustate = value;
+            }
+        }
+
+        public Boolean ShowTierChoice
+        {
+            set
+            {
+                cbxTier.Visible = value;
+            }
+        }
+
+        public int SelectedTier
+        {
+            get
+            {
+                return cbxTier.SelectedIndex;
             }
         }
 
@@ -85,6 +101,14 @@ namespace Frogger
             {
                 this.pbLogo.Visible = value;
                 this.pbKikker.Visible = value;
+            }
+        }
+
+        public Bitmap KikkerPic
+        {
+            set
+            {
+                pbKikker.Image = value;
             }
         }
 

@@ -93,9 +93,10 @@ namespace Frogger
             // 
             this.DoubleBuffered = true;
             this.Name = "MovingObject";
-            this.Size = new System.Drawing.Size(136, 84);
+            this.Size = new System.Drawing.Size(30, 24);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MovingObject_Paint);
             this.ResumeLayout(false);
+
         }
 
         private void MovingObject_Paint(object sender, PaintEventArgs e)

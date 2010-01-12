@@ -182,7 +182,7 @@ namespace FroggerTest
             //create target
             GameEngine target = new GameEngine(level, frmgame, tier);
 
-            MovingObject actual = target.CreateTreeTrunk(vel, direction, 0);
+            MovingObject actual = target.CreateTreeTrunk(vel, direction, 0, 0);
             Assert.IsNotNull(actual, "cannot create object from methode.");
         }
 

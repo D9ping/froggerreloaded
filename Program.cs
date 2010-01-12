@@ -20,9 +20,16 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Data.SqlClient;
+using System.Drawing;
 
 namespace Frogger
 {
+    public static class ResizesResources
+    {
+        //een soort lijst van geresized images, scheelt cpu power!
+        static public Dictionary<String, Bitmap> images;
+    }
+
     static class Program
     {
         //global settings

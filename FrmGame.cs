@@ -137,7 +137,8 @@ namespace Frogger
         private void FrmGame_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            game.DrawLevel(g);
+            game.RenderScreen(g);
+
             if (timeup)
             {
                 game.GameOver(g, true, false);

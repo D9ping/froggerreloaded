@@ -34,7 +34,7 @@ namespace Frogger
         public Tree(int velocity, Direction direction)
             :base(velocity, direction)
         {
-            base.pic = global::Frogger.Properties.Resources.treetrunk;
+            base.pic = ResizesResources.images["treetrunk"]; //global::Frogger.Properties.Resources.treetrunk;
         }
     }
 }

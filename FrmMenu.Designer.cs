@@ -29,11 +29,22 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMenu));
-            this.pbLogo = new System.Windows.Forms.PictureBox();
             this.pbKikker = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
+            this.pbLogo = new System.Windows.Forms.PictureBox();
+            this.cbxTier = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbKikker)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.SuspendLayout();
+            // 
+            // pbKikker
+            // 
+            this.pbKikker.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.pbKikker.Image = global::Frogger.Properties.Resources.kikker_west;
+            this.pbKikker.Location = new System.Drawing.Point(620, 75);
+            this.pbKikker.Name = "pbKikker";
+            this.pbKikker.Size = new System.Drawing.Size(188, 154);
+            this.pbKikker.TabIndex = 1;
+            this.pbKikker.TabStop = false;
             // 
             // pbLogo
             // 
@@ -46,14 +57,22 @@
             this.pbLogo.TabIndex = 0;
             this.pbLogo.TabStop = false;
             // 
-            // pbKikker
+            // cbxTier
             // 
-            this.pbKikker.Image = global::Frogger.Properties.Resources.kikker_west;
-            this.pbKikker.Location = new System.Drawing.Point(620, 75);
-            this.pbKikker.Name = "pbKikker";
-            this.pbKikker.Size = new System.Drawing.Size(188, 154);
-            this.pbKikker.TabIndex = 1;
-            this.pbKikker.TabStop = false;
+            this.cbxTier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxTier.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbxTier.FormattingEnabled = true;
+            this.cbxTier.Items.AddRange(new object[] {
+            "Freeplay",
+            "Easy",
+            "Medium",
+            "Hard",
+            "Elite"});
+            this.cbxTier.Location = new System.Drawing.Point(594, 331);
+            this.cbxTier.Name = "cbxTier";
+            this.cbxTier.Size = new System.Drawing.Size(167, 39);
+            this.cbxTier.TabIndex = 2;
+            this.cbxTier.Visible = false;
             // 
             // FrmMenu
             // 
@@ -61,6 +80,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(125)))), ((int)(((byte)(0)))));
             this.ClientSize = new System.Drawing.Size(792, 573);
+            this.Controls.Add(this.cbxTier);
             this.Controls.Add(this.pbKikker);
             this.Controls.Add(this.pbLogo);
             this.DoubleBuffered = true;
@@ -70,8 +90,8 @@
             this.Text = "Frogger Reloaded";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmMenu_Paint);
             this.ResizeEnd += new System.EventHandler(this.FrmMenu_ResizeEnd);
-            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbKikker)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -80,6 +100,7 @@
 
         private System.Windows.Forms.PictureBox pbLogo;
         private System.Windows.Forms.PictureBox pbKikker;
+        private System.Windows.Forms.ComboBox cbxTier;
     }
 }
 

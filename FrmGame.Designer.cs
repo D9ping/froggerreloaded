@@ -32,9 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmGame));
             this.timerUpdateGame = new System.Windows.Forms.Timer(this.components);
             this.lbTime = new System.Windows.Forms.Label();
-#if DEBUG
             this.btnTestGameOver = new System.Windows.Forms.Button();
-#endif
             this.SuspendLayout();
             // 
             // timerUpdateGame
@@ -55,18 +53,17 @@
             this.lbTime.Size = new System.Drawing.Size(78, 33);
             this.lbTime.TabIndex = 0;
             this.lbTime.Text = "0:00";
-#if DEBUG
             // 
             // btnTestGameOver
             // 
-            this.btnTestGameOver.Location = new System.Drawing.Point(12, 9);
+            this.btnTestGameOver.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnTestGameOver.Location = new System.Drawing.Point(94, 551);
             this.btnTestGameOver.Name = "btnTestGameOver";
             this.btnTestGameOver.Size = new System.Drawing.Size(50, 49);
             this.btnTestGameOver.TabIndex = 1;
             this.btnTestGameOver.Text = "TEST Game Over";
             this.btnTestGameOver.UseVisualStyleBackColor = true;
             this.btnTestGameOver.Click += new System.EventHandler(this.button1_Click);
-#endif
             // 
             // FrmGame
             // 
@@ -76,9 +73,7 @@
             this.BackColor = System.Drawing.Color.Green;
             this.BackgroundImage = global::Frogger.Properties.Resources.texure_grass;
             this.ClientSize = new System.Drawing.Size(794, 612);
-#if DEBUG
             this.Controls.Add(this.btnTestGameOver);
-#endif
             this.Controls.Add(this.lbTime);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;

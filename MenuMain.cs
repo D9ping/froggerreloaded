@@ -53,6 +53,7 @@ namespace Frogger
             hoofdmenuknoppen[2].Click += new EventHandler(CreateOptions);
             hoofdmenuknoppen[3].Click += new EventHandler(Shutdown);
 
+
             int ypos = 220;
             int xpos = 0;
             for (int i = 0; i < 4; i++)
@@ -61,7 +62,10 @@ namespace Frogger
                 hoofdmenuknoppen[i].Location = new Point(xpos, ypos);
                 ypos += 80;
             }
+            frmmenu.ToonLogo = true;
+            frmmenu.ShowTierChoice = false;
 
+            frmmenu.KikkerPic = Frogger.Properties.Resources.kikker_west;
             frmmenu.Controls.AddRange(hoofdmenuknoppen);
         }
 
@@ -96,6 +100,7 @@ namespace Frogger
         /// </summary>
         private void CreateLevelMenu(object sender, EventArgs e)
         {
+            frmmenu.KikkerPic = Frogger.Properties.Resources.kikker_crazy;
             frmmenu.Menustate = MenuState.level;
             frmmenu.Refresh();
         }
@@ -129,7 +134,6 @@ namespace Frogger
         {
             Application.Exit();
         }
-
 
 		#endregion Methods 
     }
