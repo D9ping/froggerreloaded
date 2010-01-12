@@ -75,15 +75,6 @@ namespace Frogger
         {
             base.Dispose(disposing);
         }
-        
-        /// <summary>
-        /// Resize frog
-        /// </summary>
-        public void SetSize(int wfrog, int hfrog)
-        {
-            this.Size = new Size(wfrog, hfrog);
-        }
-        
 
         private void InitializeComponent()
         {
@@ -93,7 +84,7 @@ namespace Frogger
             // 
             this.DoubleBuffered = true;
             this.Name = "MovingObject";
-            this.Size = new System.Drawing.Size(30, 24);
+            this.Size = new System.Drawing.Size(132, 110);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MovingObject_Paint);
             this.ResumeLayout(false);
 

@@ -18,6 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
 
 namespace Frogger
 {
@@ -31,9 +32,10 @@ namespace Frogger
         /// </summary>
         /// <param name="velocity"></param>
         /// <param name="direction"></param>
-        public Tree(int velocity, Direction direction)
+        public Tree(int velocity, Direction direction, int width, int height)
             :base(velocity, direction)
         {
+            this.Size = new Size(width, height);
             base.pic = ResizesResources.images["treetrunk"]; //global::Frogger.Properties.Resources.treetrunk;
         }
     }

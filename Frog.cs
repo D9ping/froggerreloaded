@@ -30,13 +30,14 @@ namespace Frogger
         /// <summary>
         /// create a frog.
         /// </summary>
-        public Frog(int velocity, Direction dir, int jumpdistance)
-            :base(velocity, dir)
+        public Frog(int velocity, Direction dir, int jumpdistance, int width, int height)
+            : base(velocity, dir)
         {
             //Make transparant
             this.SetStyle(System.Windows.Forms.ControlStyles.SupportsTransparentBackColor, true);
             this.BackColor = Color.Transparent;
 
+            this.Size = new Size(width, height);
             this.pic = global::Frogger.Properties.Resources.kikker_west;
             this.pic.MakeTransparent();
 
@@ -61,10 +62,10 @@ namespace Frogger
         /// <param name="dir"></param>
         public void Jump(Direction dir)
         {
-            int newposY = this.Location.Y;
-            int newposX = this.Location.X;
             if (this.canmove)
             {
+                int newposY = this.Location.Y;
+                int newposX = this.Location.X;
                 switch (dir)
                 {
                     case Direction.North:
@@ -102,7 +103,9 @@ namespace Frogger
                     default:
                         throw new Exception("direction unknow.");
                 }
+                canmove = false;
             }
+
         }
     }
 }
