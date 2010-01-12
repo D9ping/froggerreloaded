@@ -59,8 +59,10 @@
             // 
             // cbxTier
             // 
+            this.cbxTier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
             this.cbxTier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxTier.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            //Microsoft Sans Serif
+            this.cbxTier.Font = new System.Drawing.Font("Flubber", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxTier.FormattingEnabled = true;
             this.cbxTier.Items.AddRange(new object[] {
             "Freeplay",
