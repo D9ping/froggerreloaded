@@ -33,7 +33,7 @@ namespace Frogger
         private Timer gameupdate;
         private List<int> rivirs;
         private List<int> roads;
-        private Boolean setup = false, ishit = false;
+        private Boolean setup = false, ishit = false, livesup=false;
         private Niveau tier;
         private int timesecnewobj = 0, level = -1, lives = 0, tick = 0;
         private List<PictureBox> livesimgs; //om ze niet kwijt te raken.
@@ -59,7 +59,7 @@ namespace Frogger
             livesimgs = new List<PictureBox>();
 
             ResizesResources.images = new Dictionary<String, Bitmap>();
-            
+
 
             gameupdate = new Timer
             {
@@ -252,29 +252,31 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Draw a box with text.
+        /// Draw a box with the text "Game over" and a reason.
         /// </summary>
         /// <param name="g">graphics object</param>
         /// <param name="textregel1">the first line, big text</param>
-        public void DrawTextbox(Graphics g, String textline1, String textline2)
+        private void DrawGameOverScreen(Graphics g, String textline, bool enterhighscore)
         {
             frmgame.Controls.Remove(frog);
 
-            int margincentre = textline1.Length * 20;
             Font fontregel1 = new Font("Flubber", 64);
             Font fontregel2 = new Font("Flubber", 24);
             SolidBrush sbdarkorange = new SolidBrush(System.Drawing.Color.DarkOrange);
             Rectangle box = new Rectangle(new Point(50, 50), new Size(frmgame.ClientRectangle.Width - 100, frmgame.ClientRectangle.Height - 100));
             g.DrawRectangle(Pens.Black, box);
             g.FillRectangle(sbdarkorange, box);
-            g.DrawString(textline1, fontregel1, Brushes.Red, new PointF(frmgame.ClientRectangle.Width / 2 - margincentre, frmgame.ClientRectangle.Height / 2 - 50));
-            g.DrawString(textline2, fontregel2, Brushes.Black, new PointF(frmgame.ClientRectangle.Width / 2 - 100, frmgame.ClientRectangle.Height / 2 + 20));
+            g.DrawString("Game Over", fontregel1, Brushes.Red, new PointF(frmgame.ClientRectangle.Width / 2 - 150, frmgame.ClientRectangle.Height / 2 - 50));
+            g.DrawString(textline, fontregel2, Brushes.Black, new PointF(frmgame.ClientRectangle.Width / 2 - 100, frmgame.ClientRectangle.Height / 2 + 20));
 
-            HoverButton hovbtnBack = new HoverButton("Back");
-            hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
-            hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
-            frmgame.Controls.Add(hovbtnBack);
-            hovbtnBack.Invalidate();
+            if (!enterhighscore)
+            {
+                HoverButton hovbtnBack = new HoverButton("Back");
+                hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
+                hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
+                frmgame.Controls.Add(hovbtnBack);
+                hovbtnBack.Invalidate();
+            }
         }
 
         /// <summary>
@@ -285,7 +287,11 @@ namespace Frogger
             if (timeup)
             {
                 StopEngine();
-                DrawTextbox(g, "Game Over", "time is up.");
+                DrawGameOverScreen(g, "time is up.", false);
+            }
+            else if (nomorelive)
+            {
+                DrawGameOverScreen(g, "no more lives left.", false);
             }
         }
 
@@ -315,10 +321,13 @@ namespace Frogger
                     DrawRoad(g, space * 7);
                     break;
             }
-
             if (!setup)
             {
                 SetupEngine();
+            }
+            if (livesup)
+            {
+                GameOver(g, false, true);
             }
         }
 
@@ -349,7 +358,7 @@ namespace Frogger
             {
                 frmgame.Controls.Remove(movingobjs[i]);
                 movingobjs[i].Location = new Point(-200, -200); //dont bother the game. with not yet gc objects.
-                movingobjs[i].Dispose(); 
+                movingobjs[i].Dispose();
             }
             GC.Collect(); //soon
         }
@@ -378,34 +387,58 @@ namespace Frogger
                     }
                     else
                     {
-                        //obj.Refresh();
                         obj.Invalidate();
                     }
 
                     if (DetectCollision(obj))
                     {
-                        ishit = true;
-
                         //car:
-                        switch (obj.Dir)
+                        if (obj is Car)
                         {
-                            case Direction.East:
-                                frog.pic = ResizesResources.images["frogdead_west"];//Frogger.Properties.Resources.frogdead_east;
-                                break;
-                            case Direction.West:
-                                frog.pic = ResizesResources.images["frogdead_east"];//Frogger.Properties.Resources.frogdead_west;
-                                break;
+                            ishit = true;
+                            switch (obj.Dir)
+                            {
+                                case Direction.East:
+                                    frog.pic = ResizesResources.images["frogdead_west"];//Frogger.Properties.Resources.frogdead_east;
+                                    break;
+                                case Direction.West:
+                                    frog.pic = ResizesResources.images["frogdead_east"];//Frogger.Properties.Resources.frogdead_west;
+                                    break;
+                            }
+                            frog.Invalidate();
+                            if (Program.sound)
+                            {
+                                sndPlaySound(Application.StartupPath + @"\sounds\punch.wav", 1); //1 = Async
+                            }
                         }
-                        frog.Invalidate();
-                        if (Program.sound)
+                        //tree:
+                        else if (obj is Tree)
                         {
-                            sndPlaySound(Application.StartupPath + @"\sounds\punch.wav", 1); //1 = Async
+                            frog.OnTree = true;
+                            frog.TreeDir = obj.Dir;
+                            frog.TreeVelocity = obj.Velocity;
                         }
+                    }
+                    else
+                    {
+                        frog.OnTree = false;
                     }
                 }
                 else
                 {
                     frmgame.Controls.Add(obj);
+                }
+            }
+            if (frog.OnTree==true)
+            {
+                switch (frog.TreeDir)
+                {
+                    case Direction.East:
+                        frog.Location = new Point(frog.Location.X + frog.TreeVelocity, frog.Location.Y);
+                        break;
+                    case Direction.West:
+                        frog.Location = new Point(frog.Location.X - frog.TreeVelocity, frog.Location.Y);
+                        break;
                 }
             }
             frog.CanMove = true;
@@ -574,17 +607,23 @@ namespace Frogger
                 }
                 else if (ishit)
                 {
-                    lives--;
                     StopEngine();
-                    DrawNumLives();
-                    
-                    Frog newfrog = CreateFrog();
-                    frmgame.Controls.Add(newfrog);
+                    livesup = CheckLives(lives);
+                    if (!livesup)
+                    {
+                        DrawNumLives();
+                        Frog newfrog = CreateFrog();
+                        frmgame.Controls.Add(newfrog);
 
-                    InitSomeMvobjs();
-                    ishit = false;
-                    gameupdate.Enabled = true;
-                    
+                        InitSomeMvobjs();
+                        ishit = false;
+                        gameupdate.Enabled = true;
+                    }
+                    else
+                    {
+                        livesup = true;
+                    }
+
                 }
             }
             else
@@ -686,6 +725,7 @@ namespace Frogger
 
             InitSomeMvobjs();
 
+            livesup = false;
             setup = true;
         }
 
@@ -727,7 +767,7 @@ namespace Frogger
 
         #region game const settings
         private const int roadlineheight = 5; //not supposed to change integers without recompile.
-        private const int frogbottommargin = 16;
+        private const int frogbottommargin = 12;
         private const int lineDistance = 100;
         #endregion
 

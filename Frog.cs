@@ -56,6 +56,10 @@ namespace Frogger
             }
         }
 
+        public Boolean OnTree { set; get; }
+        public Direction TreeDir { set; get; }
+        public int TreeVelocity { set; get; }
+
         /// <summary>
         /// Move the frog (with constant jumpdistance pixels)
         /// </summary>
@@ -71,9 +75,13 @@ namespace Frogger
                     case Direction.North:
                         this.pic = ResizesResources.images["kikker_west"]; //global::Frogger.Properties.Resources.kikker_west;
                         newposY = this.Location.Y - jumpdistance;
-                        if (newposY >= 0)
+                        if (newposY + this.Height >= 0)
                         {
                             this.Location = new System.Drawing.Point(newposX, newposY);
+                            if (this.Location.Y <= this.Height)
+                            {
+                                System.Windows.Forms.MessageBox.Show("TODO: Ga naar volgende level");
+                            }
                         }
                         break;
                     case Direction.East:
