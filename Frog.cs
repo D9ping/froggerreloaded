@@ -19,6 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Windows.Forms;
+using System.IO;
 
 namespace Frogger
 {
@@ -80,7 +82,12 @@ namespace Frogger
                             this.Location = new System.Drawing.Point(newposX, newposY);
                             if (this.Location.Y <= this.Height)
                             {
-                                System.Windows.Forms.MessageBox.Show("TODO: Ga naar volgende level");
+                                string soundmadeit = Application.StartupPath + "\\sounds\\frog_made_it.wav";
+                                if (File.Exists(soundmadeit))
+                                {
+                                    GameEngine.sndPlaySound(soundmadeit, 1);
+                                }
+                                
                             }
                         }
                         break;

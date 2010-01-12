@@ -33,6 +33,7 @@
             this.timerUpdateGame = new System.Windows.Forms.Timer(this.components);
             this.lbTime = new System.Windows.Forms.Label();
             this.btnTestGameOver = new System.Windows.Forms.Button();
+            this.tbHighscoreName = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // timerUpdateGame
@@ -65,6 +66,17 @@
             this.btnTestGameOver.UseVisualStyleBackColor = true;
             this.btnTestGameOver.Click += new System.EventHandler(this.button1_Click);
             // 
+            // tbHighscoreName
+            // 
+            this.tbHighscoreName.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbHighscoreName.Location = new System.Drawing.Point(225, 327);
+            this.tbHighscoreName.Name = "tbHighscoreName";
+            this.tbHighscoreName.Size = new System.Drawing.Size(284, 44);
+            this.tbHighscoreName.TabIndex = 2;
+            this.tbHighscoreName.Text = "anoniem";
+            this.tbHighscoreName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbHighscoreName.Visible = false;
+            // 
             // FrmGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -73,6 +85,7 @@
             this.BackColor = System.Drawing.Color.Green;
             this.BackgroundImage = global::Frogger.Properties.Resources.texure_grass;
             this.ClientSize = new System.Drawing.Size(794, 612);
+            this.Controls.Add(this.tbHighscoreName);
             this.Controls.Add(this.btnTestGameOver);
             this.Controls.Add(this.lbTime);
             this.DoubleBuffered = true;
@@ -99,6 +112,7 @@
         private System.Windows.Forms.Timer timerUpdateGame;
 #if DEBUG
         private System.Windows.Forms.Button btnTestGameOver;
+        private System.Windows.Forms.TextBox tbHighscoreName;
 #endif
 
     }

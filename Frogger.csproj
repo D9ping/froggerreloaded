@@ -129,6 +129,7 @@
   <ItemGroup>
     <Content Include="bin\Debug\sounds\beep.wav" />
     <Content Include="bin\Debug\sounds\carcrash.wav" />
+    <Content Include="bin\Debug\sounds\sink.wav" />
     <Content Include="icon_frog.ico" />
     <None Include="Resources\car_green_east.png" />
     <None Include="Resources\car_green_west.png" />

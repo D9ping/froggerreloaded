@@ -34,7 +34,7 @@ namespace Frogger
         private Timer gameupdate;
         private List<int> rivirs;
         private List<int> roads;
-        private Boolean setup = false, ishit = false, livesup = false, freeplay = false;
+        private Boolean setup = false, ishit = false, livesup = false, freeplay = false, win = false;
         private Niveau tier;
         private int timesecnewobj = 0, level = -1, lives = 0, tick = 0;
         private List<PictureBox> livesimgs; //om ze niet kwijt te raken.
@@ -276,14 +276,12 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Draw a box with the text "Game over" and a reason.
+        /// Draw a box with the text "Game over" and a reason and display enter highscore if entername is true.
         /// </summary>
         /// <param name="g">graphics object</param>
         /// <param name="textregel1">the first line, big text</param>
-        private void DrawGameOverScreen(Graphics g, String textline, bool enterhighscore)
+        private void DrawGameOverScreen(Graphics g, String textline)
         {
-            frmgame.Controls.Remove(frog);
-
             Font fontregel1 = new Font("Flubber", 64);
             Font fontregel2 = new Font("Flubber", 24);
             SolidBrush sbdarkorange = new SolidBrush(System.Drawing.Color.DarkOrange);
@@ -293,68 +291,116 @@ namespace Frogger
             g.DrawString("Game Over", fontregel1, Brushes.Red, new PointF(frmgame.ClientRectangle.Width / 2 - 150, frmgame.ClientRectangle.Height / 2 - 50));
             g.DrawString(textline, fontregel2, Brushes.Black, new PointF(frmgame.ClientRectangle.Width / 2 - 100, frmgame.ClientRectangle.Height / 2 + 20));
 
-            if (!enterhighscore)
-            {
                 HoverButton hovbtnBack = new HoverButton("Back");
                 hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
                 hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
                 frmgame.Controls.Add(hovbtnBack);
                 hovbtnBack.Invalidate();
-            }
+            
         }
 
+        private void ShowEnterHighscore()
+        {
+            
+            frmgame.VisibleTbEnterName = true;
+            
+
+            HoverButton hovbtnSubmit = new HoverButton("submit");
+            hovbtnSubmit.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnSubmit.Width / 2, frmgame.Height - 200);
+            hovbtnSubmit.Click += new EventHandler(hovbtnSubmit_Click);
+            frmgame.Controls.Add(hovbtnSubmit);
+            hovbtnSubmit.Invalidate();
+
+            Label lblText = new Label();
+            lblText.Font = new Font("Flubber", 24);
+            lblText.Text = "Voer uw naam in:";
+            lblText.Location = new Point(hovbtnSubmit.Location.X, hovbtnSubmit.Location.Y - 200);
+
+            frmgame.Controls.Add(lblText);
+        }
+
+        private void hovbtnSubmit_Click(object sender, EventArgs e)
+        {
+            String insertquery = "INSERT INTO HIGHSCOREN VALUES (" + DateTime.Now.ToString() + "," + frmgame.TbEnterName + "," + GetGameTime().ToString()+","+level+")";
+            DBConnection.SetData(insertquery);
+            frmgame.VisibleTbEnterName = false;
+            frmgame.CloseGame();
+        }
+
+        private int GetGameTime()
+        {
+            switch (tier)
+            {
+                case Niveau.easy:
+                    return 180 - (frmgame.min * 60 + frmgame.sec);
+                case Niveau.medium:
+                    return 90 - (frmgame.min * 60 + frmgame.sec);
+                case Niveau.hard:
+                    return 45 - (frmgame.min * 60 + frmgame.sec);
+                case Niveau.elite:
+                    return 20 - (frmgame.min * 60 + frmgame.sec);
+                default:
+                    return 99999;
+            }
+        }
         /// <summary>
         /// Shows the user that the game is over.
         /// </summary>
         public void GameOver(Graphics g, bool timeup, bool nomorelive)
         {
-            bool entername = false;
-            int gametime = 0;
-            switch (tier)
-            {
-                case Niveau.freeplay:
-                    entername = false;
-                    break;
-                case Niveau.easy:
-                    gametime = 180 - (frmgame.min * 60 + frmgame.sec);
-                    break;
-                case Niveau.medium:
-                    gametime = 90 - (frmgame.min * 60 + frmgame.sec);
-                    break;
-                case Niveau.hard:
-                    gametime = 45 - (frmgame.min * 60 + frmgame.sec);
-                    break;
-                case Niveau.elite:
-                    gametime = 20 - (frmgame.min * 60 + frmgame.sec);
-                    break;
-                default:
-                    break;
-            }
-
-            string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + level + " ORDER BY SPEELTIJD ASC";
-            DataTable dt = DBConnection.ExecuteQuery(query, 4);
-            if (dt.Rows.Count > 10)
-            {
-                DataRow row = dt.Rows[10];
-                int minspeeltijdhighscore = Convert.ToInt32(row["speeltijd"]);
-                if (gametime > minspeeltijdhighscore)
-                {
-                    entername = true;
-                }
-            }
-            else
-            {
-                entername = true;
-            }
-         
             if (timeup)
             {
                 StopEngine();
-                DrawGameOverScreen(g, "time is up.", entername);
+                DrawGameOverScreen(g, "time is up.");
             }
             else if (nomorelive)
             {
-                DrawGameOverScreen(g, "no more lives left.", entername);
+                StopEngine();
+                DrawGameOverScreen(g, "no more lives left.");
+            }
+            else if (win)
+            {
+                bool entername = false;
+                int gametime = GetGameTime();
+
+                string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + level + " ORDER BY SPEELTIJD ASC";
+                DataTable dt = DBConnection.ExecuteQuery(query, 4);
+                if (dt.Rows.Count >= 10)
+                {
+                    DataRow row = dt.Rows[10];
+                    int minspeeltijdhighscore = Convert.ToInt32(row["speeltijd"]);
+                    if (gametime > minspeeltijdhighscore)
+                    {
+                        entername = true;
+                    }
+                }
+                else
+                {
+                    entername = true;
+                }
+
+                StopEngine();
+                DrawWinScreen(g, entername);
+            }
+        }
+
+        /// <summary>
+        /// Draw a screen with the text "win" and display enter highscore if entername is true.
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="entername"></param>
+        private void DrawWinScreen(Graphics g, bool entername)
+        {
+            Font fontregel1 = new Font("Flubber", 64);
+            SolidBrush bl = new SolidBrush(System.Drawing.Color.Blue);
+            Rectangle box = new Rectangle(new Point(50, 50), new Size(frmgame.ClientRectangle.Width - 100, frmgame.ClientRectangle.Height - 100));
+            g.DrawRectangle(Pens.Black, box);
+            g.FillRectangle(bl, box);
+            g.DrawString("Win", fontregel1, Brushes.Red, new PointF(frmgame.ClientRectangle.Width / 2 - 100, frmgame.ClientRectangle.Height / 2 - 50));
+
+            if (entername)
+            {
+
             }
         }
 
@@ -388,9 +434,14 @@ namespace Frogger
             {
                 SetupEngine();
             }
-            if (livesup)
+            if ((livesup) && !freeplay)
             {
                 GameOver(g, false, true);
+            }
+            else if (win)
+            {
+                GameOver(g, false, false);
+                win = false;
             }
         }
 
@@ -503,6 +554,10 @@ namespace Frogger
                         frog.Location = new Point(frog.Location.X - frog.TreeVelocity, frog.Location.Y);
                         break;
                 }
+            }
+            if (frog.Location.Y <= frog.Height)
+            {
+                
             }
             frog.CanMove = true;
         }
@@ -694,16 +749,24 @@ namespace Frogger
                 tick++;
             }
 
-            switch (level)
+            switch (tier)
             {
-                case 1:
-                    timesecnewobj = 5;
-                    break;
-                case 2:
+                case Niveau.freeplay:
                     timesecnewobj = 4;
                     break;
-                case 3:
+                case Niveau.easy:
+                    timesecnewobj = 4;
+                    break;
+                case Niveau.medium:
                     timesecnewobj = 3;
+                    break;
+                case Niveau.hard:
+                    timesecnewobj = 2;
+                    break;
+                case Niveau.elite:
+                    timesecnewobj = 1;
+                    break;
+                default:
                     break;
             }
             if (!ishit)
@@ -808,13 +871,17 @@ namespace Frogger
                 int rnddir = rndgen.Next(0, 2);
                 if (rnddir == 0)
                 {
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx - 80, roads[curroad], rndgen));
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx + 80, roads[curroad], rndgen));
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx - 300, roads[curroad], rndgen));
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx - 150, roads[curroad], rndgen));
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx, roads[curroad], rndgen));
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx + 150, roads[curroad], rndgen));
                 }
                 else
                 {
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx - 80, roads[curroad], rndgen));
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx + 80, roads[curroad], rndgen));
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx - 150, roads[curroad], rndgen));
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx, roads[curroad], rndgen));
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx + 150, roads[curroad], rndgen));
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx + 300, roads[curroad], rndgen));
                 }
             }
 

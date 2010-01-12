@@ -71,6 +71,24 @@ namespace Frogger
             this.frmmenu.Show();
             this.Hide();
         }
+
+        public Boolean VisibleTbEnterName
+        {
+            set
+            {
+                tbHighscoreName.Visible = value;
+            }
+            get { return tbHighscoreName.Visible; }
+        }
+
+        public String TbEnterName
+        {
+            get
+            {
+                return this.tbHighscoreName.Text;
+            }
+        }
+
 		// Private Methods (7) 
 
 #if DEBUG
