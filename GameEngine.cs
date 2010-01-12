@@ -25,27 +25,19 @@ namespace Frogger
 {
     public class GameEngine
     {
-        #region Fields (11)
-
-        private FrmGame frmgame;
-        private Niveau tier;
-        private Boolean setup = false;
+        #region Fields (9)
         public Frog frog;
+        public List<MovingObject> movingobjs; //public voor testen
+        //private List<MovingObject> movingobjs;
+        private FrmGame frmgame;
         private Timer gameupdate;
-        public List<MovingObject> movingobjs;
         private List<int> rivirs;
         private List<int> roads;
-
+        private Boolean setup = false, ishit = false;
+        private Niveau tier;
         private int timesecnewobj = 0, level = -1, lives = 0, tick = 0;
-
-
+        private List<PictureBox> livesimgs; //om ze niet kwijt te raken.
         #endregion Fields
-
-        #region game const settings
-        private const int roadlineheight = 5; //not supposed to change integers without recompile.
-        private const int frogbottommargin = 16;
-        private const int lineDistance = 100;
-        #endregion
 
         #region Constructors (1)
 
@@ -64,7 +56,10 @@ namespace Frogger
             roads = new List<int>();
             rivirs = new List<int>();
             movingobjs = new List<MovingObject>();
+            livesimgs = new List<PictureBox>();
+
             ResizesResources.images = new Dictionary<String, Bitmap>();
+            
 
             gameupdate = new Timer
             {
@@ -79,7 +74,7 @@ namespace Frogger
 
         #endregion Constructors
 
-        #region Properties (1)
+        #region Properties (3)
 
         /// <summary>
         /// Returns the number of lives the player has left.
@@ -117,7 +112,7 @@ namespace Frogger
 
         #endregion
 
-        #region Methods (18)
+        #region Methods (22)
 
         // Public Methods (13) 
 
@@ -158,23 +153,6 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Resize a picture/bitmap
-        /// </summary>
-        /// <param name="picture"></param>
-        /// <param name="width">new width</param>
-        /// <param name="height">new height</param>
-        /// <returns>the resized image</returns>
-        private Bitmap ResizeImage(Bitmap picture, int width, int height)
-        {
-            Bitmap resizedpic = new Bitmap(width, height);
-            using (Graphics graphics = Graphics.FromImage(resizedpic))
-            {
-                graphics.DrawImage(picture, 0, 0, width, height);
-            }
-            return resizedpic;
-        }
-
-        /// <summary>
         /// Creates a new car with a random color.
         /// </summary>
         /// <param name="velocity">The velocity of the car</param>
@@ -211,7 +189,6 @@ namespace Frogger
         /// <returns>a frog moving object</returns>
         public Frog CreateFrog()
         {
-
             int space = frmgame.ClientSize.Height / 20;
             int initfrogwidth = frmgame.ClientSize.Width / 20;
             int initfrogheight = frmgame.ClientSize.Height / 20;
@@ -231,8 +208,6 @@ namespace Frogger
             //frog.pic = ResizesResources.images["frog_east"];
             frog.Location = new Point(locX, locY);
 
-           
-
             if (frog == null) { throw new Exception("frog not created."); }
             return frog;
         }
@@ -250,7 +225,7 @@ namespace Frogger
             Tree treetrunk = new Tree(vel, direction, inittreewidth, inittreeheight);
 
             treetrunk.Location = new Point(locX, locY);
-            
+
             return treetrunk;
         }
 
@@ -274,6 +249,44 @@ namespace Frogger
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// Draw a box with text.
+        /// </summary>
+        /// <param name="g">graphics object</param>
+        /// <param name="textregel1">the first line, big text</param>
+        public void DrawTextbox(Graphics g, String textline1, String textline2)
+        {
+            frmgame.Controls.Remove(frog);
+
+            int margincentre = textline1.Length * 20;
+            Font fontregel1 = new Font("Flubber", 64);
+            Font fontregel2 = new Font("Flubber", 24);
+            SolidBrush sbdarkorange = new SolidBrush(System.Drawing.Color.DarkOrange);
+            Rectangle box = new Rectangle(new Point(50, 50), new Size(frmgame.ClientRectangle.Width - 100, frmgame.ClientRectangle.Height - 100));
+            g.DrawRectangle(Pens.Black, box);
+            g.FillRectangle(sbdarkorange, box);
+            g.DrawString(textline1, fontregel1, Brushes.Red, new PointF(frmgame.ClientRectangle.Width / 2 - margincentre, frmgame.ClientRectangle.Height / 2 - 50));
+            g.DrawString(textline2, fontregel2, Brushes.Black, new PointF(frmgame.ClientRectangle.Width / 2 - 100, frmgame.ClientRectangle.Height / 2 + 20));
+
+            HoverButton hovbtnBack = new HoverButton("Back");
+            hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
+            hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
+            frmgame.Controls.Add(hovbtnBack);
+            hovbtnBack.Invalidate();
+        }
+
+        /// <summary>
+        /// Shows the user that the game is over.
+        /// </summary>
+        public void GameOver(Graphics g, bool timeup, bool nomorelive)
+        {
+            if (timeup)
+            {
+                StopEngine();
+                DrawTextbox(g, "Game Over", "time is up.");
+            }
         }
 
         /// <summary>
@@ -307,141 +320,6 @@ namespace Frogger
             {
                 SetupEngine();
             }
-            DrawNumLives(g);
-        }
-
-        /// <summary>
-        /// set the number of lives based on the tier.
-        /// Create some object on startup.
-        /// </summary>
-        private void SetupEngine()
-        {
-            ResizesResources.images.Clear();
-            //pre loading..
-            int kikkersizeX = frmgame.ClientSize.Width / 20;
-            int kikkersizeY = frmgame.ClientSize.Height / 20;
-            ResizesResources.images.Add("kikker_west", ResizeImage(Frogger.Properties.Resources.kikker_west, kikkersizeX, kikkersizeY));
-            ResizesResources.images.Add("kikker_east", ResizeImage(Frogger.Properties.Resources.kikker_east, kikkersizeX, kikkersizeY));
-            ResizesResources.images.Add("frogdead_east", ResizeImage(Frogger.Properties.Resources.frogdead_east, kikkersizeX, kikkersizeY));
-            ResizesResources.images.Add("frogdead_west", ResizeImage(Frogger.Properties.Resources.frogdead_west, kikkersizeX, kikkersizeY));
-            int treesizeX = CalcHeightRivir(1);
-            int treesizeY = CalcHeightRivir(1) * 3;
-            ResizesResources.images.Add("treetrunk", ResizeImage(Frogger.Properties.Resources.treetrunk, treesizeX, treesizeY));
-            int carsizeX = frmgame.ClientRectangle.Width / 12;
-            int carsizeY = CalcHeightRoad() / 2 - roadlineheight;
-            ResizesResources.images.Add("car_grey_east", ResizeImage(Frogger.Properties.Resources.car_grey_east, carsizeX, carsizeY));
-            ResizesResources.images.Add("car_grey_west", ResizeImage(Frogger.Properties.Resources.car_grey_west, carsizeX, carsizeY));
-            ResizesResources.images.Add("car_yellow_east", ResizeImage(Frogger.Properties.Resources.car_yellow_east, carsizeX, carsizeY));
-            ResizesResources.images.Add("car_yellow_west", ResizeImage(Frogger.Properties.Resources.car_yellow_west, carsizeX, carsizeY));
-            ResizesResources.images.Add("car_green_east", ResizeImage(Frogger.Properties.Resources.car_green_east, carsizeX, carsizeY));
-            ResizesResources.images.Add("car_green_west", ResizeImage(Frogger.Properties.Resources.car_green_west, carsizeX, carsizeY));
-            int trunksizeX = frmgame.ClientRectangle.Width / 8;
-            ResizesResources.images.Add("truck_east", ResizeImage(Frogger.Properties.Resources.truck_east, trunksizeX, carsizeY));
-            ResizesResources.images.Add("truck_west", ResizeImage(Frogger.Properties.Resources.truck_west, trunksizeX, carsizeY));
-
-            switch (tier)
-            {
-                case Niveau.easy:
-                    lives = 3;
-                    break;
-                case Niveau.medium:
-                    lives = 3;
-                    break;
-                case Niveau.hard:
-                    lives = 2;
-                    break;
-                case Niveau.elite:
-                    lives = 1;
-                    break;
-            }
-
-            Random rndgen = new Random();
-            int middlescreenx = frmgame.ClientSize.Width / 2;
-
-            for (int curroad = 0; curroad < roads.Count; curroad++)
-            {
-                int rnddir = rndgen.Next(0, 2);
-                if (rnddir == 0)
-                {
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx, roads[curroad], rndgen));
-                }
-                else
-                {
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx, roads[curroad], rndgen));
-                }
-            }
-
-            for (int i = 0; i < rivirs.Count; i++)
-            {
-                if (rivirs[i] % 2 == 0) //even
-                {
-                    movingobjs.Add(CreateTreeTrunk(4, Direction.West, middlescreenx, rivirs[i]));
-                }
-                else //odd
-                {
-                    movingobjs.Add(CreateTreeTrunk(4, Direction.East, middlescreenx, rivirs[i]));
-                }
-            }
-
-            setup = true;
-        }
-
-        /// <summary>
-        /// Draws the number of lives pictures.
-        /// </summary>
-        /// <param name="g"></param>
-        private void DrawNumLives(Graphics g)
-        {
-            int locX = 5;
-            for (int i = 0; i < lives; i++)
-            {
-                g.DrawImage(Frogger.Properties.Resources.live, new Point(locX, 10));
-                locX += Frogger.Properties.Resources.live.Size.Width + 5;
-            }
-        }
-
-
-
-        /// <summary>
-        /// Draw a box with text.
-        /// </summary>
-        /// <param name="g">graphics object</param>
-        /// <param name="textregel1">the first line, big text</param>
-        public void DrawTextbox(Graphics g, String textline1, String textline2)
-        {
-            frmgame.Controls.Remove(frog);
-
-            int margincentre = textline1.Length * 20;
-            Font fontregel1 = new Font("Flubber", 64);
-            Font fontregel2 = new Font("Flubber", 24);
-            SolidBrush sbdarkorange = new SolidBrush(System.Drawing.Color.DarkOrange);
-            Rectangle box = new Rectangle(new Point(50, 50), new Size(frmgame.ClientRectangle.Width - 100, frmgame.ClientRectangle.Height - 100));
-            g.DrawRectangle(Pens.Black, box);
-            g.FillRectangle(sbdarkorange, box);
-            g.DrawString(textline1, fontregel1, Brushes.Red, new PointF(frmgame.ClientRectangle.Width / 2 - margincentre, frmgame.ClientRectangle.Height / 2 -50));
-            g.DrawString(textline2, fontregel2, Brushes.Black, new PointF(frmgame.ClientRectangle.Width / 2 - 100, frmgame.ClientRectangle.Height / 2 +20));
-
-            HoverButton hovbtnBack = new HoverButton("Back");
-            hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
-            hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
-            frmgame.Controls.Add(hovbtnBack);
-        }
-
-        private void hovbtnBack_Click(object sender, EventArgs e)
-        {
-            frmgame.CloseGame();
-        }
-
-        /// <summary>
-        /// Shows the user that the game is over.
-        /// </summary>
-        public void GameOver(Graphics g, bool timeup, bool nomorelive)
-        {
-            if (timeup)
-            {
-                StopEngine();
-                DrawTextbox(g, "Game Over", "time is up.");
-            }
         }
 
         /// <summary>
@@ -462,10 +340,18 @@ namespace Frogger
         public void StopEngine()
         {
             gameupdate.Enabled = false;
-            foreach (MovingObject mvobj in movingobjs)
+            if (frog != null)
             {
-                mvobj.Dispose();
+                frmgame.Controls.Remove(frog);
+                frog.Dispose();
             }
+            for (int i = 0; i < movingobjs.Count; i++)
+            {
+                frmgame.Controls.Remove(movingobjs[i]);
+                movingobjs[i].Location = new Point(-200, -200); //dont bother the game. with not yet gc objects.
+                movingobjs[i].Dispose(); 
+            }
+            GC.Collect(); //soon
         }
 
         /// <summary>
@@ -498,22 +384,23 @@ namespace Frogger
 
                     if (DetectCollision(obj))
                     {
-                        gameupdate.Enabled = false;
+                        ishit = true;
+
+                        //car:
                         switch (obj.Dir)
                         {
                             case Direction.East:
-                                frog.pic = ResizesResources.images["frogdead_east"];//Frogger.Properties.Resources.frogdead_east;
+                                frog.pic = ResizesResources.images["frogdead_west"];//Frogger.Properties.Resources.frogdead_east;
                                 break;
                             case Direction.West:
-                                frog.pic = ResizesResources.images["frogdead_west"];//Frogger.Properties.Resources.frogdead_west;
+                                frog.pic = ResizesResources.images["frogdead_east"];//Frogger.Properties.Resources.frogdead_west;
                                 break;
                         }
                         frog.Invalidate();
                         if (Program.sound)
                         {
-                            sndPlaySound(Application.StartupPath + @"\sounds\carcrash.wav", 1); //1 = Async
+                            sndPlaySound(Application.StartupPath + @"\sounds\punch.wav", 1); //1 = Async
                         }
-                        ResetFrogger();
                     }
                 }
                 else
@@ -523,20 +410,8 @@ namespace Frogger
             }
             frog.CanMove = true;
         }
-        // Private Methods (5) 
+        // Private Methods (9) 
 
-        /// <summary>
-        /// If dead
-        /// </summary>
-        private void ResetFrogger()
-        {
-            lives--;
-            frmgame.Controls.Remove(frog);
-            gameupdate.Enabled = true;
-            frog = CreateFrog();
-            frmgame.Controls.Add(frog);
-            
-        }
         /// <summary>
         /// Calculate the height of the rivir.
         /// </summary>
@@ -563,6 +438,31 @@ namespace Frogger
                 hroad = Screen.PrimaryScreen.WorkingArea.Height / 10;
             }
             return hroad;
+        }
+
+        /// <summary>
+        /// Draws the number of lives pictures.
+        /// </summary>
+        /// <param name="g"></param>
+        private void DrawNumLives()
+        {
+            foreach (PictureBox curpb in livesimgs)
+            {
+                curpb.Dispose();
+            }
+
+            int locX = 0;
+            for (int i = 0; i < lives; i++)
+            {
+                PictureBox pbLive = new PictureBox();
+                pbLive.Image = Frogger.Properties.Resources.live;
+                locX += Frogger.Properties.Resources.live.Size.Width + 5;
+                pbLive.Location = new Point(locX, 3);
+                pbLive.SizeMode = PictureBoxSizeMode.AutoSize;
+                livesimgs.Add(pbLive);
+                pbLive.BackColor = Color.Transparent;
+                frmgame.Controls.Add(pbLive);
+            }
         }
 
         /// <summary>
@@ -633,42 +533,59 @@ namespace Frogger
         private void gameupdate_Tick(object sender, EventArgs e)
         {
             int maxtick = 1000 / gameupdate.Interval; //1s
-
             if (tick >= maxtick * timesecnewobj)
             {
-                Random rndgen = new Random();
-                //if (this.NumObjects < 255) //protects against heavy cpu stress on hardest tier and settings.
-                //{
-                int carwidth = ResizesResources.images["car_yellow_east"].Size.Width;
-                for (int curroad = 0; curroad < roads.Count; curroad++)
+                if (!ishit)
                 {
-                    int rnddir = rndgen.Next(0, 2);
-                    if (rnddir == 0)
+                    Random rndgen = new Random();
+                    //if (this.NumObjects < 255) //protects against heavy cpu stress on hardest tier and settings.
+                    //{
+                    int carwidth = ResizesResources.images["car_yellow_east"].Size.Width;
+                    for (int curroad = 0; curroad < roads.Count; curroad++)
                     {
+                        int rnddir = rndgen.Next(0, 2);
+                        if (rnddir == 0)
+                        {
 
-                        movingobjs.Add(CreateCarRandomColor(2, Direction.East, -carwidth, roads[curroad], rndgen));
+                            movingobjs.Add(CreateCarRandomColor(2, Direction.East, -carwidth, roads[curroad], rndgen));
 
+                        }
+                        else
+                        {
+                            movingobjs.Add(CreateCarRandomColor(2, Direction.West, frmgame.ClientSize.Width + carwidth, roads[curroad], rndgen));
+                        }
                     }
-                    else
+
+                    int treetrunkwidth = ResizesResources.images["treetrunk"].Size.Width;
+                    for (int curriver = 0; curriver < rivirs.Count; curriver++)
                     {
-                        movingobjs.Add(CreateCarRandomColor(2, Direction.West, frmgame.ClientSize.Width + carwidth, roads[curroad], rndgen));
+                        if (curriver % 2 == 0) //even
+                        {
+                            movingobjs.Add(CreateTreeTrunk(4, Direction.East, -treetrunkwidth, rivirs[curriver]));
+                        }
+                        else if (curriver != 0) //odd and not 0
+                        {
+                            movingobjs.Add(CreateTreeTrunk(4, Direction.West, frmgame.ClientRectangle.Width + treetrunkwidth, rivirs[curriver]));
+                        }
                     }
+
+                    tick = 0;
+                    //}
                 }
-
-                int treetrunkwidth = ResizesResources.images["treetrunk"].Size.Width;
-                for (int curriver = 0; curriver < rivirs.Count; curriver++)
+                else if (ishit)
                 {
-                    if (curriver % 2 == 0) //even
-                    {
-                        movingobjs.Add(CreateTreeTrunk(4, Direction.East, -treetrunkwidth, rivirs[curriver]));
-                    }
-                    else if (curriver != 0) //odd and not 0
-                    {
-                        movingobjs.Add(CreateTreeTrunk(4, Direction.West, frmgame.ClientRectangle.Width + treetrunkwidth, rivirs[curriver]));
-                    }
+                    lives--;
+                    StopEngine();
+                    DrawNumLives();
+                    
+                    Frog newfrog = CreateFrog();
+                    frmgame.Controls.Add(newfrog);
+
+                    InitSomeMvobjs();
+                    ishit = false;
+                    gameupdate.Enabled = true;
+                    
                 }
-                tick = 0;
-                //}
             }
             else
             {
@@ -687,11 +604,133 @@ namespace Frogger
                     timesecnewobj = 3;
                     break;
             }
-
-            UpdatePositionMovingObjects();
+            if (!ishit)
+            {
+                UpdatePositionMovingObjects();
+            }
+            else
+            {
+                frog.CanMove = false;
+                frog.BringToFront();
+            }
 
         }
 
+        private void hovbtnBack_Click(object sender, EventArgs e)
+        {
+            frmgame.CloseGame();
+        }
+
+        /// <summary>
+        /// Resize a picture/bitmap
+        /// </summary>
+        /// <param name="picture"></param>
+        /// <param name="width">new width</param>
+        /// <param name="height">new height</param>
+        /// <returns>the resized image</returns>
+        private Bitmap ResizeImage(Bitmap picture, int width, int height)
+        {
+            Bitmap resizedpic = new Bitmap(width, height);
+            using (Graphics graphics = Graphics.FromImage(resizedpic))
+            {
+                graphics.DrawImage(picture, 0, 0, width, height);
+            }
+            return resizedpic;
+        }
+
+        /// <summary>
+        /// set the number of lives based on the tier.
+        /// Create some object on startup.
+        /// </summary>
+        private void SetupEngine()
+        {
+            ResizesResources.images.Clear();
+            //pre loading..
+            int kikkersizeX = frmgame.ClientSize.Width / 20;
+            int kikkersizeY = frmgame.ClientSize.Height / 20;
+            ResizesResources.images.Add("kikker_west", ResizeImage(Frogger.Properties.Resources.kikker_west, kikkersizeX, kikkersizeY));
+            ResizesResources.images.Add("kikker_east", ResizeImage(Frogger.Properties.Resources.kikker_east, kikkersizeX, kikkersizeY));
+            ResizesResources.images.Add("frogdead_east", ResizeImage(Frogger.Properties.Resources.frogdead_east, kikkersizeX, kikkersizeY));
+            ResizesResources.images.Add("frogdead_west", ResizeImage(Frogger.Properties.Resources.frogdead_west, kikkersizeX, kikkersizeY));
+            int treesizeheight = CalcHeightRivir(1);
+            int treesizewidth = treesizeheight * 3;
+            ResizesResources.images.Add("treetrunk", ResizeImage(Frogger.Properties.Resources.treetrunk, treesizewidth, treesizeheight));
+            int carsizeX = frmgame.ClientRectangle.Width / 12;
+            int carsizeY = CalcHeightRoad() / 2 - roadlineheight;
+            ResizesResources.images.Add("car_grey_east", ResizeImage(Frogger.Properties.Resources.car_grey_east, carsizeX, carsizeY));
+            ResizesResources.images.Add("car_grey_west", ResizeImage(Frogger.Properties.Resources.car_grey_west, carsizeX, carsizeY));
+            ResizesResources.images.Add("car_yellow_east", ResizeImage(Frogger.Properties.Resources.car_yellow_east, carsizeX, carsizeY));
+            ResizesResources.images.Add("car_yellow_west", ResizeImage(Frogger.Properties.Resources.car_yellow_west, carsizeX, carsizeY));
+            ResizesResources.images.Add("car_green_east", ResizeImage(Frogger.Properties.Resources.car_green_east, carsizeX, carsizeY));
+            ResizesResources.images.Add("car_green_west", ResizeImage(Frogger.Properties.Resources.car_green_west, carsizeX, carsizeY));
+            int trunksizeX = frmgame.ClientRectangle.Width / 8;
+            ResizesResources.images.Add("truck_east", ResizeImage(Frogger.Properties.Resources.truck_east, trunksizeX, carsizeY));
+            ResizesResources.images.Add("truck_west", ResizeImage(Frogger.Properties.Resources.truck_west, trunksizeX, carsizeY));
+
+            switch (tier)
+            {
+                case Niveau.easy:
+                    lives = 3;
+                    break;
+                case Niveau.medium:
+                    lives = 3;
+                    break;
+                case Niveau.hard:
+                    lives = 2;
+                    break;
+                case Niveau.elite:
+                    lives = 1;
+                    break;
+            }
+            DrawNumLives();
+
+            InitSomeMvobjs();
+
+            setup = true;
+        }
+
+        /// <summary>
+        /// Create some object to start with.
+        /// </summary>
+        private void InitSomeMvobjs()
+        {
+            Random rndgen = new Random();
+            int middlescreenx = frmgame.ClientSize.Width / 2;
+
+            for (int curroad = 0; curroad < roads.Count; curroad++)
+            {
+                int rnddir = rndgen.Next(0, 2);
+                if (rnddir == 0)
+                {
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx, roads[curroad], rndgen));
+                }
+                else
+                {
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx, roads[curroad], rndgen));
+                }
+            }
+
+            for (int i = 0; i < rivirs.Count; i++)
+            {
+                if (rivirs[i] % 2 == 0) //even
+                {
+                    movingobjs.Add(CreateTreeTrunk(4, Direction.West, middlescreenx, rivirs[i]));
+                }
+                else //odd
+                {
+                    movingobjs.Add(CreateTreeTrunk(4, Direction.East, middlescreenx, rivirs[i]));
+                }
+            }
+        }
+
         #endregion Methods
+
+        #region game const settings
+        private const int roadlineheight = 5; //not supposed to change integers without recompile.
+        private const int frogbottommargin = 16;
+        private const int lineDistance = 100;
+        #endregion
+
+
     }
 }

@@ -37,6 +37,9 @@ namespace Frogger
         {
             this.Size = new Size(width, height);
             base.pic = ResizesResources.images["treetrunk"]; //global::Frogger.Properties.Resources.treetrunk;
+
+            int i1 = base.pic.Width;
+            int i2 = base.pic.Height;
         }
     }
 }

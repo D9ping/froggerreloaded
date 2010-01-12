@@ -130,7 +130,7 @@ namespace Frogger
 
             HoverButton btnclicked = (HoverButton)sender;
             
-            string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + btnclicked.Tag.ToString() + " ORDER BY SPEELTIJD DESC";
+            string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + btnclicked.Tag.ToString() + " ORDER BY SPEELTIJD ASC";
             DataTable dt = DBConnection.ExecuteQuery(query, 4);
 
             string tijddatum = "";
@@ -151,7 +151,7 @@ namespace Frogger
                     naam = row[1].ToString();
                     speeltijd = row[2].ToString();
                     int posnr = positie +1;
-                    entries[positie].Text = posnr.ToString() + ". " + tijddatum + "  " + naam + "  " + speeltijd;
+                    entries[positie].Text = posnr.ToString() + ". " + naam + "  " + speeltijd + "s  (" + tijddatum+")";
                     entries[positie].AutoSize = true;
                     entries[positie].ForeColor = Color.Yellow;
                     entries[positie].Location = new Point(350, ypos);

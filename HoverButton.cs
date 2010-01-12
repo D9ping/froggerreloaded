@@ -114,7 +114,7 @@ namespace Frogger
                 string soundbeep = Application.StartupPath + "\\sounds\\beep.wav";
                 if (File.Exists(soundbeep))
                 {
-                    sndPlaySound(Application.StartupPath + "\\sounds\\beep.wav", 1); //1 = Async
+                    sndPlaySound(soundbeep, 1); //1 = Async
                 }
                 else
                 {
