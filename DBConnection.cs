@@ -15,16 +15,27 @@ namespace Frogger
         /// <param name="query">SQL query</param>
 		public static void SetData(string query)
 		{
-            string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\\highscores.mdb;Persist Security Info=False;";
-            OleDbConnection myConnection = null;
+            OleDbConnection myConnection = GetConnection();
             try
             {
-                myConnection = new OleDbConnection(connectionString);
                 myConnection.Open();
-
+            }
+            catch (Exception exc)
+            {
+                System.Windows.Forms.MessageBox.Show(exc.Message);
+            }
+            
+            try
+            {
                 OleDbCommand command = new OleDbCommand(query, myConnection);
                 command.ExecuteNonQuery();
             }
+
+            catch (Exception exc)
+            {
+                System.Windows.Forms.MessageBox.Show(exc.Message);
+            }
+
             finally
             {
                 myConnection.Close();
