@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Data;
 
 namespace Frogger
 {
@@ -33,7 +34,7 @@ namespace Frogger
         private Timer gameupdate;
         private List<int> rivirs;
         private List<int> roads;
-        private Boolean setup = false, ishit = false, livesup=false;
+        private Boolean setup = false, ishit = false, livesup = false, freeplay = false;
         private Niveau tier;
         private int timesecnewobj = 0, level = -1, lives = 0, tick = 0;
         private List<PictureBox> livesimgs; //om ze niet kwijt te raken.
@@ -60,6 +61,29 @@ namespace Frogger
 
             ResizesResources.images = new Dictionary<String, Bitmap>();
 
+            switch (tier)
+            {
+                case Niveau.freeplay:
+                    freeplay = true;
+                    break;
+                case Niveau.easy:
+                    frmgame.min = 3;
+                    frmgame.sec = 0;
+                    break;
+                case Niveau.medium:
+                    frmgame.min = 1;
+                    frmgame.sec = 30;
+                    break;
+                case Niveau.hard:
+                    frmgame.min = 0;
+                    frmgame.sec = 45;
+                    break;
+                case Niveau.elite:
+                    frmgame.min = 0;
+                    frmgame.sec = 20;
+                    break;
+                default: throw new Exception("Tier not found..");
+            }
 
             gameupdate = new Timer
             {
@@ -284,14 +308,53 @@ namespace Frogger
         /// </summary>
         public void GameOver(Graphics g, bool timeup, bool nomorelive)
         {
+            bool entername = false;
+            int gametime = 0;
+            switch (tier)
+            {
+                case Niveau.freeplay:
+                    entername = false;
+                    break;
+                case Niveau.easy:
+                    gametime = 180 - (frmgame.min * 60 + frmgame.sec);
+                    break;
+                case Niveau.medium:
+                    gametime = 90 - (frmgame.min * 60 + frmgame.sec);
+                    break;
+                case Niveau.hard:
+                    gametime = 45 - (frmgame.min * 60 + frmgame.sec);
+                    break;
+                case Niveau.elite:
+                    gametime = 20 - (frmgame.min * 60 + frmgame.sec);
+                    break;
+                default:
+                    break;
+            }
+
+            string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + level + " ORDER BY SPEELTIJD ASC";
+            DataTable dt = DBConnection.ExecuteQuery(query, 4);
+            if (dt.Rows.Count > 10)
+            {
+                DataRow row = dt.Rows[10];
+                int minspeeltijdhighscore = Convert.ToInt32(row["speeltijd"]);
+                if (gametime > minspeeltijdhighscore)
+                {
+                    entername = true;
+                }
+            }
+            else
+            {
+                entername = true;
+            }
+         
             if (timeup)
             {
                 StopEngine();
-                DrawGameOverScreen(g, "time is up.", false);
+                DrawGameOverScreen(g, "time is up.", entername);
             }
             else if (nomorelive)
             {
-                DrawGameOverScreen(g, "no more lives left.", false);
+                DrawGameOverScreen(g, "no more lives left.", entername);
             }
         }
 
@@ -429,7 +492,7 @@ namespace Frogger
                     frmgame.Controls.Add(obj);
                 }
             }
-            if (frog.OnTree==true)
+            if (frog.OnTree == true)
             {
                 switch (frog.TreeDir)
                 {
@@ -708,6 +771,9 @@ namespace Frogger
 
             switch (tier)
             {
+                case Niveau.freeplay:
+                    lives = 99;
+                    break;
                 case Niveau.easy:
                     lives = 3;
                     break;
@@ -742,11 +808,13 @@ namespace Frogger
                 int rnddir = rndgen.Next(0, 2);
                 if (rnddir == 0)
                 {
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx, roads[curroad], rndgen));
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx - 80, roads[curroad], rndgen));
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx + 80, roads[curroad], rndgen));
                 }
                 else
                 {
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx, roads[curroad], rndgen));
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx - 80, roads[curroad], rndgen));
+                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx + 80, roads[curroad], rndgen));
                 }
             }
 

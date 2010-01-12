@@ -4,8 +4,6 @@ using System;
 using System.Drawing;
 namespace FroggerTest
 {
-    
-    
     /// <summary>
     ///This is a test class for GameEngineTest and is intended
     ///to contain all GameEngineTest Unit Tests
@@ -103,7 +101,7 @@ namespace FroggerTest
 
             MovingObject testfrog = target.CreateFrog();
             Assert.IsNotNull(testfrog, "cannot create frog.");
-            
+
             MovingObject car = target.CreateCarRandomColor(0, direction, 100, 100, new Random()); //velocity is 0
             Assert.IsNotNull(car, "cannot create car.");
 
@@ -180,9 +178,8 @@ namespace FroggerTest
             FrmMenu frmmenu = new FrmMenu();
             FrmGame frmgame = new FrmGame(frmmenu, level, tier);
             //create target
-            GameEngine target = new GameEngine(level, frmgame, tier);
-
-            MovingObject actual = target.CreateTreeTrunk(vel, direction, 0, 0);
+            GameEngine game = new GameEngine(level, frmgame, tier);
+            MovingObject actual = game.CreateTreeTrunk(vel, direction, 0, 0);
             Assert.IsNotNull(actual, "cannot create object from methode.");
         }
 

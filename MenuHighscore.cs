@@ -79,11 +79,6 @@ namespace Frogger
             }
         }
 
-        public Boolean DeleteHighscore(int level, Niveau niveau)
-        {
-            throw new System.NotImplementedException();
-        }
-
         /// <summary>
         /// Delete all highscore entries.
         /// </summary>
@@ -99,15 +94,27 @@ namespace Frogger
             }
         }
 
+        /*
+         * Latere features nu niet zo belangrijk.
+         * 
+         
+        /// <summary>
+        /// Delete highscore from particaler level
+        /// </summary>
         public Boolean DeleteHighscoreOneLevel(int level)
         {
             throw new System.NotImplementedException();
         }
 
-        public Boolean DeleteHighscoreOneNiveau(Niveau niveau)
+        /// <summary>
+        /// Delete highscore from particaler tier
+        /// </summary>
+        public Boolean DeleteHighscoreOneNiveau(Tier tier)
         {
             throw new System.NotImplementedException();
         }
+        
+        */
 
         /// <summary>
         /// Verkrijg highscore, (methode moet aan sjabooltje delegate EventHandler voldoen.)

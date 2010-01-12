@@ -33,8 +33,8 @@ namespace Frogger
 
         private FrmMenu frmmenu;
         private GameEngine game;
-        private int min = 1;
-        private int sec = 10;
+        public int min = 1;
+        public int sec = 0;
         private bool timeup = false;
 
 		#endregion Fields 
@@ -142,7 +142,7 @@ namespace Frogger
             if (timeup)
             {
                 game.GameOver(g, true, false);
-                this.Invalidate();
+                //this.Invalidate();
             }
             else
             {
