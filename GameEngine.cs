@@ -299,11 +299,12 @@ namespace Frogger
             
         }
 
+        /// <summary>
+        /// Maak label en textbox zichtbaar.
+        /// </summary>
         private void ShowEnterHighscore()
         {
-            
             frmgame.VisibleTbEnterName = true;
-            
 
             HoverButton hovbtnSubmit = new HoverButton("submit");
             hovbtnSubmit.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnSubmit.Width / 2, frmgame.Height - 200);
@@ -313,20 +314,30 @@ namespace Frogger
 
             Label lblText = new Label();
             lblText.Font = new Font("Flubber", 24);
-            lblText.Text = "Voer uw naam in:";
+            lblText.Text = "Enter your name:";
+            lblText.AutoSize = true;
             lblText.Location = new Point(hovbtnSubmit.Location.X, hovbtnSubmit.Location.Y - 200);
 
             frmgame.Controls.Add(lblText);
         }
 
+        /// <summary>
+        /// Voer score in Database in.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void hovbtnSubmit_Click(object sender, EventArgs e)
         {
-            String insertquery = "INSERT INTO HIGHSCOREN VALUES (" + DateTime.Now.ToString() + "," + frmgame.TbEnterName + "," + GetGameTime().ToString()+","+level+")";
+            String insertquery = "INSERT INTO HIGHSCORES VALUES (\"" + DateTime.Now.ToString() + "\", \"" + frmgame.TbEnterName + "\", " + GetGameTime() + "," + level + ")";
             DBConnection.SetData(insertquery);
             frmgame.VisibleTbEnterName = false;
             frmgame.CloseGame();
         }
 
+        /// <summary>
+        /// De speel tijd berekenen en terug geven.
+        /// </summary>
+        /// <returns></returns>
         private int GetGameTime()
         {
             switch (tier)
@@ -400,7 +411,7 @@ namespace Frogger
 
             if (entername)
             {
-
+                ShowEnterHighscore();
             }
         }
 
@@ -557,7 +568,7 @@ namespace Frogger
             }
             if (frog.Location.Y <= frog.Height)
             {
-                
+                win = true;
             }
             frog.CanMove = true;
         }
@@ -726,8 +737,7 @@ namespace Frogger
                 else if (ishit)
                 {
                     StopEngine();
-                    livesup = CheckLives(lives);
-                    if (!livesup)
+                    if (!CheckLives(lives))
                     {
                         DrawNumLives();
                         Frog newfrog = CreateFrog();
