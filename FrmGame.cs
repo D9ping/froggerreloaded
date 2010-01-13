@@ -29,7 +29,7 @@ namespace Frogger
 {
     public partial class FrmGame : Form
     {
-		#region Fields (5) 
+        #region Fields (5)
 
         private FrmMenu frmmenu;
         private GameEngine game;
@@ -37,9 +37,9 @@ namespace Frogger
         public int sec = 0;
         private bool timeup = false;
 
-		#endregion Fields 
+        #endregion Fields
 
-		#region Constructors (1) 
+        #region Constructors (1)
 
         /// <summary>
         /// Creating a new instance of FrmGame.
@@ -55,11 +55,35 @@ namespace Frogger
             Program.CheckFullScreen(this);
         }
 
-		#endregion Constructors 
+        #endregion Constructors
 
-		#region Methods (8) 
+        #region Properties (2)
 
-		// Public Methods (1) 
+        public String TbEnterName
+        {
+            get
+            {
+                return this.tbHighscoreName.Text;
+            }
+        }
+
+        public Boolean VisibleTbEnterName
+        {
+            set
+            {
+                tbHighscoreName.Visible = value;
+            }
+            get
+            {
+                return tbHighscoreName.Visible; 
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods (7)
+
+        // Public Methods (1) 
 
         /// <summary>
         /// Hide the frmGame and show the frmMenu in MenuState main again.
@@ -71,38 +95,7 @@ namespace Frogger
             this.frmmenu.Show();
             this.Hide();
         }
-
-        public Boolean VisibleTbEnterName
-        {
-            set
-            {
-                tbHighscoreName.Visible = value;
-            }
-            get { return tbHighscoreName.Visible; }
-        }
-
-        public String TbEnterName
-        {
-            get
-            {
-                return this.tbHighscoreName.Text;
-            }
-        }
-
-		// Private Methods (7) 
-
-#if DEBUG
-        /// <summary>
-        /// quickly test game over.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
-        {
-            timeup = true;
-            this.Refresh();
-        }
-#endif
+        // Private Methods (6) 
 
         /// <summary>
         /// Form is closed.
@@ -114,38 +107,45 @@ namespace Frogger
             CloseGame();
         }
 
+        
         /// <summary>
-        /// Makes arrow keys work.
+        /// Move a frog.
         /// </summary>
-        /// <param name="keyData"></param>
-        /// <returns></returns>
-      protected override bool ProcessDialogKey (Keys keyData)
-      {
-          switch (keyData)
-          {               
-                case Keys.Down:
-                  game.frog.Jump(Direction.South);
-                    
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FrmGame_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.A:
+                    game.frog.Jump(Direction.East);
                     break;
                 case Keys.Left:
                     game.frog.Jump(Direction.East);
-                    
+                    break;
+                case Keys.D:
+                    game.frog.Jump(Direction.West);
                     break;
                 case Keys.Right:
                     game.frog.Jump(Direction.West);
-                    
+                    break;
+                case Keys.S:
+                    game.frog.Jump(Direction.South);
+                    break;
+                case Keys.Down:
+                    game.frog.Jump(Direction.South);
+                    break;
+                case Keys.W:
+                    game.frog.Jump(Direction.North);
                     break;
                 case Keys.Up:
                     game.frog.Jump(Direction.North);
-                    
                     break;
                 case Keys.Escape:
                     CloseGame();
                     break;
             }
-          return true;
-      }
-
+        }
 
         /// <summary>
         /// Draw every aspect of the game.
@@ -210,18 +210,40 @@ namespace Frogger
         private String UpdateGameTime()
         {
             String time = this.min.ToString() + ":";
-            if (this.sec < 10) { time += "0" + this.sec.ToString(); 
-             if (this.min == 0)
-             {
-                 lbTime.ForeColor = Color.Red;
-            } 
-             }
-            else { time += this.sec.ToString();
-            lbTime.ForeColor = Color.LightGray;
+            if (this.sec < 10)
+            {
+                time += "0" + this.sec.ToString();
+                if (this.min == 0)
+                {
+                    lbTime.ForeColor = Color.Red;
+                }
+            }
+            else
+            {
+                time += this.sec.ToString();
+                lbTime.ForeColor = Color.LightGray;
             }
             return time;
         }
 
-		#endregion Methods 
+        #endregion Methods
+
+#if DEBUG
+        /// <summary>
+        /// quickly test game over.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            timeup = true;
+            this.Refresh();
+        }
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            game.StopEngine();
+            tbHighscoreName.Visible = true;
+        }
+#endif
     }
 }

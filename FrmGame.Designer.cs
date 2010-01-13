@@ -58,7 +58,7 @@
             // btnTestGameOver
             // 
             this.btnTestGameOver.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnTestGameOver.Location = new System.Drawing.Point(94, 551);
+            this.btnTestGameOver.Location = new System.Drawing.Point(22, 551);
             this.btnTestGameOver.Name = "btnTestGameOver";
             this.btnTestGameOver.Size = new System.Drawing.Size(50, 49);
             this.btnTestGameOver.TabIndex = 1;
@@ -69,12 +69,10 @@
             // tbHighscoreName
             // 
             this.tbHighscoreName.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbHighscoreName.Location = new System.Drawing.Point(225, 327);
+            this.tbHighscoreName.Location = new System.Drawing.Point(271, 248);
             this.tbHighscoreName.Name = "tbHighscoreName";
-            this.tbHighscoreName.Size = new System.Drawing.Size(284, 44);
-            this.tbHighscoreName.TabIndex = 2;
-            this.tbHighscoreName.Text = "anoniem";
-            this.tbHighscoreName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbHighscoreName.Size = new System.Drawing.Size(232, 44);
+            this.tbHighscoreName.TabIndex = 4;
             this.tbHighscoreName.Visible = false;
             // 
             // FrmGame
@@ -100,6 +98,7 @@
             this.Text = "FrmGame";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmGame_Paint);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmGame_FormClosing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmGame_KeyDown);
             this.ResizeEnd += new System.EventHandler(this.FrmGame_ResizeEnd);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -110,10 +109,8 @@
 
         private System.Windows.Forms.Label lbTime;
         private System.Windows.Forms.Timer timerUpdateGame;
-#if DEBUG
         private System.Windows.Forms.Button btnTestGameOver;
         private System.Windows.Forms.TextBox tbHighscoreName;
-#endif
 
     }
 }

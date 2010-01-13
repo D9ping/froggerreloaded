@@ -34,7 +34,7 @@ namespace Frogger
         private Timer gameupdate;
         private List<int> rivirs;
         private List<int> roads;
-        private Boolean setup = false, ishit = false, livesup = false, freeplay = false, win = false;
+        private Boolean setup = false, ishit = false, livesup = false, freeplay = false, win = false, screendraw = false;
         private Niveau tier;
         private int timesecnewobj = 0, level = -1, lives = 0, tick = 0;
         private List<PictureBox> livesimgs; //om ze niet kwijt te raken.
@@ -181,18 +181,20 @@ namespace Frogger
         /// </summary>
         /// <param name="velocity">The velocity of the car</param>
         /// <param name="dir">The direction of the car</param>
-        /// <param name="dir">The number of the road to added the car to</param>
-        /// <param name="dir">The random generator this to prevent getting right and left always the same color.</param>
+        /// <param name="locX">The number of the road to added the car to</param>
+        /// <param name="roadLocY">The random generator this to prevent getting right and left always the same color.</param>
         /// <returns>a car moving object</returns>
         public MovingObject CreateCarRandomColor(int vel, Direction dir, int locX, int roadLocY, Random rndgen)
         {
-            int color = rndgen.Next(1, 5);
-
-            int initcarwidth = frmgame.ClientRectangle.Width / 12;
+            int carcolor = rndgen.Next(1, 5);
             int initcarheight = CalcHeightRoad() / 2 - roadlineheight;
-
-            Car car = new Car(color, vel, dir, initcarwidth, initcarheight);
-
+            int initcarwidth = frmgame.ClientRectangle.Width / 12;
+            Car car = new Car(carcolor, vel, dir, initcarwidth, initcarheight);
+            if (car.IsTruck)
+            {
+                initcarwidth = frmgame.ClientRectangle.Width / 8;
+                car.Size = new Size(initcarwidth, initcarheight);
+            }
             if (dir == Direction.East)
             {
                 int locY = roadLocY + 2 * roadlineheight + initcarheight;
@@ -291,12 +293,12 @@ namespace Frogger
             g.DrawString("Game Over", fontregel1, Brushes.Red, new PointF(frmgame.ClientRectangle.Width / 2 - 150, frmgame.ClientRectangle.Height / 2 - 50));
             g.DrawString(textline, fontregel2, Brushes.Black, new PointF(frmgame.ClientRectangle.Width / 2 - 100, frmgame.ClientRectangle.Height / 2 + 20));
 
-                HoverButton hovbtnBack = new HoverButton("Back");
-                hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
-                hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
-                frmgame.Controls.Add(hovbtnBack);
-                hovbtnBack.Invalidate();
-            
+            HoverButton hovbtnBack = new HoverButton("Back");
+            hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
+            hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
+            frmgame.Controls.Add(hovbtnBack);
+            hovbtnBack.Invalidate();
+
         }
 
         /// <summary>
@@ -310,7 +312,6 @@ namespace Frogger
             hovbtnSubmit.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnSubmit.Width / 2, frmgame.Height - 200);
             hovbtnSubmit.Click += new EventHandler(hovbtnSubmit_Click);
             frmgame.Controls.Add(hovbtnSubmit);
-            hovbtnSubmit.Invalidate();
 
             Label lblText = new Label();
             lblText.Font = new Font("Flubber", 24);
@@ -359,39 +360,38 @@ namespace Frogger
         /// </summary>
         public void GameOver(Graphics g, bool timeup, bool nomorelive)
         {
-            if (timeup)
-            {
-                StopEngine();
-                DrawGameOverScreen(g, "time is up.");
-            }
-            else if (nomorelive)
-            {
-                StopEngine();
-                DrawGameOverScreen(g, "no more lives left.");
-            }
-            else if (win)
-            {
-                bool entername = false;
-                int gametime = GetGameTime();
+            StopEngine();
 
-                string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + level + " ORDER BY SPEELTIJD ASC";
-                DataTable dt = DBConnection.ExecuteQuery(query, 4);
-                if (dt.Rows.Count >= 10)
+            if (!screendraw)
+            {
+                if (timeup)
                 {
-                    DataRow row = dt.Rows[10];
-                    int minspeeltijdhighscore = Convert.ToInt32(row["speeltijd"]);
-                    if (gametime > minspeeltijdhighscore)
+                    DrawGameOverScreen(g, "time is up.");
+                }
+                else if (nomorelive)
+                {
+                    DrawGameOverScreen(g, "no more lives left.");
+                }
+                else if (win)
+                {
+                    bool entername = false;
+                    string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + level + " ORDER BY SPEELTIJD ASC";
+                    DataTable dt = DBConnection.ExecuteQuery(query, 4);
+                    if (dt.Rows.Count >= 10)
+                    {
+                        DataRow row = dt.Rows[10];
+                        int minspeeltijdhighscore = Convert.ToInt32(row["speeltijd"]);
+                        if (GetGameTime() > minspeeltijdhighscore)
+                        {
+                            entername = true;
+                        }
+                    }
+                    else if (dt.Rows.Count < 10)
                     {
                         entername = true;
                     }
+                    DrawWinScreen(g, entername);
                 }
-                else
-                {
-                    entername = true;
-                }
-
-                StopEngine();
-                DrawWinScreen(g, entername);
             }
         }
 
@@ -413,6 +413,7 @@ namespace Frogger
             {
                 ShowEnterHighscore();
             }
+            screendraw = false;
         }
 
         /// <summary>
@@ -708,9 +709,7 @@ namespace Frogger
                         int rnddir = rndgen.Next(0, 2);
                         if (rnddir == 0)
                         {
-
                             movingobjs.Add(CreateCarRandomColor(2, Direction.East, -carwidth, roads[curroad], rndgen));
-
                         }
                         else
                         {
@@ -732,7 +731,7 @@ namespace Frogger
                     }
 
                     tick = 0;
-                    //}
+
                 }
                 else if (ishit)
                 {
