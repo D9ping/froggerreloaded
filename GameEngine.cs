@@ -26,18 +26,21 @@ namespace Frogger
 {
     public class GameEngine
     {
-        #region Fields (9)
-        public Frog frog;
-        public List<MovingObject> movingobjs; //public voor testen
+        #region Fields (10)
+
+        //public voor testen
         //private List<MovingObject> movingobjs;
         private FrmGame frmgame;
+        public Frog frog;
         private Timer gameupdate;
+        private int level = -1, lives = 0, secnewcar = 3, secnewtree = 3, tickcar = 0, ticktree;
+        private List<PictureBox> livesimgs;
+        public List<MovingObject> movingobjs;
         private List<int> rivirs;
         private List<int> roads;
         private Boolean setup = false, ishit = false, livesup = false, freeplay = false, win = false, screendraw = false;
         private Niveau tier;
-        private int timesecnewobj = 0, level = -1, lives = 0, tick = 0;
-        private List<PictureBox> livesimgs; //om ze niet kwijt te raken.
+
         #endregion Fields
 
         #region Constructors (1)
@@ -98,47 +101,9 @@ namespace Frogger
 
         #endregion Constructors
 
-        #region Properties (3)
+        #region Methods (26)
 
-        /// <summary>
-        /// Returns the number of lives the player has left.
-        /// </summary>
-        public int Lives
-        {
-            get
-            {
-                return lives;
-            }
-            set
-            {
-                lives = value;
-            }
-        }
-
-        public int NumObjects
-        {
-            get
-            {
-                return this.movingobjs.Count;
-            }
-        }
-
-        /// <summary>
-        /// Returns if GameUpdate timer is still running. Needed for tests.
-        /// </summary>
-        public bool GameUpdateStatus
-        {
-            get
-            {
-                return gameupdate.Enabled;
-            }
-        }
-
-        #endregion
-
-        #region Methods (22)
-
-        // Public Methods (13) 
+        // Public Methods (11) 
 
         /// <summary>
         /// Checks if game time is up for the current tier.
@@ -165,7 +130,7 @@ namespace Frogger
         /// </summary>
         public bool CheckLives(int currentLives)
         {
-            if (currentLives < 1)
+            if ((currentLives < 1) && (tier != Niveau.freeplay))
             {
                 return true;
             }
@@ -267,7 +232,7 @@ namespace Frogger
             Point mvobjbovenrechts = new Point(mvobj.Location.X + mvobj.Size.Width, mvobj.Location.Y);
             Point mvobjonderlinks = new Point(mvobj.Location.X, mvobj.Location.Y + mvobj.Size.Height);
 
-            if ((mvobjbovenlinks.X <= frog.Location.X) && (mvobjbovenrechts.X >= frog.Location.X)) //X location okay?
+            if ((mvobjbovenlinks.X <= frog.Location.X + frog.Size.Width) && (mvobjbovenrechts.X >= frog.Location.X)) //X location okay?
             {
                 if ((mvobjbovenlinks.Y <= frog.Location.Y + frog.Size.Height) && (mvobjonderlinks.Y >= frog.Location.Y)) //Y location okay?
                 {
@@ -278,110 +243,33 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Draw a box with the text "Game over" and a reason and display enter highscore if entername is true.
-        /// </summary>
-        /// <param name="g">graphics object</param>
-        /// <param name="textregel1">the first line, big text</param>
-        private void DrawGameOverScreen(Graphics g, String textline)
-        {
-            Font fontregel1 = new Font("Flubber", 64);
-            Font fontregel2 = new Font("Flubber", 24);
-            SolidBrush sbdarkorange = new SolidBrush(System.Drawing.Color.DarkOrange);
-            Rectangle box = new Rectangle(new Point(50, 50), new Size(frmgame.ClientRectangle.Width - 100, frmgame.ClientRectangle.Height - 100));
-            g.DrawRectangle(Pens.Black, box);
-            g.FillRectangle(sbdarkorange, box);
-            g.DrawString("Game Over", fontregel1, Brushes.Red, new PointF(frmgame.ClientRectangle.Width / 2 - 150, frmgame.ClientRectangle.Height / 2 - 50));
-            g.DrawString(textline, fontregel2, Brushes.Black, new PointF(frmgame.ClientRectangle.Width / 2 - 100, frmgame.ClientRectangle.Height / 2 + 20));
-
-            HoverButton hovbtnBack = new HoverButton("Back");
-            hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
-            hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
-            frmgame.Controls.Add(hovbtnBack);
-            hovbtnBack.Invalidate();
-
-        }
-
-        /// <summary>
-        /// Maak label en textbox zichtbaar.
-        /// </summary>
-        private void ShowEnterHighscore()
-        {
-            frmgame.VisibleTbEnterName = true;
-
-            HoverButton hovbtnSubmit = new HoverButton("submit");
-            hovbtnSubmit.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnSubmit.Width / 2, frmgame.Height - 200);
-            hovbtnSubmit.Click += new EventHandler(hovbtnSubmit_Click);
-            frmgame.Controls.Add(hovbtnSubmit);
-
-            Label lblText = new Label();
-            lblText.Font = new Font("Flubber", 24);
-            lblText.Text = "Enter your name:";
-            lblText.AutoSize = true;
-            lblText.Location = new Point(hovbtnSubmit.Location.X, hovbtnSubmit.Location.Y - 200);
-
-            frmgame.Controls.Add(lblText);
-        }
-
-        /// <summary>
-        /// Voer score in Database in.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void hovbtnSubmit_Click(object sender, EventArgs e)
-        {
-            String insertquery = "INSERT INTO HIGHSCORES VALUES (\"" + DateTime.Now.ToString() + "\", \"" + frmgame.TbEnterName + "\", " + GetGameTime() + "," + level + ")";
-            DBConnection.SetData(insertquery);
-            frmgame.VisibleTbEnterName = false;
-            frmgame.CloseGame();
-        }
-
-        /// <summary>
-        /// De speel tijd berekenen en terug geven.
-        /// </summary>
-        /// <returns></returns>
-        private int GetGameTime()
-        {
-            switch (tier)
-            {
-                case Niveau.easy:
-                    return 180 - (frmgame.min * 60 + frmgame.sec);
-                case Niveau.medium:
-                    return 90 - (frmgame.min * 60 + frmgame.sec);
-                case Niveau.hard:
-                    return 45 - (frmgame.min * 60 + frmgame.sec);
-                case Niveau.elite:
-                    return 20 - (frmgame.min * 60 + frmgame.sec);
-                default:
-                    return 99999;
-            }
-        }
-        /// <summary>
         /// Shows the user that the game is over.
         /// </summary>
         public void GameOver(Graphics g, bool timeup, bool nomorelive)
         {
             StopEngine();
 
-            if (!screendraw)
+            if (timeup)
             {
-                if (timeup)
+                DrawGameOverScreen(g, "time is up.");
+            }
+            else if (nomorelive)
+            {
+                DrawGameOverScreen(g, "no more lives left.");
+            }
+            else if (win)
+            {
+                bool entername = false;
+                if (!screendraw)
                 {
-                    DrawGameOverScreen(g, "time is up.");
-                }
-                else if (nomorelive)
-                {
-                    DrawGameOverScreen(g, "no more lives left.");
-                }
-                else if (win)
-                {
-                    bool entername = false;
                     string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + level + " ORDER BY SPEELTIJD ASC";
                     DataTable dt = DBConnection.ExecuteQuery(query, 4);
                     if (dt.Rows.Count >= 10)
                     {
-                        DataRow row = dt.Rows[10];
-                        int minspeeltijdhighscore = Convert.ToInt32(row["speeltijd"]);
-                        if (GetGameTime() > minspeeltijdhighscore)
+                        object[] row = dt.Rows[9].ItemArray;
+                        int minspeeltijdhighscore = Convert.ToInt32(row[2]);
+                        //MessageBox.Show(Convert.ToInt32(row[2]).ToString() + " gametime:" + GetGameTime());
+                        if (GetGameTime() < minspeeltijdhighscore)
                         {
                             entername = true;
                         }
@@ -390,30 +278,10 @@ namespace Frogger
                     {
                         entername = true;
                     }
-                    DrawWinScreen(g, entername);
                 }
+                DrawWinScreen(g, entername);
             }
-        }
-
-        /// <summary>
-        /// Draw a screen with the text "win" and display enter highscore if entername is true.
-        /// </summary>
-        /// <param name="g"></param>
-        /// <param name="entername"></param>
-        private void DrawWinScreen(Graphics g, bool entername)
-        {
-            Font fontregel1 = new Font("Flubber", 64);
-            SolidBrush bl = new SolidBrush(System.Drawing.Color.Blue);
-            Rectangle box = new Rectangle(new Point(50, 50), new Size(frmgame.ClientRectangle.Width - 100, frmgame.ClientRectangle.Height - 100));
-            g.DrawRectangle(Pens.Black, box);
-            g.FillRectangle(bl, box);
-            g.DrawString("Win", fontregel1, Brushes.Red, new PointF(frmgame.ClientRectangle.Width / 2 - 100, frmgame.ClientRectangle.Height / 2 - 50));
-
-            if (entername)
-            {
-                ShowEnterHighscore();
-            }
-            screendraw = false;
+            frmgame.Invalidate();
         }
 
         /// <summary>
@@ -453,17 +321,7 @@ namespace Frogger
             else if (win)
             {
                 GameOver(g, false, false);
-                win = false;
             }
-        }
-
-        /// <summary>
-        /// When the user has gained a highscore, the 'SaveHighscoreScreen' asks the user for his username.
-        /// The highscore will be combined with the username, and will then be stored in the database.
-        /// </summary>
-        public void SaveHighscoreScreen()
-        {
-            throw new System.NotImplementedException();
         }
 
         [DllImport("winmm.dll")]
@@ -475,6 +333,7 @@ namespace Frogger
         public void StopEngine()
         {
             gameupdate.Enabled = false;
+            frmgame.timerTime.Enabled = false;
             if (frog != null)
             {
                 frmgame.Controls.Remove(frog);
@@ -550,7 +409,7 @@ namespace Frogger
                         frog.OnTree = false;
                     }
                 }
-                else
+                else if ((obj != null) && (obj.IsDisposed == false))
                 {
                     frmgame.Controls.Add(obj);
                 }
@@ -573,7 +432,7 @@ namespace Frogger
             }
             frog.CanMove = true;
         }
-        // Private Methods (9) 
+        // Private Methods (15) 
 
         /// <summary>
         /// Calculate the height of the rivir.
@@ -604,6 +463,34 @@ namespace Frogger
         }
 
         /// <summary>
+        /// Draw a box with the text "Game over" and a reason and display enter highscore if entername is true.
+        /// </summary>
+        /// <param name="g">graphics object</param>
+        /// <param name="textregel1">the first line, big text</param>
+        private void DrawGameOverScreen(Graphics g, String textline)
+        {
+            Font fontregel1 = new Font("Flubber", 64);
+            Font fontregel2 = new Font("Flubber", 24);
+            SolidBrush sbdarkorange = new SolidBrush(System.Drawing.Color.DarkOrange);
+            Rectangle box = new Rectangle(new Point(50, 50), new Size(frmgame.ClientRectangle.Width - 100, frmgame.ClientRectangle.Height - 100));
+            g.DrawRectangle(Pens.Black, box);
+            g.FillRectangle(sbdarkorange, box);
+            g.DrawString("Game Over", fontregel1, Brushes.Red, new PointF(frmgame.ClientRectangle.Width / 2 - 200, frmgame.ClientRectangle.Height / 2 - 50));
+            g.DrawString(textline, fontregel2, Brushes.Black, new PointF(frmgame.ClientRectangle.Width / 2 - 100, frmgame.ClientRectangle.Height / 2 + 20));
+
+            if (!this.screendraw)
+            {
+                HoverButton hovbtnBack = new HoverButton("Back");
+                hovbtnBack.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right);
+                hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
+                hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
+                frmgame.Controls.Add(hovbtnBack);
+                hovbtnBack.Refresh();
+                screendraw = true;
+            }
+        }
+
+        /// <summary>
         /// Draws the number of lives pictures.
         /// </summary>
         /// <param name="g"></param>
@@ -614,17 +501,17 @@ namespace Frogger
                 curpb.Dispose();
             }
 
-            int locX = 0;
+            int locX = 5;
             for (int i = 0; i < lives; i++)
             {
                 PictureBox pbLive = new PictureBox();
                 pbLive.Image = Frogger.Properties.Resources.live;
-                locX += Frogger.Properties.Resources.live.Size.Width + 5;
                 pbLive.Location = new Point(locX, 3);
                 pbLive.SizeMode = PictureBoxSizeMode.AutoSize;
                 livesimgs.Add(pbLive);
                 pbLive.BackColor = Color.Transparent;
                 frmgame.Controls.Add(pbLive);
+                locX += Frogger.Properties.Resources.live.Size.Width + 5;
             }
         }
 
@@ -687,6 +574,27 @@ namespace Frogger
         }
 
         /// <summary>
+        /// Draw a screen with the text "win" and display enter highscore if entername is true.
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="entername">is allow to enter highscore.</param>
+        private void DrawWinScreen(Graphics g, bool entername)
+        {
+            Font fontregel1 = new Font("Flubber", 64);
+            SolidBrush bl = new SolidBrush(System.Drawing.Color.GreenYellow);
+            Rectangle box = new Rectangle(new Point(50, 50), new Size(frmgame.ClientRectangle.Width - 100, frmgame.ClientRectangle.Height - 100));
+            g.DrawRectangle(Pens.Black, box);
+            g.FillRectangle(bl, box);
+            g.DrawString("Win", fontregel1, Brushes.Red, new PointF(frmgame.ClientRectangle.Width / 2 - 100, frmgame.ClientRectangle.Height / 2 - 200));
+
+            if ((entername) && (!screendraw))
+            {
+                ShowEnterHighscore();
+            }
+            screendraw = true;
+        }
+
+        /// <summary>
         /// Occurs when the gameupdate timer ticks.
         /// A car with a random color is being added to the list of movingobjects,
         /// Finally this method will update the position of every moving object.
@@ -695,14 +603,12 @@ namespace Frogger
         /// <param name="e"></param>
         private void gameupdate_Tick(object sender, EventArgs e)
         {
-            int maxtick = 1000 / gameupdate.Interval; //1s
-            if (tick >= maxtick * timesecnewobj)
+            int maxtickcar = (1000 / gameupdate.Interval) * secnewcar;
+            if (tickcar >= maxtickcar)
             {
                 if (!ishit)
                 {
                     Random rndgen = new Random();
-                    //if (this.NumObjects < 255) //protects against heavy cpu stress on hardest tier and settings.
-                    //{
                     int carwidth = ResizesResources.images["car_yellow_east"].Size.Width;
                     for (int curroad = 0; curroad < roads.Count; curroad++)
                     {
@@ -716,22 +622,6 @@ namespace Frogger
                             movingobjs.Add(CreateCarRandomColor(2, Direction.West, frmgame.ClientSize.Width + carwidth, roads[curroad], rndgen));
                         }
                     }
-
-                    int treetrunkwidth = ResizesResources.images["treetrunk"].Size.Width;
-                    for (int curriver = 0; curriver < rivirs.Count; curriver++)
-                    {
-                        if (curriver % 2 == 0) //even
-                        {
-                            movingobjs.Add(CreateTreeTrunk(4, Direction.East, -treetrunkwidth, rivirs[curriver]));
-                        }
-                        else if (curriver != 0) //odd and not 0
-                        {
-                            movingobjs.Add(CreateTreeTrunk(4, Direction.West, frmgame.ClientRectangle.Width + treetrunkwidth, rivirs[curriver]));
-                        }
-                    }
-
-                    tick = 0;
-
                 }
                 else if (ishit)
                 {
@@ -744,39 +634,40 @@ namespace Frogger
 
                         InitSomeMvobjs();
                         ishit = false;
+                        frmgame.timerTime.Enabled = true;
                         gameupdate.Enabled = true;
                     }
                     else
                     {
                         livesup = true;
                     }
-
                 }
+                tickcar = 0;
             }
             else
             {
-                tick++;
+                tickcar++;
             }
-
-            switch (tier)
+            int maxticktree = (1000 / gameupdate.Interval) * secnewtree;
+            if (ticktree >= maxticktree)
             {
-                case Niveau.freeplay:
-                    timesecnewobj = 4;
-                    break;
-                case Niveau.easy:
-                    timesecnewobj = 4;
-                    break;
-                case Niveau.medium:
-                    timesecnewobj = 3;
-                    break;
-                case Niveau.hard:
-                    timesecnewobj = 2;
-                    break;
-                case Niveau.elite:
-                    timesecnewobj = 1;
-                    break;
-                default:
-                    break;
+                int treetrunkwidth = ResizesResources.images["treetrunk"].Size.Width;
+                for (int curriver = 0; curriver < rivirs.Count; curriver++)
+                {
+                    if (curriver % 2 == 0) //even
+                    {
+                        movingobjs.Add(CreateTreeTrunk(4, Direction.East, -treetrunkwidth, rivirs[curriver]));
+                    }
+                    else if (curriver != 0) //odd and not 0
+                    {
+                        movingobjs.Add(CreateTreeTrunk(4, Direction.West, frmgame.ClientRectangle.Width + treetrunkwidth, rivirs[curriver]));
+                    }
+                }
+                ticktree = 0;
+            }
+            else
+            {
+                ticktree++;
             }
             if (!ishit)
             {
@@ -790,9 +681,120 @@ namespace Frogger
 
         }
 
+        /// <summary>
+        /// De speel tijd berekenen en terug geven.
+        /// </summary>
+        /// <returns></returns>
+        private int GetGameTime()
+        {
+            switch (tier)
+            {
+                case Niveau.easy:
+                    return 180 - (frmgame.min * 60 + frmgame.sec);
+                case Niveau.medium:
+                    return 90 - (frmgame.min * 60 + frmgame.sec);
+                case Niveau.hard:
+                    return 45 - (frmgame.min * 60 + frmgame.sec);
+                case Niveau.elite:
+                    return 20 - (frmgame.min * 60 + frmgame.sec);
+                default:
+                    return 99999;
+            }
+        }
+
         private void hovbtnBack_Click(object sender, EventArgs e)
         {
             frmgame.CloseGame();
+        }
+
+        /// <summary>
+        /// Added highscore to database.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void hovbtnSubmit_Click(object sender, EventArgs e)
+        {
+            String insertquery = "INSERT INTO HIGHSCORES VALUES (\"" + DateTime.Now.ToString() + "\", \"" + frmgame.TbEnterName + "\", " + GetGameTime() + "," + level + ")";
+            DBConnection.SetData(insertquery);
+            frmgame.VisibleTbEnterName = false;
+            frmgame.CloseGame();
+        }
+
+        /// <summary>
+        /// Create some object to start with.
+        /// </summary>
+        private void InitSomeMvobjs()
+        {
+            int carsperroad = 4;
+            switch (tier)
+            {
+                case Niveau.freeplay:
+                    carsperroad = 5;
+                    break;
+                case Niveau.easy:
+                    carsperroad = 5;
+                    break;
+                case Niveau.medium:
+                    carsperroad = 6;
+                    break;
+                case Niveau.hard:
+                    carsperroad = 8;
+                    break;
+                case Niveau.elite:
+                    carsperroad = 10;
+                    break;
+            }
+            Random rndgen = new Random();
+
+            int screenwidth = frmgame.ClientSize.Width;
+            if (Program.fullscreen)
+            {
+                screenwidth = Screen.PrimaryScreen.WorkingArea.Width;
+            }
+            int truckwidth = ResizesResources.images["truck_east"].Width + 3; //3px distance at least
+            for (int curroad = 0; curroad < roads.Count; curroad++)
+            {
+                for (int i = 0; i < carsperroad; i++)
+                {
+                    int rnddir = rndgen.Next(0, 2);
+                    int locX = screenwidth - (i * truckwidth);
+                    if (rnddir == 0)
+                    {
+                        if (locX > 0)
+                        {
+                            movingobjs.Add(CreateCarRandomColor(2, Direction.East, locX, roads[curroad], rndgen));
+                        }
+                        else if (locX < screenwidth)
+                        {
+                            movingobjs.Add(CreateCarRandomColor(2, Direction.West, locX, roads[curroad], rndgen));
+                        }
+
+                    }
+                    else
+                    {
+                        if (locX < screenwidth)
+                        {
+                            movingobjs.Add(CreateCarRandomColor(2, Direction.West, locX, roads[curroad], rndgen));
+                        }
+                        else if (locX > 0)
+                        {
+                            movingobjs.Add(CreateCarRandomColor(2, Direction.East, locX, roads[curroad], rndgen));
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < rivirs.Count; i++)
+            {
+                if (rivirs[i] % 2 == 0) //even
+                {
+                    movingobjs.Add(CreateTreeTrunk(4, Direction.West, screenwidth/2, rivirs[i]));
+                }
+                else //odd
+                {
+                    movingobjs.Add(CreateTreeTrunk(4, Direction.East, screenwidth/2, rivirs[i]));
+                }
+            }
         }
 
         /// <summary>
@@ -844,21 +846,34 @@ namespace Frogger
             switch (tier)
             {
                 case Niveau.freeplay:
-                    lives = 99;
+                    lives = -1;
+                    secnewcar = 4;
+                    secnewtree = 3;
                     break;
                 case Niveau.easy:
                     lives = 3;
+                    secnewcar = 4;
+                    secnewtree = 3;
                     break;
                 case Niveau.medium:
                     lives = 3;
+                    secnewcar = 3;
+                    secnewtree = 4;
                     break;
                 case Niveau.hard:
                     lives = 2;
+                    secnewcar = 2;
+                    secnewtree = 5;
                     break;
                 case Niveau.elite:
                     lives = 1;
+                    secnewcar = 2;
+                    secnewtree = 6;
                     break;
+                default:
+                    throw new Exception("tier unknow.");
             }
+
             DrawNumLives();
 
             InitSomeMvobjs();
@@ -868,53 +883,75 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Create some object to start with.
+        /// Maak label en textbox en button zichtbaar/aan.
         /// </summary>
-        private void InitSomeMvobjs()
+        private void ShowEnterHighscore()
         {
-            Random rndgen = new Random();
-            int middlescreenx = frmgame.ClientSize.Width / 2;
+            frmgame.VisibleTbEnterName = true;
+            HoverButton hovbtnSubmit = new HoverButton("submit");
+            hovbtnSubmit.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnSubmit.Width / 2, frmgame.Height - 200);
+            hovbtnSubmit.Click += new EventHandler(hovbtnSubmit_Click);
+            frmgame.Controls.Add(hovbtnSubmit);
 
-            for (int curroad = 0; curroad < roads.Count; curroad++)
-            {
-                int rnddir = rndgen.Next(0, 2);
-                if (rnddir == 0)
-                {
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx - 300, roads[curroad], rndgen));
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx - 150, roads[curroad], rndgen));
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx, roads[curroad], rndgen));
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.East, middlescreenx + 150, roads[curroad], rndgen));
-                }
-                else
-                {
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx - 150, roads[curroad], rndgen));
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx, roads[curroad], rndgen));
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx + 150, roads[curroad], rndgen));
-                    movingobjs.Add(CreateCarRandomColor(2, Direction.West, middlescreenx + 300, roads[curroad], rndgen));
-                }
-            }
+            Label lblText = new Label();
+            lblText.Font = new Font("Flubber", 24);
+            lblText.Text = "Enter your name:";
+            lblText.AutoSize = true;
+            lblText.BackColor = Color.Transparent;
+            lblText.Location = new Point(hovbtnSubmit.Location.X, hovbtnSubmit.Location.Y - 250);
+            frmgame.Controls.Add(lblText);
 
-            for (int i = 0; i < rivirs.Count; i++)
-            {
-                if (rivirs[i] % 2 == 0) //even
-                {
-                    movingobjs.Add(CreateTreeTrunk(4, Direction.West, middlescreenx, rivirs[i]));
-                }
-                else //odd
-                {
-                    movingobjs.Add(CreateTreeTrunk(4, Direction.East, middlescreenx, rivirs[i]));
-                }
-            }
+            lblText.Refresh();
+            hovbtnSubmit.Refresh();
+            frmgame.tbHighscoreName.Refresh();
         }
 
         #endregion Methods
+
+
+
+        #region Properties (3)
+
+        /// <summary>
+        /// Returns the number of lives the player has left.
+        /// </summary>
+        public int Lives
+        {
+            get
+            {
+                return lives;
+            }
+            set
+            {
+                lives = value;
+            }
+        }
+
+        public int NumObjects
+        {
+            get
+            {
+                return this.movingobjs.Count;
+            }
+        }
+
+        /// <summary>
+        /// Returns if GameUpdate timer is still running. Needed for tests.
+        /// </summary>
+        public bool GameUpdateStatus
+        {
+            get
+            {
+                return gameupdate.Enabled;
+            }
+        }
+
+        #endregion
 
         #region game const settings
         private const int roadlineheight = 5; //not supposed to change integers without recompile.
         private const int frogbottommargin = 12;
         private const int lineDistance = 100;
         #endregion
-
-
     }
 }

@@ -67,12 +67,21 @@ namespace Frogger
             {
                 if (curbtn != null) { curbtn.Dispose(); }
             }
+            ClearAllEntries();
+        }
+
+        /// <summary>
+        /// Remove and make invisible all entries.
+        /// </summary>
+        private void ClearAllEntries()
+        {
             if (entries != null)
             {
                 foreach (Label curlbl in entries)
                 {
                     if (curlbl != null)
                     {
+                        curlbl.Visible = false;
                         curlbl.Dispose();
                     }
                 }
@@ -90,8 +99,10 @@ namespace Frogger
             if (dlgres == DialogResult.Yes)
             {
                 DBConnection.SetData("DELETE * FROM HIGHSCORES");
+                ClearAllEntries();
                 MessageBox.Show("Highscore table is now empty.");
             }
+            
         }
 
         /*

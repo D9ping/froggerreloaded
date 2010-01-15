@@ -94,6 +94,7 @@ namespace Frogger
                     break;
             }
             game.Show();
+            game.BringToFront();
         }
 
 		private int whichlevel(object button)

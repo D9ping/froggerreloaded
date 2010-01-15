@@ -30,17 +30,17 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmGame));
-            this.timerUpdateGame = new System.Windows.Forms.Timer(this.components);
+            this.timerTime = new System.Windows.Forms.Timer(this.components);
             this.lbTime = new System.Windows.Forms.Label();
             this.btnTestGameOver = new System.Windows.Forms.Button();
             this.tbHighscoreName = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // timerUpdateGame
+            // timerTime
             // 
-            this.timerUpdateGame.Enabled = true;
-            this.timerUpdateGame.Interval = 1000;
-            this.timerUpdateGame.Tick += new System.EventHandler(this.timerUpdateGame_Tick);
+            this.timerTime.Enabled = true;
+            this.timerTime.Interval = 1000;
+            this.timerTime.Tick += new System.EventHandler(this.timerTime_Tick);
             // 
             // lbTime
             // 
@@ -58,7 +58,7 @@
             // btnTestGameOver
             // 
             this.btnTestGameOver.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnTestGameOver.Location = new System.Drawing.Point(22, 551);
+            this.btnTestGameOver.Location = new System.Drawing.Point(12, 551);
             this.btnTestGameOver.Name = "btnTestGameOver";
             this.btnTestGameOver.Size = new System.Drawing.Size(50, 49);
             this.btnTestGameOver.TabIndex = 1;
@@ -68,8 +68,9 @@
             // 
             // tbHighscoreName
             // 
+            this.tbHighscoreName.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.tbHighscoreName.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbHighscoreName.Location = new System.Drawing.Point(271, 248);
+            this.tbHighscoreName.Location = new System.Drawing.Point(271, 294);
             this.tbHighscoreName.Name = "tbHighscoreName";
             this.tbHighscoreName.Size = new System.Drawing.Size(232, 44);
             this.tbHighscoreName.TabIndex = 4;
@@ -108,9 +109,9 @@
         #endregion
 
         private System.Windows.Forms.Label lbTime;
-        private System.Windows.Forms.Timer timerUpdateGame;
         private System.Windows.Forms.Button btnTestGameOver;
-        private System.Windows.Forms.TextBox tbHighscoreName;
+        public System.Windows.Forms.Timer timerTime;
+        public System.Windows.Forms.TextBox tbHighscoreName;
 
     }
 }

@@ -160,7 +160,6 @@ namespace Frogger
             if (timeup)
             {
                 game.GameOver(g, true, false);
-                //this.Invalidate();
             }
             else
             {
@@ -185,7 +184,7 @@ namespace Frogger
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void timerUpdateGame_Tick(object sender, EventArgs e)
+        private void timerTime_Tick(object sender, EventArgs e)
         {
             sec--;
             if (sec < 0)
@@ -238,11 +237,6 @@ namespace Frogger
         {
             timeup = true;
             this.Refresh();
-        }
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            game.StopEngine();
-            tbHighscoreName.Visible = true;
         }
 #endif
     }
