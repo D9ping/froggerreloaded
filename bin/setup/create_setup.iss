@@ -3,7 +3,7 @@ AppId={{3CA63D69-FC83-4D9B-B46D-35E3AAFDA8EA}
 AppName=Frogger Reloaded
 AppVerName=Frogger Reloaded 0.9
 AppPublisher=Frogger Reloaded
-VersionInfoProductVersion=0.9.0.0
+VersionInfoVersion=0.9.0.0
 AppPublisherURL=http://code.google.com/p/froggerreloaded/
 AppSupportURL=http://code.google.com/p/froggerreloaded/
 AppUpdatesURL=http://code.google.com/p/froggerreloaded/
@@ -11,7 +11,7 @@ DefaultDirName={pf}\Frogger Reloaded
 DefaultGroupName=Frogger Reloaded
 LicenseFile=..\Debug\license.txt
 OutputDir=.\
-OutputBaseFilename=froggerreloadded_v0.9
+OutputBaseFilename=froggerreloadded_v0.9_beta
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=admin
@@ -22,9 +22,6 @@ BackSolid=yes
 WizardImageBackColor=clGreen
 WizardImageStretch=yes
 ShowTasksTreeLines=no
-;WindowVisible=yes
-;AppCopyright=Copyright (C) 2010 Frogger Reloaded
-
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -48,6 +45,55 @@ Name: "{commondesktop}\Frogger Reloaded"; Filename: "{app}\Frogger.exe"; Tasks: 
 
 [Run]
 Filename: "{app}\Frogger.exe"; Description: "{cm:LaunchProgram,Frogger Reloaded}"; Flags: nowait postinstall skipifsilent
+
+[CustomMessages]
+english.dotnetmissing=This setup requires the .NET Framework v2.0. Please download and install the .NET Framework v.2 and run this setup again. Do you want to download the framework now?
+
+[Code]
+function InitializeSetup(): Boolean;
+var
+    ErrorCode: Integer;
+    NetFrameWorkInstalled : Boolean;
+    Result1 : Boolean;
+begin
+
+	NetFrameWorkInstalled := RegKeyExists(HKLM,'SOFTWARE\Microsoft\.NETFramework\policy\v2.0');
+	if NetFrameWorkInstalled =true then
+	begin
+		Result := true;
+	end;
+
+	if NetFrameWorkInstalled = false then
+	begin
+		NetFrameWorkInstalled := RegKeyExists(HKLM,'SOFTWARE\Microsoft\.NETFramework\policy\v2.0');
+		if NetFrameWorkInstalled =true then
+		begin
+			Result := true;
+		end;
+
+		if NetFrameWorkInstalled =false then
+			begin
+				//Result1 := (ExpandConstant('{cm:dotnetmissing}'), mbConfirmation, MB_YESNO) = idYes;
+				Result1 := MsgBox(ExpandConstant('{cm:dotnetmissing}'),
+						mbConfirmation, MB_YESNO) = idYes;
+				if Result1 =false then
+				begin
+					Result:=false;
+				end
+				else
+				begin
+					Result:=false;
+					ShellExec('open',
+					'http://download.microsoft.com/download/5/6/7/567758a3-759e-473e-bf8f-52154438565a/dotnetfx.exe',
+					'','',SW_SHOWNORMAL,ewNoWait,ErrorCode);
+                end;
+            end;
+	end;
+end;
+
+
+
+
 
 
 

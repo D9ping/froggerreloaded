@@ -16,6 +16,7 @@ namespace Frogger
         private FrmMenu frmmenu;
         private HoverButton[] levelbtn;
         private FrmGame game;
+        private const int btnlvlmargin = 10;
 
 		#endregion Fields 
 
@@ -42,12 +43,12 @@ namespace Frogger
 
             int ypos = 220;
             int xpos = 0;
-            int margin = 20;
+
             for (int i = 0; i < 3; i++)
             {
                 xpos = frmmenu.Width / 2 - (levelbtn[0].Width / 2);
                 levelbtn[i].Location = new Point(xpos, ypos);
-                ypos += levelbtn[0].Height + margin;
+                ypos += levelbtn[0].Height + btnlvlmargin;
             }
             frmmenu.Controls.AddRange(levelbtn);
 
