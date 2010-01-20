@@ -53,6 +53,7 @@ namespace Frogger
             this.frmmenu = frmmenu;
             this.game = new GameEngine(level, this, tier);
             Program.CheckFullScreen(this);
+            this.Text = this.Text + " - level:" + level.ToString() + " - tier: " + tier.ToString();
         }
 
         #endregion Constructors
@@ -237,6 +238,14 @@ namespace Frogger
         {
             timeup = true;
             this.Refresh();
+        }
+
+        private void tbHighscoreName_Enter(object sender, EventArgs e)
+        {
+            if (tbHighscoreName.Text == "nameless")
+            {
+                tbHighscoreName.Text = "";
+            }
         }
 #endif
     }

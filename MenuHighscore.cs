@@ -17,6 +17,7 @@ namespace Frogger
         private HoverButton[] highscoremenubtn;
         private FrmMenu frmmenu = null;
         private Label[] entries;
+        private Label lbshowcurlvlscore;
 
 		#region Constructors (1) 
 
@@ -25,7 +26,7 @@ namespace Frogger
         {    
             this.frmmenu = frmmenu;
             frmmenu.ToonLogo = false;
-
+            
             highscoremenubtn = new HoverButton[4];
             highscoremenubtn[0] = new HoverButton("Level 1");
             highscoremenubtn[0].Tag = 1;
@@ -49,6 +50,14 @@ namespace Frogger
                 ypos += 80;
             }
 
+            lbshowcurlvlscore = new Label();
+            lbshowcurlvlscore.Location = new Point(frmmenu.Width /2, 5);
+            lbshowcurlvlscore.Font = new Font("Flubber", 28);
+            lbshowcurlvlscore.ForeColor = Color.Brown;
+            lbshowcurlvlscore.AutoSize = true;
+            lbshowcurlvlscore.Text = "";
+
+            frmmenu.Controls.Add(lbshowcurlvlscore);
             frmmenu.Controls.AddRange(highscoremenubtn);
         }
 
@@ -67,6 +76,8 @@ namespace Frogger
             {
                 if (curbtn != null) { curbtn.Dispose(); }
             }
+            lbshowcurlvlscore.Visible = false;
+            lbshowcurlvlscore.Dispose();
             ClearAllEntries();
         }
 
@@ -145,16 +156,18 @@ namespace Frogger
                     }
                 }
             }
-
-            HoverButton btnclicked = (HoverButton)sender;
             
-            string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + btnclicked.Tag.ToString() + " ORDER BY SPEELTIJD ASC";
+            HoverButton btnclicked = (HoverButton)sender;
+            lbshowcurlvlscore.Text = "Level " + btnclicked.Tag.ToString();
+            lbshowcurlvlscore.Visible = true;
+
+            String query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + btnclicked.Tag.ToString() + " ORDER BY SPEELTIJD ASC";
             DataTable dt = DBConnection.ExecuteQuery(query, 4);
 
-            string tijddatum = "";
-            string naam = "";
-            string speeltijd = "";
 
+            String tijddatum = "";
+            String naam = "";
+            String speeltijd = "";
             
             int ypos = 80; // ypos is de Y-coordinaat van de label van de highscore
             int positie = 0;

@@ -116,6 +116,13 @@ namespace Frogger.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap frogdead_drunk {
+            get {
+                object obj = ResourceManager.GetObject("frogdead_drunk", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap frogdead_east {
             get {
                 object obj = ResourceManager.GetObject("frogdead_east", resourceCulture);

@@ -21,6 +21,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Data;
+//using System.Threading;
 
 namespace Frogger
 {
@@ -226,20 +227,27 @@ namespace Frogger
         /// <returns>Whether or not Frogger collides with a moving object</returns>
         public Boolean DetectCollision(MovingObject mvobj)
         {
-            if (frog == null) { throw new Exception("no frog created."); }
-
-            Point mvobjbovenlinks = new Point(mvobj.Location.X, mvobj.Location.Y);
-            Point mvobjbovenrechts = new Point(mvobj.Location.X + mvobj.Size.Width, mvobj.Location.Y);
-            Point mvobjonderlinks = new Point(mvobj.Location.X, mvobj.Location.Y + mvobj.Size.Height);
-
-            if ((mvobjbovenlinks.X <= frog.Location.X + frog.Size.Width) && (mvobjbovenrechts.X >= frog.Location.X)) //X location okay?
+            if (!mvobj.Disposing)
             {
-                if ((mvobjbovenlinks.Y <= frog.Location.Y + frog.Size.Height) && (mvobjonderlinks.Y >= frog.Location.Y)) //Y location okay?
+                if (frog == null) { throw new Exception("no frog created."); }
+
+                Point mvobjbovenlinks = new Point(mvobj.Location.X, mvobj.Location.Y);
+                Point mvobjbovenrechts = new Point(mvobj.Location.X + mvobj.Size.Width, mvobj.Location.Y);
+                Point mvobjonderlinks = new Point(mvobj.Location.X, mvobj.Location.Y + mvobj.Size.Height);
+
+                if ((mvobjbovenlinks.X <= frog.Location.X + frog.Size.Width) && (mvobjbovenrechts.X >= frog.Location.X)) //X location okay?
                 {
-                    return true;
+                    if ((mvobjbovenlinks.Y <= frog.Location.Y + frog.Size.Height) && (mvobjonderlinks.Y >= frog.Location.Y)) //Y location okay?
+                    {
+                        return true;
+                    }
                 }
+                return false;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -268,7 +276,6 @@ namespace Frogger
                     {
                         object[] row = dt.Rows[9].ItemArray;
                         int minspeeltijdhighscore = Convert.ToInt32(row[2]);
-                        //MessageBox.Show(Convert.ToInt32(row[2]).ToString() + " gametime:" + GetGameTime());
                         if (GetGameTime() < minspeeltijdhighscore)
                         {
                             entername = true;
@@ -285,7 +292,7 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Draws a level./REnders the screen.
+        /// Renders the screen/draw the level.
         /// </summary>
         /// <param name="g">The graphics component that should be used</param>
         public void RenderScreen(Graphics g)
@@ -342,7 +349,7 @@ namespace Frogger
             for (int i = 0; i < movingobjs.Count; i++)
             {
                 frmgame.Controls.Remove(movingobjs[i]);
-                movingobjs[i].Location = new Point(-200, -200); //dont bother the game. with not yet gc objects.
+                movingobjs[i].Location = new Point(0, -200); //dont bother the game with not yet garbagecollected objects.
                 movingobjs[i].Dispose();
             }
             GC.Collect(); //soon
@@ -353,6 +360,7 @@ namespace Frogger
         /// </summary>
         public void UpdatePositionMovingObjects()
         {
+            frog.CanMove = false;
             foreach (MovingObject obj in movingobjs)
             {
                 if (frmgame.Controls.Contains(obj))
@@ -381,6 +389,7 @@ namespace Frogger
                         if (obj is Car)
                         {
                             ishit = true;
+                            frog.CanMove = false;
                             switch (obj.Dir)
                             {
                                 case Direction.East:
@@ -399,19 +408,44 @@ namespace Frogger
                         //tree:
                         else if (obj is Tree)
                         {
-                            frog.OnTree = true;
-                            frog.TreeDir = obj.Dir;
-                            frog.TreeVelocity = obj.Velocity;
+                            int widthmargin = frog.Width / 2;
+                            if ((obj.Location.X < frog.Location.X + widthmargin) && (obj.Location.X + obj.Width > frog.Location.X - widthmargin))
+                            {
+                                int heightmargin = frog.Height / 2;
+                                if ((obj.Location.Y < frog.Location.Y + heightmargin) && (obj.Location.Y + obj.Height > frog.Location.Y - heightmargin))
+                                {
+                                    frog.OnTree = true;
+                                    frog.TreeDir = obj.Dir;
+                                    frog.TreeVelocity = obj.Velocity;
+                                }
+                            }
                         }
-                    }
-                    else
-                    {
-                        frog.OnTree = false;
                     }
                 }
                 else if ((obj != null) && (obj.IsDisposed == false))
                 {
                     frmgame.Controls.Add(obj);
+                }
+            }
+
+            if (frog.OnTree == false)
+            {
+                int heightoneriv = CalcHeightRivir(1);
+                foreach (int rivYtop in this.rivirs)
+                {
+                    int rivYbottom = rivYtop + heightoneriv;
+                    if ((rivYtop < frog.Location.Y - (frog.Height/2)) && (rivYbottom > (frog.Location.Y + (frog.Height /2))))
+                    {
+                        ishit = true;
+                        frog.CanMove = false;
+                        frog.pic = ResizesResources.images["frogdead_drunk"];
+                        frog.Invalidate();
+                        if (Program.sound)
+                        {
+                            sndPlaySound(Application.StartupPath + @"\sounds\sink.wav", 1); //1 = Async
+                        }
+                        
+                    }
                 }
             }
             if (frog.OnTree == true)
@@ -425,6 +459,7 @@ namespace Frogger
                         frog.Location = new Point(frog.Location.X - frog.TreeVelocity, frog.Location.Y);
                         break;
                 }
+                frog.OnTree = false;
             }
             if (frog.Location.Y <= frog.Height)
             {
@@ -432,7 +467,7 @@ namespace Frogger
             }
             frog.CanMove = true;
         }
-        // Private Methods (15) 
+        //Private Methods (15) 
 
         /// <summary>
         /// Calculate the height of the rivir.
@@ -480,14 +515,22 @@ namespace Frogger
 
             if (!this.screendraw)
             {
-                HoverButton hovbtnBack = new HoverButton("Back");
-                hovbtnBack.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right);
-                hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
-                hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
-                frmgame.Controls.Add(hovbtnBack);
-                hovbtnBack.Refresh();
-                screendraw = true;
+                CreateBackBtn();
             }
+        }
+
+        /// <summary>
+        /// Added a back hoverbuton to return to the main menu.
+        /// </summary>
+        private void CreateBackBtn()
+        {
+            HoverButton hovbtnBack = new HoverButton("Back");
+            hovbtnBack.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right);
+            hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
+            hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
+            frmgame.Controls.Add(hovbtnBack);
+            hovbtnBack.Refresh();
+            screendraw = true;
         }
 
         /// <summary>
@@ -591,6 +634,10 @@ namespace Frogger
             {
                 ShowEnterHighscore();
             }
+            else if ((!entername) && (!screendraw))
+            {
+                CreateBackBtn();
+            }
             screendraw = true;
         }
 
@@ -626,6 +673,7 @@ namespace Frogger
                 else if (ishit)
                 {
                     StopEngine();
+                    tickcar = -5;
                     if (!CheckLives(lives))
                     {
                         DrawNumLives();
@@ -828,6 +876,7 @@ namespace Frogger
             ResizesResources.images.Add("kikker_east", ResizeImage(Frogger.Properties.Resources.kikker_east, kikkersizeX, kikkersizeY));
             ResizesResources.images.Add("frogdead_east", ResizeImage(Frogger.Properties.Resources.frogdead_east, kikkersizeX, kikkersizeY));
             ResizesResources.images.Add("frogdead_west", ResizeImage(Frogger.Properties.Resources.frogdead_west, kikkersizeX, kikkersizeY));
+            ResizesResources.images.Add("frogdead_drunk", ResizeImage(Frogger.Properties.Resources.frogdead_drunk, kikkersizeX, kikkersizeY));
             int treesizeheight = CalcHeightRivir(1);
             int treesizewidth = treesizeheight * 3;
             ResizesResources.images.Add("treetrunk", ResizeImage(Frogger.Properties.Resources.treetrunk, treesizewidth, treesizeheight));

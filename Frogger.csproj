@@ -128,7 +128,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\sounds\beep.wav" />
-    <Content Include="bin\Debug\sounds\carcrash.wav" />
+    <Content Include="bin\Debug\sounds\frog_made_it.wav" />
+    <Content Include="bin\Debug\sounds\punch.wav" />
     <Content Include="bin\Debug\sounds\sink.wav" />
     <Content Include="icon_frog.ico" />
     <None Include="Resources\car_green_east.png" />
@@ -140,6 +141,7 @@
     <Content Include="Resources\flubber_font_license.txt" />
     <None Include="Resources\froglive.png" />
     <Content Include="Resources\icon_frog.ico" />
+    <None Include="Resources\kikkerdead_drunk.png" />
     <None Include="Resources\truck_west.png" />
     <None Include="Resources\truck_east.png" />
     <None Include="Resources\kikker_crazy.png" />
