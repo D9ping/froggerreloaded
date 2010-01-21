@@ -220,7 +220,7 @@ namespace FroggerTest
             FrmGame frmgame = new FrmGame(frmmenu, level, tier);
 
             GameEngine target = new GameEngine(level, frmgame, tier); // TODO: Initialize to an appropriate value
-            target.StopEngine();
+            target.StopEngine(true);
             if (target.GameUpdateStatus != false)
             {
                 Assert.Fail("Game Engine has not stopped.");

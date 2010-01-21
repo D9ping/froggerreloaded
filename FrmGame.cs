@@ -82,7 +82,7 @@ namespace Frogger
 
 		#endregion Properties 
 
-		#region Methods (8) 
+		#region Methods (9) 
 
 		// Public Methods (1) 
 
@@ -91,12 +91,12 @@ namespace Frogger
         /// </summary>
         public void CloseGame()
         {
-            game.StopEngine();
+            game.StopEngine(true);
             this.frmmenu.Menustate = MenuState.main;
             this.frmmenu.Show();
             this.Hide();
         }
-		// Private Methods (7) 
+		// Private Methods (8) 
 
         /// <summary>
         /// Form is closed.
@@ -167,6 +167,11 @@ namespace Frogger
             }
         }
 
+        private void FrmGame_ResizeBegin(object sender, EventArgs e)
+        {
+            game.StopEngine(false);
+        }
+
         /// <summary>
         /// repaint the form, so thing show up correctly a the new size.
         /// </summary>
@@ -174,6 +179,8 @@ namespace Frogger
         /// <param name="e"></param>
         private void FrmGame_ResizeEnd(object sender, EventArgs e)
         {
+            this.timerTime.Enabled = true;
+            game.SetupEngine(false);
             this.Refresh();
         }
 

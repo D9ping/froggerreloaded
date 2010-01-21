@@ -87,6 +87,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Frogger Reloaded";
+            this.ResizeBegin += new System.EventHandler(this.FrmGame_ResizeBegin);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmGame_Paint);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmGame_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmGame_KeyDown);

@@ -49,9 +49,16 @@ namespace Frogger
             this.Size = new Size(width, height);
             this.pic = global::Frogger.Properties.Resources.kikker_west;
             this.pic.MakeTransparent();
-
-            this.maxscreenwidth = frmgame.ClientSize.Width - offscreenmargin;
-            this.maxscreenheight = frmgame.ClientSize.Height - offscreenmargin;
+            if (!Program.fullscreen)
+            {
+                this.maxscreenwidth = frmgame.ClientSize.Width - offscreenmargin;
+                this.maxscreenheight = frmgame.ClientSize.Height - offscreenmargin;
+            }
+            else if (Program.fullscreen)
+            {
+                this.maxscreenwidth = Screen.PrimaryScreen.WorkingArea.Width - offscreenmargin;
+                this.maxscreenheight = Screen.PrimaryScreen.WorkingArea.Height - offscreenmargin;
+            }
 
             this.jumpdistance = jumpdistance;
         }
