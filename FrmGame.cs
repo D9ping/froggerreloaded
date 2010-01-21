@@ -29,7 +29,7 @@ namespace Frogger
 {
     public partial class FrmGame : Form
     {
-        #region Fields (5)
+		#region Fields (5) 
 
         private FrmMenu frmmenu;
         private GameEngine game;
@@ -37,9 +37,9 @@ namespace Frogger
         public int sec = 0;
         private bool timeup = false;
 
-        #endregion Fields
+		#endregion Fields 
 
-        #region Constructors (1)
+		#region Constructors (1) 
 
         /// <summary>
         /// Creating a new instance of FrmGame.
@@ -56,9 +56,9 @@ namespace Frogger
             this.Text = this.Text + " - level:" + level.ToString() + " - tier: " + tier.ToString();
         }
 
-        #endregion Constructors
+		#endregion Constructors 
 
-        #region Properties (2)
+		#region Properties (2) 
 
         public String TbEnterName
         {
@@ -80,11 +80,11 @@ namespace Frogger
             }
         }
 
-        #endregion Properties
+		#endregion Properties 
 
-        #region Methods (7)
+		#region Methods (8) 
 
-        // Public Methods (1) 
+		// Public Methods (1) 
 
         /// <summary>
         /// Hide the frmGame and show the frmMenu in MenuState main again.
@@ -96,7 +96,7 @@ namespace Frogger
             this.frmmenu.Show();
             this.Hide();
         }
-        // Private Methods (6) 
+		// Private Methods (7) 
 
         /// <summary>
         /// Form is closed.
@@ -108,7 +108,6 @@ namespace Frogger
             CloseGame();
         }
 
-        
         /// <summary>
         /// Move a frog.
         /// </summary>
@@ -178,6 +177,14 @@ namespace Frogger
             this.Refresh();
         }
 
+        private void tbHighscoreName_Enter(object sender, EventArgs e)
+        {
+            if (tbHighscoreName.Text == "nameless")
+            {
+                tbHighscoreName.Text = "";
+            }
+        }
+
         /// <summary>
         /// Update the game time, and check if time
         /// for the current tier is over.
@@ -226,27 +233,6 @@ namespace Frogger
             return time;
         }
 
-        #endregion Methods
-
-#if DEBUG
-        /// <summary>
-        /// quickly test game over.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
-        {
-            timeup = true;
-            this.Refresh();
-        }
-
-        private void tbHighscoreName_Enter(object sender, EventArgs e)
-        {
-            if (tbHighscoreName.Text == "nameless")
-            {
-                tbHighscoreName.Text = "";
-            }
-        }
-#endif
+		#endregion Methods 
     }
 }

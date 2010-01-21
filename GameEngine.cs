@@ -27,7 +27,7 @@ namespace Frogger
 {
     public class GameEngine
     {
-        #region Fields (10)
+		#region Fields (10) 
 
         //public voor testen
         //private List<MovingObject> movingobjs;
@@ -42,9 +42,47 @@ namespace Frogger
         private Boolean setup = false, ishit = false, livesup = false, freeplay = false, win = false, screendraw = false;
         private Niveau tier;
 
-        #endregion Fields
+		#endregion Fields 
 
-        #region Constructors (1)
+        #region Properties (3)
+
+        /// <summary>
+        /// Returns the number of lives the player has left.
+        /// </summary>
+        public int Lives
+        {
+            get
+            {
+                return lives;
+            }
+            set
+            {
+                lives = value;
+            }
+        }
+
+        public int NumObjects
+        {
+            get
+            {
+                return this.movingobjs.Count;
+            }
+        }
+
+        /// <summary>
+        /// Returns if GameUpdate timer is still running. Needed for tests.
+        /// </summary>
+        public bool GameUpdateStatus
+        {
+            get
+            {
+                return gameupdate.Enabled;
+            }
+        }
+
+        #endregion
+
+		#region Constructors (1) 
 
         /// <summary>
         /// Creates a GameEngine.
@@ -69,6 +107,8 @@ namespace Frogger
             {
                 case Niveau.freeplay:
                     freeplay = true;
+                    frmgame.min = 60;
+                    frmgame.sec = 0;
                     break;
                 case Niveau.easy:
                     frmgame.min = 3;
@@ -100,11 +140,11 @@ namespace Frogger
             frmgame.Controls.Add(frog);
         }
 
-        #endregion Constructors
+		#endregion Constructors 
 
-        #region Methods (26)
+		#region Methods (27) 
 
-        // Public Methods (11) 
+		// Public Methods (11) 
 
         /// <summary>
         /// Checks if game time is up for the current tier.
@@ -184,7 +224,7 @@ namespace Frogger
             int space = frmgame.ClientSize.Height / 20;
             int initfrogwidth = frmgame.ClientSize.Width / 20;
             int initfrogheight = frmgame.ClientSize.Height / 20;
-            frog = new Frog(0, Direction.North, space, initfrogwidth, initfrogheight);
+            frog = new Frog(0, Direction.North, space, initfrogwidth, initfrogheight, frmgame);
             int locX = 0;
             int locY = 0;
             if (Program.fullscreen)
@@ -197,7 +237,6 @@ namespace Frogger
                 locX = (frmgame.ClientSize.Width / 2) - (frog.Width / 2);
                 locY = frmgame.ClientSize.Height - frog.Height - frogbottommargin;
             }
-            //frog.pic = ResizesResources.images["frog_east"];
             frog.Location = new Point(locX, locY);
 
             if (frog == null) { throw new Exception("frog not created."); }
@@ -467,7 +506,7 @@ namespace Frogger
             }
             frog.CanMove = true;
         }
-        //Private Methods (15) 
+		// Private Methods (16) 
 
         /// <summary>
         /// Calculate the height of the rivir.
@@ -498,6 +537,20 @@ namespace Frogger
         }
 
         /// <summary>
+        /// Added a back hoverbuton to return to the main menu.
+        /// </summary>
+        private void CreateBackBtn()
+        {
+            HoverButton hovbtnBack = new HoverButton("Back");
+            hovbtnBack.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right);
+            hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
+            hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
+            frmgame.Controls.Add(hovbtnBack);
+            hovbtnBack.Refresh();
+            screendraw = true;
+        }
+
+        /// <summary>
         /// Draw a box with the text "Game over" and a reason and display enter highscore if entername is true.
         /// </summary>
         /// <param name="g">graphics object</param>
@@ -517,20 +570,6 @@ namespace Frogger
             {
                 CreateBackBtn();
             }
-        }
-
-        /// <summary>
-        /// Added a back hoverbuton to return to the main menu.
-        /// </summary>
-        private void CreateBackBtn()
-        {
-            HoverButton hovbtnBack = new HoverButton("Back");
-            hovbtnBack.Anchor = (AnchorStyles.Bottom | AnchorStyles.Right);
-            hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
-            hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
-            frmgame.Controls.Add(hovbtnBack);
-            hovbtnBack.Refresh();
-            screendraw = true;
         }
 
         /// <summary>
@@ -592,7 +631,6 @@ namespace Frogger
         /// <param name="locy">The y-coördinate the road is created at</param>
         private void DrawRoad(Graphics g, int locy)
         {
-            //roads.Add(locy);
             bool roadexist = false;
             foreach (int curroad in roads)
             {
@@ -706,7 +744,7 @@ namespace Frogger
                     {
                         movingobjs.Add(CreateTreeTrunk(4, Direction.East, -treetrunkwidth, rivirs[curriver]));
                     }
-                    else if (curriver != 0) //odd and not 0
+                    else //odd    //if (curriver != 0)
                     {
                         movingobjs.Add(CreateTreeTrunk(4, Direction.West, frmgame.ClientRectangle.Width + treetrunkwidth, rivirs[curriver]));
                     }
@@ -955,47 +993,7 @@ namespace Frogger
             frmgame.tbHighscoreName.Refresh();
         }
 
-        #endregion Methods
-
-
-
-        #region Properties (3)
-
-        /// <summary>
-        /// Returns the number of lives the player has left.
-        /// </summary>
-        public int Lives
-        {
-            get
-            {
-                return lives;
-            }
-            set
-            {
-                lives = value;
-            }
-        }
-
-        public int NumObjects
-        {
-            get
-            {
-                return this.movingobjs.Count;
-            }
-        }
-
-        /// <summary>
-        /// Returns if GameUpdate timer is still running. Needed for tests.
-        /// </summary>
-        public bool GameUpdateStatus
-        {
-            get
-            {
-                return gameupdate.Enabled;
-            }
-        }
-
-        #endregion
+		#endregion Methods 
 
         #region game const settings
         private const int roadlineheight = 5; //not supposed to change integers without recompile.

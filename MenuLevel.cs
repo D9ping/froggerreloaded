@@ -11,12 +11,12 @@ namespace Frogger
     /// </summary>
     class MenuLevel : MenuScreen
     {
-		#region Fields (2) 
+		#region Fields (4) 
 
-        private FrmMenu frmmenu;
-        private HoverButton[] levelbtn;
-        private FrmGame game;
         private const int btnlvlmargin = 10;
+        private FrmMenu frmmenu;
+        private FrmGame game;
+        private HoverButton[] levelbtn;
 
 		#endregion Fields 
 
