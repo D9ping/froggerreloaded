@@ -396,6 +396,8 @@ namespace Frogger
 
         /// <summary>
         /// Updates the position of every moving object.
+        /// It also detects if object is hit, and make the right sound if enabled.
+        /// And it detects if the frog is on the other side(win)
         /// </summary>
         public void UpdatePositionMovingObjects()
         {
@@ -448,10 +450,10 @@ namespace Frogger
                         else if (obj is Tree)
                         {
                             int widthmargin = frog.Width / 2;
-                            if ((obj.Location.X < frog.Location.X + widthmargin) && (obj.Location.X + obj.Width > frog.Location.X - widthmargin))
+                            if ((obj.Location.X < frog.Location.X + widthmargin) && (obj.Location.X + obj.Width > frog.Location.X + widthmargin))
                             {
                                 int heightmargin = frog.Height / 2;
-                                if ((obj.Location.Y < frog.Location.Y + heightmargin) && (obj.Location.Y + obj.Height > frog.Location.Y - heightmargin))
+                                if ((obj.Location.Y < frog.Location.Y + heightmargin) && (obj.Location.Y + obj.Height > frog.Location.Y + heightmargin))
                                 {
                                     frog.OnTree = true;
                                     frog.TreeDir = obj.Dir;
@@ -837,7 +839,7 @@ namespace Frogger
             {
                 screenwidth = Screen.PrimaryScreen.WorkingArea.Width;
             }
-            int truckwidth = ResizesResources.images["truck_east"].Width + 3; //3px distance at least
+            int truckwidth = ResizesResources.images["truck_east"].Width + mindistanceobjs;
             for (int curroad = 0; curroad < roads.Count; curroad++)
             {
                 for (int i = 0; i < carsperroad; i++)
@@ -999,6 +1001,7 @@ namespace Frogger
         private const int roadlineheight = 5; //not supposed to change integers without recompile.
         private const int frogbottommargin = 12;
         private const int lineDistance = 100;
+        private const int mindistanceobjs = 3;
         #endregion
     }
 }
