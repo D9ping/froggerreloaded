@@ -21,6 +21,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 
 namespace Frogger
 {
@@ -46,6 +47,10 @@ namespace Frogger
             Application.SetCompatibleTextRenderingDefault(false);
             fullscreen = Frogger.Properties.Settings.Default.fullscreen;
             sound = Frogger.Properties.Settings.Default.sound;
+            if (!CheckFontInstalled())
+            {
+                MessageBox.Show("The font for this game does not exist. Try to reinstall the game.", "font missing", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             Application.Run(new FrmMenu());
         }
 
@@ -74,12 +79,29 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Creer een database connectie.
+        /// Check if the Flubber font exist in the windows font directory.
         /// </summary>
-        /// <returns></returns>
-        public static SqlConnection CreateDBconnection()
+        /// <returns>true if it exist or font directory could not be found. false if font does not exist in the font direcotory.</returns>
+        static public bool CheckFontInstalled()
         {
-            return null;
+            String fontdir = System.Environment.GetEnvironmentVariable("windir") + "\\fonts";
+            
+            if (Directory.Exists(fontdir))
+            {
+                if (File.Exists(fontdir+"\\Flubber.ttf"))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                //cannot find fonts directory ingore error for now.  Maybe we are not running windows.
+                return true;
+            }
         }
 
         //This is unmangement code needed for real fullscreen. hidden taskbar etc.

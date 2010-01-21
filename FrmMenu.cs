@@ -129,8 +129,9 @@ namespace Frogger
             backbtn.Location = new Point(this.Width / 2 - backbtn.Width / 2, this.Height - backbtn.Height - margin);
             backbtn.Visible = true;
             this.Controls.Add(backbtn);
-            return backbtn;            
+            return backbtn;
         }
+
 		// Private Methods (3) 
 
         /// <summary>
