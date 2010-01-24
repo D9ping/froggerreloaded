@@ -63,7 +63,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.cbxTier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
             this.cbxTier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxTier.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbxTier.Font = new System.Drawing.Font("Flubber", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxTier.FormattingEnabled = true;
             this.cbxTier.Items.AddRange(new object[] {
             "Freeplay",
@@ -73,9 +73,10 @@
             "Elite"});
             this.cbxTier.Location = new System.Drawing.Point(594, 345);
             this.cbxTier.Name = "cbxTier";
-            this.cbxTier.Size = new System.Drawing.Size(167, 39);
+            this.cbxTier.Size = new System.Drawing.Size(167, 36);
             this.cbxTier.TabIndex = 2;
             this.cbxTier.Visible = false;
+            this.cbxTier.VisibleChanged += new System.EventHandler(this.cbxTier_VisibleChanged);
             // 
             // FrmMenu
             // 

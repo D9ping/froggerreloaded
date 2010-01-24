@@ -190,6 +190,20 @@ namespace Frogger
             this.Refresh();
         }
 
+        /// <summary>
+        /// Make sure text is visible if cbxIier is visible.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cbxTier_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!Program.CheckFontInstalled() && cbxTier.Visible == true)
+            {
+                cbxTier.Font = new Font("Arail", 20);
+            }
+        }
+
 		#endregion Methods 
+
 	 }
 }
