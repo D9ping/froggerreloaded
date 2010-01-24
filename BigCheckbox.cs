@@ -30,11 +30,12 @@ namespace Frogger
         private bool ischecked =true;
 
         /// <summary>
-        /// This constructor the designer use.
+        /// Constructor for creating at designtime.
         /// </summary>
         public BigCheckbox()
         {
             InitializeComponent();
+            this.lbBigcheckbox.Text = "test";
         }
 
         /// <summary>

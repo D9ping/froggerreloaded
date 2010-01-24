@@ -220,8 +220,16 @@ namespace Frogger
         public Frog CreateFrog()
         {
             int space = frmgame.ClientSize.Height / 20;
+            if (Program.fullscreen)
+            {
+                space = Screen.PrimaryScreen.WorkingArea.Height / 20;
+            }
             int initfrogwidth = frmgame.ClientSize.Width / 20;
-            int initfrogheight = frmgame.ClientSize.Height / 20;
+            if (Program.fullscreen)
+            {
+                initfrogwidth = Screen.PrimaryScreen.WorkingArea.Width / 20;
+            }
+            int initfrogheight = space;
             frog = new Frog(0, Direction.North, space, initfrogwidth, initfrogheight, frmgame);
             int locX = 0;
             int locY = 0;
@@ -345,12 +353,12 @@ namespace Frogger
                     break;
                 case 2:
                     DrawRiver(g, space * 1, 2);
-                    DrawRoad(g, space * 5);
-                    DrawRoad(g, space * 7);
+                    DrawRoad(g, space * 4);
+                    DrawRoad(g, space * 6);
                     break;
                 case 3:
                     DrawRiver(g, space * 1, 4);
-                    DrawRoad(g, space / 2 * 11);
+                    DrawRoad(g, space * 6);
                     DrawRoad(g, space * 7);
                     break;
             }
@@ -427,21 +435,24 @@ namespace Frogger
                         //car:
                         if (obj is Car)
                         {
-                            ishit = true;
-                            frog.CanMove = false;
-                            switch (obj.Dir)
+                            if (frog.Location.Y + frog.Size.Height >= obj.Location.Y + frogbottommargin)
                             {
-                                case Direction.East:
-                                    frog.pic = ResizesResources.images["frogdead_west"];//Frogger.Properties.Resources.frogdead_east;
-                                    break;
-                                case Direction.West:
-                                    frog.pic = ResizesResources.images["frogdead_east"];//Frogger.Properties.Resources.frogdead_west;
-                                    break;
-                            }
-                            frog.Invalidate();
-                            if (Program.sound)
-                            {
-                                sndPlaySound(Application.StartupPath + @"\sounds\punch.wav", 1); //1 = Async
+                                ishit = true;
+                                frog.CanMove = false;
+                                switch (obj.Dir)
+                                {
+                                    case Direction.East:
+                                        frog.pic = ResizesResources.images["frogdead_west"];//Frogger.Properties.Resources.frogdead_east;
+                                        break;
+                                    case Direction.West:
+                                        frog.pic = ResizesResources.images["frogdead_east"];//Frogger.Properties.Resources.frogdead_west;
+                                        break;
+                                }
+                                frog.Invalidate();
+                                if (Program.sound)
+                                {
+                                    sndPlaySound(Application.StartupPath + @"\sounds\punch.wav", 1); //1 = Async
+                                }
                             }
                         }
                         //tree:
@@ -529,7 +540,7 @@ namespace Frogger
         private int CalcHeightRoad()
         {
             int hroad = frmgame.ClientSize.Height / 10;
-            if (!Program.fullscreen)
+            if (Program.fullscreen)
             {
                 hroad = Screen.PrimaryScreen.WorkingArea.Height / 10;
             }
@@ -715,18 +726,18 @@ namespace Frogger
                         int rnddir = rndgen.Next(0, 2);
                         if (rnddir == 0)
                         {
-                            movingobjs.Add(CreateCarRandomColor(2, Direction.East, -carwidth, roads[curroad], rndgen));
+                            movingobjs.Add(CreateCarRandomColor(5, Direction.East, -carwidth, roads[curroad], rndgen));
                         }
                         else
                         {
-                            movingobjs.Add(CreateCarRandomColor(2, Direction.West, frmgame.ClientSize.Width + carwidth, roads[curroad], rndgen));
+                            movingobjs.Add(CreateCarRandomColor(5, Direction.West, frmgame.ClientSize.Width + carwidth, roads[curroad], rndgen));
                         }
                     }
                 }
                 else if (ishit)
                 {
                     StopEngine(true);
-                    tickcar = -5;
+                    tickcar = 0;
                     if (!CheckLives(lives))
                     {
                         DrawNumLives();
@@ -749,19 +760,37 @@ namespace Frogger
             {
                 tickcar++;
             }
+            int treetrunkwidth = ResizesResources.images["treetrunk"].Size.Width;
             if (ticktree >= maxticktree)
-            {
-                int treetrunkwidth = ResizesResources.images["treetrunk"].Size.Width;
+            {                
                 for (int curriver = 0; curriver < rivirs.Count; curriver++)
                 {
-                    if (curriver % 2 == 0) //even
+                    if (curriver == 0)
                     {
                         movingobjs.Add(CreateTreeTrunk(4, Direction.East, -treetrunkwidth, rivirs[curriver]));
                     }
-                    else //odd    //if (curriver != 0)
+                    else if (curriver == 1)
                     {
-                        movingobjs.Add(CreateTreeTrunk(4, Direction.West, frmgame.ClientRectangle.Width + treetrunkwidth, rivirs[curriver]));
+                        movingobjs.Add(CreateTreeTrunk(5, Direction.West, frmgame.ClientRectangle.Width, rivirs[curriver]));
                     }
+                    else if (curriver == 2)
+                    {
+                        movingobjs.Add(CreateTreeTrunk(6, Direction.East, -treetrunkwidth, rivirs[curriver]));
+                    }
+                    else if (curriver == 3)
+                    {
+                        movingobjs.Add(CreateTreeTrunk(4, Direction.West, frmgame.ClientRectangle.Width, rivirs[curriver]));
+                    }
+                    
+                    else if (curriver >3 && curriver % 2 == 0) //even
+                    {
+                        movingobjs.Add(CreateTreeTrunk(3, Direction.East, -treetrunkwidth, rivirs[curriver]));
+                    }
+                    else if (curriver >3)//odd and not 1 or 3
+                    {
+                        movingobjs.Add(CreateTreeTrunk(5, Direction.West, frmgame.ClientRectangle.Width + treetrunkwidth, rivirs[curriver]));
+                    }
+                     
                 }
                 ticktree = 0;
             }
@@ -862,11 +891,11 @@ namespace Frogger
                     {
                         if (locX > 0)
                         {
-                            movingobjs.Add(CreateCarRandomColor(2, Direction.East, locX, roads[curroad], rndgen));
+                            movingobjs.Add(CreateCarRandomColor(5, Direction.East, locX, roads[curroad], rndgen));
                         }
                         else if (locX < screenwidth)
                         {
-                            movingobjs.Add(CreateCarRandomColor(2, Direction.West, locX, roads[curroad], rndgen));
+                            movingobjs.Add(CreateCarRandomColor(5, Direction.West, locX, roads[curroad], rndgen));
                         }
 
                     }
@@ -874,11 +903,11 @@ namespace Frogger
                     {
                         if (locX < screenwidth)
                         {
-                            movingobjs.Add(CreateCarRandomColor(2, Direction.West, locX, roads[curroad], rndgen));
+                            movingobjs.Add(CreateCarRandomColor(5, Direction.West, locX, roads[curroad], rndgen));
                         }
                         else if (locX > 0)
                         {
-                            movingobjs.Add(CreateCarRandomColor(2, Direction.East, locX, roads[curroad], rndgen));
+                            movingobjs.Add(CreateCarRandomColor(5, Direction.East, locX, roads[curroad], rndgen));
                         }
                     }
                 }
@@ -888,13 +917,13 @@ namespace Frogger
             {
                 if (rivirs[i] % 2 == 0) //even
                 {
-                    movingobjs.Add(CreateTreeTrunk(4, Direction.West, screenwidth / 2, rivirs[i]));
+                    movingobjs.Add(CreateTreeTrunk(5, Direction.West, screenwidth / 2, rivirs[i]));
                 }
                 else //odd
                 {
                     if (tier != Niveau.elite && tier != Niveau.hard)
                     {
-                        movingobjs.Add(CreateTreeTrunk(4, Direction.East, screenwidth / 2, rivirs[i]));
+                        movingobjs.Add(CreateTreeTrunk(3, Direction.East, screenwidth / 2, rivirs[i]));
                     }
                 }
             }
@@ -976,17 +1005,17 @@ namespace Frogger
                         break;
                     case Niveau.medium:
                         lives = 2;
-                        secnewcar = 3;
+                        secnewcar = 2;
                         secnewtree = 4;
                         break;
                     case Niveau.hard:
                         lives = 1;
-                        secnewcar = 2;
+                        secnewcar = 1;
                         secnewtree = 5;
                         break;
                     case Niveau.elite:
                         lives = 0;
-                        secnewcar = 2;
+                        secnewcar = 1;
                         secnewtree = 6;
                         break;
                     default:
@@ -1035,7 +1064,7 @@ namespace Frogger
 
         #region game const settings
         private const int roadlineheight = 4; //not supposed to change integers without recompile.
-        private const int frogbottommargin = 12;
+        private const int frogbottommargin = 6;
         private const int lineDistance = 100;
         private const int mindistanceobjs = 4;
         #endregion

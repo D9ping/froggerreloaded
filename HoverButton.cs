@@ -38,9 +38,19 @@ namespace Frogger
         public static extern int sndPlaySound(string sFile, int sMode);
 
         /// <summary>
+        /// Constructor for creating HoverButton at designtime.
+        /// </summary>
+        public HoverButton()
+        {
+            InitializeComponent();
+            this.lbButton.Text = "test";
+            this.BackColor = normalcolor;
+        }
+
+        /// <summary>
         /// Constructor for creating HoverButton at runtime.
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">the text to dispaly on the button.</param>
         public HoverButton(String text)
         {
             InitializeComponent();
