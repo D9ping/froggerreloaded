@@ -27,16 +27,29 @@ namespace Frogger
         {
             this.frmmenu = frmmenu;
 
+            CreateLvlBtns();
+
+            frmmenu.ShowTierChoice = true;
+         
+        }
+
+        /// <summary>
+        /// Create button for level selection.
+        /// </summary>
+        private void CreateLvlBtns()
+        {
+
             levelbtn = new HoverButton[4];
 
             levelbtn[0] = new HoverButton("level1");
             levelbtn[1] = new HoverButton("level2");
             levelbtn[2] = new HoverButton("level3");
-            
             levelbtn[0].Name = "btnLvl1";
             levelbtn[1].Name = "btnLvl2";
             levelbtn[2].Name = "btnLvl3";
-            //hook events
+            levelbtn[0].Tag = 1;
+            levelbtn[1].Tag = 2;
+            levelbtn[2].Tag = 3;
             levelbtn[0].Click += new EventHandler(LoadLevel);
             levelbtn[1].Click += new EventHandler(LoadLevel);
             levelbtn[2].Click += new EventHandler(LoadLevel);
@@ -51,9 +64,6 @@ namespace Frogger
                 ypos += levelbtn[0].Height + btnlvlmargin;
             }
             frmmenu.Controls.AddRange(levelbtn);
-
-            frmmenu.ShowTierChoice = true;
-         
         }
 
 		#endregion Constructors 
@@ -71,6 +81,11 @@ namespace Frogger
         }
 		// Private Methods (2) 
 
+        /// <summary>
+        /// Load a new frmGame with the right level from the button.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoadLevel(object sender, EventArgs e)
         {
             int levelnr = whichlevel(sender);
@@ -98,21 +113,16 @@ namespace Frogger
             game.BringToFront();
         }
 
+        /// <summary>
+        /// Find out which level number is selected.
+        /// </summary>
+        /// <param name="button"></param>
+        /// <returns></returns>
 		private int whichlevel(object button)
         {
             HoverButton btn = (HoverButton)button;
-
-            switch (btn.Name)
-            {
-                case "btnLvl1":
-                    return 1;
-                case "btnLvl2":
-                    return 2;
-                case "btnLvl3":
-                    return 3;
-                default:
-                    throw new Exception("level unknow");
-            }
+            int levelnum = Convert.ToInt32(btn.Tag);
+            return levelnum;
         }
 
 		#endregion Methods 
