@@ -17,6 +17,7 @@ namespace Frogger
         private FrmMenu frmmenu;
         private FrmGame game;
         private HoverButton[] levelbtn;
+        private LevelPreview[] lvlpreviews;
 
 		#endregion Fields 
 
@@ -27,10 +28,26 @@ namespace Frogger
         {
             this.frmmenu = frmmenu;
 
-            CreateLvlBtns();
+            //CreateLvlBtns();
+            CreateLvlPreviews();
 
             frmmenu.ShowTierChoice = true;
          
+        }
+
+        private void CreateLvlPreviews()
+        {
+            lvlpreviews = new LevelPreview[3];
+            lvlpreviews[0] = new LevelPreview(1);
+            lvlpreviews[0].Location = new Point(10, 200);
+
+            lvlpreviews[1] = new LevelPreview(2);
+            lvlpreviews[1].Location = new Point(320, 200);
+
+            lvlpreviews[2] = new LevelPreview(3);
+            lvlpreviews[2].Location = new Point(630, 200);
+
+            frmmenu.Controls.AddRange(lvlpreviews);
         }
 
         /// <summary>
@@ -38,8 +55,7 @@ namespace Frogger
         /// </summary>
         private void CreateLvlBtns()
         {
-
-            levelbtn = new HoverButton[4];
+            levelbtn = new HoverButton[3];
 
             levelbtn[0] = new HoverButton("level1");
             levelbtn[1] = new HoverButton("level2");
@@ -74,10 +90,18 @@ namespace Frogger
 
         override public void ClearScreen()
         {
-            foreach (HoverButton curbtn in levelbtn)
-            {
-                if (curbtn != null) { curbtn.Dispose(); }
-            }
+            
+                //foreach (HoverButton curbtn in levelbtn)
+                //{
+                //    if (curbtn != null) { curbtn.Dispose(); }
+                //}
+            
+
+                foreach (LevelPreview curlvlpreview in lvlpreviews)
+                {
+                    if (curlvlpreview != null) { curlvlpreview.Dispose(); }
+                }
+            
         }
 		// Private Methods (2) 
 

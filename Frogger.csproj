@@ -71,6 +71,13 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="GameEngine.cs" />
+    <Compile Include="Level.cs" />
+    <Compile Include="LevelPreview.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LevelPreview.Designer.cs">
+      <DependentUpon>LevelPreview.cs</DependentUpon>
+    </Compile>
     <Compile Include="MenuHighscore.cs" />
     <Compile Include="HoverButton.cs">
       <SubType>UserControl</SubType>
@@ -100,6 +107,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HoverButton.resx">
       <DependentUpon>HoverButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LevelPreview.resx">
+      <DependentUpon>LevelPreview.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MovingObject.resx">
       <DependentUpon>MovingObject.cs</DependentUpon>
@@ -148,7 +158,7 @@
     <None Include="Resources\kikker_crazy.png" />
     <None Include="app.config" />
     <None Include="Resources\treetrunk.png" />
-    <None Include="ClassDiagram_v2.0.cd" />
+    <None Include="ClassDiagram_v2.5.cd" />
     <None Include="Resources\Flubber.ttf" />
     <None Include="Resources\logo_frogger_reloaded.png" />
     <None Include="Resources\checkbox_on.png" />

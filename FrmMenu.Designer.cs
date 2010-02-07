@@ -39,10 +39,11 @@
             // pbKikker
             // 
             this.pbKikker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbKikker.BackColor = System.Drawing.Color.Green;
             this.pbKikker.Image = global::Frogger.Properties.Resources.kikker_west;
-            this.pbKikker.Location = new System.Drawing.Point(620, 75);
+            this.pbKikker.Location = new System.Drawing.Point(646, 40);
             this.pbKikker.Name = "pbKikker";
-            this.pbKikker.Size = new System.Drawing.Size(188, 154);
+            this.pbKikker.Size = new System.Drawing.Size(146, 166);
             this.pbKikker.TabIndex = 1;
             this.pbKikker.TabStop = false;
             // 
@@ -71,7 +72,7 @@
             "Medium",
             "Hard",
             "Elite"});
-            this.cbxTier.Location = new System.Drawing.Point(594, 345);
+            this.cbxTier.Location = new System.Drawing.Point(588, 515);
             this.cbxTier.Name = "cbxTier";
             this.cbxTier.Size = new System.Drawing.Size(167, 36);
             this.cbxTier.TabIndex = 2;
