@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.IO;
+using System.Reflection;
+using System.Xml;
+using System.Windows.Forms;
 
 namespace Frogger
 {
@@ -12,19 +16,22 @@ namespace Frogger
         private List<int> rivirs;
         private List<int> roads;
         private int displayWidth, displayHeight;
+        private Boolean showerror = false;
 
         /// <summary>
         /// Constructor creating a new level obj.
         /// </summary>
         /// <param name="width">the width of the screen/level width to draw</param>
         /// <param name="height">the height of the screen/level height to draw</param>
-        public Level(int width, int height)
+        public Level(int lvlnr, int width, int height)
         {
             this.displayWidth = width;
             this.displayHeight = height;
 
             roads = new List<int>();
             rivirs = new List<int>();
+
+            LoadDesign(lvlnr);
         }
 
         public int NumRoads
@@ -52,71 +59,44 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Draws a river.
+        /// Loads the xml file with the level design.
         /// </summary>
-        /// <param name="g">The graphics component that should be used</param>
-        /// <param name="locy">The y-coördinate the river is created at</param>
-        public void DrawRiver(Graphics g, int locy, int numcourses)
+        private void LoadDesign(int lvlnr)
         {
-            //if (!setup)
-            //{
-                bool rivirexist = false;
-                foreach (int currivir in rivirs)
+            String appdir = Path.GetDirectoryName(Application.ExecutablePath);
+            if (Directory.Exists(appdir))
+            {
+                string file = appdir+"\\levels\\lvl"+lvlnr+".xml";
+                if (File.Exists(file))
                 {
-                    if (currivir == locy) rivirexist = true;
-                }
-                if ((!rivirexist) && (locy != 0))
-                {
-                    for (int curcourse = 0; curcourse < numcourses; curcourse++)
+                    XmlReader reader = new XmlTextReader(file);
+                    roads.Clear();
+                    rivirs.Clear();
+
+                    while (reader.Read())
                     {
-                        rivirs.Add(locy + curcourse * GetHeightRivir(1));
+                        if (reader.Name == "road")
+                        {
+                            roads.Add(this.displayHeight - GetHeightRoad() * (reader.ReadElementContentAsInt()+1));
+                        }
+                        else if (reader.Name == "rivir")
+                        {
+                            rivirs.Add(this.displayHeight - GetHeightRivir(1) * (reader.ReadElementContentAsInt()+1));
+                        }
                     }
                 }
-            //}
-
-            SolidBrush brushRiver = new SolidBrush(Color.Blue);
-            if ((numcourses < 9) && (numcourses > 0))
-            {
-                Rectangle rectRiver = new Rectangle(0, locy, displayWidth, GetHeightRivir(numcourses));
-                g.FillRectangle(brushRiver, rectRiver);
-            }
-            else
-            {
-                throw new Exception("number of courses not valid.");
-            }
-        }
-
-        /// <summary>
-        /// Draws a road.
-        /// </summary>
-        /// <param name="g">The graphics component that should be used</param>
-        /// <param name="locy">The y-coördinate the road is created at</param>
-        public void DrawRoad(Graphics g, int locy)
-        {
-            //if (!setup)
-            //{
-                bool roadexist = false;
-                foreach (int curroad in roads)
+                else
                 {
-                    if (curroad == locy) roadexist = true;
+                    if (!showerror)
+                    {
+                        showerror = true;
+                        MessageBox.Show("Level " + file + " not found.");
+                        
+                    }
                 }
-                if ((!roadexist) && (locy != 0))
-                {
-                    roads.Add(locy);
-                }
-            //}
-
-            SolidBrush brushRoad = new SolidBrush(Color.Black); // the color of the road
-            SolidBrush brushRoadLine = new SolidBrush(Color.White); // the color of the lines on the road
-            Rectangle rectWeg;
-            rectWeg = new Rectangle(0, locy, displayWidth, GetHeightRoad());
-            g.FillRectangle(brushRoad, rectWeg);
-            int lineloc = locy + (GetHeightRoad() / 2);
-            for (int xpos = 0; xpos < displayWidth; xpos += lineDistance)
-            {
-                Rectangle rectRoadLine = new Rectangle(xpos, lineloc, 20, RoadlineHeight);
-                g.FillRectangle(brushRoadLine, rectRoadLine);
             }
+
+            //throw new NotImplementedException();
         }
 
         public int GetPosRivirs(int nr)
@@ -148,5 +128,62 @@ namespace Frogger
             int hroad = displayHeight / 10;
             return hroad;
         }
+
+        /// <summary>
+        /// Draw the level.
+        /// </summary>
+        /// <param name="g"></param>
+        public void Draw(Graphics g)
+        {
+            foreach (int rivirlocY in this.rivirs)
+            {
+                DrawRiver(g, rivirlocY, 1);
+            }
+            foreach (int roadlocY in this.roads)
+            {
+                DrawRoad(g, roadlocY);
+            }
+        }
+
+        /// <summary>
+        /// Draws a river.
+        /// </summary>
+        /// <param name="g">The graphics component that should be used</param>
+        /// <param name="locy">The y-coördinate the river is created at</param>
+        private void DrawRiver(Graphics g, int locy, int numcourses)
+        {
+            SolidBrush brushRiver = new SolidBrush(Color.Blue);
+            if ((numcourses < 9) && (numcourses > 0))
+            {
+                Rectangle rectRiver = new Rectangle(0, locy, displayWidth, GetHeightRivir(numcourses));
+                g.FillRectangle(brushRiver, rectRiver);
+            }
+            else
+            {
+                throw new Exception("number of courses not valid.");
+            }
+        }
+
+        /// <summary>
+        /// Draws a road.
+        /// </summary>
+        /// <param name="g">The graphics component that should be used</param>
+        /// <param name="locy">The y-coördinate the road is created at</param>
+        private void DrawRoad(Graphics g, int locy)
+        {
+            SolidBrush brushRoad = new SolidBrush(Color.Black); // the color of the road
+            SolidBrush brushRoadLine = new SolidBrush(Color.White); // the color of the lines on the road
+            Rectangle rectWeg;
+            rectWeg = new Rectangle(0, locy, displayWidth, GetHeightRoad());
+            g.FillRectangle(brushRoad, rectWeg);
+            int lineloc = locy + (GetHeightRoad() / 2);
+            for (int xpos = 0; xpos < displayWidth; xpos += lineDistance)
+            {
+                Rectangle rectRoadLine = new Rectangle(xpos, lineloc, 20, RoadlineHeight);
+                g.FillRectangle(brushRoadLine, rectRoadLine);
+            }
+        }
+
+
     }
 }
