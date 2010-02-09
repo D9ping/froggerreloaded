@@ -9,6 +9,7 @@ namespace Frogger
         main,
         highscore,
         options,
-        level    
+        credits,
+        level
     }
 }

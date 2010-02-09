@@ -57,6 +57,11 @@ namespace Frogger
             //        break;
             //}
         }
+
+        private void LevelPreview_DoubleClick(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

@@ -41,26 +41,28 @@ namespace Frogger
             : base(frmmenu)
         {
             this.frmmenu = frmmenu;
-            hoofdmenuknoppen = new HoverButton[4];
+            hoofdmenuknoppen = new HoverButton[5];
 
             hoofdmenuknoppen[0] = new HoverButton("Newgame");
             hoofdmenuknoppen[1] = new HoverButton("Highscores");
             hoofdmenuknoppen[2] = new HoverButton("Options");
-            hoofdmenuknoppen[3] = new HoverButton("Exit");
+            hoofdmenuknoppen[3] = new HoverButton("Credits");
+            hoofdmenuknoppen[4] = new HoverButton("Exit");
             //hook events  
             hoofdmenuknoppen[0].Click += new EventHandler(CreateLevelMenu);
             hoofdmenuknoppen[1].Click += new EventHandler(CreateHighScore);
             hoofdmenuknoppen[2].Click += new EventHandler(CreateOptions);
-            hoofdmenuknoppen[3].Click += new EventHandler(Shutdown);
+            hoofdmenuknoppen[3].Click += new EventHandler(CreateCredits);
+            hoofdmenuknoppen[4].Click += new EventHandler(Shutdown);
 
 
-            int ypos = 220;
+            int ypos = 200;
             int xpos = 0;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 xpos = frmmenu.Width / 2 - (hoofdmenuknoppen[0].Width / 2);
                 hoofdmenuknoppen[i].Location = new Point(xpos, ypos);
-                ypos += 80;
+                ypos += 75;
             }
             frmmenu.ToonLogo = true;
             frmmenu.ShowTierChoice = false;
@@ -122,6 +124,15 @@ namespace Frogger
         private void CreateOptions(object sender, EventArgs e)
         {
             frmmenu.Menustate = MenuState.options;
+            frmmenu.Refresh();
+        }
+
+        /// <summary>
+        /// Create credits menu
+        /// </summary>
+        private void CreateCredits(object sender, EventArgs e)
+        {
+            frmmenu.Menustate = MenuState.credits;
             frmmenu.Refresh();
         }
 

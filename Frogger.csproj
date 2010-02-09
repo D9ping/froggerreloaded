@@ -78,6 +78,7 @@
     <Compile Include="LevelPreview.Designer.cs">
       <DependentUpon>LevelPreview.cs</DependentUpon>
     </Compile>
+    <Compile Include="MenuCredits.cs" />
     <Compile Include="MenuHighscore.cs" />
     <Compile Include="HoverButton.cs">
       <SubType>UserControl</SubType>

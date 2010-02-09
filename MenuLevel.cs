@@ -39,14 +39,21 @@ namespace Frogger
         {
             lvlpreviews = new LevelPreview[3];
             lvlpreviews[0] = new LevelPreview(1);
+            lvlpreviews[0].Tag = 1;
             lvlpreviews[0].Location = new Point(10, 200);
 
             lvlpreviews[1] = new LevelPreview(2);
+            lvlpreviews[1].Tag = 2;
             lvlpreviews[1].Location = new Point(320, 200);
 
             lvlpreviews[2] = new LevelPreview(3);
+            lvlpreviews[2].Tag = 3;
             lvlpreviews[2].Location = new Point(630, 200);
 
+            foreach (LevelPreview lvlprev in lvlpreviews)
+            {
+                lvlprev.DoubleClick += new EventHandler(LoadLevel);
+            }
             frmmenu.Controls.AddRange(lvlpreviews);
         }
 
@@ -142,10 +149,11 @@ namespace Frogger
         /// </summary>
         /// <param name="button"></param>
         /// <returns></returns>
-		private int whichlevel(object button)
+		private int whichlevel(object lvlprev)
         {
-            HoverButton btn = (HoverButton)button;
-            int levelnum = Convert.ToInt32(btn.Tag);
+            //HoverButton btn = (HoverButton)button;
+            LevelPreview lvlpreview = (LevelPreview)lvlprev;
+            int levelnum = Convert.ToInt32(lvlpreview.Tag);
             return levelnum;
         }
 

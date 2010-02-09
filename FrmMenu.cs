@@ -173,6 +173,10 @@ namespace Frogger
                     curmenu = new MenuLevel(this);
                     backbtn.Visible = true;
                     break;
+                case MenuState.credits:
+                    curmenu = new MenuCredits(this);
+                    backbtn.Visible = true;
+                    break;
             }
             if (backbtn != null)
             {

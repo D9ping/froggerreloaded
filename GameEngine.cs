@@ -347,32 +347,6 @@ namespace Frogger
         {
             level.Draw(g);
 
-            //int space = frmgame.ClientSize.Height / 10;
-            //if (Program.fullscreen)
-            //{
-            //    space = Screen.PrimaryScreen.WorkingArea.Height / 10;
-            //}
-            //switch (levelnr)
-            //{
-            //    case 1:
-            //        level.DrawRiver(g, space * 1, 1); //this is the level design.
-            //        level.DrawRoad(g, space * 3);
-            //        level.DrawRoad(g, space * 5);
-            //        level.DrawRoad(g, space * 7);
-            //        break;
-            //    case 2:
-            //        level.DrawRiver(g, space * 1, 2);
-            //        level.DrawRoad(g, space * 4);
-            //        level.DrawRoad(g, space * 6);
-            //        break;
-            //    case 3:
-            //        level.DrawRiver(g, space * 1, 4);
-            //        level.DrawRoad(g, space * 6);
-            //        level.DrawRoad(g, space * 7);
-            //        level.DrawRoad(g, space * 8);
-            //        break;
-            //}
-
             if ((livesup) && !freeplay)
             {
                 GameOver(g, false, true);
