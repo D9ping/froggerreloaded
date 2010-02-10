@@ -11,52 +11,55 @@ namespace Frogger
     /// </summary>
     class MenuLevel : MenuScreen
     {
-		#region Fields (4) 
+        #region Fields (4)
 
         private const int btnlvlmargin = 10;
         private FrmMenu frmmenu;
         private FrmGame game;
         private HoverButton[] levelbtn;
         private LevelPreview[] lvlpreviews;
+        private int sellevel = 1;
 
-		#endregion Fields 
+        #endregion Fields
 
-		#region Constructors (1) 
+        #region Constructors (1)
 
         public MenuLevel(FrmMenu frmmenu)
             : base(frmmenu)
         {
             this.frmmenu = frmmenu;
-
-            //CreateLvlBtns();
             CreateLvlPreviews();
-
             frmmenu.ShowTierChoice = true;
-         
         }
 
+        /// <summary>
+        /// Create a level preview from each level file.
+        /// </summary>
         private void CreateLvlPreviews()
         {
             lvlpreviews = new LevelPreview[3];
             lvlpreviews[0] = new LevelPreview(1);
             lvlpreviews[0].Tag = 1;
-            lvlpreviews[0].Location = new Point(10, 200);
-
             lvlpreviews[1] = new LevelPreview(2);
             lvlpreviews[1].Tag = 2;
-            lvlpreviews[1].Location = new Point(320, 200);
-
             lvlpreviews[2] = new LevelPreview(3);
             lvlpreviews[2].Tag = 3;
-            lvlpreviews[2].Location = new Point(630, 200);
 
-            foreach (LevelPreview lvlprev in lvlpreviews)
+            int locX = 10;
+            for (int i = 0; i < lvlpreviews.Length; i++)
             {
-                lvlprev.DoubleClick += new EventHandler(LoadLevel);
+                lvlpreviews[i].DoubleClick += new EventHandler(LoadLevel);
+                lvlpreviews[i].Location = new Point(locX, 200);
+                locX += 260;
             }
             frmmenu.Controls.AddRange(lvlpreviews);
         }
 
+        private void CreateStartLvlBtn()
+        {
+
+        }
+        /*
         /// <summary>
         /// Create button for level selection.
         /// </summary>
@@ -73,9 +76,6 @@ namespace Frogger
             levelbtn[0].Tag = 1;
             levelbtn[1].Tag = 2;
             levelbtn[2].Tag = 3;
-            levelbtn[0].Click += new EventHandler(LoadLevel);
-            levelbtn[1].Click += new EventHandler(LoadLevel);
-            levelbtn[2].Click += new EventHandler(LoadLevel);
 
             int ypos = 220;
             int xpos = 0;
@@ -85,32 +85,30 @@ namespace Frogger
                 xpos = frmmenu.Width / 2 - (levelbtn[0].Width / 2);
                 levelbtn[i].Location = new Point(xpos, ypos);
                 ypos += levelbtn[0].Height + btnlvlmargin;
+                levelbtn[i].Click += new EventHandler(LoadLevel);
             }
             frmmenu.Controls.AddRange(levelbtn);
         }
+         */
 
-		#endregion Constructors 
+        #endregion Constructors
 
-		#region Methods (3) 
+        #region Methods (3)
 
-		// Public Methods (1) 
+        // Public Methods (1) 
 
         override public void ClearScreen()
         {
-            
-                //foreach (HoverButton curbtn in levelbtn)
-                //{
-                //    if (curbtn != null) { curbtn.Dispose(); }
-                //}
-            
-
-                foreach (LevelPreview curlvlpreview in lvlpreviews)
-                {
-                    if (curlvlpreview != null) { curlvlpreview.Dispose(); }
-                }
-            
+            foreach (LevelPreview curlvlpreview in lvlpreviews)
+            {
+                if (curlvlpreview != null) { curlvlpreview.Dispose(); }
+            }
+            //foreach (HoverButton curbtn in levelbtn)
+            //{
+            //    if (curbtn != null) { curbtn.Dispose(); }
+            //}
         }
-		// Private Methods (2) 
+        // Private Methods (2) 
 
         /// <summary>
         /// Load a new frmGame with the right level from the button.
@@ -149,7 +147,7 @@ namespace Frogger
         /// </summary>
         /// <param name="button"></param>
         /// <returns></returns>
-		private int whichlevel(object lvlprev)
+        private int whichlevel(object lvlprev)
         {
             //HoverButton btn = (HoverButton)button;
             LevelPreview lvlpreview = (LevelPreview)lvlprev;
@@ -157,6 +155,6 @@ namespace Frogger
             return levelnum;
         }
 
-		#endregion Methods 
+        #endregion Methods
     }
 }

@@ -36,7 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.ForestGreen;
             this.Name = "LevelPreview";
-            this.Size = new System.Drawing.Size(280, 280);
+            this.Size = new System.Drawing.Size(250, 250);
             this.DoubleClick += new System.EventHandler(this.LevelPreview_DoubleClick);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.LevelPreview_Paint);
             this.Leave += new System.EventHandler(this.LevelPreview_Leave);

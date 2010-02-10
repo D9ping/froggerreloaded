@@ -30,9 +30,19 @@ namespace Frogger
 
             roads = new List<int>();
             rivirs = new List<int>();
-
+            //this.lvlnr = lvlnr;
             LoadDesign(lvlnr);
         }
+
+        /*
+        public int Nummer
+        {
+            get
+            {
+                return this.lvlnr;
+            }
+        }
+         */
 
         public int NumRoads
         {

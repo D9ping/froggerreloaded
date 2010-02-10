@@ -36,7 +36,7 @@ namespace Frogger
 
         private FrmGame frmgame;
         private Timer gameupdate;
-        private int levelnr = -1, lives = 0, secnewcar, secnewtree, tickcar = 0, ticktree = 0, maxtickcar = 100, maxticktree = 100;
+        private int levelnr = -1, lives = 0, secnewcar, secnewtree, tickcar = 0, ticktree = 0, maxtickcar = 100, maxticktree = 100, carspeed = 10;
         private List<PictureBox> livesimgs;
        
         private Boolean ishit = false, livesup = false, freeplay = false, win = false, screendraw = false, setup = false;
@@ -318,7 +318,7 @@ namespace Frogger
                 bool entername = false;
                 if (!screendraw)
                 {
-                    string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + level + " ORDER BY SPEELTIJD ASC";
+                    string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + this.levelnr + " ORDER BY SPEELTIJD ASC";
                     DataTable dt = DBConnection.ExecuteQuery(query, 4);
                     if (dt.Rows.Count >= 10)
                     {
@@ -617,11 +617,11 @@ namespace Frogger
                         int rnddir = rndgen.Next(0, 2);
                         if (rnddir == 0)
                         {
-                            movingobjs.Add(CreateCarRandomColor(5, Direction.East, -carwidth, level.GetPosRoad(curroad), rndgen));
+                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.East, -carwidth, level.GetPosRoad(curroad), rndgen));
                         }
                         else
                         {
-                            movingobjs.Add(CreateCarRandomColor(5, Direction.West, frmgame.ClientSize.Width + carwidth, level.GetPosRoad(curroad), rndgen));
+                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.West, frmgame.ClientSize.Width + carwidth, level.GetPosRoad(curroad), rndgen));
                         }
                     }
                 }
@@ -734,7 +734,7 @@ namespace Frogger
         /// <param name="e"></param>
         private void hovbtnSubmit_Click(object sender, EventArgs e)
         {
-            String insertquery = "INSERT INTO HIGHSCORES VALUES (\"" + DateTime.Now.ToString() + "\", \"" + frmgame.TbEnterName + "\", " + GetGameTime() + "," + level + ")";
+            String insertquery = "INSERT INTO HIGHSCORES VALUES (\"" + DateTime.Now.ToString() + "\", \"" + frmgame.TbEnterName + "\", " + GetGameTime() + "," + this.levelnr + ")";
             DBConnection.SetData(insertquery);
             frmgame.VisibleTbEnterName = false;
             frmgame.CloseGame();
@@ -782,11 +782,11 @@ namespace Frogger
                     {
                         if (locX > 0)
                         {
-                            movingobjs.Add(CreateCarRandomColor(5, Direction.East, locX, level.GetPosRoad(curroad), rndgen));
+                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.East, locX, level.GetPosRoad(curroad), rndgen));
                         }
                         else if (locX < screenwidth)
                         {
-                            movingobjs.Add(CreateCarRandomColor(5, Direction.West, locX, level.GetPosRoad(curroad), rndgen));
+                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.West, locX, level.GetPosRoad(curroad), rndgen));
                         }
 
                     }
@@ -794,11 +794,11 @@ namespace Frogger
                     {
                         if (locX < screenwidth)
                         {
-                            movingobjs.Add(CreateCarRandomColor(5, Direction.West, locX, level.GetPosRoad(curroad), rndgen));
+                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.West, locX, level.GetPosRoad(curroad), rndgen));
                         }
                         else if (locX > 0)
                         {
-                            movingobjs.Add(CreateCarRandomColor(5, Direction.East, locX, level.GetPosRoad(curroad), rndgen));
+                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.East, locX, level.GetPosRoad(curroad), rndgen));
                         }
                     }
                 }
@@ -887,26 +887,31 @@ namespace Frogger
                         lives = -1;
                         secnewcar = 4;
                         secnewtree = 3;
+                        carspeed = 6;
                         break;
                     case Niveau.easy:
                         lives = 3;
                         secnewcar = 4;
                         secnewtree = 3;
+                        carspeed = 6;
                         break;
                     case Niveau.medium:
                         lives = 2;
                         secnewcar = 2;
                         secnewtree = 4;
+                        carspeed = 8;
                         break;
                     case Niveau.hard:
                         lives = 1;
                         secnewcar = 1;
                         secnewtree = 5;
+                        carspeed = 10;
                         break;
                     case Niveau.elite:
                         lives = 0;
                         secnewcar = 1;
                         secnewtree = 6;
+                        carspeed = 12;
                         break;
                     default:
                         throw new Exception("tier unknow.");
