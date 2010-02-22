@@ -68,13 +68,13 @@ namespace FroggerTest
         public void UpdatePositionMovingObjectsTest()
         {
             //Initialize to an appropriate value
-            int level = 1;
+            string lvlname = "1";
             Niveau tier = Niveau.easy;
             Direction direction = Direction.East;
 
             FrmMenu frmmenu = new FrmMenu();
-            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
-            GameEngine target = new GameEngine(level, frmgame, tier);
+            FrmGame frmgame = new FrmGame(frmmenu, lvlname, tier);
+            GameEngine target = new GameEngine(lvlname, frmgame, tier);
 
             int velocity = 2;
             MovingObject car = target.CreateCarRandomColor(velocity, direction, 100, 100,new Random());
@@ -92,12 +92,12 @@ namespace FroggerTest
         public void DetectCollisionTest()
         {
             //Initialize to an appropriate value
-            int level = 1;
+            String lvlname = "1";
             Niveau tier = Niveau.easy;
             Direction direction = Direction.East;
             FrmMenu frmmenu = new FrmMenu();
-            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
-            GameEngine target = new GameEngine(level, frmgame, tier);
+            FrmGame frmgame = new FrmGame(frmmenu, lvlname, tier);
+            GameEngine target = new GameEngine(lvlname, frmgame, tier);
 
             MovingObject testfrog = target.CreateFrog();
             Assert.IsNotNull(testfrog, "cannot create frog.");
@@ -122,12 +122,12 @@ namespace FroggerTest
         [TestMethod()]
         public void CheckGameTimeTest()
         {
-            int level = 1;
+            String lvlname = "1";
             Niveau tier = Niveau.easy;
             FrmMenu frmmenu = new FrmMenu();
-            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
+            FrmGame frmgame = new FrmGame(frmmenu, lvlname, tier);
             //create target
-            GameEngine target = new GameEngine(level, frmgame, tier);
+            GameEngine target = new GameEngine(lvlname, frmgame, tier);
 
             for (int min = 20; min >= 0; min--)
             {
@@ -146,13 +146,13 @@ namespace FroggerTest
         public void CreateCarRandomColorTest()
         {
             //Initialize to an appropriate value
-            int level = 1;
+            String lvlname = "1";
             Niveau tier = Niveau.easy;
             Direction direction = Direction.East;
             FrmMenu frmmenu = new FrmMenu();
-            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
+            FrmGame frmgame = new FrmGame(frmmenu, lvlname, tier);
             //create target
-            GameEngine target = new GameEngine(level, frmgame, tier);
+            GameEngine target = new GameEngine(lvlname, frmgame, tier);
 
             for (int times = 0; times < 10; times++)
             {
@@ -171,14 +171,14 @@ namespace FroggerTest
         public void CreateTreeTrunkTest()
         {
             //Initialize to an appropriate value
-            int level = 1;
+            String lvlname = "1";
             int vel = 1;
             Niveau tier = Niveau.easy;
             Direction direction = Direction.East;
             FrmMenu frmmenu = new FrmMenu();
-            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
+            FrmGame frmgame = new FrmGame(frmmenu, lvlname, tier);
             //create target
-            GameEngine game = new GameEngine(level, frmgame, tier);
+            GameEngine game = new GameEngine(lvlname, frmgame, tier);
             MovingObject actual = game.CreateTreeTrunk(vel, direction, 0, 0);
             Assert.IsNotNull(actual, "cannot create object from methode.");
         }
@@ -191,12 +191,12 @@ namespace FroggerTest
         public void CreateFrogTest()
         {
             //Initialize to an appropriate value
-            int level = 1;
+            String lvlname = "1";
             Niveau tier = Niveau.easy;
             FrmMenu frmmenu = new FrmMenu();
-            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
+            FrmGame frmgame = new FrmGame(frmmenu, lvlname, tier);
             //create target
-            GameEngine target = new GameEngine(level, frmgame, tier);
+            GameEngine target = new GameEngine(lvlname, frmgame, tier);
 
             MovingObject testfrog = target.CreateFrog();
             Assert.IsNotNull(testfrog, "cannot create a test frog.");
@@ -214,12 +214,12 @@ namespace FroggerTest
         [TestMethod()]
         public void StopEngineTest()
         {
-            int level = 1;
+            String lvlname = "1";
             Niveau tier = Niveau.easy;
             FrmMenu frmmenu = new FrmMenu();
-            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
+            FrmGame frmgame = new FrmGame(frmmenu, lvlname, tier);
 
-            GameEngine target = new GameEngine(level, frmgame, tier); // TODO: Initialize to an appropriate value
+            GameEngine target = new GameEngine(lvlname, frmgame, tier); // TODO: Initialize to an appropriate value
             target.StopEngine(true);
             if (target.GameUpdateStatus != false)
             {
@@ -234,11 +234,11 @@ namespace FroggerTest
         [DeploymentItem("Frogger.exe")]
         public void CheckLivesTest()
         {
-            int level = 1;
+            String lvlname = "1";
             Niveau tier = Niveau.easy;
             FrmMenu frmmenu = new FrmMenu();
-            FrmGame frmgame = new FrmGame(frmmenu, level, tier);
-            GameEngine target = new GameEngine(level, frmgame, tier);
+            FrmGame frmgame = new FrmGame(frmmenu, lvlname, tier);
+            GameEngine target = new GameEngine(lvlname, frmgame, tier);
 
             for (int lives = 8; lives > 0; lives--)
             {

@@ -16,33 +16,43 @@ namespace Frogger
         private List<int> rivirs;
         private List<int> roads;
         private int displayWidth, displayHeight;
-        private Boolean showerror = false;
+        private Boolean error = false;
+        private String naam;
 
         /// <summary>
         /// Constructor creating a new level obj.
         /// </summary>
         /// <param name="width">the width of the screen/level width to draw</param>
         /// <param name="height">the height of the screen/level height to draw</param>
-        public Level(int lvlnr, int width, int height)
+        public Level(String lvlnaam, int width, int height)
         {
             this.displayWidth = width;
             this.displayHeight = height;
 
             roads = new List<int>();
             rivirs = new List<int>();
-            //this.lvlnr = lvlnr;
-            LoadDesign(lvlnr);
+            this.naam = lvlnaam;
+            if (!error)
+            {
+                LoadDesign();
+            }
         }
 
-        /*
-        public int Nummer
+        public String Naam
         {
             get
             {
-                return this.lvlnr;
+                return this.naam;
             }
         }
-         */
+
+        public Boolean Error
+        {
+            get
+            {
+                return this.error;
+            }
+        }
 
         public int NumRoads
         {
@@ -71,12 +81,12 @@ namespace Frogger
         /// <summary>
         /// Loads the xml file with the level design.
         /// </summary>
-        private void LoadDesign(int lvlnr)
+        private void LoadDesign()
         {
             String appdir = Path.GetDirectoryName(Application.ExecutablePath);
             if (Directory.Exists(appdir))
             {
-                string file = appdir+"\\levels\\lvl"+lvlnr+".xml";
+                string file = appdir+"\\levels\\"+this.naam+".lvl";
                 if (File.Exists(file))
                 {
                     XmlReader reader = new XmlTextReader(file);
@@ -95,15 +105,12 @@ namespace Frogger
                         }
                     }
                 }
-                else
-                {
-                    if (!showerror)
+                else if (!error)
                     {
-                        showerror = true;
+                        error = true;
                         MessageBox.Show("Level " + file + " not found.");
                         
                     }
-                }
             }
 
             //throw new NotImplementedException();

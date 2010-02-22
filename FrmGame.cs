@@ -47,13 +47,13 @@ namespace Frogger
         /// <param name="level">the level number, each numbers draws a other level.</param>
         /// <param name="niveau">the niveau enumaration. freeplay you won't go gameover.
         /// then there is easy, medium, hard and elite.</param>
-        public FrmGame(FrmMenu frmmenu, int level, Niveau tier)
+        public FrmGame(FrmMenu frmmenu, String lvlname, Niveau tier)
         {
             InitializeComponent();
             this.frmmenu = frmmenu;
-            this.game = new GameEngine(level, this, tier);
+            this.game = new GameEngine(lvlname, this, tier);
             Program.CheckFullScreen(this);
-            this.Text = this.Text + " - level:" + level.ToString() + " - tier: " + tier.ToString();
+            this.Text = this.Text + " - level:" + lvlname + " - tier: " + tier.ToString();
         }
 
 		#endregion Constructors 

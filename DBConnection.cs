@@ -99,7 +99,7 @@ namespace Frogger
 
         public static OleDbConnection GetConnection()
         {
-            string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\\highscores.mdb;Persist Security Info=False;";            //HOST=192.168.1.22
+            string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\\highscores.mdb;Persist Security Info=False;";
 
             try
             {

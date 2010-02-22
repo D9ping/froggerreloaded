@@ -90,7 +90,7 @@ namespace Frogger
         /// <param name="level">The Level that should be started in the GameEngine</param>
         /// <param name="frmgame">The Form the GameEngine should use for this game</param>
         /// <param name="niv">The Niveau that is selected to use with the level</param>
-        public GameEngine(int levelnr, FrmGame frmgame, Niveau tier)
+        public GameEngine(String lvlname, FrmGame frmgame, Niveau tier)
         {
             this.levelnr = levelnr;
             this.tier = tier;
@@ -129,11 +129,11 @@ namespace Frogger
 
             if (Program.fullscreen)
             {
-                level = new Level(levelnr, Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
+                level = new Level(lvlname, Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
             }
             else
             {
-                level = new Level(levelnr, frmgame.ClientSize.Width, frmgame.ClientSize.Height);
+                level = new Level(lvlname, frmgame.ClientSize.Width, frmgame.ClientSize.Height);
             }
             SetupEngine(true);
             frog = CreateFrog();
