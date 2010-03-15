@@ -25,4 +25,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		AMDCaProjectFile = M:\Public\sourcecode\Projects_Csharp\froggerreloaded\CodeAnalyst\Frogger.caw
+	EndGlobalSection
 EndGlobal

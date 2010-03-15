@@ -92,7 +92,7 @@ namespace FroggerTest
         public void DetectCollisionTest()
         {
             //Initialize to an appropriate value
-            String lvlname = "1";
+            string lvlname = "1";
             Niveau tier = Niveau.easy;
             Direction direction = Direction.East;
             FrmMenu frmmenu = new FrmMenu();
@@ -122,7 +122,7 @@ namespace FroggerTest
         [TestMethod()]
         public void CheckGameTimeTest()
         {
-            String lvlname = "1";
+            string lvlname = "1";
             Niveau tier = Niveau.easy;
             FrmMenu frmmenu = new FrmMenu();
             FrmGame frmgame = new FrmGame(frmmenu, lvlname, tier);
@@ -146,7 +146,7 @@ namespace FroggerTest
         public void CreateCarRandomColorTest()
         {
             //Initialize to an appropriate value
-            String lvlname = "1";
+            string lvlname = "1";
             Niveau tier = Niveau.easy;
             Direction direction = Direction.East;
             FrmMenu frmmenu = new FrmMenu();
@@ -171,7 +171,7 @@ namespace FroggerTest
         public void CreateTreeTrunkTest()
         {
             //Initialize to an appropriate value
-            String lvlname = "1";
+            string lvlname = "1";
             int vel = 1;
             Niveau tier = Niveau.easy;
             Direction direction = Direction.East;
@@ -191,7 +191,7 @@ namespace FroggerTest
         public void CreateFrogTest()
         {
             //Initialize to an appropriate value
-            String lvlname = "1";
+            string lvlname = "1";
             Niveau tier = Niveau.easy;
             FrmMenu frmmenu = new FrmMenu();
             FrmGame frmgame = new FrmGame(frmmenu, lvlname, tier);
@@ -214,7 +214,7 @@ namespace FroggerTest
         [TestMethod()]
         public void StopEngineTest()
         {
-            String lvlname = "1";
+            string lvlname = "1";
             Niveau tier = Niveau.easy;
             FrmMenu frmmenu = new FrmMenu();
             FrmGame frmgame = new FrmGame(frmmenu, lvlname, tier);
@@ -234,7 +234,7 @@ namespace FroggerTest
         [DeploymentItem("Frogger.exe")]
         public void CheckLivesTest()
         {
-            String lvlname = "1";
+            string lvlname = "1";
             Niveau tier = Niveau.easy;
             FrmMenu frmmenu = new FrmMenu();
             FrmGame frmgame = new FrmGame(frmmenu, lvlname, tier);

@@ -25,7 +25,7 @@ namespace Frogger
     class Car : MovingObject
     {
         private int carcolor;
-        private Boolean istruck = false;
+        private bool istruck = false;
 
         /// <summary>
         /// Creating a new instance of a car.
@@ -60,7 +60,7 @@ namespace Frogger
             }
         }
 
-        public Boolean IsTruck { 
+        public bool IsTruck { 
             get 
             {
                 return this.istruck;

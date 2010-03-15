@@ -47,7 +47,7 @@ namespace Frogger
         /// <param name="level">the level number, each numbers draws a other level.</param>
         /// <param name="niveau">the niveau enumaration. freeplay you won't go gameover.
         /// then there is easy, medium, hard and elite.</param>
-        public FrmGame(FrmMenu frmmenu, String lvlname, Niveau tier)
+        public FrmGame(FrmMenu frmmenu, string lvlname, Niveau tier)
         {
             InitializeComponent();
             this.frmmenu = frmmenu;
@@ -68,7 +68,7 @@ namespace Frogger
             }
         }
 
-        public Boolean VisibleTbEnterName
+        public bool VisibleTbEnterName
         {
             set
             {
@@ -221,9 +221,9 @@ namespace Frogger
         /// a lead zero if seconds lower then 10seconds is added.
         /// And there is a : charcter between the minuts and seconds.
         /// </summary>
-        private String UpdateGameTime()
+        private string UpdateGameTime()
         {
-            String time = this.min.ToString() + ":";
+            string time = this.min.ToString() + ":";
             if (this.sec < 10)
             {
                 time += "0" + this.sec.ToString();

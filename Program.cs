@@ -34,8 +34,8 @@ namespace Frogger
     static class Program
     {
         //global settings
-        public static Boolean fullscreen = false;
-        public static Boolean sound = true;
+        public static bool fullscreen = false;
+        public static bool sound = true;
 
         /// <summary>
         /// The main entry point for the application.
@@ -84,7 +84,7 @@ namespace Frogger
         /// <returns>true if it exist or font directory could not be found. false if font does not exist in the font direcotory.</returns>
         static public bool CheckFontInstalled()
         {
-            String fontdir = System.Environment.GetEnvironmentVariable("windir") + "\\fonts";
+            string fontdir = System.Environment.GetEnvironmentVariable("windir") + "\\fonts";
             
             if (Directory.Exists(fontdir))
             {

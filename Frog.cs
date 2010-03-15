@@ -29,7 +29,7 @@ namespace Frogger
 		#region Fields (3) 
 
         private int jumpdistance, maxscreenwidth, maxscreenheight;
-        private Boolean canmove = true;
+        private bool canmove = true;
         private const int offscreenmargin = 20;
 
 		#endregion Fields 

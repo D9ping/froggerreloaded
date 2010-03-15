@@ -147,6 +147,7 @@
     <Content Include="bin\Debug\sounds\punch.wav" />
     <Content Include="bin\Debug\sounds\sink.wav" />
     <Content Include="icon_frog.ico" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Resources\car_green_east.png" />
     <None Include="Resources\car_green_west.png" />
     <Content Include="Resources\car_grey_east.png" />

@@ -43,7 +43,7 @@ namespace Frogger
         /// </summary>
         /// <param name="textoption"></param>
         /// <param name="ischecked"></param>
-        public BigCheckbox(String textoption, bool ischecked)
+        public BigCheckbox(string textoption, bool ischecked)
         {
             InitializeComponent();
             this.lbBigcheckbox.Text = textoption;
@@ -55,7 +55,7 @@ namespace Frogger
         /// Set or get the text by this checkbox.
         /// </summary>
         [Description("The text of the checkbox")]
-        public String CheckboxText
+        public string CheckboxText
         {
             get
             {

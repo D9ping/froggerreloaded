@@ -16,15 +16,15 @@ namespace Frogger
         private List<int> rivirs;
         private List<int> roads;
         private int displayWidth, displayHeight;
-        private Boolean error = false;
-        private String naam;
+        private bool error = false;
+        private string naam;
 
         /// <summary>
         /// Constructor creating a new level obj.
         /// </summary>
         /// <param name="width">the width of the screen/level width to draw</param>
         /// <param name="height">the height of the screen/level height to draw</param>
-        public Level(String lvlnaam, int width, int height)
+        public Level(string lvlnaam, int width, int height)
         {
             this.displayWidth = width;
             this.displayHeight = height;
@@ -38,7 +38,7 @@ namespace Frogger
             }
         }
 
-        public String Naam
+        public string Naam
         {
             get
             {
@@ -46,7 +46,7 @@ namespace Frogger
             }
         }
 
-        public Boolean Error
+        public bool HasError
         {
             get
             {
@@ -83,7 +83,7 @@ namespace Frogger
         /// </summary>
         private void LoadDesign()
         {
-            String appdir = Path.GetDirectoryName(Application.ExecutablePath);
+            string appdir = Path.GetDirectoryName(Application.ExecutablePath);
             if (Directory.Exists(appdir))
             {
                 string file = appdir+"\\levels\\"+this.naam+".lvl";
@@ -200,7 +200,6 @@ namespace Frogger
                 g.FillRectangle(brushRoadLine, rectRoadLine);
             }
         }
-
 
     }
 }

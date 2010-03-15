@@ -74,7 +74,7 @@ namespace Frogger
             }
         }
 
-        public Boolean ShowTierChoice
+        public bool ShowTierChoice
         {
             set
             {
@@ -142,6 +142,7 @@ namespace Frogger
         /// <param name="e"></param>
         private void backMainMenu(object sender, EventArgs e)
         {
+            curmenu.ClearScreen();
             this.Menustate = MenuState.main;
             Refresh();
         }

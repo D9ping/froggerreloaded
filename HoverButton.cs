@@ -28,7 +28,7 @@ namespace Frogger
 {
     public partial class HoverButton : UserControl
     {
-        private Boolean highlighted = false, clicked = false;
+        private bool highlighted = false, clicked = false;
 
         private Color highlightcolor = Color.YellowGreen;
         private Color normalcolor = Color.LimeGreen;
@@ -50,7 +50,7 @@ namespace Frogger
         /// Constructor for creating HoverButton at runtime.
         /// </summary>
         /// <param name="text">the text to dispaly on the button.</param>
-        public HoverButton(String text)
+        public HoverButton(string text)
         {
             InitializeComponent();
             this.lbButton.Text = text;
@@ -62,7 +62,7 @@ namespace Frogger
         /// designtime properties.
         /// </summary>
         [Description("The text of the HoverButton")]
-        public String HoverbuttonText
+        public string HoverbuttonText
         {
             get
             {

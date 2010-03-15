@@ -18,21 +18,33 @@ namespace Frogger
             level = new Level(lvlnaam, this.Width, this.Height);
         }
 
-        private void LevelPreview_Enter(object sender, EventArgs e)
+        public string NameLevel
+        {
+            get
+            {
+                return this.level.Naam;
+            }
+        }
+
+        public void Selected()
         {
             this.BackColor = Color.Lime;
         }
 
-        private void LevelPreview_Leave(object sender, EventArgs e)
+        public void Deselect()
         {
             this.BackColor = Color.ForestGreen;
         }
 
         private void LevelPreview_Paint(object sender, PaintEventArgs e)
         {
-            if (!level.Error)
+            if (!level.HasError)
             {
                 level.Draw(e.Graphics);
+                Font fontlvlname = new Font("Flubber", 24);
+                float locx = (this.Width / 2) - ((level.Naam.Length / 2) * fontlvlname.Size);
+                float locy = (this.Height / 2) - (fontlvlname.Size / 2);
+                e.Graphics.DrawString(level.Naam, fontlvlname, Brushes.BurlyWood, locx, locy);
             }
         }
     }

@@ -34,16 +34,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackColor = System.Drawing.Color.ForestGreen;
             this.CausesValidation = false;
             this.DoubleBuffered = true;
             this.Name = "LevelPreview";
             this.Size = new System.Drawing.Size(250, 250);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.LevelPreview_Paint);
-            //this.Click += new System.EventHandler(this.LevelPreview_Click);
-            this.Leave += new System.EventHandler(this.LevelPreview_Leave);
-            this.Enter += new System.EventHandler(this.LevelPreview_Enter);
             this.ResumeLayout(false);
 
         }

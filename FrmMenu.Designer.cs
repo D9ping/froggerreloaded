@@ -63,6 +63,7 @@
             this.cbxTier.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.cbxTier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
+            this.cbxTier.CausesValidation = false;
             this.cbxTier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxTier.Font = new System.Drawing.Font("Flubber", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxTier.FormattingEnabled = true;
@@ -76,6 +77,7 @@
             this.cbxTier.Name = "cbxTier";
             this.cbxTier.Size = new System.Drawing.Size(167, 36);
             this.cbxTier.TabIndex = 2;
+            this.cbxTier.TabStop = false;
             this.cbxTier.Visible = false;
             this.cbxTier.VisibleChanged += new System.EventHandler(this.cbxTier_VisibleChanged);
             // 
@@ -83,6 +85,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(125)))), ((int)(((byte)(0)))));
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(792, 573);
@@ -106,7 +109,7 @@
 
         private System.Windows.Forms.PictureBox pbLogo;
         private System.Windows.Forms.PictureBox pbKikker;
-        private System.Windows.Forms.ComboBox cbxTier;
+        public System.Windows.Forms.ComboBox cbxTier;
     }
 }
 

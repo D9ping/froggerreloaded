@@ -123,7 +123,7 @@ namespace Frogger
         /// <summary>
         /// Delete highscore from particaler level
         /// </summary>
-        public Boolean DeleteHighscoreOneLevel(int level)
+        public bool DeleteHighscoreOneLevel(int level)
         {
             throw new System.NotImplementedException();
         }
@@ -131,7 +131,7 @@ namespace Frogger
         /// <summary>
         /// Delete highscore from particaler tier
         /// </summary>
-        public Boolean DeleteHighscoreOneNiveau(Tier tier)
+        public bool DeleteHighscoreOneNiveau(Tier tier)
         {
             throw new System.NotImplementedException();
         }
@@ -161,13 +161,13 @@ namespace Frogger
             lbshowcurlvlscore.Text = "Level " + btnclicked.Tag.ToString();
             lbshowcurlvlscore.Visible = true;
 
-            String query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + btnclicked.Tag.ToString() + " ORDER BY SPEELTIJD ASC";
+            string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + btnclicked.Tag.ToString() + " ORDER BY SPEELTIJD ASC";
             DataTable dt = DBConnection.ExecuteQuery(query, 4);
 
 
-            String tijddatum = "";
-            String naam = "";
-            String speeltijd = "";
+            string tijddatum = "";
+            string naam = "";
+            string speeltijd = "";
             
             int ypos = 80; // ypos is de Y-coordinaat van de label van de highscore
             int positie = 0;

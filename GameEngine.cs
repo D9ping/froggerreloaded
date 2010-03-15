@@ -39,7 +39,7 @@ namespace Frogger
         private int levelnr = -1, lives = 0, secnewcar, secnewtree, tickcar = 0, ticktree = 0, maxtickcar = 100, maxticktree = 100, carspeed = 10;
         private List<PictureBox> livesimgs;
        
-        private Boolean ishit = false, livesup = false, freeplay = false, win = false, screendraw = false, setup = false;
+        private bool ishit = false, livesup = false, freeplay = false, win = false, screendraw = false, setup = false;
         private Niveau tier;
 
         #endregion Fields
@@ -90,7 +90,7 @@ namespace Frogger
         /// <param name="level">The Level that should be started in the GameEngine</param>
         /// <param name="frmgame">The Form the GameEngine should use for this game</param>
         /// <param name="niv">The Niveau that is selected to use with the level</param>
-        public GameEngine(String lvlname, FrmGame frmgame, Niveau tier)
+        public GameEngine(string lvlname, FrmGame frmgame, Niveau tier)
         {
             this.levelnr = levelnr;
             this.tier = tier;
@@ -273,7 +273,7 @@ namespace Frogger
         /// Detects collision when Frogger collides.
         /// </summary>
         /// <returns>Whether or not Frogger collides with a moving object</returns>
-        public Boolean DetectCollision(MovingObject mvobj)
+        public bool DetectCollision(MovingObject mvobj)
         {
             if (!mvobj.Disposing)
             {
@@ -525,7 +525,7 @@ namespace Frogger
         /// </summary>
         /// <param name="g">graphics object</param>
         /// <param name="textregel1">the first line, big text</param>
-        private void DrawGameOverScreen(Graphics g, String textline)
+        private void DrawGameOverScreen(Graphics g, string textline)
         {
             Font fontregel1 = new Font("Flubber", 64);
             Font fontregel2 = new Font("Flubber", 24);
@@ -722,6 +722,11 @@ namespace Frogger
             }
         }
 
+        /// <summary>
+        /// Close the game form.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void hovbtnBack_Click(object sender, EventArgs e)
         {
             frmgame.CloseGame();
@@ -734,7 +739,7 @@ namespace Frogger
         /// <param name="e"></param>
         private void hovbtnSubmit_Click(object sender, EventArgs e)
         {
-            String insertquery = "INSERT INTO HIGHSCORES VALUES (\"" + DateTime.Now.ToString() + "\", \"" + frmgame.TbEnterName + "\", " + GetGameTime() + "," + this.levelnr + ")";
+            string insertquery = "INSERT INTO HIGHSCORES VALUES (\"" + DateTime.Now.ToString() + "\", \"" + frmgame.TbEnterName + "\", " + GetGameTime() + "," + this.levelnr + ")";
             DBConnection.SetData(insertquery);
             frmgame.VisibleTbEnterName = false;
             frmgame.CloseGame();
