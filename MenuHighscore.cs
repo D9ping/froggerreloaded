@@ -6,6 +6,7 @@ using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Frogger
 {
@@ -15,33 +16,29 @@ namespace Frogger
     class MenuHighscore : MenuScreen
     {
         private HoverButton[] highscoremenubtn;
+        private HoverButton deletebtn;
         private FrmMenu frmmenu = null;
         private Label[] entries;
         private Label lbshowcurlvlscore;
 
-		#region Constructors (1) 
+        #region Constructors (1)
 
+        /// <summary>
+        /// Creating a new instance of MenuHighscore class.
+        /// </summary>
+        /// <param name="frmmenu"></param>
         public MenuHighscore(FrmMenu frmmenu)
-            :base(frmmenu)
-        {    
+            : base(frmmenu)
+        {
             this.frmmenu = frmmenu;
             frmmenu.ToonLogo = false;
-            
+
             highscoremenubtn = new HoverButton[4];
-            highscoremenubtn[0] = new HoverButton("Level 1");
-            highscoremenubtn[0].Tag = 1;
-            highscoremenubtn[0].Click += new EventHandler(GetHighscores);
-            
-            highscoremenubtn[1] = new HoverButton("Level 2");
-            highscoremenubtn[1].Tag = 2;
-            highscoremenubtn[1].Click += new EventHandler(GetHighscores);
-            
-            highscoremenubtn[2] = new HoverButton("Level 3");
-            highscoremenubtn[2].Tag = 3;
-            highscoremenubtn[2].Click += new EventHandler(GetHighscores);
-            
-            highscoremenubtn[3] = new HoverButton("Delete all");
-            highscoremenubtn[3].Click += new EventHandler(DeleteHighscoreAll);
+            this.CreateLvlBtns();
+
+            deletebtn = new HoverButton("Delete all");
+            deletebtn.Click += new EventHandler(DeleteHighscoreAll);
+
             int ypos = 80;
             int xpos = 20; //frmmenu.Width / 2 - (highscoremenubtn[0].Width / 2);
             for (int i = 0; i < highscoremenubtn.Length; i++)
@@ -51,7 +48,7 @@ namespace Frogger
             }
 
             lbshowcurlvlscore = new Label();
-            lbshowcurlvlscore.Location = new Point(frmmenu.Width /2, 5);
+            lbshowcurlvlscore.Location = new Point(frmmenu.Width / 2, 5);
             lbshowcurlvlscore.Font = new Font("Flubber", 28);
             lbshowcurlvlscore.ForeColor = Color.Brown;
             lbshowcurlvlscore.AutoSize = true;
@@ -61,11 +58,11 @@ namespace Frogger
             frmmenu.Controls.AddRange(highscoremenubtn);
         }
 
-		#endregion Constructors 
+        #endregion Constructors
 
-		#region Methods (7) 
+        #region Methods (7)
 
-		// Public Methods (6) 
+        // Public Methods (6) 
 
         /// <summary>
         /// Maak highscore scherm leeg.
@@ -79,6 +76,28 @@ namespace Frogger
             lbshowcurlvlscore.Visible = false;
             lbshowcurlvlscore.Dispose();
             ClearAllEntries();
+        }
+
+        private void CreateLvlBtns()
+        {
+            string filepath = Directory.GetCurrentDirectory() + "\\levels";
+
+            if (!Directory.Exists(filepath))
+            {
+                MessageBox.Show("Error level folder cannot be found.");
+                return;
+            }
+            string[] files = Directory.GetFiles(filepath);
+
+            highscoremenubtn = new HoverButton[files.Length];
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                string filelvlname = files[i].Substring(filepath.Length + 1, files[i].Length - filepath.Length - 5);
+                highscoremenubtn[i] = new HoverButton(filelvlname);
+                highscoremenubtn[i].Tag = filelvlname;
+                highscoremenubtn[i].Click += new EventHandler(GetHighscores);
+            }
         }
 
         /// <summary>
@@ -113,11 +132,11 @@ namespace Frogger
                 ClearAllEntries();
                 MessageBox.Show("Highscore table is now empty.");
             }
-            
+
         }
 
         /*
-         * Latere features nu niet zo belangrijk.
+         * Later features
          * 
          
         /// <summary>
@@ -156,19 +175,19 @@ namespace Frogger
                     }
                 }
             }
-            
+
             HoverButton btnclicked = (HoverButton)sender;
-            lbshowcurlvlscore.Text = "Level " + btnclicked.Tag.ToString();
+            lbshowcurlvlscore.Text = btnclicked.Tag.ToString();
             lbshowcurlvlscore.Visible = true;
 
-            string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + btnclicked.Tag.ToString() + " ORDER BY SPEELTIJD ASC";
+            string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = '" + btnclicked.Tag.ToString() + "' ORDER BY SPEELTIJD ASC";
             DataTable dt = DBConnection.ExecuteQuery(query, 4);
 
 
             string tijddatum = "";
             string naam = "";
             string speeltijd = "";
-            
+
             int ypos = 80; // ypos is de Y-coordinaat van de label van de highscore
             int positie = 0;
             entries = new Label[10];
@@ -181,8 +200,8 @@ namespace Frogger
                     tijddatum = row[0].ToString();
                     naam = row[1].ToString();
                     speeltijd = row[2].ToString();
-                    int posnr = positie +1;
-                    entries[positie].Text = posnr.ToString() + ". " + naam + "  " + speeltijd + "s  (" + tijddatum+")";
+                    int posnr = positie + 1;
+                    entries[positie].Text = posnr.ToString() + ". " + naam + "  " + speeltijd + "s  (" + tijddatum + ")";
                     entries[positie].AutoSize = true;
                     entries[positie].ForeColor = Color.Yellow;
                     entries[positie].Location = new Point(350, ypos);
@@ -194,8 +213,7 @@ namespace Frogger
                 }
             }
         }
-		// Private Methods (1)
 
-#endregion Methods 
+        #endregion Methods
     }
 }

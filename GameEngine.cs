@@ -318,7 +318,7 @@ namespace Frogger
                 bool entername = false;
                 if (!screendraw)
                 {
-                    string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = " + this.levelnr + " ORDER BY SPEELTIJD ASC";
+                    string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = '" + this.level.Naam + "' ORDER BY SPEELTIJD ASC";
                     DataTable dt = DBConnection.ExecuteQuery(query, 4);
                     if (dt.Rows.Count >= 10)
                     {
@@ -739,7 +739,7 @@ namespace Frogger
         /// <param name="e"></param>
         private void hovbtnSubmit_Click(object sender, EventArgs e)
         {
-            string insertquery = "INSERT INTO HIGHSCORES VALUES (\"" + DateTime.Now.ToString() + "\", \"" + frmgame.TbEnterName + "\", " + GetGameTime() + "," + this.levelnr + ")";
+            string insertquery = "INSERT INTO HIGHSCORES VALUES (\"" + DateTime.Now.ToString() + "\", \"" + frmgame.TbEnterName + "\", " + GetGameTime() + ", '" + this.level.Naam + "')";
             DBConnection.SetData(insertquery);
             frmgame.VisibleTbEnterName = false;
             frmgame.CloseGame();

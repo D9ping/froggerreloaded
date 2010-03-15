@@ -24,6 +24,10 @@ namespace Frogger
 
         #region Constructors (1)
 
+        /// <summary>
+        /// Creating an new instance of MenuLevel classes.
+        /// </summary>
+        /// <param name="frmmenu"></param>
         public MenuLevel(FrmMenu frmmenu)
             : base(frmmenu)
         {
@@ -98,7 +102,7 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Clicked a level.
+        /// Clicked a level so it is selected.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -114,6 +118,11 @@ namespace Frogger
             this.lvlpreviewselected = lvlpre;
         }
 
+        /// <summary>
+        /// A level preview is dubble clicked and get loaded.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuLevel_DoubleClick(object sender, EventArgs e)
         {
             this.game = new FrmGame(this.frmmenu, this.lvlpreviewselected.NameLevel, WhichTier(this.frmmenu.cbxTier.SelectedIndex));
@@ -122,6 +131,11 @@ namespace Frogger
 
         }
 
+        /// <summary>
+        /// Finds out which level is selected.
+        /// </summary>
+        /// <param name="selectedindex"></param>
+        /// <returns></returns>
         private Niveau WhichTier(int selectedindex)
         {
             switch (selectedindex)
