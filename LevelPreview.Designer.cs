@@ -39,7 +39,7 @@
             this.CausesValidation = false;
             this.DoubleBuffered = true;
             this.Name = "LevelPreview";
-            this.Size = new System.Drawing.Size(250, 250);
+            this.Size = new System.Drawing.Size(200, 200);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.LevelPreview_Paint);
             this.ResumeLayout(false);
 

@@ -443,15 +443,16 @@ namespace Frogger
 #if windows
                                     sndPlaySound(Application.StartupPath + @"\sounds\punch.wav", 1); //1 = Async
 #elif linux
-									String soundbeep = Application.StartupPath + @"/sounds/punch.wav";
-									if (File.Exists(soundbeep))
-									{
-										System.Media.SoundPlayer playsnd = new System.Media.SoundPlayer(soundbeep);
-										playsnd.Play(); //issue cannot mix sound.
-									} else 
-									{
-										MessageBox.Show("Soundfile not found.");
-									}
+                                    String soundbeep = Application.StartupPath + @"/sounds/punch.wav";
+                                    if (File.Exists(soundbeep))
+                                    {
+                                        System.Media.SoundPlayer playsnd = new System.Media.SoundPlayer(soundbeep);
+                                        playsnd.Play(); //issue cannot mix sound.
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Soundfile not found.");
+                                    }
 #endif
                                 }
                             }
@@ -494,16 +495,14 @@ namespace Frogger
                         frog.Invalidate();
                         if (Program.sound)
                         {
-							#if windows
-							sndPlaySound(Application.StartupPath + @"\sounds\sink.wav", 1); //1 = Async
-							#elif linux
-						    String sinkwav = Application.StartupPath + @"/sounds/sink.wav";						    
-							System.Media.SoundPlayer sndply = new System.Media.SoundPlayer(sinkwav);
-							sndply.Play();	
-							#endif
-							
-								}
-								
+#if windows
+                            sndPlaySound(Application.StartupPath + @"\sounds\sink.wav", 1); //1 = Async
+#elif linux
+                            String sinkwav = Application.StartupPath + @"/sounds/sink.wav";						    
+                            System.Media.SoundPlayer sndply = new System.Media.SoundPlayer(sinkwav);
+                            sndply.Play();	
+#endif
+                        }
                     }
                 }
             }
@@ -526,8 +525,8 @@ namespace Frogger
             }
             frog.CanMove = true;
         }
-        // Private Methods (16) 
 
+        // Private Methods (16) 
 
         /// <summary>
         /// Added a back hoverbuton to return to the main menu.

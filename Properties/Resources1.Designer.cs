@@ -158,6 +158,13 @@ namespace Frogger.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap level_navigate_right {
+            get {
+                object obj = ResourceManager.GetObject("level_navigate_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap live {
             get {
                 object obj = ResourceManager.GetObject("live", resourceCulture);

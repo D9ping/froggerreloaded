@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -156,6 +156,7 @@
     <Content Include="Resources\flubber_font_license.txt" />
     <None Include="Resources\froglive.png" />
     <Content Include="Resources\icon_frog.ico" />
+    <None Include="Resources\level_navigate_right.png" />
     <None Include="Resources\kikkerdead_drunk.png" />
     <None Include="Resources\truck_west.png" />
     <None Include="Resources\truck_east.png" />
