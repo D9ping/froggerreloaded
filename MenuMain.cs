@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (C) 2009  Tom Postma, Gertjan Buijs
 
 This program is free software; you can redistribute it and/or modify
@@ -69,6 +69,9 @@ namespace Frogger
 
             frmmenu.KikkerPic = Frogger.Properties.Resources.kikker_west;
             frmmenu.Controls.AddRange(hoofdmenuknoppen);
+			
+			this.frmmenu.MenuUpdated = true;
+			//frmmenu.Refresh();
         }
 
 
@@ -94,6 +97,7 @@ namespace Frogger
         private void CreateMainMenu(object sender, EventArgs e)
         {
             frmmenu.Menustate = MenuState.main;
+            this.frmmenu.MenuUpdated = true;
             frmmenu.Refresh();
         }
 
@@ -104,6 +108,7 @@ namespace Frogger
         {
             frmmenu.KikkerPic = Frogger.Properties.Resources.kikker_crazy;
             frmmenu.Menustate = MenuState.level;
+			this.frmmenu.MenuUpdated = true;
             frmmenu.Refresh();
         }
 
@@ -115,6 +120,7 @@ namespace Frogger
         private void CreateHighScore(object sender, EventArgs e)
         {
             frmmenu.Menustate = MenuState.highscore;
+			this.frmmenu.MenuUpdated = true;
             frmmenu.Refresh();
         }
 
@@ -124,6 +130,7 @@ namespace Frogger
         private void CreateOptions(object sender, EventArgs e)
         {
             frmmenu.Menustate = MenuState.options;
+			this.frmmenu.MenuUpdated = true;
             frmmenu.Refresh();
         }
 
@@ -133,6 +140,7 @@ namespace Frogger
         private void CreateCredits(object sender, EventArgs e)
         {
             frmmenu.Menustate = MenuState.credits;
+			this.frmmenu.MenuUpdated = true;
             frmmenu.Refresh();
         }
 

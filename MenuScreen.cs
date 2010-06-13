@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -7,7 +7,7 @@ namespace Frogger
 {
     public abstract class MenuScreen
     {
-		#region Fields (2) 
+		#region Fields (1) 
         
         private FrmMenu frmmenu;
 

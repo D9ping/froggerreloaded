@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (C) Tom Postma
 
 This program is free software; you can redistribute it and/or modify
@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#define linux  //platvorm
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -25,17 +26,17 @@ using System.Runtime.InteropServices;
 using System.IO;
 
 namespace Frogger
-{
+{	
     public partial class HoverButton : UserControl
     {
         private bool highlighted = false, clicked = false;
 
         private Color highlightcolor = Color.YellowGreen;
         private Color normalcolor = Color.LimeGreen;
-
+#if windows
         [DllImport("winmm.dll")]
         public static extern int sndPlaySound(string sFile, int sMode);
-
+#endif
         /// <summary>
         /// Constructor for creating HoverButton at designtime.
         /// </summary>
@@ -121,10 +122,19 @@ namespace Frogger
             this.Refresh();
             if (Program.sound)
             {
+#if windows
                 string soundbeep = Application.StartupPath + "\\sounds\\beep.wav";
+#elif linux
+				string soundbeep = Application.StartupPath + "./sounds/beep.wav";
+#endif
                 if (File.Exists(soundbeep))
                 {
+#if windows
                     sndPlaySound(soundbeep, 1); //1 = Async
+#elif linux
+					System.Media.SoundPlayer playsnd = new System.Media.SoundPlayer(soundbeep);
+					playsnd.Play(); //issue cannot mix sound.
+#endif
                 }
                 else
                 {

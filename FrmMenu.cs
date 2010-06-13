@@ -23,192 +23,194 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using Microsoft.Win32;
+//using Microsoft.Win32;
 
 namespace Frogger
 {
-    public partial class FrmMenu : Form
-    {
-		#region Fields (3) 
+	public partial class FrmMenu : Form
+	{
+		#region Fields (3)
 
-        private HoverButton backbtn;
-        private MenuScreen curmenu;
-        private MenuState menustate;
-        public const int bottommarginbackbtn = 50;
+		private Boolean menuupdated = false;
+		private HoverButton backbtn;
+		private MenuScreen curmenu;
+		private MenuState menustate;
+		public const int bottommarginbackbtn = 50;
 
-		#endregion Fields 
+		#endregion Fields
 
-		#region Constructors (1) 
+		#region Constructors (1)
 
-        /// <summary>
-        /// Creating a new instance of FrmMenu.
-        /// </summary>
-        public FrmMenu()
-        {
-            InitializeComponent();
+		/// <summary>
+		/// Creating a new instance of FrmMenu.
+		/// </summary>
+		public FrmMenu ()
+		{
+			InitializeComponent ();
+			
+			Program.CheckFullScreen (this);
+			
+			menustate = MenuState.main;
+			
+			this.backbtn = CreateBackBtn ();
+			
+			cbxTier.SelectedIndex = 2;
+			
+			menuupdated = true;
+			//this.Refresh();
+		}
 
-            Program.CheckFullScreen(this);
+		#endregion Constructors
 
-            menustate = MenuState.main;
+		#region Properties (1)
 
-            this.Refresh();
+		public MenuState Menustate {
+			get { return this.menustate; }
+			set { menustate = value; }
+		}
 
-            this.backbtn = CreateBackBtn();
+		public bool ShowTierChoice {
+			set { cbxTier.Visible = value; }
+		}
 
-            cbxTier.SelectedIndex = 2;
-        }
+		public int SelectedTier {
+			get { return cbxTier.SelectedIndex; }
+		}
 
-		#endregion Constructors 
+		public bool ToonLogo {
+			get {
+				if (this.pbLogo.Visible)
+					return true;
+				else
+					return false;
+			}
+			set {
+				this.pbLogo.Visible = value;
+				this.pbKikker.Visible = value;
+			}
+		}
 
-		#region Properties (1) 
+		public Boolean MenuUpdated {
+			get { return this.menuupdated; }
+			set { this.menuupdated = value; }
+		}
 
-        public MenuState Menustate
-        {
-            get
-            {
-                return this.menustate;
-            }
-            set
-            {
-                menustate = value;
-            }
-        }
+		public Bitmap KikkerPic {
+			set { pbKikker.Image = value; }
+		}
 
-        public bool ShowTierChoice
-        {
-            set
-            {
-                cbxTier.Visible = value;
-            }
-        }
 
-        public int SelectedTier
-        {
-            get
-            {
-                return cbxTier.SelectedIndex;
-            }
-        }
+		#endregion Properties
 
-        public bool ToonLogo
-        {
-            get
-            {
-                if (this.pbLogo.Visible) return true;
-                else return false;
-            }
-            set
-            {
-                this.pbLogo.Visible = value;
-                this.pbKikker.Visible = value;
-            }
-        }
-
-        public Bitmap KikkerPic
-        {
-            set
-            {
-                pbKikker.Image = value;
-            }
-        }
-
-		#endregion Properties 
-
-		#region Methods (4) 
+		#region Methods (4)
 
 		// Public Methods (1) 
 
-        /// <summary>
-        /// Draw a back button. 
-        /// </summary>
-        public HoverButton CreateBackBtn()
-        {
-            int margin = 50;
-            HoverButton backbtn = new HoverButton("back");
+		/// <summary>
+		/// Draw a back button. 
+		/// </summary>
+		public HoverButton CreateBackBtn ()
+		{
+			int margin = 50;
+			HoverButton backbtn = new HoverButton ("back");
             backbtn.Click += new EventHandler(backMainMenu);
-            backbtn.Location = new Point(this.Width / 2 - backbtn.Width / 2, this.Height - backbtn.Height - margin);
-            backbtn.Visible = true;
-            this.Controls.Add(backbtn);
-            return backbtn;
-        }
+			backbtn.Location = new Point (this.Width / 2 - backbtn.Width / 2, this.Height - backbtn.Height - margin);
+			backbtn.Visible = true;
+			this.Controls.Add (backbtn);
+			return backbtn;
+		}
 
 		// Private Methods (3) 
 
-        /// <summary>
-        /// This methode is fired if back button is pressed.
-        /// it clears all buttons etc. and recreates the main menu.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void backMainMenu(object sender, EventArgs e)
-        {
-            curmenu.ClearScreen();
-            this.Menustate = MenuState.main;
-            Refresh();
-        }
+		/// <summary>
+		/// This methode is fired if back button is pressed.
+		/// it clears all buttons etc. and recreates the main menu.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void backMainMenu (object sender, EventArgs e)
+		{
+			curmenu.ClearScreen ();
+			this.Menustate = MenuState.main;
+            menuupdated = true;
+			this.Refresh();
+		}
 
-        /// <summary>
-        /// Hier moet dus afhankelijk van de state het juiste menu getekent worden.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FrmMenu_Paint(object sender, PaintEventArgs e)
-        {
-            if (curmenu != null) { curmenu.ClearScreen(); }
+		/// <summary>
+		/// Hier moet dus afhankelijk van de state het juiste menu getekent worden.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void FrmMenu_Paint (object sender, PaintEventArgs e)
+		{
+			if (menuupdated) {
+				
+				if (curmenu != null) {
+					curmenu.ClearScreen ();
+				}
+				
+				switch (menustate) {
+				case MenuState.main:
+					curmenu = new MenuMain (this);
+					if (backbtn != null) {
+						backbtn.Visible = false;
+					}
+					break;
+				case MenuState.highscore:
+					curmenu = new MenuHighscore (this);
+					backbtn.Visible = true;
+					break;
+				case MenuState.options:
+					curmenu = new MenuOptions (this);
+					backbtn.Visible = true;
+					break;
+				case MenuState.level:
+					curmenu = new MenuLevel (this);
+					backbtn.Visible = true;
+					break;
+				case MenuState.credits:
+					curmenu = new MenuCredits (this);
+					backbtn.Visible = true;
+					break;
+				default:
+					curmenu = new MenuMain (this);
+					if (backbtn != null) {
+						backbtn.Visible = false;
+					}
+					break;
+				}
+				if (backbtn != null) {
+					backbtn.Location = new Point (this.Width / 2 - backbtn.Width / 2, this.Height - backbtn.Height - bottommarginbackbtn);
+				}
+				menuupdated = false;
+			}
+			
+		}
 
-            switch (menustate)
-            {
-                case MenuState.main:
-                    curmenu = new MenuMain(this);
-                    if (backbtn != null) { backbtn.Visible = false; }
-                    break;
-                case MenuState.highscore:
-                    curmenu = new MenuHighscore(this);
-                    backbtn.Visible = true;
-                    break;
-                case MenuState.options:
-                    curmenu = new MenuOptions(this);
-                    backbtn.Visible = true;
-                    break;
-                case MenuState.level:
-                    curmenu = new MenuLevel(this);
-                    backbtn.Visible = true;
-                    break;
-                case MenuState.credits:
-                    curmenu = new MenuCredits(this);
-                    backbtn.Visible = true;
-                    break;
-            }
-            if (backbtn != null)
-            {
-                backbtn.Location = new Point(this.Width / 2 - backbtn.Width / 2, this.Height - backbtn.Height - bottommarginbackbtn);
-            }
-        }
+		/// <summary>
+		/// Form is resized.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void FrmMenu_ResizeEnd (object sender, EventArgs e)
+		{
+			menuupdated = true;
+			this.Refresh ();
+		}
 
-        /// <summary>
-        /// Form is resized.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void FrmMenu_ResizeEnd(object sender, EventArgs e)
-        {
-            this.Refresh();
-        }
-
-        /// <summary>
-        /// Make sure text is visible if cbxIier is visible.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void cbxTier_VisibleChanged(object sender, EventArgs e)
-        {
-            if (!Program.CheckFontInstalled() && cbxTier.Visible == true)
-            {
-                cbxTier.Font = new Font("Arail", 20);
-            }
-        }
-
-		#endregion Methods 
-
-	 }
+		/// <summary>
+		/// Make sure text is visible if cbxIier is visible.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void cbxTier_VisibleChanged (object sender, EventArgs e)
+		{
+			if (!Program.CheckFontInstalled () && cbxTier.Visible == true) {
+				cbxTier.Font = new Font ("Arail", 20);
+			}
+		}
+		
+		#endregion Methods
+		
+	}
 }

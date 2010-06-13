@@ -73,6 +73,8 @@ namespace Frogger
             Frogger.Properties.Settings.Default.fullscreen = Program.fullscreen;
             Frogger.Properties.Settings.Default.Save();
             Program.CheckFullScreen(frmmenu);
+            frmmenu.MenuUpdated = true;
+            frmmenu.Refresh();
         }
 
         /// <summary>

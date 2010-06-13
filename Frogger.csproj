@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Frogger</RootNamespace>
     <AssemblyName>Frogger</AssemblyName>
-    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>Frogger.Program</StartupObject>
     <ApplicationIcon>icon_frog.ico</ApplicationIcon>
@@ -38,7 +38,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -137,6 +136,7 @@
     <Compile Include="Tree.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <None Include="Resources\texture_water.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\levels\basic1.lvl" />
@@ -147,7 +147,6 @@
     <Content Include="bin\Debug\sounds\punch.wav" />
     <Content Include="bin\Debug\sounds\sink.wav" />
     <Content Include="icon_frog.ico" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="Resources\car_green_east.png" />
     <None Include="Resources\car_green_west.png" />
     <Content Include="Resources\car_grey_east.png" />
@@ -173,7 +172,6 @@
     <None Include="Resources\car_yellow_west.png" />
     <None Include="Resources\car_yellow_east.png" />
     <None Include="Resources\texure_grass.jpg" />
-    <None Include="Resources\texture_water.JPG" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

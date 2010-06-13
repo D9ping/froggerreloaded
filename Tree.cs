@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (C) 2009  Tom Postma, Gertjan Buijs
 
 This program is free software; you can redistribute it and/or modify
@@ -38,8 +38,8 @@ namespace Frogger
             this.Size = new Size(width, height);
             base.pic = ResizesResources.images["treetrunk"];
 
-            int i1 = base.pic.Width;
-            int i2 = base.pic.Height;
+            //int i1 = base.pic.Width;
+            //int i2 = base.pic.Height;
         }
     }
 }

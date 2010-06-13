@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (C) 2009  Tom Postma, Gertjan Buijs
 
 This program is free software; you can redistribute it and/or modify
@@ -15,16 +15,19 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#define windows //platform
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Data;
+using System.IO;
 //using System.Threading;
 
 namespace Frogger
 {
+
     public class GameEngine
     {
         #region Fields (10)
@@ -356,10 +359,11 @@ namespace Frogger
                 GameOver(g, false, false);
             }
         }
-
+		
+#if windows
         [DllImport("winmm.dll")]
         public static extern int sndPlaySound(string sFile, int sMode);
-
+#endif
         /// <summary>
         /// Disable the gameupdate timer and timerTime timer.
         /// If destroyobjs is true than remove all objs from the screen.
@@ -436,7 +440,19 @@ namespace Frogger
                                 frog.Invalidate();
                                 if (Program.sound)
                                 {
+#if windows
                                     sndPlaySound(Application.StartupPath + @"\sounds\punch.wav", 1); //1 = Async
+#elif linux
+									String soundbeep = Application.StartupPath + @"/sounds/punch.wav";
+									if (File.Exists(soundbeep))
+									{
+										System.Media.SoundPlayer playsnd = new System.Media.SoundPlayer(soundbeep);
+										playsnd.Play(); //issue cannot mix sound.
+									} else 
+									{
+										MessageBox.Show("Soundfile not found.");
+									}
+#endif
                                 }
                             }
                         }
@@ -478,9 +494,16 @@ namespace Frogger
                         frog.Invalidate();
                         if (Program.sound)
                         {
-                            sndPlaySound(Application.StartupPath + @"\sounds\sink.wav", 1); //1 = Async
-                        }
-
+							#if windows
+							sndPlaySound(Application.StartupPath + @"\sounds\sink.wav", 1); //1 = Async
+							#elif linux
+						    String sinkwav = Application.StartupPath + @"/sounds/sink.wav";						    
+							System.Media.SoundPlayer sndply = new System.Media.SoundPlayer(sinkwav);
+							sndply.Play();	
+							#endif
+							
+								}
+								
                     }
                 }
             }
