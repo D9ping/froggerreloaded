@@ -1,9 +1,9 @@
 [Setup]
 AppId={{3CA63D69-FC83-4D9B-B46D-35E3AAFDA8EA}
 AppName=Frogger Reloaded
-AppVerName=Frogger Reloaded 0.9
+AppVerName=Frogger Reloaded 0.9.5
 AppPublisher=Frogger Reloaded
-VersionInfoVersion=0.9.0.0
+VersionInfoVersion=0.9.5.0
 AppPublisherURL=http://code.google.com/p/froggerreloaded/
 AppSupportURL=http://code.google.com/p/froggerreloaded/
 AppUpdatesURL=http://code.google.com/p/froggerreloaded/
@@ -11,7 +11,7 @@ DefaultDirName={pf}\Frogger Reloaded
 DefaultGroupName=Frogger Reloaded
 LicenseFile=..\Debug\license.txt
 OutputDir=.\
-OutputBaseFilename=froggerreloadded_v0.9_beta
+OutputBaseFilename=froggerreloadded_v0.9.5_beta
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=admin
@@ -32,6 +32,10 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "..\Debug\Frogger.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Debug\levels\basic1.lvl"; DestDir: "{app}\levels\"; Flags: ignoreversion
+Source: "..\Debug\levels\basic2.lvl"; DestDir: "{app}\levels\"; Flags: ignoreversion
+Source: "..\Debug\levels\basic3.lvl"; DestDir: "{app}\levels\"; Flags: ignoreversion
+Source: "..\Debug\levels\highway.lvl"; DestDir: "{app}\levels\"; Flags: ignoreversion
 Source: "..\Debug\highscores.mdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Debug\sounds\beep.wav"; DestDir: "{app}\sounds\"; Flags: ignoreversion
 Source: "..\Debug\sounds\frog_made_it.wav"; DestDir: "{app}\sounds\"; Flags: ignoreversion
@@ -90,6 +94,7 @@ begin
             end;
 	end;
 end;
+
 
 
 
