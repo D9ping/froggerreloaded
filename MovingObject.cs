@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (C) 2009  Tom Postma, Gertjan Buijs
 
 This program is free software; you can redistribute it and/or modify
@@ -27,7 +27,8 @@ namespace Frogger
     {
         private int velocity = 0;
         private Direction direction;
-
+		private Bitmap pic;
+		
         /// <summary>
         /// Creating a new instance of a movingobj.
         /// </summary>
@@ -64,7 +65,18 @@ namespace Frogger
         /// <summary>
         /// De texture.
         /// </summary>
-        public Bitmap pic { get; set; }
+        public Bitmap Pic 
+		{
+			get 
+			{
+				return this.pic; 
+			}
+			
+			set 
+			{
+				this.pic = value; 
+			}
+		}
 
 
         /// <summary>

@@ -32,7 +32,7 @@ namespace Frogger
 
         private HoverButton[] hoofdmenuknoppen;
         private FrmMenu frmmenu;
-
+        private FrmLevelEditor lvleditor;
 		#endregion Fields 
 
 		#region Constructors (1) 
@@ -41,18 +41,21 @@ namespace Frogger
             : base(frmmenu)
         {
             this.frmmenu = frmmenu;
-            hoofdmenuknoppen = new HoverButton[5];
+            hoofdmenuknoppen = new HoverButton[6];
 
             hoofdmenuknoppen[0] = new HoverButton("Newgame");
             hoofdmenuknoppen[1] = new HoverButton("Highscores");
             hoofdmenuknoppen[2] = new HoverButton("Options");
-            hoofdmenuknoppen[3] = new HoverButton("Credits");
+            //hoofdmenuknoppen[3] = new HoverButton("Credits");
+            hoofdmenuknoppen[3] = new HoverButton("Level Editor");
+            hoofdmenuknoppen[3].SizeText = 32;
             hoofdmenuknoppen[4] = new HoverButton("Exit");
-            //hook events  
+
             hoofdmenuknoppen[0].Click += new EventHandler(CreateLevelMenu);
             hoofdmenuknoppen[1].Click += new EventHandler(CreateHighScore);
             hoofdmenuknoppen[2].Click += new EventHandler(CreateOptions);
-            hoofdmenuknoppen[3].Click += new EventHandler(CreateCredits);
+            //hoofdmenuknoppen[3].Click += new EventHandler(CreateCredits);
+            hoofdmenuknoppen[3].Click += new EventHandler(LaunchLevelEditor);
             hoofdmenuknoppen[4].Click += new EventHandler(Shutdown);
 
 
@@ -85,7 +88,10 @@ namespace Frogger
         {
             foreach (HoverButton curbtn in hoofdmenuknoppen)
             {
-                curbtn.Dispose();
+                if (curbtn != null)
+                {
+                    curbtn.Dispose();
+                }
             }
         }
 
@@ -142,6 +148,16 @@ namespace Frogger
             frmmenu.Menustate = MenuState.credits;
 			this.frmmenu.MenuUpdated = true;
             frmmenu.Refresh();
+        }
+
+        /// <summary>
+        /// Launch the level editor screen.
+        /// </summary>
+        private void LaunchLevelEditor(object sender, EventArgs e)
+        {
+            lvleditor = new FrmLevelEditor(frmmenu);
+            lvleditor.Show();
+            this.frmmenu.Hide();
         }
 
         /// <summary>

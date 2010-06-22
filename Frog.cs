@@ -27,11 +27,13 @@ namespace Frogger
 {
 	public class Frog : MovingObject
 	{
-		#region Fields (3)
+		#region Fields (7)
 
-		private int jumpdistance, maxscreenwidth, maxscreenheight;
-		private bool canmove = true;
+		private int jumpdistance, maxscreenwidth, maxscreenheight, treeVelocity;
+		private bool canmove = true, onTree;
+		private Direction treeDir;
 		private const int offscreenmargin = 20;
+		
 
 		#endregion Fields
 
@@ -47,8 +49,8 @@ namespace Frogger
 			this.BackColor = Color.Transparent;
 			
 			this.Size = new Size (width, height);
-			this.pic = global::Frogger.Properties.Resources.kikker_west;
-			this.pic.MakeTransparent ();
+			this.Pic = global::Frogger.Properties.Resources.kikker_west;
+			this.Pic.MakeTransparent ();
 			if (!Program.fullscreen) {
 				this.maxscreenwidth = frmgame.ClientSize.Width - offscreenmargin;
 				this.maxscreenheight = frmgame.ClientSize.Height - offscreenmargin;
@@ -69,11 +71,23 @@ namespace Frogger
 			set { this.canmove = value; }
 		}
 
-		public Boolean OnTree { get; set; }
+		public Boolean OnTree 
+		{ 
+			get { return this.onTree; }
+		    set { this.onTree = value; }
+		}
 
-		public Direction TreeDir { get; set; }
+		public Direction TreeDir
+		{ 
+			get { return this.treeDir; }
+			set { this.treeDir = value; }
+		}
 
-		public int TreeVelocity { get; set; }
+		public int TreeVelocity 
+		{
+			get { return this.treeVelocity; }
+			set { this.treeVelocity = value; }
+		}
 
 		#endregion Properties
 
@@ -92,7 +106,7 @@ namespace Frogger
 				int newposX = this.Location.X;
 				switch (dir) {
 				case Direction.North:
-					this.pic = ResizesResources.images["kikker_west"];
+					this.Pic = ResizesResources.images["kikker_west"];
 					//global::Frogger.Properties.Resources.kikker_west;
 					newposY = this.Location.Y - jumpdistance;
 					if (newposY + this.Height >= 0) {
@@ -114,14 +128,14 @@ namespace Frogger
 					}
 					break;
 				case Direction.East:
-					this.pic = ResizesResources.images["kikker_west"];
+					this.Pic = ResizesResources.images["kikker_west"];
 					newposX = this.Location.X - jumpdistance;
 					if (newposX >= 0) {
 						this.Location = new System.Drawing.Point (newposX, newposY);
 					}
 					break;
 				case Direction.West:
-					this.pic = ResizesResources.images["kikker_east"];
+					this.Pic = ResizesResources.images["kikker_east"];
 					//global::Frogger.Properties.Resources.kikker_east;
 					newposX = this.Location.X + jumpdistance;
 					if (newposX < maxscreenwidth) {
@@ -129,7 +143,7 @@ namespace Frogger
 					}
 					break;
 				case Direction.South:
-					this.pic = ResizesResources.images["kikker_east"];
+					this.Pic = ResizesResources.images["kikker_east"];
 					//global::Frogger.Properties.Resources.kikker_east;
 					newposY = this.Location.Y + jumpdistance;
 					//todo

@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (C) 2009  Tom Postma, Gertjan Buijs
 
 This program is free software; you can redistribute it and/or modify
@@ -39,10 +39,10 @@ namespace Frogger
             switch (direction)
             {
                 case Direction.East:
-                    base.pic = CreateCarEast(carcolor);
+                    base.Pic = CreateCarEast(carcolor);
                     break;
                 case Direction.West:
-                    base.pic = CreateCarWest(carcolor);
+                    base.Pic = CreateCarWest(carcolor);
                     break;
             }
         }

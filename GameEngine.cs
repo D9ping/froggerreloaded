@@ -202,12 +202,14 @@ namespace Frogger
             {
                 initcarwidth = Screen.PrimaryScreen.WorkingArea.Width / 12;
             }
+
             Car car = new Car(carcolor, vel, dir, initcarwidth, initcarheight);
             if (car.IsTruck)
             {
                 initcarwidth = frmgame.ClientRectangle.Width / 8;
                 car.Size = new Size(initcarwidth, initcarheight);
             }
+
             if (dir == Direction.East)
             {
                 int locY = roadLocY + 2 * level.RoadlineHeight + initcarheight;
@@ -431,10 +433,10 @@ namespace Frogger
                                 switch (obj.Dir)
                                 {
                                     case Direction.East:
-                                        frog.pic = ResizesResources.images["frogdead_west"];//Frogger.Properties.Resources.frogdead_east;
+                                        frog.Pic = ResizesResources.images["frogdead_west"];//Frogger.Properties.Resources.frogdead_east;
                                         break;
                                     case Direction.West:
-                                        frog.pic = ResizesResources.images["frogdead_east"];//Frogger.Properties.Resources.frogdead_west;
+                                        frog.Pic = ResizesResources.images["frogdead_east"];//Frogger.Properties.Resources.frogdead_west;
                                         break;
                                 }
                                 frog.Invalidate();
@@ -491,7 +493,7 @@ namespace Frogger
                     {
                         ishit = true;
                         frog.CanMove = false;
-                        frog.pic = ResizesResources.images["frogdead_drunk"];
+                        frog.Pic = ResizesResources.images["frogdead_drunk"];
                         frog.Invalidate();
                         if (Program.sound)
                         {
@@ -943,10 +945,11 @@ namespace Frogger
                     default:
                         throw new Exception("tier unknow.");
                 }
-                gameupdate = new Timer
-                {
-                    Interval = 50
-                };
+                gameupdate = new Timer();
+				gameupdate.Interval = 50;
+                //{
+                //    Interval = 50
+                //};
                 gameupdate.Tick += new EventHandler(gameupdate_Tick);
 
                 maxtickcar = (1000 / gameupdate.Interval) * secnewcar;

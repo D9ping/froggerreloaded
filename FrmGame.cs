@@ -155,15 +155,18 @@ namespace Frogger
         private void FrmGame_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            game.RenderScreen(g);
+            if (!this.VisibleTbEnterName)
+            {
+                game.RenderScreen(g);
 
-            if (timeup)
-            {
-                game.GameOver(g, true, false);
-            }
-            else
-            {
-                lbTime.Text = UpdateGameTime();
+                if (timeup)
+                {
+                    game.GameOver(g, true, false);
+                }
+                else
+                {
+                    lbTime.Text = UpdateGameTime();
+                }
             }
         }
 

@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#define linux  //platvorm
+#define windows  //platvorm
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -26,8 +26,8 @@ using System.Runtime.InteropServices;
 using System.IO;
 
 namespace Frogger
-{	
-    public partial class HoverButton : UserControl
+{
+    public partial class HoverButton : UserControl //System.ComponentModel.Component
     {
         private bool highlighted = false, clicked = false;
 
@@ -43,7 +43,6 @@ namespace Frogger
         public HoverButton()
         {
             InitializeComponent();
-            this.lbButton.Text = "test";
             this.BackColor = normalcolor;
         }
 
@@ -55,14 +54,13 @@ namespace Frogger
         {
             InitializeComponent();
             this.lbButton.Text = text;
-            this.BackColor = normalcolor;
         }
 
-        /*
+        // /*
         /// <summary>
         /// designtime properties.
         /// </summary>
-        [Description("The text of the HoverButton")]
+        [Description("The text of the HoverButton"), DefaultValue("test"), Category("Sample")]
         public string HoverbuttonText
         {
             get
@@ -74,7 +72,15 @@ namespace Frogger
                 this.lbButton.Text = value;
             }
         }
-        */
+        // */
+
+        public float SizeText
+        {
+            set
+            {
+                this.lbButton.Font = new Font("Flubber", value);
+            }
+        }
 
         /// <summary>
         /// make it back to normal.

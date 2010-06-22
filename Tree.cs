@@ -36,7 +36,7 @@ namespace Frogger
             :base(velocity, direction)
         {
             this.Size = new Size(width, height);
-            base.pic = ResizesResources.images["treetrunk"];
+            base.Pic = ResizesResources.images["treetrunk"];
 
             //int i1 = base.pic.Width;
             //int i2 = base.pic.Height;
