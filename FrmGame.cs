@@ -33,9 +33,6 @@ namespace Frogger
 
         private FrmMenu frmmenu;
         private GameEngine game;
-        public int min = 1;
-        public int sec = 0;
-        private bool timeup = false;
 
 		#endregion Fields 
 
@@ -60,6 +57,7 @@ namespace Frogger
 
 		#region Properties (2) 
 
+        /*
         public String TbEnterName
         {
             get
@@ -79,6 +77,7 @@ namespace Frogger
                 return tbHighscoreName.Visible; 
             }
         }
+         */
 
 		#endregion Properties 
 
@@ -155,11 +154,11 @@ namespace Frogger
         private void FrmGame_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            if (!this.VisibleTbEnterName)
-            {
+            //if (!this.VisibleTbEnterName)
+            //{
                 game.RenderScreen(g);
 
-                if (timeup)
+                if (game.timeup)
                 {
                     game.GameOver(g, true, false);
                 }
@@ -167,7 +166,7 @@ namespace Frogger
                 {
                     lbTime.Text = UpdateGameTime();
                 }
-            }
+            //}
         }
 
         private void FrmGame_ResizeBegin(object sender, EventArgs e)
@@ -187,6 +186,7 @@ namespace Frogger
             this.Refresh();
         }
 
+        /*
         private void tbHighscoreName_Enter(object sender, EventArgs e)
         {
             if (tbHighscoreName.Text == "nameless")
@@ -194,6 +194,7 @@ namespace Frogger
                 tbHighscoreName.Text = "";
             }
         }
+         */
 
         /// <summary>
         /// Update the game time, and check if time
@@ -204,17 +205,17 @@ namespace Frogger
         /// <param name="e"></param>
         private void timerTime_Tick(object sender, EventArgs e)
         {
-            sec--;
-            if (sec < 0)
+            game.sec--;
+            if (game.sec < 0)
             {
-                min--;
-                if (game.CheckGameTime(min))
+                game.min--;
+                if (game.CheckGameTime(game.min))
                 {
-                    timeup = true;
+                    game.timeup = true;
                 }
                 else
                 {
-                    sec = 59;
+                    game.sec = 59;
                 }
             }
         }
@@ -226,18 +227,18 @@ namespace Frogger
         /// </summary>
         private string UpdateGameTime()
         {
-            string time = this.min.ToString() + ":";
-            if (this.sec < 10)
+            string time = this.game.min.ToString() + ":";
+            if (this.game.sec < 10)
             {
-                time += "0" + this.sec.ToString();
-                if (this.min == 0)
+                time += "0" + this.game.sec.ToString();
+                if (this.game.min == 0)
                 {
                     lbTime.ForeColor = Color.Red;
                 }
             }
             else
             {
-                time += this.sec.ToString();
+                time += this.game.sec.ToString();
                 lbTime.ForeColor = Color.LightGray;
             }
             return time;

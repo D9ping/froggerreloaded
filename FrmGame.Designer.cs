@@ -32,7 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmGame));
             this.timerTime = new System.Windows.Forms.Timer(this.components);
             this.lbTime = new System.Windows.Forms.Label();
-            this.tbHighscoreName = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // timerTime
@@ -54,19 +53,6 @@
             this.lbTime.TabIndex = 0;
             this.lbTime.Text = "0:00";
             // 
-            // tbHighscoreName
-            // 
-            this.tbHighscoreName.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.tbHighscoreName.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbHighscoreName.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.tbHighscoreName.Location = new System.Drawing.Point(271, 294);
-            this.tbHighscoreName.Name = "tbHighscoreName";
-            this.tbHighscoreName.Size = new System.Drawing.Size(232, 44);
-            this.tbHighscoreName.TabIndex = 4;
-            this.tbHighscoreName.Text = "nameless";
-            this.tbHighscoreName.Visible = false;
-            this.tbHighscoreName.Enter += new System.EventHandler(this.tbHighscoreName_Enter);
-            // 
             // FrmGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -75,7 +61,6 @@
             this.BackColor = System.Drawing.Color.Green;
             this.BackgroundImage = global::Frogger.Properties.Resources.texure_grass;
             this.ClientSize = new System.Drawing.Size(794, 614);
-            this.Controls.Add(this.tbHighscoreName);
             this.Controls.Add(this.lbTime);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -101,7 +86,6 @@
 
         private System.Windows.Forms.Label lbTime;
         public System.Windows.Forms.Timer timerTime;
-        public System.Windows.Forms.TextBox tbHighscoreName;
 
     }
 }

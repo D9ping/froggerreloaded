@@ -34,14 +34,15 @@ namespace Frogger
 
         public List<MovingObject> movingobjs;//public voor testen
         public Frog frog;
+        public int min = 1;
+        public int sec = 0;
+        public bool timeup = false;
 
         private Level level;
-
-        private FrmGame frmgame;
+        private Form frmgame;
         private Timer gameupdate;
         private int levelnr = -1, lives = 0, secnewcar, secnewtree, tickcar = 0, ticktree = 0, maxtickcar = 100, maxticktree = 100, carspeed = 10;
         private List<PictureBox> livesimgs;
-       
         private bool ishit = false, livesup = false, freeplay = false, win = false, screendraw = false, setup = false;
         private Niveau tier;
 
@@ -93,7 +94,7 @@ namespace Frogger
         /// <param name="level">The Level that should be started in the GameEngine</param>
         /// <param name="frmgame">The Form the GameEngine should use for this game</param>
         /// <param name="niv">The Niveau that is selected to use with the level</param>
-        public GameEngine(string lvlname, FrmGame frmgame, Niveau tier)
+        public GameEngine(string lvlname, Form frmgame, Niveau tier)
         {
             this.levelnr = levelnr;
             this.tier = tier;
@@ -108,24 +109,34 @@ namespace Frogger
             {
                 case Niveau.freeplay:
                     freeplay = true;
-                    frmgame.min = 60;
-                    frmgame.sec = 0;
+                    this.min = 60;
+                    this.sec = 0;
+                    //frmgame.min = 60;
+                    //frmgame.sec = 0;
                     break;
                 case Niveau.easy:
-                    frmgame.min = 3;
-                    frmgame.sec = 0;
+                    this.min = 3;
+                    this.sec = 0;
+                    //frmgame.min = 3;
+                    //frmgame.sec = 0;
                     break;
                 case Niveau.medium:
-                    frmgame.min = 1;
-                    frmgame.sec = 30;
+                    this.min = 1;
+                    this.sec = 30;
+                    //frmgame.min = 1;
+                    //frmgame.sec = 30;
                     break;
                 case Niveau.hard:
-                    frmgame.min = 0;
-                    frmgame.sec = 45;
+                    this.min = 0;
+                    this.sec = 45;
+                    //frmgame.min = 0;
+                    //frmgame.sec = 45;
                     break;
                 case Niveau.elite:
-                    frmgame.min = 0;
-                    frmgame.sec = 20;
+                    this.min = 0;
+                    this.sec = 20;
+                    //frmgame.min = 0;
+                    //frmgame.sec = 20;
                     break;
                 default: throw new Exception("Tier not found..");
             }
@@ -373,7 +384,7 @@ namespace Frogger
         public void StopEngine(bool destroyobjs)
         {
             gameupdate.Enabled = false;
-            frmgame.timerTime.Enabled = false;
+            //frmgame.timerTime.Enabled = false;
             if (destroyobjs)
             {
                 if (frog != null)
@@ -661,7 +672,7 @@ namespace Frogger
 
                         InitSomeMvobjs();
                         ishit = false;
-                        frmgame.timerTime.Enabled = true;
+                        //frmgame.timerTime.Enabled = true;
                         gameupdate.Enabled = true;
                     }
                     else
@@ -734,13 +745,13 @@ namespace Frogger
             switch (tier)
             {
                 case Niveau.easy:
-                    return 180 - (frmgame.min * 60 + frmgame.sec);
+                    return 180 - (this.min * 60 + this.sec);
                 case Niveau.medium:
-                    return 90 - (frmgame.min * 60 + frmgame.sec);
+                    return 90 - (this.min * 60 + this.sec);
                 case Niveau.hard:
-                    return 45 - (frmgame.min * 60 + frmgame.sec);
+                    return 45 - (this.min * 60 + this.sec);
                 case Niveau.elite:
-                    return 20 - (frmgame.min * 60 + frmgame.sec);
+                    return 20 - (this.min * 60 + this.sec);
                 default:
                     return 99999;
             }
@@ -753,7 +764,8 @@ namespace Frogger
         /// <param name="e"></param>
         private void hovbtnBack_Click(object sender, EventArgs e)
         {
-            frmgame.CloseGame();
+            //FIXME
+            //frmgame.CloseGame();
         }
 
         /// <summary>
@@ -762,11 +774,12 @@ namespace Frogger
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void hovbtnSubmit_Click(object sender, EventArgs e)
-        {
-            string insertquery = "INSERT INTO HIGHSCORES VALUES (\"" + DateTime.Now.ToString() + "\", \"" + frmgame.TbEnterName + "\", " + GetGameTime() + ", '" + this.level.Naam + "')";
+        {                                                                                                    //frmgame.TbEnterName
+            string insertquery = "INSERT INTO HIGHSCORES VALUES (\"" + DateTime.Now.ToString() + "\", \"" + " FIXME " + "\", " + GetGameTime() + ", '" + this.level.Naam + "')";
             DBConnection.SetData(insertquery);
-            frmgame.VisibleTbEnterName = false;
-            frmgame.CloseGame();
+            //FIXME
+            //frmgame.VisibleTbEnterName = false;
+            //frmgame.CloseGame();
         }
 
         /// <summary>
@@ -946,7 +959,7 @@ namespace Frogger
                         throw new Exception("tier unknow.");
                 }
                 gameupdate = new Timer();
-				gameupdate.Interval = 50;
+                gameupdate.Interval = 50;
                 //{
                 //    Interval = 50
                 //};
@@ -966,7 +979,8 @@ namespace Frogger
         /// </summary>
         private void ShowEnterHighscore()
         {
-            frmgame.VisibleTbEnterName = true;
+            //FIXME
+            //frmgame.VisibleTbEnterName = true;
             HoverButton hovbtnSubmit = new HoverButton("submit");
             hovbtnSubmit.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnSubmit.Width / 2, frmgame.Height - 200);
             hovbtnSubmit.Click += new EventHandler(hovbtnSubmit_Click);
@@ -982,7 +996,7 @@ namespace Frogger
 
             lblText.Refresh();
             hovbtnSubmit.Refresh();
-            frmgame.tbHighscoreName.Refresh();
+            //frmgame.tbHighscoreName.Refresh();
         }
 
         #endregion Methods
