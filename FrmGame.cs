@@ -154,9 +154,6 @@ namespace Frogger
         private void FrmGame_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            //if (!this.VisibleTbEnterName)
-            //{
-                game.RenderScreen(g);
 
                 if (game.timeup)
                 {
@@ -164,9 +161,9 @@ namespace Frogger
                 }
                 else
                 {
-                    lbTime.Text = UpdateGameTime();
+                    game.RenderScreen(g);
+                    lbTime.Text = GetFancyGameTime();
                 }
-            //}
         }
 
         private void FrmGame_ResizeBegin(object sender, EventArgs e)
@@ -181,43 +178,8 @@ namespace Frogger
         /// <param name="e"></param>
         private void FrmGame_ResizeEnd(object sender, EventArgs e)
         {
-            this.timerTime.Enabled = true;
-            game.SetupEngine(false);
+            game.SetupEngine(false); //does resize all resources.
             this.Refresh();
-        }
-
-        /*
-        private void tbHighscoreName_Enter(object sender, EventArgs e)
-        {
-            if (tbHighscoreName.Text == "nameless")
-            {
-                tbHighscoreName.Text = "";
-            }
-        }
-         */
-
-        /// <summary>
-        /// Update the game time, and check if time
-        /// for the current tier is over.
-        /// if so, the gameover methode from the GameEngine get excuted..
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void timerTime_Tick(object sender, EventArgs e)
-        {
-            game.sec--;
-            if (game.sec < 0)
-            {
-                game.min--;
-                if (game.CheckGameTime(game.min))
-                {
-                    game.timeup = true;
-                }
-                else
-                {
-                    game.sec = 59;
-                }
-            }
         }
 
         /// <summary>
@@ -225,23 +187,25 @@ namespace Frogger
         /// a lead zero if seconds lower then 10seconds is added.
         /// And there is a : charcter between the minuts and seconds.
         /// </summary>
-        private string UpdateGameTime()
+        private string GetFancyGameTime()
         {
-            string time = this.game.min.ToString() + ":";
+            StringBuilder timestr = new StringBuilder(this.game.min.ToString() + ":");
             if (this.game.sec < 10)
             {
-                time += "0" + this.game.sec.ToString();
+                timestr.Append("0" + this.game.sec.ToString());
                 if (this.game.min == 0)
                 {
+                    //less than a minute make red.
                     lbTime.ForeColor = Color.Red;
                 }
             }
             else
             {
-                time += this.game.sec.ToString();
+                //still more than a minute left.
+                timestr.Append(this.game.sec.ToString());
                 lbTime.ForeColor = Color.LightGray;
             }
-            return time;
+            return timestr.ToString();
         }
 
 		#endregion Methods 

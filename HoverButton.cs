@@ -56,11 +56,10 @@ namespace Frogger
             this.lbButton.Text = text;
         }
 
-        // /*
         /// <summary>
         /// designtime properties.
         /// </summary>
-        [Description("The text of the HoverButton"), DefaultValue("test"), Category("Sample")]
+        [Description("The text of the HoverButton"), DefaultValue("test"), Category("design")]
         public string HoverbuttonText
         {
             get
@@ -72,7 +71,6 @@ namespace Frogger
                 this.lbButton.Text = value;
             }
         }
-        // */
 
         public float SizeText
         {

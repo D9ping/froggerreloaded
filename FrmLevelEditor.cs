@@ -18,7 +18,7 @@ namespace Frogger
             this.frmmenu = frmmenu;
 
             InitializeComponent();
-            game = new GameEngine("new", this, Niveau.freeplay);
+            game = new GameEngine(this);
 
             hovbtnBack.HoverbuttonText = "Back";
             hovbtnBack.SizeText = 24;

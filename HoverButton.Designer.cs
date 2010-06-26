@@ -64,7 +64,6 @@
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.HoverButton_Paint);
             this.MouseEnter += new System.EventHandler(this.HoverButton_MouseEnter);
             this.ResumeLayout(false);
-
         }
 
         #endregion

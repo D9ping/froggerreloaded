@@ -28,17 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmGame));
-            this.timerTime = new System.Windows.Forms.Timer(this.components);
             this.lbTime = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // timerTime
-            // 
-            this.timerTime.Enabled = true;
-            this.timerTime.Interval = 1000;
-            this.timerTime.Tick += new System.EventHandler(this.timerTime_Tick);
             // 
             // lbTime
             // 
@@ -85,7 +77,6 @@
         #endregion
 
         private System.Windows.Forms.Label lbTime;
-        public System.Windows.Forms.Timer timerTime;
 
     }
 }

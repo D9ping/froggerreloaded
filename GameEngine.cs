@@ -16,6 +16,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #define windows //platform
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -32,7 +33,7 @@ namespace Frogger
     {
         #region Fields (10)
 
-        public List<MovingObject> movingobjs;//public voor testen
+        public List<MovingObject> movingobjs;//public for tests
         public Frog frog;
         public int min = 1;
         public int sec = 0;
@@ -41,10 +42,12 @@ namespace Frogger
         private Level level;
         private Form frmgame;
         private Timer gameupdate;
-        private int levelnr = -1, lives = 0, secnewcar, secnewtree, tickcar = 0, ticktree = 0, maxtickcar = 100, maxticktree = 100, carspeed = 10;
+        private Timer timeupdate;
+        private int lives = 0, secnewcar, secnewtree, tickcar = 0, ticktree = 0, maxtickcar = 100, maxticktree = 100, carspeed = 10;
         private List<PictureBox> livesimgs;
         private bool ishit = false, livesup = false, freeplay = false, win = false, screendraw = false, setup = false;
         private Niveau tier;
+        private BigTextbox bigtbName;
 
         #endregion Fields
 
@@ -89,21 +92,15 @@ namespace Frogger
         #region Constructors (1)
 
         /// <summary>
-        /// Creates a GameEngine.
+        /// Creating a new instance of GameEngine class.
         /// </summary>
         /// <param name="level">The Level that should be started in the GameEngine</param>
         /// <param name="frmgame">The Form the GameEngine should use for this game</param>
         /// <param name="niv">The Niveau that is selected to use with the level</param>
         public GameEngine(string lvlname, Form frmgame, Niveau tier)
         {
-            this.levelnr = levelnr;
             this.tier = tier;
             this.frmgame = frmgame;
-
-            movingobjs = new List<MovingObject>();
-            livesimgs = new List<PictureBox>();
-
-            ResizesResources.images = new Dictionary<String, Bitmap>();
 
             switch (tier)
             {
@@ -111,32 +108,22 @@ namespace Frogger
                     freeplay = true;
                     this.min = 60;
                     this.sec = 0;
-                    //frmgame.min = 60;
-                    //frmgame.sec = 0;
                     break;
                 case Niveau.easy:
                     this.min = 3;
                     this.sec = 0;
-                    //frmgame.min = 3;
-                    //frmgame.sec = 0;
                     break;
                 case Niveau.medium:
                     this.min = 1;
                     this.sec = 30;
-                    //frmgame.min = 1;
-                    //frmgame.sec = 30;
                     break;
                 case Niveau.hard:
                     this.min = 0;
                     this.sec = 45;
-                    //frmgame.min = 0;
-                    //frmgame.sec = 45;
                     break;
                 case Niveau.elite:
                     this.min = 0;
                     this.sec = 20;
-                    //frmgame.min = 0;
-                    //frmgame.sec = 20;
                     break;
                 default: throw new Exception("Tier not found..");
             }
@@ -149,9 +136,25 @@ namespace Frogger
             {
                 level = new Level(lvlname, frmgame.ClientSize.Width, frmgame.ClientSize.Height);
             }
-            SetupEngine(true);
+
+            this.SetupEngine(true);
+
+            this.DrawNumLives();
+
             frog = CreateFrog();
             frmgame.Controls.Add(frog);
+
+            this.StartEngine();
+        }
+
+        /// <summary>
+        /// Creating a new instance of GameEngine class.
+        /// Without level and tier info for leveleditor.
+        /// </summary>
+        /// <param name="frmlvleditor"></param>
+        public GameEngine(Form frmlvleditor)
+        {
+            this.frmgame = frmlvleditor;
         }
 
         #endregion Constructors
@@ -372,7 +375,7 @@ namespace Frogger
                 GameOver(g, false, false);
             }
         }
-		
+
 #if windows
         [DllImport("winmm.dll")]
         public static extern int sndPlaySound(string sFile, int sMode);
@@ -384,7 +387,8 @@ namespace Frogger
         public void StopEngine(bool destroyobjs)
         {
             gameupdate.Enabled = false;
-            //frmgame.timerTime.Enabled = false;
+            timeupdate.Enabled = false;
+
             if (destroyobjs)
             {
                 if (frog != null)
@@ -400,6 +404,15 @@ namespace Frogger
                 }
                 GC.Collect(); //soon
             }
+        }
+
+        /// <summary>
+        /// Start the timers: gameupdate and timeupdate
+        /// </summary>
+        public void StartEngine()
+        {
+            gameupdate.Enabled = true;
+            timeupdate.Enabled = true;
         }
 
         /// <summary>
@@ -500,7 +513,7 @@ namespace Frogger
                 for (int i = 0; i < level.NumRivirs; i++)
                 {
                     int rivYbottom = level.GetPosRivirs(i) + heightrivir;
-                    if ((level.GetPosRivirs(i) < frog.Location.Y ) && (rivYbottom > (frog.Location.Y + (frog.Height / 2))))
+                    if ((level.GetPosRivirs(i) < frog.Location.Y) && (rivYbottom > (frog.Location.Y + (frog.Height / 2))))
                     {
                         ishit = true;
                         frog.CanMove = false;
@@ -511,9 +524,9 @@ namespace Frogger
 #if windows
                             sndPlaySound(Application.StartupPath + @"\sounds\sink.wav", 1); //1 = Async
 #elif linux
-                            String sinkwav = Application.StartupPath + @"/sounds/sink.wav";						    
+                            String sinkwav = Application.StartupPath + @"/sounds/sink.wav";
                             System.Media.SoundPlayer sndply = new System.Media.SoundPlayer(sinkwav);
-                            sndply.Play();	
+                            sndply.Play();
 #endif
                         }
                     }
@@ -551,8 +564,6 @@ namespace Frogger
             hovbtnBack.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnBack.Width / 2, frmgame.Height - 200);
             hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
             frmgame.Controls.Add(hovbtnBack);
-            hovbtnBack.Refresh();
-            screendraw = true;
         }
 
         /// <summary>
@@ -562,6 +573,7 @@ namespace Frogger
         /// <param name="textregel1">the first line, big text</param>
         private void DrawGameOverScreen(Graphics g, string textline)
         {
+
             Font fontregel1 = new Font("Flubber", 64);
             Font fontregel2 = new Font("Flubber", 24);
             SolidBrush sbdarkorange = new SolidBrush(System.Drawing.Color.DarkOrange);
@@ -574,6 +586,7 @@ namespace Frogger
             if (!this.screendraw)
             {
                 CreateBackBtn();
+                screendraw = true;
             }
         }
 
@@ -609,6 +622,11 @@ namespace Frogger
         /// <param name="entername">is allow to enter highscore.</param>
         private void DrawWinScreen(Graphics g, bool entername)
         {
+            
+
+            if (this.screendraw == false)
+            {
+                StopEngine(false);
             Font fontregel1 = new Font("Flubber", 64);
             SolidBrush bl = new SolidBrush(System.Drawing.Color.GreenYellow);
             Rectangle box = new Rectangle(new Point(50, 50), new Size(frmgame.ClientRectangle.Width - 100, frmgame.ClientRectangle.Height - 100));
@@ -616,15 +634,49 @@ namespace Frogger
             g.FillRectangle(bl, box);
             g.DrawString("Win", fontregel1, Brushes.Red, new PointF(frmgame.ClientRectangle.Width / 2 - 100, frmgame.ClientRectangle.Height / 2 - 200));
 
-            if ((entername) && (!screendraw))
-            {
-                ShowEnterHighscore();
+           
+                if (entername)
+                {
+                    ShowEnterHighscore();
+                }
+                else
+                {
+                    CreateBackBtn();
+                }
             }
-            else if ((!entername) && (!screendraw))
+
+            this.screendraw = true;
+        }
+
+        /// <summary>
+        /// Maak label, bigtextbox en button aan voor invullen van Naam voor in highscore lijst
+        /// </summary>
+        private void ShowEnterHighscore()
+        {
+            HoverButton hovbtnSubmit = new HoverButton("submit");
+            hovbtnSubmit.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnSubmit.Width / 2, frmgame.Height - 200);
+            hovbtnSubmit.Click += new EventHandler(hovbtnSubmit_Click);
+
+            bigtbName = new BigTextbox();
+            bigtbName.Location = new Point(hovbtnSubmit.Location.X, hovbtnSubmit.Location.Y - 200);
+
+            Label lblText = new Label();
+            lblText.Font = new Font("Flubber", 24);
+            lblText.Text = "Enter your name:";
+            lblText.AutoSize = true;
+            lblText.BackColor = Color.Transparent;
+            lblText.Location = new Point(hovbtnSubmit.Location.X, hovbtnSubmit.Location.Y - 250);
+
+            try
             {
-                CreateBackBtn();
+                frmgame.Controls.Add(lblText);
+                frmgame.Controls.Add(bigtbName);
+                frmgame.Controls.Add(hovbtnSubmit);
             }
-            screendraw = true;
+            catch (Exception)
+            {
+                //is looping..
+            }
         }
 
         /// <summary>
@@ -672,8 +724,9 @@ namespace Frogger
 
                         InitSomeMvobjs();
                         ishit = false;
-                        //frmgame.timerTime.Enabled = true;
-                        gameupdate.Enabled = true;
+                        this.StartEngine();
+                        //timeupdate.Enabled = true;
+                        //gameupdate.Enabled = true;
                     }
                     else
                     {
@@ -688,7 +741,7 @@ namespace Frogger
             }
             int treetrunkwidth = ResizesResources.images["treetrunk"].Size.Width;
             if (ticktree >= maxticktree)
-            {                
+            {
                 for (int curriver = 0; curriver < level.NumRivirs; curriver++)
                 {
                     if (curriver == 0)
@@ -707,16 +760,16 @@ namespace Frogger
                     {
                         movingobjs.Add(CreateTreeTrunk(4, Direction.West, frmgame.ClientRectangle.Width, level.GetPosRivirs(curriver)));
                     }
-                    
-                    else if (curriver >3 && curriver % 2 == 0) //even
+
+                    else if (curriver > 3 && curriver % 2 == 0) //even
                     {
-                        movingobjs.Add(CreateTreeTrunk(3, Direction.East, -treetrunkwidth, level.GetPosRivirs(curriver) ));
+                        movingobjs.Add(CreateTreeTrunk(3, Direction.East, -treetrunkwidth, level.GetPosRivirs(curriver)));
                     }
-                    else if (curriver >3)//odd and not 1 or 3
+                    else if (curriver > 3)//odd and not 1 or 3
                     {
-                        movingobjs.Add(CreateTreeTrunk(5, Direction.West, frmgame.ClientRectangle.Width + treetrunkwidth, level.GetPosRivirs(curriver) ));
+                        movingobjs.Add(CreateTreeTrunk(5, Direction.West, frmgame.ClientRectangle.Width + treetrunkwidth, level.GetPosRivirs(curriver)));
                     }
-                     
+
                 }
                 ticktree = 0;
             }
@@ -764,8 +817,7 @@ namespace Frogger
         /// <param name="e"></param>
         private void hovbtnBack_Click(object sender, EventArgs e)
         {
-            //FIXME
-            //frmgame.CloseGame();
+            frmgame.Close(); //Form fires closing event.
         }
 
         /// <summary>
@@ -885,8 +937,12 @@ namespace Frogger
         /// </summary>
         public void SetupEngine(bool initsettings)
         {
+            movingobjs = new List<MovingObject>();
+            livesimgs = new List<PictureBox>();
+            ResizesResources.images = new Dictionary<String, Bitmap>();
+
             ResizesResources.images.Clear();
-            //start loading.
+            //--start loading--
             int kikkersizeX = frmgame.ClientSize.Width / 20;
             int kikkersizeY = frmgame.ClientSize.Height / 20;
             if (Program.fullscreen)
@@ -960,43 +1016,39 @@ namespace Frogger
                 }
                 gameupdate = new Timer();
                 gameupdate.Interval = 50;
-                //{
-                //    Interval = 50
-                //};
                 gameupdate.Tick += new EventHandler(gameupdate_Tick);
+
+                timeupdate = new Timer();
+                timeupdate.Interval = 1000;
+                timeupdate.Tick += new EventHandler(timeupdate_Tick);
 
                 maxtickcar = (1000 / gameupdate.Interval) * secnewcar;
                 maxticktree = (1000 / gameupdate.Interval) * secnewtree;
                 livesup = false;
-                DrawNumLives();
             }
-            //done loading.
-            gameupdate.Enabled = true;
+            //--done loading--
         }
 
         /// <summary>
-        /// Maak label en textbox en button zichtbaar/aan.
+        /// Decreace the availible game time.
         /// </summary>
-        private void ShowEnterHighscore()
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timeupdate_Tick(object sender, EventArgs e)
         {
-            //FIXME
-            //frmgame.VisibleTbEnterName = true;
-            HoverButton hovbtnSubmit = new HoverButton("submit");
-            hovbtnSubmit.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnSubmit.Width / 2, frmgame.Height - 200);
-            hovbtnSubmit.Click += new EventHandler(hovbtnSubmit_Click);
-            frmgame.Controls.Add(hovbtnSubmit);
-
-            Label lblText = new Label();
-            lblText.Font = new Font("Flubber", 24);
-            lblText.Text = "Enter your name:";
-            lblText.AutoSize = true;
-            lblText.BackColor = Color.Transparent;
-            lblText.Location = new Point(hovbtnSubmit.Location.X, hovbtnSubmit.Location.Y - 250);
-            frmgame.Controls.Add(lblText);
-
-            lblText.Refresh();
-            hovbtnSubmit.Refresh();
-            //frmgame.tbHighscoreName.Refresh();
+            this.sec--;
+            if (this.sec < 0)
+            {
+                this.min--;
+                if (this.CheckGameTime(this.min))
+                {
+                    this.timeup = true;
+                }
+                else
+                {
+                    this.sec = 59;
+                }
+            }
         }
 
         #endregion Methods
