@@ -15,6 +15,8 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#define windows //platform
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,140 +27,157 @@ using System.Media;
 
 namespace Frogger
 {
-	public class Frog : MovingObject
-	{
-		#region Fields (7)
+    public class Frog : MovingObject
+    {
+        #region Fields (7)
 
-		private int jumpdistance, maxscreenwidth, maxscreenheight, treeVelocity;
-		private bool canmove = true, onTree;
-		private Direction treeDir;
-		private const int offscreenmargin = 20;
-		
+        private int jumpdistance, maxscreenwidth, maxscreenheight, treeVelocity;
+        private bool canmove = true, onTree;
+        private Direction treeDir;
+        private const int offscreenmargin = 20;
 
-		#endregion Fields
 
-		#region Constructors (1)
+        #endregion Fields
 
-		/// <summary>
-		/// create a frog.
-		/// </summary>
-		public Frog (int velocity, Direction dir, int jumpdistance, int width, int height, Form frmgame) : base(velocity, dir)
-		{
-			//Make transparant
-			this.SetStyle (System.Windows.Forms.ControlStyles.SupportsTransparentBackColor, true);
-			this.BackColor = Color.Transparent;
-			
-			this.Size = new Size (width, height);
-			this.Pic = global::Frogger.Properties.Resources.kikker_west;
-			this.Pic.MakeTransparent ();
-			if (!Program.fullscreen) {
-				this.maxscreenwidth = frmgame.ClientSize.Width - offscreenmargin;
-				this.maxscreenheight = frmgame.ClientSize.Height - offscreenmargin;
-			} else if (Program.fullscreen) {
-				this.maxscreenwidth = Screen.PrimaryScreen.WorkingArea.Width - offscreenmargin;
-				this.maxscreenheight = Screen.PrimaryScreen.WorkingArea.Height - offscreenmargin;
-			}
-			
-			this.jumpdistance = jumpdistance;
-		}
+        #region Constructors (1)
 
-		#endregion Constructors
+        /// <summary>
+        /// create a frog.
+        /// </summary>
+        public Frog(int velocity, Direction dir, int jumpdistance, int width, int height, Form frmgame)
+            : base(velocity, dir)
+        {
+            //Make transparant
+            this.SetStyle(System.Windows.Forms.ControlStyles.SupportsTransparentBackColor, true);
+            this.BackColor = Color.Transparent;
 
-		#region Properties (4)
+            this.Size = new Size(width, height);
+            this.Pic = global::Frogger.Properties.Resources.kikker_west;
+            this.Pic.MakeTransparent();
+            if (!Program.fullscreen)
+            {
+                this.maxscreenwidth = frmgame.ClientSize.Width - offscreenmargin;
+                this.maxscreenheight = frmgame.ClientSize.Height - offscreenmargin;
+            }
+            else if (Program.fullscreen)
+            {
+                this.maxscreenwidth = Screen.PrimaryScreen.WorkingArea.Width - offscreenmargin;
+                this.maxscreenheight = Screen.PrimaryScreen.WorkingArea.Height - offscreenmargin;
+            }
+            
+            this.jumpdistance = jumpdistance;
+        }
 
-		public Boolean CanMove {
-			get { return this.canmove; }
-			set { this.canmove = value; }
-		}
+        #endregion Constructors
 
-		public Boolean OnTree 
-		{ 
-			get { return this.onTree; }
-		    set { this.onTree = value; }
-		}
+        #region Properties (4)
 
-		public Direction TreeDir
-		{ 
-			get { return this.treeDir; }
-			set { this.treeDir = value; }
-		}
+        public Boolean CanMove
+        {
+            get { return this.canmove; }
+            set { this.canmove = value; }
+        }
 
-		public int TreeVelocity 
-		{
-			get { return this.treeVelocity; }
-			set { this.treeVelocity = value; }
-		}
+        public Boolean OnTree
+        {
+            get { return this.onTree; }
+            set { this.onTree = value; }
+        }
 
-		#endregion Properties
+        public Direction TreeDir
+        {
+            get { return this.treeDir; }
+            set { this.treeDir = value; }
+        }
 
-		#region Methods (1)
+        public int TreeVelocity
+        {
+            get { return this.treeVelocity; }
+            set { this.treeVelocity = value; }
+        }
 
-		// Public Methods (1) 
+        #endregion Properties
 
-		/// <summary>
-		/// Move the frog (with constant jumpdistance pixels)
-		/// </summary>
-		/// <param name="dir"></param>
-		public void Jump (Direction dir)
-		{
-			if (this.canmove) {
-				int newposY = this.Location.Y;
-				int newposX = this.Location.X;
-				switch (dir) {
-				case Direction.North:
-					this.Pic = ResizesResources.images["kikker_west"];
-					//global::Frogger.Properties.Resources.kikker_west;
-					newposY = this.Location.Y - jumpdistance;
-					if (newposY + this.Height >= 0) {
-						this.Location = new System.Drawing.Point (newposX, newposY);
-						if (this.Location.Y <= this.Height) {
-							#if windows
-							string soundmadeit = Application.StartupPath + "\\sounds\\frog_made_it.wav";
-							if (File.Exists (soundmadeit)) {
-								GameEngine.sndPlaySound (soundmadeit, 1);
-							}
-							#elif linux
-							string soundmadeit = Application.StartupPath + "/sounds/frog_made_it.wav";
-							if (File.Exists (soundmadeit)) {
-								SoundPlayer sndply = new SoundPlayer (soundmadeit);
-								sndply.Play ();
-							}
-							#endif
-						}
-					}
-					break;
-				case Direction.East:
-					this.Pic = ResizesResources.images["kikker_west"];
-					newposX = this.Location.X - jumpdistance;
-					if (newposX >= 0) {
-						this.Location = new System.Drawing.Point (newposX, newposY);
-					}
-					break;
-				case Direction.West:
-					this.Pic = ResizesResources.images["kikker_east"];
-					//global::Frogger.Properties.Resources.kikker_east;
-					newposX = this.Location.X + jumpdistance;
-					if (newposX < maxscreenwidth) {
-						this.Location = new System.Drawing.Point (newposX, newposY);
-					}
-					break;
-				case Direction.South:
-					this.Pic = ResizesResources.images["kikker_east"];
-					//global::Frogger.Properties.Resources.kikker_east;
-					newposY = this.Location.Y + jumpdistance;
-					//todo
-					if (newposY < maxscreenheight) {
-						this.Location = new System.Drawing.Point (newposX, newposY);
-					}
-					break;
-				default:
-					throw new Exception ("direction unknow.");
-				}
-				canmove = false;
-			}
-			
-		}
-		
-		#endregion Methods
-	}
+        #region Methods (1)
+
+        // Public Methods (1) 
+
+        /// <summary>
+        /// Move the frog (with constant jumpdistance pixels)
+        /// </summary>
+        /// <param name="dir"></param>
+        public void Jump(Direction dir)
+        {
+            if (this.canmove)
+            {
+                int newposY = this.Location.Y;
+                int newposX = this.Location.X;
+                switch (dir)
+                {
+                    case Direction.North:
+                        this.Pic = ResizesResources.images["kikker_west"];
+                        //global::Frogger.Properties.Resources.kikker_west;
+                        newposY = this.Location.Y - jumpdistance;
+                        if (newposY + this.Height >= 0)
+                        {
+                            this.Location = new System.Drawing.Point(newposX, newposY);
+                            if (this.Location.Y <= this.Height)
+                            {
+                                string soundmadeit;
+#if windows
+                                soundmadeit = Application.StartupPath + "\\sounds\\frog_made_it.wav";
+#elif linux
+                            soundmadeit = Application.StartupPath + "/sounds/frog_made_it.wav";
+#endif
+
+                                if (File.Exists(soundmadeit))
+                                {
+#if windows
+                                    GameEngine.sndPlaySound(soundmadeit, 1);
+#elif linux
+                                    SoundPlayer sndply = new SoundPlayer (soundmadeit);
+                                    sndply.Play ();
+#endif
+                                }
+
+                            }
+                        }
+                        break;
+                    case Direction.East:
+                        this.Pic = ResizesResources.images["kikker_west"];
+                        newposX = this.Location.X - jumpdistance;
+                        if (newposX >= 0)
+                        {
+                            this.Location = new System.Drawing.Point(newposX, newposY);
+                        }
+                        break;
+                    case Direction.West:
+                        this.Pic = ResizesResources.images["kikker_east"];
+                        //global::Frogger.Properties.Resources.kikker_east;
+                        newposX = this.Location.X + jumpdistance;
+                        if (newposX < maxscreenwidth)
+                        {
+                            this.Location = new System.Drawing.Point(newposX, newposY);
+                        }
+                        break;
+                    case Direction.South:
+                        this.Pic = ResizesResources.images["kikker_east"];
+                        //global::Frogger.Properties.Resources.kikker_east;
+                        newposY = this.Location.Y + jumpdistance;
+                        //todo
+                        if (newposY < maxscreenheight)
+                        {
+                            this.Location = new System.Drawing.Point(newposX, newposY);
+                        }
+                        break;
+                    default:
+                        throw new Exception("direction unknow.");
+                }
+                canmove = false;
+            }
+
+        }
+
+        #endregion Methods
+    }
 }

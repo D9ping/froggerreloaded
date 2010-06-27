@@ -33,6 +33,7 @@ namespace Frogger
         private HoverButton[] hoofdmenuknoppen;
         private FrmMenu frmmenu;
         private FrmLevelEditor lvleditor;
+        private const int marginbuttonlogo = 10;
 		#endregion Fields 
 
 		#region Constructors (1) 
@@ -59,7 +60,7 @@ namespace Frogger
             hoofdmenuknoppen[4].Click += new EventHandler(Shutdown);
 
 
-            int ypos = 200;
+            int ypos = frmmenu.LogoPosBottom + marginbuttonlogo;
             int xpos = 0;
             for (int i = 0; i < 5; i++)
             {

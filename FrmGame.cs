@@ -88,13 +88,11 @@ namespace Frogger
         /// <summary>
         /// Hide the frmGame and show the frmMenu in MenuState main again.
         /// </summary>
-        public void CloseGame()
-        {
-            game.StopEngine(true);
-            this.frmmenu.Menustate = MenuState.main;
-            this.frmmenu.Show();
-            this.Hide();
-        }
+        //public void CloseGame()
+        //{
+           
+            
+        //}
 		// Private Methods (8) 
 
         /// <summary>
@@ -104,7 +102,10 @@ namespace Frogger
         /// <param name="e"></param>
         private void FrmGame_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CloseGame();
+            game.StopEngine(true);
+            this.frmmenu.Menustate = MenuState.main;
+            this.frmmenu.MenuUpdated = true;
+            this.frmmenu.Show();
         }
 
         /// <summary>
@@ -141,7 +142,7 @@ namespace Frogger
                     game.frog.Jump(Direction.North);
                     break;
                 case Keys.Escape:
-                    CloseGame();
+                    this.Close();
                     break;
             }
         }
@@ -154,18 +155,15 @@ namespace Frogger
         private void FrmGame_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-
-                if (game.timeup)
-                {
-                    game.GameOver(g, true, false);
-                }
-                else
-                {
-                    game.RenderScreen(g);
-                    lbTime.Text = GetFancyGameTime();
-                }
+            game.RenderScreen(g);
+            lbTime.Text = GetFancyGameTime();
         }
 
+        /// <summary>
+        /// Begin resizing window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrmGame_ResizeBegin(object sender, EventArgs e)
         {
             game.StopEngine(false);
@@ -195,7 +193,7 @@ namespace Frogger
                 timestr.Append("0" + this.game.sec.ToString());
                 if (this.game.min == 0)
                 {
-                    //less than a minute make red.
+                    //less than 10s make red.
                     lbTime.ForeColor = Color.Red;
                 }
             }

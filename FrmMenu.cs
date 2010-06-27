@@ -69,6 +69,14 @@ namespace Frogger
 			set { menustate = value; }
 		}
 
+        public int LogoPosBottom
+        {
+            get
+            {
+                return pbLogo.Location.Y + pbLogo.Size.Height;
+            }
+        }
+
 		public bool ShowTierChoice {
 			set { cbxTier.Visible = value; }
 		}
