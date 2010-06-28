@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.panelTools = new System.Windows.Forms.Panel();
+            this.lblInstructions = new System.Windows.Forms.Label();
             this.pnlAddRivir = new System.Windows.Forms.Panel();
             this.pnlAddRoad = new System.Windows.Forms.Panel();
-            this.lblInstructions = new System.Windows.Forms.Label();
             this.hovbtnSave = new Frogger.HoverButton();
             this.hovbtnBack = new Frogger.HoverButton();
             this.panelTools.SuspendLayout();
@@ -50,6 +50,15 @@
             this.panelTools.Name = "panelTools";
             this.panelTools.Size = new System.Drawing.Size(161, 562);
             this.panelTools.TabIndex = 0;
+            // 
+            // lblInstructions
+            // 
+            this.lblInstructions.Font = new System.Drawing.Font("Flubber", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInstructions.Location = new System.Drawing.Point(5, 9);
+            this.lblInstructions.Name = "lblInstructions";
+            this.lblInstructions.Size = new System.Drawing.Size(153, 66);
+            this.lblInstructions.TabIndex = 8;
+            this.lblInstructions.Text = "Drag and drop where you want a rivir or road";
             // 
             // pnlAddRivir
             // 
@@ -74,15 +83,6 @@
             this.pnlAddRoad.Name = "pnlAddRoad";
             this.pnlAddRoad.Size = new System.Drawing.Size(137, 89);
             this.pnlAddRoad.TabIndex = 4;
-            // 
-            // lblInstructions
-            // 
-            this.lblInstructions.Font = new System.Drawing.Font("Flubber", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInstructions.Location = new System.Drawing.Point(5, 9);
-            this.lblInstructions.Name = "lblInstructions";
-            this.lblInstructions.Size = new System.Drawing.Size(153, 66);
-            this.lblInstructions.TabIndex = 8;
-            this.lblInstructions.Text = "Drag and drop where you want a rivir or road";
             // 
             // hovbtnSave
             // 
@@ -117,8 +117,11 @@
             this.BackgroundImage = global::Frogger.Properties.Resources.texure_grass;
             this.ClientSize = new System.Drawing.Size(784, 562);
             this.Controls.Add(this.panelTools);
+            this.KeyPreview = true;
             this.Name = "FrmLevelEditor";
             this.Text = "FrmLevelEditor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmLevelEditor_FormClosing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmLevelEditor_KeyDown);
             this.panelTools.ResumeLayout(false);
             this.ResumeLayout(false);
 

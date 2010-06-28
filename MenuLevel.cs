@@ -18,7 +18,7 @@ namespace Frogger
         private FrmGame game;
         private LevelPreview[] lvlpreviews;
         private LevelPreview lvlpreviewselected;
-        private int viewindexlvl = 0;
+        private int viewindexlvl = 0, preflvlprevwidth = 250;
         private PictureBox pbNavRight, pbNavLeft;
 
 		#endregion Fields 
@@ -94,16 +94,18 @@ namespace Frogger
 
             this.lvlpreviews = new LevelPreview[files.Length];
 
+            preflvlprevwidth = ((this.frmmenu.ClientRectangle.Width - 180) / 3);
+
             for (int i = 0; i < files.Length; i++)
             {
-                string filename = files[i].Substring(filepath.Length + 1, files[i].Length - filepath.Length - 5);
-                this.lvlpreviews[i] = new LevelPreview(filename);
+                string filenameNoExt = files[i].Substring(filepath.Length + 1, files[i].Length - filepath.Length - 5);
+                this.lvlpreviews[i] = new LevelPreview(filenameNoExt, preflvlprevwidth);
                 this.lvlpreviews[i].Visible = true;
                 this.lvlpreviews[i].Click += new EventHandler(MenuLevel_Click);
                 this.lvlpreviews[i].DoubleClick += new EventHandler(MenuLevel_DoubleClick);
             }
 
-            this.DrawLvlPreviews();
+            this.DrawLvlPreviews(preflvlprevwidth);
 
             pbNavRight = new PictureBox();
             pbNavRight.Image = Frogger.Properties.Resources.level_navigate_right;
@@ -124,9 +126,9 @@ namespace Frogger
         }
 
         /// <summary>
-        /// This methode accually draw the 3 visible levelpreviews.
+        /// This methode accually draws the 3 visible levelpreviews.
         /// </summary>
-        private void DrawLvlPreviews()
+        private void DrawLvlPreviews(int preflvlprevwidth)
         {
             for (int c = 0; c < lvlpreviews.Length; c++)
             {
@@ -134,11 +136,14 @@ namespace Frogger
                 frmmenu.Controls.Remove(lvlpreviews[c]);
             }
             int locX = 80;
+            
             for (int i = viewindexlvl; i < viewindexlvl + 3; i++)
             {
                 lvlpreviews[i].Visible = true;
+                lvlpreviews[i].Size = new Size(preflvlprevwidth, preflvlprevwidth);
                 this.lvlpreviews[i].Location = new Point(locX, 250);
-                locX += this.lvlpreviews[i].Width + 10;
+
+                locX += preflvlprevwidth + 10;
             }
             this.frmmenu.Controls.AddRange(lvlpreviews);
         }
@@ -183,8 +188,7 @@ namespace Frogger
             {
                 viewindexlvl--;
             }
-            this.DrawLvlPreviews();
-            //throw new NotImplementedException();
+            this.DrawLvlPreviews(preflvlprevwidth);
         }
 
         /// <summary>
@@ -198,7 +202,7 @@ namespace Frogger
             {
                 viewindexlvl++;
             }
-            this.DrawLvlPreviews();
+            this.DrawLvlPreviews(preflvlprevwidth);
         }
 
         /// <summary>

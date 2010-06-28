@@ -49,7 +49,7 @@ namespace Frogger
             hoofdmenuknoppen[2] = new HoverButton("Options");
             //hoofdmenuknoppen[3] = new HoverButton("Credits");
             hoofdmenuknoppen[3] = new HoverButton("Level Editor");
-            hoofdmenuknoppen[3].SizeText = 32;
+            hoofdmenuknoppen[3].SizeText = 34;
             hoofdmenuknoppen[4] = new HoverButton("Exit");
 
             hoofdmenuknoppen[0].Click += new EventHandler(CreateLevelMenu);
@@ -73,9 +73,8 @@ namespace Frogger
 
             frmmenu.KikkerPic = Frogger.Properties.Resources.kikker_west;
             frmmenu.Controls.AddRange(hoofdmenuknoppen);
-			
-			this.frmmenu.MenuUpdated = true;
-			//frmmenu.Refresh();
+
+            this.frmmenu.MenuUpdated = true;
         }
 
 

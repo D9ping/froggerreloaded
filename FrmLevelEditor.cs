@@ -32,5 +32,18 @@ namespace Frogger
             frmmenu.Show();
             this.Close();
         }
+
+        private void FrmLevelEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                hovbtnBack_Click(sender, null);
+            }
+        }
+
+        private void FrmLevelEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            frmmenu.Show();
+        }
     }
 }

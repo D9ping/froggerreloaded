@@ -39,7 +39,7 @@
             // pbKikker
             // 
             this.pbKikker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbKikker.BackColor = System.Drawing.Color.Green;
+            this.pbKikker.BackColor = System.Drawing.Color.Transparent;
             this.pbKikker.Image = global::Frogger.Properties.Resources.kikker_west;
             this.pbKikker.Location = new System.Drawing.Point(646, 40);
             this.pbKikker.Name = "pbKikker";
@@ -73,7 +73,7 @@
             "Medium",
             "Hard",
             "Elite"});
-            this.cbxTier.Location = new System.Drawing.Point(588, 515);
+            this.cbxTier.Location = new System.Drawing.Point(589, 525);
             this.cbxTier.Name = "cbxTier";
             this.cbxTier.Size = new System.Drawing.Size(167, 36);
             this.cbxTier.TabIndex = 2;
@@ -98,6 +98,8 @@
             this.Name = "FrmMenu";
             this.Text = "Frogger Reloaded";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmMenu_Paint);
+            this.Resize += new System.EventHandler(this.FrmMenu_Resize);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmMenu_KeyDown);
             this.ResizeEnd += new System.EventHandler(this.FrmMenu_ResizeEnd);
             ((System.ComponentModel.ISupportInitialize)(this.pbKikker)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();

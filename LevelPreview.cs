@@ -12,10 +12,10 @@ namespace Frogger
     {
         private Level level;
 
-        public LevelPreview(string lvlnaam)
+        public LevelPreview(string lvlnaam, int preflvlprevwidth)
         {
             InitializeComponent();
-            level = new Level(lvlnaam, this.Width, this.Height);
+            level = new Level(lvlnaam, preflvlprevwidth, preflvlprevwidth);
         }
 
         public string NameLevel
