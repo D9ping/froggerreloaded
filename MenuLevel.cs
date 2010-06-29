@@ -139,7 +139,10 @@ namespace Frogger
 
         private void pbNavLeft_MouseEnter(object sender, EventArgs e)
         {
-            pbNavLeft.Image = leftarrowselected;
+            if (viewindexlvl > 0)
+            {
+                pbNavLeft.Image = leftarrowselected;
+            }
         }
 
         private void pbNavRight_MouseLeave(object sender, EventArgs e)
@@ -149,7 +152,10 @@ namespace Frogger
 
         private void pbNavRight_MouseEnter(object sender, EventArgs e)
         {
-            pbNavRight.Image = Frogger.Properties.Resources.level_navigate_selected_right;
+            if (viewindexlvl < this.lvlpreviews.Length - 3)
+            {
+                pbNavRight.Image = Frogger.Properties.Resources.level_navigate_selected_right;
+            }
         }
 
         /// <summary>
@@ -211,6 +217,7 @@ namespace Frogger
         /// <param name="e"></param>
         private void pbNavLeft_Click(object sender, EventArgs e)
         {
+            pbNavLeft.Image = leftarrow;
             if (viewindexlvl > 0)
             {
                 viewindexlvl--;
@@ -225,6 +232,7 @@ namespace Frogger
         /// <param name="e"></param>
         private void pbNavRight_Click(object sender, EventArgs e)
         {
+            pbNavRight.Image = Frogger.Properties.Resources.level_navigate_right;
             if (viewindexlvl < this.lvlpreviews.Length-3)
             {
                 viewindexlvl++;
