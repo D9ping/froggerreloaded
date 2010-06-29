@@ -165,6 +165,7 @@
     <Content Include="bin\Debug\sounds\punch.wav" />
     <Content Include="bin\Debug\sounds\sink.wav" />
     <Content Include="icon_frog.ico" />
+    <None Include="bin\Debug\levels\highway.lvl" />
     <None Include="Resources\car_green_east.png" />
     <None Include="Resources\car_green_west.png" />
     <Content Include="Resources\car_grey_east.png" />
@@ -174,6 +175,8 @@
     <Content Include="Resources\flubber_font_license.txt" />
     <None Include="Resources\froglive.png" />
     <Content Include="Resources\icon_frog.ico" />
+    <None Include="Resources\level_navigate_selected_right.png" />
+    <None Include="Resources\selecteditem.png" />
     <None Include="Resources\level_navigate_right.png" />
     <None Include="Resources\kikkerdead_drunk.png" />
     <None Include="Resources\truck_west.png" />

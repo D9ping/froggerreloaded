@@ -20,6 +20,7 @@ namespace Frogger
         private LevelPreview lvlpreviewselected;
         private int viewindexlvl = 0, preflvlprevwidth = 250;
         private PictureBox pbNavRight, pbNavLeft;
+        private Bitmap leftarrow, leftarrowselected;
 
 		#endregion Fields 
 
@@ -109,20 +110,46 @@ namespace Frogger
 
             pbNavRight = new PictureBox();
             pbNavRight.Image = Frogger.Properties.Resources.level_navigate_right;
-            pbNavRight.Location = new Point(frmmenu.ClientRectangle.Width - Frogger.Properties.Resources.level_navigate_right.Width - 10, 200);
+            pbNavRight.Location = new Point(frmmenu.ClientRectangle.Width - Frogger.Properties.Resources.level_navigate_right.Width - 10, preflvlprevwidth);
             pbNavRight.SizeMode = PictureBoxSizeMode.AutoSize;
             pbNavRight.Click += new EventHandler(pbNavRight_Click);
+            pbNavRight.MouseEnter += new EventHandler(pbNavRight_MouseEnter);
+            pbNavRight.MouseLeave += new EventHandler(pbNavRight_MouseLeave);
             frmmenu.Controls.Add(pbNavRight);
 
-            Bitmap leftarrow = Frogger.Properties.Resources.level_navigate_right;
+            leftarrow = Frogger.Properties.Resources.level_navigate_right;
             leftarrow.RotateFlip(RotateFlipType.Rotate180FlipY);
+            leftarrowselected = Frogger.Properties.Resources.level_navigate_selected_right;
+            leftarrowselected.RotateFlip(RotateFlipType.Rotate180FlipY);
 
             pbNavLeft = new PictureBox();
             pbNavLeft.Image = leftarrow;
-            pbNavLeft.Location = new Point(0 + 10, 200);
+            pbNavLeft.Location = new Point(0 + 10, preflvlprevwidth);
             pbNavLeft.SizeMode = PictureBoxSizeMode.AutoSize;
             pbNavLeft.Click += new EventHandler(pbNavLeft_Click);
+            pbNavLeft.MouseEnter += new EventHandler(pbNavLeft_MouseEnter);
+            pbNavLeft.MouseLeave += new EventHandler(pbNavLeft_MouseLeave);
             frmmenu.Controls.Add(pbNavLeft);
+        }
+
+        private void pbNavLeft_MouseLeave(object sender, EventArgs e)
+        {
+            pbNavLeft.Image = leftarrow;
+        }
+
+        private void pbNavLeft_MouseEnter(object sender, EventArgs e)
+        {
+            pbNavLeft.Image = leftarrowselected;
+        }
+
+        private void pbNavRight_MouseLeave(object sender, EventArgs e)
+        {
+            pbNavRight.Image = Frogger.Properties.Resources.level_navigate_right;
+        }
+
+        private void pbNavRight_MouseEnter(object sender, EventArgs e)
+        {
+            pbNavRight.Image = Frogger.Properties.Resources.level_navigate_selected_right;
         }
 
         /// <summary>

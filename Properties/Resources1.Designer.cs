@@ -165,6 +165,13 @@ namespace Frogger.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap level_navigate_selected_right {
+            get {
+                object obj = ResourceManager.GetObject("level_navigate_selected_right", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap live {
             get {
                 object obj = ResourceManager.GetObject("live", resourceCulture);
@@ -175,6 +182,13 @@ namespace Frogger.Properties {
         public static System.Drawing.Bitmap logo_frogger_reloaded {
             get {
                 object obj = ResourceManager.GetObject("logo_frogger_reloaded", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap selecteditem {
+            get {
+                object obj = ResourceManager.GetObject("selecteditem", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

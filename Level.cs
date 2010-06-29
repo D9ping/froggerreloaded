@@ -38,6 +38,14 @@ namespace Frogger
             }
         }
 
+        public Level(int width, int height)
+        {
+            this.displayWidth = width;
+            this.displayHeight = height;
+            roads = new List<int>();
+            rivirs = new List<int>();
+        }
+
         public string Naam
         {
             get
@@ -167,7 +175,7 @@ namespace Frogger
         /// </summary>
         /// <param name="g">The graphics component that should be used</param>
         /// <param name="locy">The y-coördinate the river is created at</param>
-        private void DrawRiver(Graphics g, int locy, int numcourses)
+        public void DrawRiver(Graphics g, int locy, int numcourses)
         {
             SolidBrush brushRiver = new SolidBrush(Color.Blue);
             if ((numcourses < 9) && (numcourses > 0))
@@ -186,7 +194,7 @@ namespace Frogger
         /// </summary>
         /// <param name="g">The graphics component that should be used</param>
         /// <param name="locy">The y-coördinate the road is created at</param>
-        private void DrawRoad(Graphics g, int locy)
+        public void DrawRoad(Graphics g, int locy)
         {
             SolidBrush brushRoad = new SolidBrush(Color.Black); // the color of the road
             SolidBrush brushRoadLine = new SolidBrush(Color.White); // the color of the lines on the road
