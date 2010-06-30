@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,8 +13,9 @@ namespace Frogger
     {
         private Level level;
         private FrmMenu frmmenu;
+        private Timer redrawtmr;
         private bool savinglevel = false, savedlevel, namealreadyexist = false, toolselected = false;
-        private int mouseY = 0;
+        private int mouseY = 0, mouseX = 0, selecteditemnr = -1;
 
         /// <summary>
         /// Creating an new instance of FrmLevelEditor.
@@ -34,15 +35,25 @@ namespace Frogger
             hovbtnOpen.HoverbuttonText = "Open";
             hovbtnOpen.SizeText = 24;
             hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
+            redrawtmr = new Timer();
+            redrawtmr.Enabled = false;
+            redrawtmr.Interval = 50;
+            redrawtmr.Tick += delegate(object sender, EventArgs e)
+            {
+                this.Refresh();
+                redrawtmr.Enabled = false;
+            };
         }
 
         /// <summary>
-        /// Back button pressed.
+        /// Back button pressed. Disable the redraw timer make main menu show up again.
+        /// And then close this form.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void hovbtnBack_Click(object sender, EventArgs e)
         {
+            redrawtmr.Enabled = false;
             frmmenu.Show();
             this.Close();
         }
@@ -61,17 +72,18 @@ namespace Frogger
         }
 
         /// <summary>
-        /// show FrmMenu again
+        /// Show FrmMenu again, make also sure redrawtmr is disabled.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void FrmLevelEditor_FormClosing(object sender, FormClosingEventArgs e)
         {
+            redrawtmr.Enabled = false;
             frmmenu.Show();
         }
 
         /// <summary>
-        /// paint
+        /// Draw a road on this panel.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -89,11 +101,12 @@ namespace Frogger
         /// <summary>
         /// Deselect all tools
         /// </summary>
-        private void DelectAllTools()
+        private void DeselectAllTools()
         {
             pnlAddRoad.BackgroundImage = null;
             pnlAddRivir.BackgroundImage = null;
             toolselected = false;
+            this.selecteditemnr = -1;
         }
 
         /// <summary>
@@ -103,12 +116,13 @@ namespace Frogger
         /// <param name="e"></param>
         private void StartDrag(object sender, MouseEventArgs e)
         {
-            DelectAllTools();
+            DeselectAllTools();
 
             Panel selectitem = (Panel)sender;
             selectitem.BackgroundImageLayout = ImageLayout.Stretch;
             selectitem.BackgroundImage = Frogger.Properties.Resources.selecteditem;
-            toolselected = true;
+            this.toolselected = true;
+            this.selecteditemnr = Convert.ToInt32(selectitem.Tag);
         }
 
         /// <summary>
@@ -122,6 +136,11 @@ namespace Frogger
             this.Refresh();
         }
 
+        /// <summary>
+        /// Draws the screen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrmLevelEditor_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -144,7 +163,7 @@ namespace Frogger
                 Rectangle rect = new Rectangle(new Point(panelTools.Width + margin, margin), new Size(this.ClientRectangle.Width - panelTools.Width - (margin * 2), this.ClientRectangle.Height - (margin * 2)));
                 g.DrawRectangle(Pens.Black, rect);
 
-                this.DelectAllTools();
+                this.DeselectAllTools();
 
                 this.hovbtnSave.Enabled = false;
                 this.hovbtnOpen.Enabled = false;
@@ -183,7 +202,7 @@ namespace Frogger
                     {
                         g.FillRectangle(Brushes.Orange, rect);
                         g.DrawString("Overwrite level?", new Font("Flubber", 32), Brushes.Black, new PointF(ClientRectangle.Width / 2, ClientRectangle.Height / 2));
-                        //todo
+                        //todo: add yes and no
                     }
                     else
                     {
@@ -206,6 +225,9 @@ namespace Frogger
             }
         }
 
+        /// <summary>
+        /// Calculate the position of the new road or rivir etc.
+        /// </summary>
         private int CalcPos(int loc)
         {
             int heightmarkplace = this.ClientRectangle.Height / 10;
@@ -226,6 +248,9 @@ namespace Frogger
             return pos;
         }
 
+        /// <summary>
+        /// Cancel to save level
+        /// </summary>
         private void hovbtnCancelSave_Click(object sender, EventArgs e)
         {
             savinglevel = false;
@@ -233,7 +258,7 @@ namespace Frogger
         }
 
         /// <summary>
-        /// Button save
+        /// Button save file clicked
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -245,17 +270,21 @@ namespace Frogger
                 namealreadyexist = true;
             }
 
-            //todo
-
-            savedlevel = true;
+            savedlevel = level.SaveDesign(this.bigTextboxFilename.Text);
             this.Refresh();
         }
 
+        /// <summary>
+        /// End scaling window, call paint event
+        /// </summary>
         private void FrmLevelEditor_ResizeEnd(object sender, EventArgs e)
         {
             this.Refresh();
         }
 
+        /// <summary>
+        /// There is clicked in the leveleditor, figure out if a tool is selected
+        /// if so what tools and where then place it.
         private void FrmLevelEditor_Click(object sender, EventArgs e)
         {
             if (savedlevel)
@@ -266,21 +295,37 @@ namespace Frogger
             }
             if (toolselected)
             {
-                if (mouseY >= 0 && mouseY <= this.ClientRectangle.Height)
+                if (mouseY >= 0 && mouseY <= this.ClientRectangle.Height && mouseX >= this.panelTools.Width)
                 {
                     int newpos = CalcPos(mouseY);
-                    this.level.AddRivir(newpos);
-
-                    MessageBox.Show(mouseY.ToString());
+                    switch (selecteditemnr)
+                    {
+                        case 1:
+                            this.level.AddRoad(newpos);
+                            this.DeselectAllTools();
+                            break;
+                        case 2:
+                            this.level.AddRivir(newpos);
+                            this.DeselectAllTools();
+                            break;
+                        default:
+                            //add nothing
+                            break;
+                    }
                 }
             }
         }
 
+        /// <summary>
+        /// mouse is moved
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrmLevelEditor_MouseMove(object sender, MouseEventArgs e)
         {
-            mouseY = e.Y;
-            this.Refresh();
+            this.mouseX = e.X;
+            this.mouseY = e.Y;
+            redrawtmr.Enabled = true;
         }
-
     }
 }

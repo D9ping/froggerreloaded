@@ -128,6 +128,16 @@ namespace Frogger
             //throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Save the level design to a xml file with a the lvl extension.
+        /// </summary>
+        /// <returns>true if succeded</returns>
+        public bool SaveDesign(string newfilename)
+        {
+            //TODO add logic
+            return true;
+        }
+
         public int GetPosRivirs(int nr)
         {
             return this.rivirs[nr];
