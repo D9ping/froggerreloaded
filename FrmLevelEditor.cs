@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Frogger
 {
@@ -14,7 +10,7 @@ namespace Frogger
         private Level level;
         private FrmMenu frmmenu;
         private Timer redrawtmr;
-        private bool savinglevel = false, savedlevel, namealreadyexist = false, toolselected = false;
+        private bool savinglevel = false, savedlevel, namealreadyexist = false, toolselected = false, openinglevel = false;
         private int mouseY = 0, mouseX = 0, selecteditemnr = -1;
 
         /// <summary>
@@ -26,7 +22,6 @@ namespace Frogger
             this.frmmenu = frmmenu;
 
             InitializeComponent();
-            this.level = new Level(this.ClientRectangle.Width, this.ClientRectangle.Height);
 
             hovbtnBack.HoverbuttonText = "Back";
             hovbtnBack.SizeText = 24;
@@ -34,6 +29,9 @@ namespace Frogger
             hovbtnSave.SizeText = 24;
             hovbtnOpen.HoverbuttonText = "Open";
             hovbtnOpen.SizeText = 24;
+            
+            this.level = new Level(this.ClientRectangle.Width, this.ClientRectangle.Height);
+
             hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
             redrawtmr = new Timer();
             redrawtmr.Enabled = false;
@@ -154,7 +152,7 @@ namespace Frogger
 
                 Rectangle rect1 = new Rectangle(new Point(0, newlocy ), new Size(this.ClientRectangle.Width, heightmarkplace));
                 g.DrawRectangle(Pens.Green, rect1);
-                g.FillRectangle(Brushes.LightYellow, rect1);
+                g.FillRectangle(Brushes.LightGreen, rect1);
             }
 
             if (savinglevel)
@@ -164,11 +162,7 @@ namespace Frogger
                 g.DrawRectangle(Pens.Black, rect);
 
                 this.DeselectAllTools();
-
-                this.hovbtnSave.Enabled = false;
-                this.hovbtnOpen.Enabled = false;
-                this.pnlAddRivir.Enabled = false;
-                this.pnlAddRoad.Enabled = false;
+                this.DisableOpenSaveEtc();
 
                 if (!savedlevel)
                 {
@@ -211,6 +205,20 @@ namespace Frogger
                     }
                 }
             }
+            else if (openinglevel)
+            {
+                int margin = 20;
+                Rectangle rectopenbox = new Rectangle(new Point(panelTools.Width + margin, margin), new Size(this.ClientRectangle.Width - panelTools.Width - (margin * 2), this.ClientRectangle.Height - (margin * 2)));
+                g.DrawRectangle(Pens.Black, rectopenbox);
+                g.FillRectangle(Brushes.Orange, rectopenbox);
+                this.DeselectAllTools();
+                this.DisableOpenSaveEtc();
+
+                hovbtnOpenFile.Visible = true;
+                hovbtnOpenFile.HoverbuttonText = "Open";
+
+                //level = new Level("basic1", this.ClientRectangle.Width, this.ClientRectangle.Height - 2); //weird little correction of 2px needed..
+            }
             else
             {
                 this.hovbtnSave.Enabled = true;
@@ -222,7 +230,17 @@ namespace Frogger
                 this.lblExtension.Visible = false;
                 this.hovbtnSaveFile.Visible = false;
                 this.hovbtnCancelSave.Visible = false;
+                this.hovbtnOpenFile.Visible = false;
             }
+        }
+
+        private void DisableOpenSaveEtc()
+        {
+            this.hovbtnSave.Enabled = false;
+            this.hovbtnOpen.Enabled = false;
+            this.pnlAddRivir.Enabled = false;
+            this.pnlAddRoad.Enabled = false;
+                
         }
 
         /// <summary>
@@ -264,12 +282,12 @@ namespace Frogger
         /// <param name="e"></param>
         private void hovbtnSaveFile_Click(object sender, EventArgs e)
         {
+            string appdir = Path.GetDirectoryName(Application.ExecutablePath);
             string newfile = bigTextboxFilename.Text + ".lvl";
-            if (File.Exists(newfile))
+            if ( File.Exists(Path.Combine(appdir, newfile)))
             {
                 namealreadyexist = true;
             }
-
             savedlevel = level.SaveDesign(this.bigTextboxFilename.Text);
             this.Refresh();
         }
@@ -326,6 +344,19 @@ namespace Frogger
             this.mouseX = e.X;
             this.mouseY = e.Y;
             redrawtmr.Enabled = true;
+        }
+
+        private void hovbtnOpen_Click(object sender, EventArgs e)
+        {
+            openinglevel = true;
+            this.Refresh();
+        }
+
+        private void hovbtnOpenFile_Click(object sender, EventArgs e)
+        {
+            openinglevel = false;
+            this.level = new Level("basic1", this.ClientRectangle.Width, ClientRectangle.Height - 2);
+            this.Refresh();
         }
     }
 }
