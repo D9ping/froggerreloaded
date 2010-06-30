@@ -38,9 +38,9 @@
             this.hovbtnCancelSave = new Frogger.HoverButton();
             this.hovbtnSaveFile = new Frogger.HoverButton();
             this.bigTextboxFilename = new Frogger.BigTextbox();
+            this.hovbtnOpen = new Frogger.HoverButton();
             this.hovbtnSave = new Frogger.HoverButton();
             this.hovbtnBack = new Frogger.HoverButton();
-            this.hovbtnOpen = new Frogger.HoverButton();
             this.panelTools.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,7 +66,7 @@
             this.lblInstructions.Name = "lblInstructions";
             this.lblInstructions.Size = new System.Drawing.Size(153, 66);
             this.lblInstructions.TabIndex = 8;
-            this.lblInstructions.Text = "Drag and drop where you want a rivir or road";
+            this.lblInstructions.Text = "Select what you want to place";
             // 
             // pnlAddRivir
             // 
@@ -76,10 +76,11 @@
             this.pnlAddRivir.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlAddRivir.Font = new System.Drawing.Font("Flubber", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pnlAddRivir.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pnlAddRivir.Location = new System.Drawing.Point(7, 180);
+            this.pnlAddRivir.Location = new System.Drawing.Point(7, 165);
             this.pnlAddRivir.Name = "pnlAddRivir";
             this.pnlAddRivir.Size = new System.Drawing.Size(137, 86);
             this.pnlAddRivir.TabIndex = 5;
+            this.pnlAddRivir.Tag = "2";
             this.pnlAddRivir.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StartDrag);
             // 
             // pnlAddRoad
@@ -90,10 +91,11 @@
             this.pnlAddRoad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlAddRoad.Font = new System.Drawing.Font("Flubber", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pnlAddRoad.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.pnlAddRoad.Location = new System.Drawing.Point(7, 85);
+            this.pnlAddRoad.Location = new System.Drawing.Point(7, 70);
             this.pnlAddRoad.Name = "pnlAddRoad";
             this.pnlAddRoad.Size = new System.Drawing.Size(137, 89);
             this.pnlAddRoad.TabIndex = 4;
+            this.pnlAddRoad.Tag = "1";
             this.pnlAddRoad.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlAddRoad_Paint);
             this.pnlAddRoad.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StartDrag);
             // 
@@ -160,6 +162,19 @@
             this.bigTextboxFilename.TabIndex = 1;
             this.bigTextboxFilename.Visible = false;
             // 
+            // hovbtnOpen
+            // 
+            this.hovbtnOpen.AllowDrop = true;
+            this.hovbtnOpen.BackColor = System.Drawing.Color.LimeGreen;
+            this.hovbtnOpen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.hovbtnOpen.ForeColor = System.Drawing.Color.Black;
+            this.hovbtnOpen.HoverbuttonText = "?";
+            this.hovbtnOpen.Location = new System.Drawing.Point(7, 295);
+            this.hovbtnOpen.Margin = new System.Windows.Forms.Padding(0);
+            this.hovbtnOpen.Name = "hovbtnOpen";
+            this.hovbtnOpen.Size = new System.Drawing.Size(141, 72);
+            this.hovbtnOpen.TabIndex = 9;
+            // 
             // hovbtnSave
             // 
             this.hovbtnSave.AllowDrop = true;
@@ -187,19 +202,6 @@
             this.hovbtnBack.Size = new System.Drawing.Size(141, 75);
             this.hovbtnBack.TabIndex = 6;
             // 
-            // hovbtnOpen
-            // 
-            this.hovbtnOpen.AllowDrop = true;
-            this.hovbtnOpen.BackColor = System.Drawing.Color.LimeGreen;
-            this.hovbtnOpen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.hovbtnOpen.ForeColor = System.Drawing.Color.Black;
-            this.hovbtnOpen.HoverbuttonText = "?";
-            this.hovbtnOpen.Location = new System.Drawing.Point(7, 295);
-            this.hovbtnOpen.Margin = new System.Windows.Forms.Padding(0);
-            this.hovbtnOpen.Name = "hovbtnOpen";
-            this.hovbtnOpen.Size = new System.Drawing.Size(141, 72);
-            this.hovbtnOpen.TabIndex = 9;
-            // 
             // FrmLevelEditor
             // 
             this.AllowDrop = true;
@@ -213,15 +215,15 @@
             this.Controls.Add(this.hovbtnSaveFile);
             this.Controls.Add(this.bigTextboxFilename);
             this.Controls.Add(this.panelTools);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "FrmLevelEditor";
             this.Text = "FroggerReloaded Level Editor";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmLevelEditor_Paint);
-            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.FrmLevelEditor_DragDrop);
             this.Click += new System.EventHandler(this.FrmLevelEditor_Click);
-            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.FrmLevelEditor_DragEnter);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmLevelEditor_FormClosing);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FrmLevelEditor_MouseMove);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmLevelEditor_KeyDown);
             this.ResizeEnd += new System.EventHandler(this.FrmLevelEditor_ResizeEnd);
             this.panelTools.ResumeLayout(false);

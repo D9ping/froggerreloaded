@@ -52,6 +52,10 @@ namespace Frogger
             {
                 return this.naam;
             }
+            set
+            {
+                this.naam = value;
+            }
         }
 
         public bool HasError
@@ -134,6 +138,29 @@ namespace Frogger
             return this.roads[nr];
         }
 
+        public void AddRivir(int y)
+        {
+            if ((y >= 0) && (y <= displayHeight))
+            {
+                if (!CheckIfAdded(this.rivirs, y))
+                {
+                    this.rivirs.Add(y);
+                }
+                
+            }
+        }
+
+        public void AddRoad(int y)
+        {
+            if ((y >= 0) && (y <= displayHeight))
+            {
+                if (!CheckIfAdded(this.roads, y))
+                {
+                    this.roads.Add(y);
+                }
+            }
+        }
+
         /// <summary>
         /// Calculate the height of the rivir.
         /// </summary>
@@ -142,6 +169,19 @@ namespace Frogger
         {
             int hrivir = (displayHeight / 10) * baans;
             return hrivir;
+        }
+
+
+        private bool CheckIfAdded(List<int> itemlist, int locy)
+        {
+            foreach (int cury in itemlist)
+            {
+                if (locy == cury)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>

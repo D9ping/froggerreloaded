@@ -11,10 +11,10 @@ namespace Frogger
 {
     public partial class FrmLevelEditor : Form
     {
-        //private GameEngine game;
-        private bool savinglevel = false, savedlevel, namealreadyexist = false;
         private Level level;
         private FrmMenu frmmenu;
+        private bool savinglevel = false, savedlevel, namealreadyexist = false, toolselected = false;
+        private int mouseY = 0;
 
         /// <summary>
         /// Creating an new instance of FrmLevelEditor.
@@ -25,8 +25,7 @@ namespace Frogger
             this.frmmenu = frmmenu;
 
             InitializeComponent();
-            //game = new GameEngine(this);
-            this.level = new Level(this.ClientRectangle.Width - this.panelTools.ClientRectangle.Width, this.ClientRectangle.Height);
+            this.level = new Level(this.ClientRectangle.Width, this.ClientRectangle.Height);
 
             hovbtnBack.HoverbuttonText = "Back";
             hovbtnBack.SizeText = 24;
@@ -71,6 +70,11 @@ namespace Frogger
             frmmenu.Show();
         }
 
+        /// <summary>
+        /// paint
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pnlAddRoad_Paint(object sender, PaintEventArgs e)
         {
             SolidBrush brushRoadLine = new SolidBrush(Color.White); // the color of the lines on the road
@@ -82,10 +86,14 @@ namespace Frogger
             }
         }
 
+        /// <summary>
+        /// Deselect all tools
+        /// </summary>
         private void DelectAllTools()
         {
             pnlAddRoad.BackgroundImage = null;
             pnlAddRivir.BackgroundImage = null;
+            toolselected = false;
         }
 
         /// <summary>
@@ -100,13 +108,7 @@ namespace Frogger
             Panel selectitem = (Panel)sender;
             selectitem.BackgroundImageLayout = ImageLayout.Stretch;
             selectitem.BackgroundImage = Frogger.Properties.Resources.selecteditem;
-
-            selectitem.DoDragDrop(1, DragDropEffects.Copy);
-        }
-
-        private void FrmLevelEditor_DragDrop(object sender, DragEventArgs e)
-        {
-            //MessageBox.Show("loc. X:" + e.X + " Y:" + e.Y);
+            toolselected = true;
         }
 
         /// <summary>
@@ -120,21 +122,27 @@ namespace Frogger
             this.Refresh();
         }
 
-        private void FrmLevelEditor_DragEnter(object sender, DragEventArgs e)
-        {
-            e.Effect = DragDropEffects.Copy;
-        }
-
         private void FrmLevelEditor_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+
+            level.Draw(g);
+
+            if (toolselected)
+            {
+                int heightmarkplace = this.ClientRectangle.Height / 10;
+                int newlocy = CalcPos(mouseY);
+
+                Rectangle rect1 = new Rectangle(new Point(0, newlocy ), new Size(this.ClientRectangle.Width, heightmarkplace));
+                g.DrawRectangle(Pens.Green, rect1);
+                g.FillRectangle(Brushes.LightYellow, rect1);
+            }
 
             if (savinglevel)
             {
                 int margin = 20;
                 Rectangle rect = new Rectangle(new Point(panelTools.Width + margin, margin), new Size(this.ClientRectangle.Width - panelTools.Width - (margin * 2), this.ClientRectangle.Height - (margin * 2)));
                 g.DrawRectangle(Pens.Black, rect);
-                
 
                 this.DelectAllTools();
 
@@ -174,7 +182,7 @@ namespace Frogger
                     if (namealreadyexist)
                     {
                         g.FillRectangle(Brushes.Orange, rect);
-                        g.DrawString("overwrite level?", new Font("Flubber", 32), Brushes.Black, new PointF(ClientRectangle.Width / 2, ClientRectangle.Height / 2));
+                        g.DrawString("Overwrite level?", new Font("Flubber", 32), Brushes.Black, new PointF(ClientRectangle.Width / 2, ClientRectangle.Height / 2));
                         //todo
                     }
                     else
@@ -198,12 +206,37 @@ namespace Frogger
             }
         }
 
+        private int CalcPos(int loc)
+        {
+            int heightmarkplace = this.ClientRectangle.Height / 10;
+            int num = 0;
+            for (int i = loc; i >= heightmarkplace; i -= heightmarkplace)
+            {
+                num++;
+            }
+            if (num == 0)
+            {
+                num = 1;
+            }
+            else if (num >= 9)
+            {
+                num = 8;
+            }
+            int pos = heightmarkplace * num;
+            return pos;
+        }
+
         private void hovbtnCancelSave_Click(object sender, EventArgs e)
         {
             savinglevel = false;
             this.Refresh();
         }
 
+        /// <summary>
+        /// Button save
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void hovbtnSaveFile_Click(object sender, EventArgs e)
         {
             string newfile = bigTextboxFilename.Text + ".lvl";
@@ -231,6 +264,22 @@ namespace Frogger
                 savinglevel = false;
                 this.Refresh();
             }
+            if (toolselected)
+            {
+                if (mouseY >= 0 && mouseY <= this.ClientRectangle.Height)
+                {
+                    int newpos = CalcPos(mouseY);
+                    this.level.AddRivir(newpos);
+
+                    MessageBox.Show(mouseY.ToString());
+                }
+            }
+        }
+
+        private void FrmLevelEditor_MouseMove(object sender, MouseEventArgs e)
+        {
+            mouseY = e.Y;
+            this.Refresh();
         }
 
     }
