@@ -29,7 +29,7 @@ namespace Frogger
             hovbtnSave.SizeText = 24;
             hovbtnOpen.HoverbuttonText = "Open";
             hovbtnOpen.SizeText = 24;
-            
+
             this.level = new Level(this.ClientRectangle.Width, this.ClientRectangle.Height);
 
             hovbtnBack.Click += new EventHandler(hovbtnBack_Click);
@@ -150,7 +150,7 @@ namespace Frogger
                 int heightmarkplace = this.ClientRectangle.Height / 10;
                 int newlocy = CalcPos(mouseY);
 
-                Rectangle rect1 = new Rectangle(new Point(0, newlocy ), new Size(this.ClientRectangle.Width, heightmarkplace));
+                Rectangle rect1 = new Rectangle(new Point(0, newlocy), new Size(this.ClientRectangle.Width, heightmarkplace));
                 g.DrawRectangle(Pens.Green, rect1);
                 g.FillRectangle(Brushes.LightGreen, rect1);
             }
@@ -214,10 +214,13 @@ namespace Frogger
                 this.DeselectAllTools();
                 this.DisableOpenSaveEtc();
 
+                this.lbxFiles.Visible = true;
+                int padding = 50;
+                this.lbxFiles.Location = new Point(rectopenbox.X + padding, rectopenbox.Y + padding);
+                this.lbxFiles.Size = new Size(rectopenbox.Width - (padding*2), rectopenbox.Height - this.hovbtnOpenFile.Height - (padding * 2));
+
                 hovbtnOpenFile.Visible = true;
                 hovbtnOpenFile.HoverbuttonText = "Open";
-
-                //level = new Level("basic1", this.ClientRectangle.Width, this.ClientRectangle.Height - 2); //weird little correction of 2px needed..
             }
             else
             {
@@ -231,6 +234,7 @@ namespace Frogger
                 this.hovbtnSaveFile.Visible = false;
                 this.hovbtnCancelSave.Visible = false;
                 this.hovbtnOpenFile.Visible = false;
+                this.lbxFiles.Visible = false;
             }
         }
 
@@ -240,7 +244,7 @@ namespace Frogger
             this.hovbtnOpen.Enabled = false;
             this.pnlAddRivir.Enabled = false;
             this.pnlAddRoad.Enabled = false;
-                
+
         }
 
         /// <summary>
@@ -284,7 +288,7 @@ namespace Frogger
         {
             string appdir = Path.GetDirectoryName(Application.ExecutablePath);
             string newfile = bigTextboxFilename.Text + ".lvl";
-            if ( File.Exists(Path.Combine(appdir, newfile)))
+            if (File.Exists(Path.Combine(appdir, newfile)))
             {
                 namealreadyexist = true;
             }
@@ -348,6 +352,16 @@ namespace Frogger
 
         private void hovbtnOpen_Click(object sender, EventArgs e)
         {
+            string lvldir = Path.GetDirectoryName(Application.ExecutablePath) + @"\levels\";
+            if (Directory.Exists(lvldir))
+            {
+                DirectoryInfo lvldirinfo = new DirectoryInfo(lvldir);
+                this.lbxFiles.Items.AddRange(lvldirinfo.GetFiles("*.lvl"));
+            }
+            else 
+            {
+                throw new Exception("level folder not found.");
+            }
             openinglevel = true;
             this.Refresh();
         }
@@ -355,7 +369,7 @@ namespace Frogger
         private void hovbtnOpenFile_Click(object sender, EventArgs e)
         {
             openinglevel = false;
-            this.level = new Level("basic1", this.ClientRectangle.Width, ClientRectangle.Height - 2);
+            //this.level = new Level("basic1", this.ClientRectangle.Width, ClientRectangle.Height - 2);
             this.Refresh();
         }
     }

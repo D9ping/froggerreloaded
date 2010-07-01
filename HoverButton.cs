@@ -49,7 +49,7 @@ namespace Frogger
         /// <summary>
         /// Constructor for creating HoverButton at runtime.
         /// </summary>
-        /// <param name="text">the text to dispaly on the button.</param>
+        /// <param name="text">the text to display on the button.</param>
         public HoverButton(string text)
         {
             InitializeComponent();

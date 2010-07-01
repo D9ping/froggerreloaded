@@ -20,10 +20,11 @@ namespace Frogger
         private string naam;
 
         /// <summary>
-        /// Constructor creating a new level obj.
+        /// Creating an new instance of the level class.
         /// </summary>
-        /// <param name="width">the width of the screen/level width to draw</param>
-        /// <param name="height">the height of the screen/level height to draw</param>
+        /// <param name="lvlnaam">The name of the level (same as filename without extension)</param>
+        /// <param name="width">The width of the screen/level width to draw.</param>
+        /// <param name="height">The height of the screen/level height to draw.</param>
         public Level(string lvlnaam, int width, int height)
         {
             this.displayWidth = width;
@@ -38,12 +39,17 @@ namespace Frogger
             }
         }
 
+        /// <summary>
+        /// Creating an new instance of the level class.
+        /// </summary>
+        /// <param name="width">The width of the screen/level width to draw.</param>
+        /// <param name="height">The height of the screen/level height to draw.</param>
         public Level(int width, int height)
         {
             this.displayWidth = width;
             this.displayHeight = height;
-            roads = new List<int>();
-            rivirs = new List<int>();
+            this.roads = new List<int>();
+            this.rivirs = new List<int>();
         }
 
         public string Naam
@@ -109,11 +115,13 @@ namespace Frogger
                     {
                         if (reader.Name == "road")
                         {
-                            roads.Add(this.displayHeight - GetHeightRoad() * (reader.ReadElementContentAsInt()+1));
+                            int pos = reader.ReadElementContentAsInt();
+                            roads.Add(this.displayHeight - GetHeightRoad() * (pos+1));
                         }
                         else if (reader.Name == "rivir")
                         {
-                            rivirs.Add(this.displayHeight - GetHeightRivir(1) * (reader.ReadElementContentAsInt()+1));
+                            int pos = reader.ReadElementContentAsInt();
+                            rivirs.Add(this.displayHeight - GetHeightRivir(1) * (pos+1));
                         }
                     }
                 }
@@ -132,10 +140,84 @@ namespace Frogger
         /// Save the level design to a xml file with a the lvl extension.
         /// </summary>
         /// <returns>true if succeded</returns>
-        public bool SaveDesign(string newfilename)
+        public bool SaveDesign(string levelname)
         {
-            //TODO add logic
-            return true;
+            char[] forbiddenchars = "?<>:*|\\/".ToCharArray();
+            for (int pos = 0; (pos < levelname.Length) && (pos <= 100); pos++)
+            {
+                for (int fc = 0; fc < forbiddenchars.Length; fc++)
+                {
+                    if (levelname[pos] == forbiddenchars[fc])
+                    {
+                        return false; //error has forbidden character
+                    }
+                }
+            }
+              string lvlsdir = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels");
+              if (Directory.Exists(lvlsdir))
+              {
+                  string filenamepath = Path.Combine(lvlsdir, levelname + ".lvl");
+                  XmlWriter xmlwr = null;
+                  try
+                  {
+                      xmlwr = new XmlTextWriter(filenamepath, System.Text.Encoding.UTF8);
+                      xmlwr.WriteStartDocument();
+
+                      xmlwr.WriteStartElement("level");
+                      xmlwr.WriteString("\r\n");
+
+                      int placeheight = this.displayHeight / 10;
+
+                      foreach (int locy in this.roads)
+                      {
+                          try
+                          {
+                              int posroad = (10 - (locy / placeheight))-1;
+                              xmlwr.WriteStartElement("road");
+                              xmlwr.WriteValue(posroad);
+                              xmlwr.WriteEndElement();
+                              xmlwr.WriteString("\r\n");
+                          }
+                          catch (Exception)
+                          {
+                              return false;//error  placeheight prob.
+                          }
+                      }
+                      foreach (int locy in this.rivirs)
+                      {
+                          try
+                          {
+                              int posrivir = (10 - (locy / placeheight))-1;
+                              xmlwr.WriteStartElement("rivir");
+                              xmlwr.WriteValue(posrivir);
+                              xmlwr.WriteEndElement();
+                              xmlwr.WriteString("\r\n");
+                          }
+                          catch (Exception)
+                          {
+                              return false;//error  placeheight prob.
+                          }
+                      }
+                   
+                      xmlwr.WriteEndElement();
+                      xmlwr.WriteEndDocument();
+                  }
+                  catch (IOException)
+                  {
+                      return false;//error: no write access/permission prob.
+                  }
+                  finally
+                  {
+                      xmlwr.Flush();
+                      xmlwr.Close();
+                  }
+
+                  return true;
+              }
+              else
+              {
+                  return false;//error level folder gona.
+              }
         }
 
         public int GetPosRivirs(int nr)
@@ -148,22 +230,43 @@ namespace Frogger
             return this.roads[nr];
         }
 
+        /// <summary>
+        /// Adds a rivir to the rivir list
+        /// if the rivir at pos. is not aleady added.
+        /// And there is no road at the same y position, if so
+        /// remove the road first.
+        /// </summary>
+        /// <param name="y">y position to add rivir</param>
         public void AddRivir(int y)
         {
             if ((y >= 0) && (y <= displayHeight))
             {
+                if (CheckIfAdded(this.roads, y))
+                {
+                    this.roads.Remove(y);
+                }
                 if (!CheckIfAdded(this.rivirs, y))
                 {
                     this.rivirs.Add(y);
                 }
-                
             }
         }
 
+        /// <summary>
+        /// Adds a road to the road list
+        /// if the road at pos. is not already added.
+        /// and there is no rivir at this position, if so
+        /// remove the rivir first.
+        /// </summary>
+        /// <param name="y">y position to add road</param>
         public void AddRoad(int y)
         {
             if ((y >= 0) && (y <= displayHeight))
             {
+                if (CheckIfAdded(this.rivirs, y))
+                {
+                    this.rivirs.Remove(y);
+                }
                 if (!CheckIfAdded(this.roads, y))
                 {
                     this.roads.Add(y);
@@ -181,7 +284,12 @@ namespace Frogger
             return hrivir;
         }
 
-
+        /// <summary>
+        /// Check if item at locy is in list 
+        /// </summary>
+        /// <param name="itemlist">the list to check</param>
+        /// <param name="locy">to location y pos.</param>
+        /// <returns>true if it is in the list</returns>
         private bool CheckIfAdded(List<int> itemlist, int locy)
         {
             foreach (int cury in itemlist)
