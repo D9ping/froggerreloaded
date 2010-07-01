@@ -18,7 +18,7 @@ namespace Frogger
         /// <summary>
         /// The content
         /// </summary>
-        public string Text
+        override public string Text
         {
             get
             {

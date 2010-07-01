@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace Frogger
 {
@@ -12,7 +13,8 @@ namespace Frogger
         private Timer redrawtmr;
         private bool savinglevel = false, savedlevel, namealreadyexist = false, toolselected = false, openinglevel = false;
         private int mouseY = 0, mouseX = 0, selecteditemnr = -1;
-
+		private const int margin = 20, padding = 50;
+		
         /// <summary>
         /// Creating an new instance of FrmLevelEditor.
         /// </summary>
@@ -157,7 +159,7 @@ namespace Frogger
 
             if (savinglevel)
             {
-                int margin = 20;
+                
                 Rectangle rect = new Rectangle(new Point(panelTools.Width + margin, margin), new Size(this.ClientRectangle.Width - panelTools.Width - (margin * 2), this.ClientRectangle.Height - (margin * 2)));
                 g.DrawRectangle(Pens.Black, rect);
 
@@ -214,10 +216,7 @@ namespace Frogger
                 this.DeselectAllTools();
                 this.DisableOpenSaveEtc();
 
-                this.lbxFiles.Visible = true;
-                int padding = 50;
-                this.lbxFiles.Location = new Point(rectopenbox.X + padding, rectopenbox.Y + padding);
-                this.lbxFiles.Size = new Size(rectopenbox.Width - (padding*2), rectopenbox.Height - this.hovbtnOpenFile.Height - (padding * 2));
+                this.lbxFiles.Visible = true;                                
 
                 hovbtnOpenFile.Visible = true;
                 hovbtnOpenFile.HoverbuttonText = "Open";
@@ -356,12 +355,29 @@ namespace Frogger
             if (Directory.Exists(lvldir))
             {
                 DirectoryInfo lvldirinfo = new DirectoryInfo(lvldir);
-                this.lbxFiles.Items.AddRange(lvldirinfo.GetFiles("*.lvl"));
+				List<FileInfo> files = new List<FileInfo>();
+				List<string> levelnamen = new List<string>();
+				files.AddRange( lvldirinfo.GetFiles("*.lvl"));
+				for (int i = 0; i < files.Count; i++) {
+					if (!files[i].IsReadOnly)
+					{
+						levelnamen.Add(files[i].Name.Substring(0,files[i].Name.Length-4));
+					}
+				}
+				foreach (string levelnaam in levelnamen) {
+					this.lbxFiles.Items.Add(levelnaam);			
+				}				
             }
             else 
             {
                 throw new Exception("level folder not found.");
             }
+			
+			this.lbxFiles.Location = new Point(panelTools.Width + margin + padding, margin + padding);
+			int widthrectopenbox = this.ClientRectangle.Width - panelTools.Width - (margin * 2) - (padding*2);
+			int heightrectopenbox = this.ClientRectangle.Height - (margin * 2) - this.hovbtnOpenFile.Height - (padding * 2);
+            this.lbxFiles.Size = new Size(widthrectopenbox, heightrectopenbox);
+			
             openinglevel = true;
             this.Refresh();
         }
@@ -369,7 +385,7 @@ namespace Frogger
         private void hovbtnOpenFile_Click(object sender, EventArgs e)
         {
             openinglevel = false;
-            //this.level = new Level("basic1", this.ClientRectangle.Width, ClientRectangle.Height - 2);
+            this.level = new Level(lbxFiles.SelectedItem.ToString() , this.ClientRectangle.Width, ClientRectangle.Height - 2);
             this.Refresh();
         }
     }
