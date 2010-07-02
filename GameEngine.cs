@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009  Tom Postma, Gertjan Buijs
+Copyright (C) 2009-2010  Tom Postma, Gertjan Buijs
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,17 +17,15 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 #define windows //platform
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using System.Data;
-using System.IO;
-//using System.Threading;
-
 namespace Frogger
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Drawing;
+	using System.Windows.Forms;
+	using System.Runtime.InteropServices;
+	using System.Data;
+	using System.IO;
 
     public class GameEngine
     {

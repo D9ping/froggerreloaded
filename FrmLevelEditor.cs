@@ -1,11 +1,30 @@
-using System;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using System.Collections.Generic;
+/*
+Copyright (C) 2009-2010  Tom Postma
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
+#define windows //platform
 
 namespace Frogger
 {
+	using System;
+	using System.Drawing;
+	using System.IO;
+	using System.Windows.Forms;
+	using System.Collections.Generic;
+	
     public partial class FrmLevelEditor : Form
     {
         private Level level;
@@ -349,9 +368,21 @@ namespace Frogger
             redrawtmr.Enabled = true;
         }
 
+		/// <summary>
+		/// Their is requested to open a level.
+		/// -Read all .lvl files in the level directory and added them to lbxFiles.
+		///  except for readonly levels.
+		/// -Put lbxFiles on the right place with the right size.
+		/// </summary>
+		/// <param name="sender">
+		/// A <see cref="System.Object"/>
+		/// </param>
+		/// <param name="e">
+		/// A <see cref="EventArgs"/>
+		/// </param>
         private void hovbtnOpen_Click(object sender, EventArgs e)
         {
-            string lvldir = Path.GetDirectoryName(Application.ExecutablePath) + @"\levels\";
+            string lvldir = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels" );
             if (Directory.Exists(lvldir))
             {
                 DirectoryInfo lvldirinfo = new DirectoryInfo(lvldir);
@@ -359,10 +390,14 @@ namespace Frogger
 				List<string> levelnamen = new List<string>();
 				files.AddRange( lvldirinfo.GetFiles("*.lvl"));
 				for (int i = 0; i < files.Count; i++) {
+#if windows
 					if (!files[i].IsReadOnly)
 					{
 						levelnamen.Add(files[i].Name.Substring(0,files[i].Name.Length-4));
 					}
+#elif linux
+					levelnamen.Add(files[i].Name.Substring(0,files[i].Name.Length-4));
+#endif
 				}
 				foreach (string levelnaam in levelnamen) {
 					this.lbxFiles.Items.Add(levelnaam);			

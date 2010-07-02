@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009  Tom Postma, Gertjan Buijs
+Copyright (C) 2009-2010  Tom Postma, Gertjan Buijs
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,16 +17,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 #define windows //platform
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
-using System.Windows.Forms;
-using System.IO;
-using System.Media;
-
 namespace Frogger
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Text;
+	using System.Drawing;
+	using System.Windows.Forms;
+	using System.IO;
+	using System.Media;
+	
     public class Frog : MovingObject
     {
         #region Fields (7)

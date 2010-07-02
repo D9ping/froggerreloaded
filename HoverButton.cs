@@ -15,18 +15,20 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+
 #define windows  //platvorm
-using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Drawing.Drawing2D;
-using System.Threading;
-using System.Runtime.InteropServices;
-using System.IO;
 
 namespace Frogger
 {
+	using System;
+	using System.ComponentModel;
+	using System.Drawing;
+	using System.Windows.Forms;
+	using System.Drawing.Drawing2D;
+	using System.Threading;
+	using System.Runtime.InteropServices;
+	using System.IO;
+	
     public partial class HoverButton : UserControl //System.ComponentModel.Component
     {
         private bool highlighted = false, clicked = false;

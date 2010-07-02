@@ -15,16 +15,17 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.IO;
 
+using System;
 namespace Frogger
 {
+	using System.Collections.Generic;
+	using System.Windows.Forms;
+	using System.Runtime.InteropServices;
+	using System.Data.SqlClient;
+	using System.Drawing;
+	using System.IO;
+	
     public static class ResizesResources
     {
         //een soort lijst van geresized images, scheelt cpu power!
@@ -84,11 +85,11 @@ namespace Frogger
         /// <returns>true if it exist or font directory could not be found. false if font does not exist in the font direcotory.</returns>
         static public bool CheckFontInstalled()
         {
-            string fontdir = System.Environment.GetEnvironmentVariable("windir") + "\\fonts";
+            string fontdir = Path.Combine(System.Environment.GetEnvironmentVariable("windir"), "fonts");
             
             if (Directory.Exists(fontdir))
             {
-                if (File.Exists(fontdir+"\\Flubber.ttf"))
+                if (File.Exists(Path.Combine(fontdir,"Flubber.ttf")))
                 {
                     return true;
                 }

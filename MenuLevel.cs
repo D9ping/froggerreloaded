@@ -1,10 +1,28 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
+﻿/*
+Copyright (C) 2009-2010  Tom Postma, Gertjan Buijs
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
 
 namespace Frogger
 {
+	using System;
+	using System.Drawing;
+	using System.IO;
+	using System.Windows.Forms;
+	
     /// <summary>
     /// Draw the level selection.
     /// </summary>
@@ -154,7 +172,7 @@ namespace Frogger
         {
             if (viewindexlvl < this.lvlpreviews.Length - 3)
             {
-                pbNavRight.Image = Frogger.Properties.Resources.level_navigate_selected_right;
+                this.pbNavRight.Image = Frogger.Properties.Resources.level_navigate_selected_right;
             }
         }
 
@@ -165,15 +183,15 @@ namespace Frogger
         {
             for (int c = 0; c < lvlpreviews.Length; c++)
             {
-                lvlpreviews[c].Visible = false;
-                frmmenu.Controls.Remove(lvlpreviews[c]);
+                this.lvlpreviews[c].Visible = false;
+                this.frmmenu.Controls.Remove(lvlpreviews[c]);
             }
             int locX = 80;
             
             for (int i = viewindexlvl; i < viewindexlvl + 3; i++)
             {
-                lvlpreviews[i].Visible = true;
-                lvlpreviews[i].Size = new Size(preflvlprevwidth, preflvlprevwidth);
+                this.lvlpreviews[i].Visible = true;
+                this.lvlpreviews[i].Size = new Size(preflvlprevwidth, preflvlprevwidth);
                 this.lvlpreviews[i].Location = new Point(locX, 250);
 
                 locX += preflvlprevwidth + 10;
@@ -216,13 +234,17 @@ namespace Frogger
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void pbNavLeft_Click(object sender, EventArgs e)
-        {
-            pbNavLeft.Image = leftarrow;
+        {            
             if (viewindexlvl > 0)
             {
                 viewindexlvl--;
-            }
+            } 
+			else
+			{
+				this.pbNavLeft.Image = leftarrow;
+			}
             this.DrawLvlPreviews(preflvlprevwidth);
+			
         }
 
         /// <summary>
@@ -232,11 +254,15 @@ namespace Frogger
         /// <param name="e"></param>
         private void pbNavRight_Click(object sender, EventArgs e)
         {
-            pbNavRight.Image = Frogger.Properties.Resources.level_navigate_right;
+            
             if (viewindexlvl < this.lvlpreviews.Length-3)
             {
                 viewindexlvl++;
             }
+			else
+			{
+				pbNavRight.Image = Frogger.Properties.Resources.level_navigate_right;
+			}
             this.DrawLvlPreviews(preflvlprevwidth);
         }
 
