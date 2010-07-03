@@ -126,6 +126,7 @@ namespace Frogger
             pnlAddRivir.BackgroundImage = null;
             toolselected = false;
             this.selecteditemnr = -1;
+            lblInstructions.Text = "Select what you want to place";
         }
 
         /// <summary>
@@ -142,6 +143,8 @@ namespace Frogger
             selectitem.BackgroundImage = Frogger.Properties.Resources.selecteditem;
             this.toolselected = true;
             this.selecteditemnr = Convert.ToInt32(selectitem.Tag);
+
+            lblInstructions.Text = "Click where you want it.";
         }
 
         /// <summary>
@@ -235,7 +238,7 @@ namespace Frogger
                 this.DeselectAllTools();
                 this.DisableOpenSaveEtc();
 
-                this.lbxFiles.Visible = true;                                
+                this.lbxFiles.Visible = true;
 
                 hovbtnOpenFile.Visible = true;
                 hovbtnOpenFile.HoverbuttonText = "Open";

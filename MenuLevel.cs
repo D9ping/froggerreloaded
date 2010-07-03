@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (C) 2009-2010  Tom Postma, Gertjan Buijs
+Copyright (C) 2009-2010  Tom Postma
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -128,8 +128,10 @@ namespace Frogger
 
             pbNavRight = new PictureBox();
             pbNavRight.Image = Frogger.Properties.Resources.level_navigate_right;
-            pbNavRight.Location = new Point(frmmenu.ClientRectangle.Width - Frogger.Properties.Resources.level_navigate_right.Width - 10, preflvlprevwidth);
-            pbNavRight.SizeMode = PictureBoxSizeMode.AutoSize;
+            pbNavRight.Location = new Point(frmmenu.ClientRectangle.Width - Frogger.Properties.Resources.level_navigate_right.Width - 10, frmmenu.LogoPosBottom +50);
+            pbNavRight.Size = new Size(Frogger.Properties.Resources.level_navigate_right.Width, preflvlprevwidth);
+            pbNavRight.SizeMode = PictureBoxSizeMode.StretchImage;
+            //pbNavRight.SizeMode = PictureBoxSizeMode.AutoSize;
             pbNavRight.Click += new EventHandler(pbNavRight_Click);
             pbNavRight.MouseEnter += new EventHandler(pbNavRight_MouseEnter);
             pbNavRight.MouseLeave += new EventHandler(pbNavRight_MouseLeave);
@@ -142,19 +144,31 @@ namespace Frogger
 
             pbNavLeft = new PictureBox();
             pbNavLeft.Image = leftarrow;
-            pbNavLeft.Location = new Point(0 + 10, preflvlprevwidth);
-            pbNavLeft.SizeMode = PictureBoxSizeMode.AutoSize;
+            pbNavLeft.Location = new Point(0 + 10, frmmenu.LogoPosBottom + 50);
+            pbNavLeft.Size = new Size(Frogger.Properties.Resources.level_navigate_right.Width, preflvlprevwidth);
+            pbNavLeft.SizeMode = PictureBoxSizeMode.StretchImage;
+            //pbNavLeft.SizeMode = PictureBoxSizeMode.AutoSize;
             pbNavLeft.Click += new EventHandler(pbNavLeft_Click);
             pbNavLeft.MouseEnter += new EventHandler(pbNavLeft_MouseEnter);
             pbNavLeft.MouseLeave += new EventHandler(pbNavLeft_MouseLeave);
             frmmenu.Controls.Add(pbNavLeft);
         }
 
+        /// <summary>
+        /// mouse leaves left arrow, unhighlight.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pbNavLeft_MouseLeave(object sender, EventArgs e)
         {
             pbNavLeft.Image = leftarrow;
         }
 
+        /// <summary>
+        /// Mouse moves over left arrow, highlight if can.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pbNavLeft_MouseEnter(object sender, EventArgs e)
         {
             if (viewindexlvl > 0)
@@ -163,11 +177,21 @@ namespace Frogger
             }
         }
 
+        /// <summary>
+        /// Mouse leaves right arrow.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pbNavRight_MouseLeave(object sender, EventArgs e)
         {
             pbNavRight.Image = Frogger.Properties.Resources.level_navigate_right;
         }
 
+        /// <summary>
+        /// Mouse enters right arrow,highlight if can.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pbNavRight_MouseEnter(object sender, EventArgs e)
         {
             if (viewindexlvl < this.lvlpreviews.Length - 3)
@@ -238,13 +262,12 @@ namespace Frogger
             if (viewindexlvl > 0)
             {
                 viewindexlvl--;
-            } 
-			else
-			{
-				this.pbNavLeft.Image = leftarrow;
-			}
+            }
+            else
+            {
+                this.pbNavLeft.Image = leftarrow;
+            }
             this.DrawLvlPreviews(preflvlprevwidth);
-			
         }
 
         /// <summary>
@@ -254,15 +277,14 @@ namespace Frogger
         /// <param name="e"></param>
         private void pbNavRight_Click(object sender, EventArgs e)
         {
-            
             if (viewindexlvl < this.lvlpreviews.Length-3)
             {
                 viewindexlvl++;
             }
-			else
-			{
-				pbNavRight.Image = Frogger.Properties.Resources.level_navigate_right;
-			}
+            else
+            {
+                pbNavRight.Image = Frogger.Properties.Resources.level_navigate_right;
+            }
             this.DrawLvlPreviews(preflvlprevwidth);
         }
 

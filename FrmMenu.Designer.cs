@@ -60,8 +60,7 @@
             // 
             // cbxTier
             // 
-            this.cbxTier.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbxTier.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cbxTier.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(205)))), ((int)(((byte)(50)))));
             this.cbxTier.CausesValidation = false;
             this.cbxTier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
