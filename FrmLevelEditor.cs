@@ -19,12 +19,12 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Frogger
 {
-	using System;
-	using System.Drawing;
-	using System.IO;
-	using System.Windows.Forms;
-	using System.Collections.Generic;
-	
+    using System;
+    using System.Drawing;
+    using System.IO;
+    using System.Windows.Forms;
+    using System.Collections.Generic;
+
     public partial class FrmLevelEditor : Form
     {
         private Level level;
@@ -32,8 +32,8 @@ namespace Frogger
         private Timer redrawtmr;
         private bool savinglevel = false, savedlevel, namealreadyexist = false, toolselected = false, openinglevel = false;
         private int mouseY = 0, mouseX = 0, selecteditemnr = -1;
-		private const int margin = 20, padding = 50;
-		
+        private const int margin = 20, padding = 50;
+
         /// <summary>
         /// Creating an new instance of FrmLevelEditor.
         /// </summary>
@@ -181,7 +181,7 @@ namespace Frogger
 
             if (savinglevel)
             {
-                
+
                 Rectangle rect = new Rectangle(new Point(panelTools.Width + margin, margin), new Size(this.ClientRectangle.Width - panelTools.Width - (margin * 2), this.ClientRectangle.Height - (margin * 2)));
                 g.DrawRectangle(Pens.Black, rect);
 
@@ -219,8 +219,10 @@ namespace Frogger
                     if (namealreadyexist)
                     {
                         g.FillRectangle(Brushes.Orange, rect);
-                        g.DrawString("Overwrite level?", new Font("Flubber", 32), Brushes.Black, new PointF(ClientRectangle.Width / 2, ClientRectangle.Height / 2));
-                        //todo: add yes and no
+                        g.DrawString("Overwrite level?", new Font("Flubber", 32), Brushes.Black, new PointF((this.ClientRectangle.Width / 2) - 100, this.ClientRectangle.Height / 2));
+
+                        this.hovbtnSaveFile.Visible = true;
+                        this.hovbtnCancelSave.Visible = true;
                     }
                     else
                     {
@@ -307,13 +309,18 @@ namespace Frogger
         /// <param name="e"></param>
         private void hovbtnSaveFile_Click(object sender, EventArgs e)
         {
-            string appdir = Path.GetDirectoryName(Application.ExecutablePath);
+            string lvldir = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels");
             string newfile = bigTextboxFilename.Text + ".lvl";
-            if (File.Exists(Path.Combine(appdir, newfile)))
+            if ((File.Exists(Path.Combine(lvldir, newfile)) == true) && (namealreadyexist == false))
             {
                 namealreadyexist = true;
+                savedlevel = true;
             }
-            savedlevel = level.SaveDesign(this.bigTextboxFilename.Text);
+            else
+            {
+                savedlevel = level.SaveDesign(this.bigTextboxFilename.Text);
+                namealreadyexist = false;
+            }
             this.Refresh();
         }
 
@@ -371,60 +378,71 @@ namespace Frogger
             redrawtmr.Enabled = true;
         }
 
-		/// <summary>
-		/// Their is requested to open a level.
-		/// -Read all .lvl files in the level directory and added them to lbxFiles.
-		///  except for readonly levels.
-		/// -Put lbxFiles on the right place with the right size.
-		/// </summary>
-		/// <param name="sender">
-		/// A <see cref="System.Object"/>
-		/// </param>
-		/// <param name="e">
-		/// A <see cref="EventArgs"/>
-		/// </param>
+        /// <summary>
+        /// Their is requested to open a level.
+        /// -Read all .lvl files in the level directory and added them to lbxFiles.
+        ///  except for readonly levels.
+        /// -Put lbxFiles on the right place with the right size.
+        /// </summary>
+        /// <param name="sender">
+        /// A <see cref="System.Object"/>
+        /// </param>
+        /// <param name="e">
+        /// A <see cref="EventArgs"/>
+        /// </param>
         private void hovbtnOpen_Click(object sender, EventArgs e)
         {
-            string lvldir = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels" );
+            string lvldir = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels");
             if (Directory.Exists(lvldir))
             {
                 DirectoryInfo lvldirinfo = new DirectoryInfo(lvldir);
-				List<FileInfo> files = new List<FileInfo>();
-				List<string> levelnamen = new List<string>();
-				files.AddRange( lvldirinfo.GetFiles("*.lvl"));
-				for (int i = 0; i < files.Count; i++) {
+                List<FileInfo> files = new List<FileInfo>();
+                List<string> levelnamen = new List<string>();
+                files.AddRange(lvldirinfo.GetFiles("*.lvl"));
+                for (int i = 0; i < files.Count; i++)
+                {
 #if windows
-					if (!files[i].IsReadOnly)
-					{
-						levelnamen.Add(files[i].Name.Substring(0,files[i].Name.Length-4));
-					}
+                    if (!files[i].IsReadOnly)
+                    {
+                        levelnamen.Add(files[i].Name.Substring(0, files[i].Name.Length - 4));
+                    }
 #elif linux
-					levelnamen.Add(files[i].Name.Substring(0,files[i].Name.Length-4));
+                levelnamen.Add(files[i].Name.Substring(0,files[i].Name.Length-4));
 #endif
-				}
-				foreach (string levelnaam in levelnamen) {
-					this.lbxFiles.Items.Add(levelnaam);			
-				}				
+                }
+                this.lbxFiles.Items.Clear();
+
+                foreach (string levelnaam in levelnamen)
+                {
+                    this.lbxFiles.Items.Add(levelnaam);
+                }
             }
-            else 
+            else
             {
                 throw new Exception("level folder not found.");
             }
-			
-			this.lbxFiles.Location = new Point(panelTools.Width + margin + padding, margin + padding);
-			int widthrectopenbox = this.ClientRectangle.Width - panelTools.Width - (margin * 2) - (padding*2);
-			int heightrectopenbox = this.ClientRectangle.Height - (margin * 2) - this.hovbtnOpenFile.Height - (padding * 2);
+
+            this.lbxFiles.Location = new Point(panelTools.Width + margin + padding, margin + padding);
+            int widthrectopenbox = this.ClientRectangle.Width - panelTools.Width - (margin * 2) - (padding * 2);
+            int heightrectopenbox = this.ClientRectangle.Height - (margin * 2) - this.hovbtnOpenFile.Height - (padding * 2);
             this.lbxFiles.Size = new Size(widthrectopenbox, heightrectopenbox);
-			
+
             openinglevel = true;
             this.Refresh();
         }
 
         private void hovbtnOpenFile_Click(object sender, EventArgs e)
         {
-            openinglevel = false;
-            this.level = new Level(lbxFiles.SelectedItem.ToString() , this.ClientRectangle.Width, ClientRectangle.Height - 2);
-            this.Refresh();
+            if (lbxFiles.SelectedIndex >= 0)
+            {
+                openinglevel = false;
+                this.level = new Level(lbxFiles.SelectedItem.ToString(), this.ClientRectangle.Width, ClientRectangle.Height - 2);
+                this.Refresh();
+            }
+            else
+            {
+                lblInstructions.Text = "Please select a file to open.";
+            }
         }
     }
 }
