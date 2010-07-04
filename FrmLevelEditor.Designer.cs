@@ -185,7 +185,7 @@
             this.hovbtnOpenFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hovbtnOpenFile.ForeColor = System.Drawing.Color.Black;
             this.hovbtnOpenFile.HoverbuttonText = "?";
-            this.hovbtnOpenFile.Location = new System.Drawing.Point(497, 486);
+            this.hovbtnOpenFile.Location = new System.Drawing.Point(500, 456);
             this.hovbtnOpenFile.Margin = new System.Windows.Forms.Padding(0);
             this.hovbtnOpenFile.Name = "hovbtnOpenFile";
             this.hovbtnOpenFile.Size = new System.Drawing.Size(210, 55);

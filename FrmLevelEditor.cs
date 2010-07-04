@@ -44,12 +44,16 @@ namespace Frogger
 
             InitializeComponent();
 
-            hovbtnBack.HoverbuttonText = "Back";
-            hovbtnBack.SizeText = 24;
-            hovbtnSave.HoverbuttonText = "Save";
-            hovbtnSave.SizeText = 24;
-            hovbtnOpen.HoverbuttonText = "Open";
-            hovbtnOpen.SizeText = 24;
+            this.hovbtnBack.HoverbuttonText = "Back";
+            this.hovbtnBack.SizeText = 24;
+            this.hovbtnSave.HoverbuttonText = "Save";
+            this.hovbtnSave.SizeText = 24;
+            this.hovbtnOpen.HoverbuttonText = "Open";
+            this.hovbtnOpen.SizeText = 24;
+            this.hovbtnOpenFile.HoverbuttonText = "Open";
+            this.hovbtnOpenFile.SizeText = 24;
+            this.hovbtnCancelSave.HoverbuttonText = "cancel";
+            this.hovbtnCancelSave.SizeText = 24;
 
             this.level = new Level(this.ClientRectangle.Width, this.ClientRectangle.Height);
 
@@ -206,7 +210,6 @@ namespace Frogger
                     this.hovbtnSaveFile.Visible = true;
 
                     this.hovbtnCancelSave.Location = new Point(rect.X + (rect.Width / 2) - hovbtnCancelSave.Width - (margin / 2), rect.Height - hovbtnSaveFile.Height - 20);
-                    this.hovbtnCancelSave.HoverbuttonText = "cancel";
                     this.hovbtnCancelSave.Visible = true;
                 }
                 else
@@ -241,9 +244,8 @@ namespace Frogger
                 this.DisableOpenSaveEtc();
 
                 this.lbxFiles.Visible = true;
-
-                hovbtnOpenFile.Visible = true;
-                hovbtnOpenFile.HoverbuttonText = "Open";
+                this.hovbtnCancelSave.Visible = true;
+                this.hovbtnOpenFile.Visible = true;
             }
             else
             {
@@ -298,7 +300,10 @@ namespace Frogger
         /// </summary>
         private void hovbtnCancelSave_Click(object sender, EventArgs e)
         {
+            openinglevel = false;
+            savedlevel = false;
             savinglevel = false;
+            namealreadyexist = false;
             this.Refresh();
         }
 
@@ -325,7 +330,7 @@ namespace Frogger
         }
 
         /// <summary>
-        /// End scaling window, call paint event
+        /// End scaling window, call paint event.
         /// </summary>
         private void FrmLevelEditor_ResizeEnd(object sender, EventArgs e)
         {
@@ -367,7 +372,7 @@ namespace Frogger
         }
 
         /// <summary>
-        /// mouse is moved
+        /// Mouse is moved.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -423,10 +428,9 @@ namespace Frogger
             }
 
             this.lbxFiles.Location = new Point(panelTools.Width + margin + padding, margin + padding);
-            int widthrectopenbox = this.ClientRectangle.Width - panelTools.Width - (margin * 2) - (padding * 2);
-            int heightrectopenbox = this.ClientRectangle.Height - (margin * 2) - this.hovbtnOpenFile.Height - (padding * 2);
-            this.lbxFiles.Size = new Size(widthrectopenbox, heightrectopenbox);
-
+            int widthfileslist = this.ClientRectangle.Width - panelTools.Width - (margin * 2) - (padding * 2);
+            int heightfileslist = this.ClientRectangle.Height - (margin * 2) - this.hovbtnOpenFile.Height - (padding * 2);
+            this.lbxFiles.Size = new Size(widthfileslist, heightfileslist);
             openinglevel = true;
             this.Refresh();
         }

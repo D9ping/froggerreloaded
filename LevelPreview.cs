@@ -28,6 +28,7 @@ namespace Frogger
     public partial class LevelPreview : UserControl
     {
         private Level level;
+        private const int avgsizelettercrt = 16;
 
         public LevelPreview(string lvlnaam, int preflvlprevwidth)
         {
@@ -59,7 +60,7 @@ namespace Frogger
             {
                 level.Draw(e.Graphics);
                 Font fontlvlname = new Font("Flubber", 24);
-                float locx = (this.Width / 2) - ((level.Naam.Length / 2) * fontlvlname.Size);
+                float locx = (this.Width / 2) - ((level.Naam.Length / 2) * avgsizelettercrt);
                 float locy = (this.Height / 2) - (fontlvlname.Size / 2);
                 e.Graphics.DrawString(level.Naam, fontlvlname, Brushes.BurlyWood, locx, locy);
             }

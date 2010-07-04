@@ -178,6 +178,7 @@ namespace Frogger
         private void FrmGame_ResizeEnd(object sender, EventArgs e)
         {
             game.SetupEngine(false); //does resize all resources.
+            game.StartEngine();
             this.Refresh();
         }
 

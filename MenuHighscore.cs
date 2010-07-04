@@ -32,11 +32,12 @@ namespace Frogger
     /// </summary>
     class MenuHighscore : MenuScreen
     {
-        private HoverButton[] highscoremenubtn;
+        private List<HoverButton> highscoremenubtn;
         private HoverButton deletebtn;
         private FrmMenu frmmenu = null;
         private Label[] entries;
         private Label lbshowcurlvlscore;
+        private const int marginbetweenhovbtns = 2;
 
         #region Constructors (1)
 
@@ -50,7 +51,7 @@ namespace Frogger
             this.frmmenu = frmmenu;
             frmmenu.ToonLogo = false;
 
-            highscoremenubtn = new HoverButton[4];
+            highscoremenubtn = new List<HoverButton>();
             this.CreateLvlBtns();
 
             deletebtn = new HoverButton("Delete all");
@@ -58,10 +59,10 @@ namespace Frogger
 
             int ypos = 80;
             int xpos = 20; //frmmenu.Width / 2 - (highscoremenubtn[0].Width / 2);
-            for (int i = 0; i < highscoremenubtn.Length; i++)
+            for (int i = 0; i < highscoremenubtn.Count; i++)
             {
                 highscoremenubtn[i].Location = new Point(xpos, ypos);
-                ypos += 80;
+                ypos += highscoremenubtn[1].Height + marginbetweenhovbtns;
             }
 
             lbshowcurlvlscore = new Label();
@@ -72,7 +73,11 @@ namespace Frogger
             lbshowcurlvlscore.Text = "";
 
             frmmenu.Controls.Add(lbshowcurlvlscore);
-            frmmenu.Controls.AddRange(highscoremenubtn);
+            foreach (HoverButton levelbtn in this.highscoremenubtn)
+            {
+                frmmenu.Controls.Add(levelbtn);
+            }
+            //frmmenu.Controls.AddRange(highscoremenubtn);
         }
 
         #endregion Constructors
@@ -97,24 +102,34 @@ namespace Frogger
 
         private void CreateLvlBtns()
         {
-            string filepath = Directory.GetCurrentDirectory() + "\\levels";
+            string lvldir = Path.Combine(Directory.GetCurrentDirectory(), "levels");
 
-            if (!Directory.Exists(filepath))
+            if (!Directory.Exists(lvldir))
             {
                 MessageBox.Show("Error level folder cannot be found.");
                 return;
             }
-            string[] files = Directory.GetFiles(filepath);
 
-            highscoremenubtn = new HoverButton[files.Length];
-
-            for (int i = 0; i < files.Length; i++)
+            string[] files;
+            try
             {
-                string filelvlname = files[i].Substring(filepath.Length + 1, files[i].Length - filepath.Length - 5);
-                highscoremenubtn[i] = new HoverButton(filelvlname);
-                highscoremenubtn[i].Tag = filelvlname;
-                highscoremenubtn[i].Click += new EventHandler(GetHighscores);
+                files = Directory.GetFiles(lvldir);
+                for (int i = 0; i < files.Length; i++)
+                {
+                    string filelvlname = files[i].Substring(lvldir.Length + 1, files[i].Length - lvldir.Length - 5);
+                    HoverButton lvlbtn = new HoverButton(filelvlname);
+                    lvlbtn.Tag = filelvlname;
+                    lvlbtn.Click += new EventHandler(GetHighscores);
+                    highscoremenubtn.Add(lvlbtn);
+                }
             }
+            catch (DirectoryNotFoundException dirnotfoundexc)
+            {
+                MessageBox.Show(dirnotfoundexc.Message);
+            }
+            
+
+           
         }
 
         /// <summary>

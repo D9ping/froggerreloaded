@@ -19,17 +19,17 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Frogger
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Drawing;
-	using System.Windows.Forms;
-	using System.Runtime.InteropServices;
-	using System.Data;
-	using System.IO;
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Windows.Forms;
+    using System.Runtime.InteropServices;
+    using System.Data;
+    using System.IO;
 
     public class GameEngine
     {
-		#region Fields (11) 
+        #region Fields (11)
 
         private BigTextbox bigtbName;
         private Form frmgame;
@@ -39,13 +39,14 @@ namespace Frogger
         private Niveau tier;
         private List<PictureBox> livesimgs;
         private List<MovingObject> movingobjs;//make public for tests
+        private string lvlname;
         public int min = 1, sec = 0;
         private int lives = 0, secnewcar, secnewtree, tickcar = 0, ticktree = 0, maxtickcar = 100, maxticktree = 100, carspeed = 10;
         private bool timeup = false, ishit = false, livesup = false, freeplay = false, win = false, screendraw = false, setup = false;
 
-		#endregion Fields 
+        #endregion Fields
 
-		#region Constructors (2) 
+        #region Constructors (2)
 
         /// <summary>
         /// Creating a new instance of GameEngine class.
@@ -57,15 +58,7 @@ namespace Frogger
         {
             this.tier = tier;
             this.frmgame = frmgame;
-
-            if (Program.fullscreen)
-            {
-                level = new Level(lvlname, Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
-            }
-            else
-            {
-                level = new Level(lvlname, frmgame.ClientSize.Width, frmgame.ClientSize.Height);
-            }
+            this.lvlname = lvlname;
 
             this.SetupEngine(true);
 
@@ -73,23 +66,15 @@ namespace Frogger
 
             frog = CreateFrog();
             frmgame.Controls.Add(frog);
+            bigtbName = new BigTextbox();
+            bigtbName.Visible = false;
 
             this.StartEngine();
         }
 
-        /// <summary>
-        /// Creating a new instance of GameEngine class.
-        /// Without level and tier info for leveleditor.
-        /// </summary>
-        /// <param name="frmlvleditor"></param>
-        public GameEngine(Form frmlvleditor)
-        {
-            this.frmgame = frmlvleditor;
-        }
+        #endregion Constructors
 
-		#endregion Constructors 
-
-		#region Properties (3) 
+        #region Properties (3)
 
         /// <summary>
         /// Returns if GameUpdate timer is still running. Needed for tests.
@@ -125,11 +110,11 @@ namespace Frogger
             }
         }
 
-		#endregion Properties 
+        #endregion Properties
 
-		#region Methods (24) 
+        #region Methods (24)
 
-		// Public Methods (5) 
+        // Public Methods (5) 
 
         /// <summary>
         /// Renders the screen/draw the level.
@@ -141,22 +126,20 @@ namespace Frogger
             {
                 if (livesup)
                 {
-                    StopEngine(true);
                     DrawGameOverScreen(g, "no more lives left.");
                 }
                 else if (timeup)
                 {
-                    StopEngine(true);
                     DrawGameOverScreen(g, "time is up.");
                 }
             }
-            
+
             if (win)
             {
-                StopEngine(true);
+                //StopEngine(false);
                 DrawWinScreen(g, CheckEnterName());
             }
-            
+
             if (!screendraw)
             {
                 level.Draw(g);
@@ -169,12 +152,26 @@ namespace Frogger
         /// </summary>
         public void SetupEngine(bool initsettings)
         {
-            movingobjs = new List<MovingObject>();
-            livesimgs = new List<PictureBox>();
-            ResizesResources.images = new Dictionary<String, Bitmap>();
-
-            ResizesResources.images.Clear();
             //--start loading--
+            ResizesResources.images = new Dictionary<String, Bitmap>();
+            ResizesResources.images.Clear();
+
+            if (initsettings)
+            {
+                if (Program.fullscreen)
+                {
+                    level = new Level(this.lvlname, Screen.PrimaryScreen.WorkingArea.Width, Screen.PrimaryScreen.WorkingArea.Height);
+                }
+                else
+                {
+                    level = new Level(this.lvlname, frmgame.ClientSize.Width, frmgame.ClientSize.Height);
+                }
+            }
+            else if (level != null)
+            {
+                level.SetLevelSize(this.frmgame.ClientRectangle.Width, this.frmgame.ClientRectangle.Height);
+            }
+
             int kikkersizeX = frmgame.ClientSize.Width / 20;
             int kikkersizeY = frmgame.ClientSize.Height / 20;
             if (Program.fullscreen)
@@ -211,6 +208,9 @@ namespace Frogger
             ResizesResources.images.Add("truck_west", ResizeImage(Frogger.Properties.Resources.truck_west, trunksizeX, carsizeY));
             if (initsettings)
             {
+                movingobjs = new List<MovingObject>();
+                livesimgs = new List<PictureBox>();
+
                 switch (tier)
                 {
                     case Niveau.freeplay:
@@ -269,6 +269,15 @@ namespace Frogger
                 maxticktree = (1000 / gameupdate.Interval) * secnewtree;
                 livesup = false;
             }
+            else
+            {
+                //todo: resize all current objects.
+                for (int i = 0; i < movingobjs.Count; i++)
+                {
+                    //movingobjs[i]
+                }
+            }
+
             //--done loading--
         }
 
@@ -444,7 +453,7 @@ namespace Frogger
             }
             frog.CanMove = true;
         }
-		// Private Methods (19) 
+        // Private Methods (19) 
 
         /// <summary>
         /// Check if the player needs to enter a name for the highscore or not.
@@ -590,6 +599,7 @@ namespace Frogger
             }
 
             frog.Location = new Point(locX, locY);
+            frog.Anchor = AnchorStyles.None;
             if (frog == null) { throw new Exception("frog not created."); }
             return frog;
         }
@@ -656,11 +666,12 @@ namespace Frogger
 
             if (!this.screendraw)
             {
+                StopEngine(true);
                 CreateBackBtn();
-                frmgame.Invalidate();
                 screendraw = true;
+                frmgame.Refresh();
             }
-            
+
         }
 
         /// <summary>
@@ -713,8 +724,8 @@ namespace Frogger
                 {
                     CreateBackBtn();
                 }
-                frmgame.Invalidate();
                 this.screendraw = true;
+                frmgame.Refresh();
             }
         }
 
@@ -958,7 +969,7 @@ namespace Frogger
         /// <summary>
         /// Resize a picture/bitmap
         /// </summary>
-        /// <param name="picture"></param>
+        /// <param name="picture">the bitmap to be resized</param>
         /// <param name="width">new width</param>
         /// <param name="height">new height</param>
         /// <returns>the resized image</returns>
@@ -981,15 +992,15 @@ namespace Frogger
             hovbtnSubmit.Location = new Point(frmgame.ClientSize.Width / 2 - hovbtnSubmit.Width / 2, frmgame.Height - 200);
             hovbtnSubmit.Click += new EventHandler(hovbtnSubmit_Click);
 
-            bigtbName = new BigTextbox();
-            bigtbName.Location = new Point(hovbtnSubmit.Location.X, hovbtnSubmit.Location.Y - 200);
-
             Label lblText = new Label();
             lblText.Font = new Font("Flubber", 24);
             lblText.Text = "Enter your name:";
             lblText.AutoSize = true;
             lblText.BackColor = Color.Transparent;
             lblText.Location = new Point(hovbtnSubmit.Location.X, hovbtnSubmit.Location.Y - 250);
+
+            bigtbName.Location = new Point(hovbtnSubmit.Location.X, hovbtnSubmit.Location.Y - 200);
+            bigtbName.Visible = true;
 
             try
             {
@@ -1001,6 +1012,7 @@ namespace Frogger
             {
                 MessageBox.Show(exc.Message, "Error");
             }
+
         }
 
         /// <summary>

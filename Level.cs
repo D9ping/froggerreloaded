@@ -18,15 +18,15 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Frogger
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Text;
-	using System.Drawing;
-	using System.IO;
-	using System.Reflection;
-	using System.Xml;
-	using System.Windows.Forms;
-	
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Drawing;
+    using System.IO;
+    using System.Reflection;
+    using System.Xml;
+    using System.Windows.Forms;
+
     public class Level
     {
         private const int lineDistance = 100;
@@ -122,7 +122,7 @@ namespace Frogger
             string appdir = Path.GetDirectoryName(Application.ExecutablePath);
             if (Directory.Exists(appdir))
             {
-                string file = appdir+"\\levels\\"+this.naam+".lvl";
+                string file = appdir + "\\levels\\" + this.naam + ".lvl";
                 if (File.Exists(file))
                 {
                     XmlReader reader = new XmlTextReader(file);
@@ -134,21 +134,21 @@ namespace Frogger
                         if (reader.Name == "road")
                         {
                             int pos = reader.ReadElementContentAsInt();
-                            roads.Add(this.displayHeight - GetHeightRoad() * (pos+1));
+                            roads.Add(this.displayHeight - GetHeightRoad() * (pos + 1));
                         }
                         else if (reader.Name == "rivir")
                         {
                             int pos = reader.ReadElementContentAsInt();
-                            rivirs.Add(this.displayHeight - GetHeightRivir(1) * (pos+1));
+                            rivirs.Add(this.displayHeight - GetHeightRivir(1) * (pos + 1));
                         }
                     }
                 }
                 else if (!error)
-                    {
-                        error = true;
-                        MessageBox.Show("Level " + file + " not found.");
-                        
-                    }
+                {
+                    error = true;
+                    MessageBox.Show("Level " + file + " not found.");
+
+                }
             }
 
             //throw new NotImplementedException();
@@ -171,71 +171,86 @@ namespace Frogger
                     }
                 }
             }
-              string lvlsdir = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels");
-              if (Directory.Exists(lvlsdir))
-              {
-                  string filenamepath = Path.Combine(lvlsdir, levelname + ".lvl");
-                  XmlWriter xmlwr = null;
-                  try
-                  {
-                      xmlwr = new XmlTextWriter(filenamepath, System.Text.Encoding.UTF8);
-                      xmlwr.WriteStartDocument();
+            string lvlsdir = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels");
+            if (Directory.Exists(lvlsdir))
+            {
+                string filenamepath = Path.Combine(lvlsdir, levelname + ".lvl");
+                XmlWriter xmlwr = null;
+                try
+                {
+                    xmlwr = new XmlTextWriter(filenamepath, System.Text.Encoding.UTF8);
+                    xmlwr.WriteStartDocument();
 
-                      xmlwr.WriteStartElement("level");
-                      xmlwr.WriteString("\r\n");
+                    xmlwr.WriteStartElement("level");
+                    xmlwr.WriteString("\r\n");
 
-                      int placeheight = this.displayHeight / 10;
+                    int placeheight = this.displayHeight / 10;
 
-                      foreach (int locy in this.roads)
-                      {
-                          try
-                          {
-                              int posroad = (10 - (locy / placeheight))-1;
-                              xmlwr.WriteStartElement("road");
-                              xmlwr.WriteValue(posroad);
-                              xmlwr.WriteEndElement();
-                              xmlwr.WriteString("\r\n");
-                          }
-                          catch (Exception)
-                          {
-                              return false;//error  placeheight prob.
-                          }
-                      }
-                      foreach (int locy in this.rivirs)
-                      {
-                          try
-                          {
-                              int posrivir = (10 - (locy / placeheight))-1;
-                              xmlwr.WriteStartElement("rivir");
-                              xmlwr.WriteValue(posrivir);
-                              xmlwr.WriteEndElement();
-                              xmlwr.WriteString("\r\n");
-                          }
-                          catch (Exception)
-                          {
-                              return false;//error  placeheight prob.
-                          }
-                      }
-                   
-                      xmlwr.WriteEndElement();
-                      xmlwr.WriteEndDocument();
-                  }
-                  catch (IOException)
-                  {
-                      return false;//error: no write access/permission prob.
-                  }
-                  finally
-                  {
-                      xmlwr.Flush();
-                      xmlwr.Close();
-                  }
+                    foreach (int locy in this.roads)
+                    {
+                        try
+                        {
+                            int posroad = (10 - (locy / placeheight)) - 1;
+                            xmlwr.WriteStartElement("road");
+                            xmlwr.WriteValue(posroad);
+                            xmlwr.WriteEndElement();
+                            xmlwr.WriteString("\r\n");
+                        }
+                        catch (Exception)
+                        {
+                            return false;//error  placeheight prob.
+                        }
+                    }
+                    foreach (int locy in this.rivirs)
+                    {
+                        try
+                        {
+                            int posrivir = (10 - (locy / placeheight)) - 1;
+                            xmlwr.WriteStartElement("rivir");
+                            xmlwr.WriteValue(posrivir);
+                            xmlwr.WriteEndElement();
+                            xmlwr.WriteString("\r\n");
+                        }
+                        catch (Exception)
+                        {
+                            return false;//error  placeheight prob.
+                        }
+                    }
 
-                  return true;
-              }
-              else
-              {
-                  return false;//error level folder gona.
-              }
+                    xmlwr.WriteEndElement();
+                    xmlwr.WriteEndDocument();
+                }
+                catch (IOException)
+                {
+                    return false;//error: no write access/permission prob.
+                }
+                finally
+                {
+                    xmlwr.Flush();
+                    xmlwr.Close();
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;//error level folder gona.
+            }
+        }
+
+        /// <summary>
+        /// Sets the level width and height.
+        /// </summary>
+        /// <param name="width">The new level width.</param>
+        /// <param name="height">The new level height.</param>
+        public void SetLevelSize(int width, int height)
+        {
+            this.displayWidth = width;
+            this.displayHeight = height;
+            if (!this.error)
+            {
+                LoadDesign();
+            }
         }
 
         public int GetPosRivirs(int nr)

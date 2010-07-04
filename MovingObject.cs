@@ -15,14 +15,14 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
-using System.Drawing;
-
 namespace Frogger
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Windows.Forms;
+    using System.Drawing;
+
     public class MovingObject : UserControl
     {
         private int velocity = 0;
@@ -40,7 +40,9 @@ namespace Frogger
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             //Make transparant
             this.BackColor = Color.Transparent;
-            //this.BackColor = Color.Red;
+
+            //this.AutoSize = true;
+
             this.DoubleBuffered = true;
             this.BringToFront();
             InitializeComponent();
@@ -104,12 +106,11 @@ namespace Frogger
 
         private void MovingObject_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
             Rectangle rect = new Rectangle(new Point(0, 0), new Size(this.Width, this.Height));
             //image scaling is cpu costly.
             //Prescale the image when it is first draw and then get the scaled image out of memory.
-            g.DrawImage((Image)this.pic, rect);
-            //using GDI+ is faster than picturebox.
+            e.Graphics.DrawImage((Image)this.pic, rect);
+            //using GDI+ is faster than a picturebox.
         }
 
     }

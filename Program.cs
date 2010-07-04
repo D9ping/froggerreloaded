@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#define windows //platform
 
 using System;
 namespace Frogger
@@ -22,7 +23,6 @@ namespace Frogger
 	using System.Collections.Generic;
 	using System.Windows.Forms;
 	using System.Runtime.InteropServices;
-	using System.Data.SqlClient;
 	using System.Drawing;
 	using System.IO;
 	
@@ -69,7 +69,7 @@ namespace Frogger
 #if Release
                 this.TopMost = true; //watch out this is actually annoying while debugging, switching back to your IDE with fullscreen will be impossible.
 #endif
-                SetWindowPos(curfrm.Handle, IntPtr.Zero, 0, 0, GetSystemMetrics(0), GetSystemMetrics(1), 64);                
+                SetWindowPos(curfrm.Handle, IntPtr.Zero, 0, 0, GetSystemMetrics(0), GetSystemMetrics(1), 64);
             }
             else
             {
@@ -85,8 +85,11 @@ namespace Frogger
         /// <returns>true if it exist or font directory could not be found. false if font does not exist in the font direcotory.</returns>
         static public bool CheckFontInstalled()
         {
+#if windows
             string fontdir = Path.Combine(System.Environment.GetEnvironmentVariable("windir"), "fonts");
-            
+#elif linux
+            string fontdir = "/usr/share/fonts????";
+#endif
             if (Directory.Exists(fontdir))
             {
                 if (File.Exists(Path.Combine(fontdir,"Flubber.ttf")))
