@@ -954,13 +954,13 @@ namespace Frogger
             {
                 if (currivir % 2 == 0) //even
                 {
-                    movingobjs.Add(CreateTreeTrunk(5, Direction.West, screenwidth / 2, level.GetPosRivirs(currivir)));
+                    movingobjs.Add(CreateTreeTrunk(5, Direction.East, screenwidth / 2, level.GetPosRivirs(currivir)));
                 }
                 else //odd
                 {
                     if (tier != Niveau.elite && tier != Niveau.hard)
                     {
-                        movingobjs.Add(CreateTreeTrunk(3, Direction.East, screenwidth / 2, level.GetPosRivirs(currivir)));
+                        movingobjs.Add(CreateTreeTrunk(3, Direction.West, screenwidth / 2, level.GetPosRivirs(currivir)));
                     }
                 }
             }

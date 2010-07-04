@@ -1,9 +1,11 @@
 [Setup]
 AppId={{3CA63D69-FC83-4D9B-B46D-35E3AAFDA8EA}
 AppName=Frogger Reloaded
-AppVerName=Frogger Reloaded 0.9.5
+AppVerName=Frogger Reloaded 0.9.9
+VersionInfoVersion=0.9.9.0
+OutputBaseFilename=froggerreloadded_v0.9.9_beta
+
 AppPublisher=Frogger Reloaded
-VersionInfoVersion=0.9.5.0
 AppPublisherURL=http://code.google.com/p/froggerreloaded/
 AppSupportURL=http://code.google.com/p/froggerreloaded/
 AppUpdatesURL=http://code.google.com/p/froggerreloaded/
@@ -11,7 +13,6 @@ DefaultDirName={pf}\Frogger Reloaded
 DefaultGroupName=Frogger Reloaded
 LicenseFile=..\Debug\license.txt
 OutputDir=.\
-OutputBaseFilename=froggerreloadded_v0.9.5_beta
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=admin
@@ -94,6 +95,7 @@ begin
             end;
 	end;
 end;
+
 
 
 
