@@ -18,17 +18,17 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Frogger
 {
-	using System;
-	using System.Drawing;
-	using System.IO;
-	using System.Windows.Forms;
-	
+    using System;
+    using System.Drawing;
+    using System.IO;
+    using System.Windows.Forms;
+
     /// <summary>
     /// Draw the level selection.
     /// </summary>
     class MenuLevel : MenuScreen
     {
-		#region Fields (9) 
+        #region Fields (9)
 
         private const int btnlvlmargin = 10;
         private bool errorshowed = false;
@@ -42,7 +42,7 @@ namespace Frogger
 
 		#endregion Fields 
 
-		#region Constructors (1) 
+        #region Constructors (1)
 
         /// <summary>
         /// Creating an new instance of MenuLevel classes.
@@ -58,11 +58,11 @@ namespace Frogger
             frmmenu.ShowTierChoice = true;
         }
 
-		#endregion Constructors 
+        #endregion Constructors
 
-		#region Methods (8) 
+        #region Methods (8)
 
-		// Public Methods (1) 
+        // Public Methods (1) 
 
         /// <summary>
         /// Clear the screen.
@@ -91,7 +91,8 @@ namespace Frogger
                 pbNavLeft.Dispose();
             }
         }
-		// Private Methods (7) 
+
+        // Private Methods (7) 
 
         /// <summary>
         /// Create a level preview from each level file.
@@ -312,6 +313,6 @@ namespace Frogger
             }
         }
 
-		#endregion Methods 
+        #endregion Methods
     }
 }

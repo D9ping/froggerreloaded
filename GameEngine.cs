@@ -169,7 +169,7 @@ namespace Frogger
             }
             else if (level != null)
             {
-                level.SetLevelSize(this.frmgame.ClientRectangle.Width, this.frmgame.ClientRectangle.Height);
+                level.SetLevelSize(this.frmgame.ClientRectangle.Width, this.frmgame.ClientRectangle.Height, true);
             }
 
             int kikkersizeX = frmgame.ClientSize.Width / 20;

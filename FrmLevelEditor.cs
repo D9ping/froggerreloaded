@@ -20,10 +20,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 namespace Frogger
 {
     using System;
+    using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
     using System.Windows.Forms;
-    using System.Collections.Generic;
 
     public partial class FrmLevelEditor : Form
     {
@@ -334,6 +334,7 @@ namespace Frogger
         /// </summary>
         private void FrmLevelEditor_ResizeEnd(object sender, EventArgs e)
         {
+            level.SetLevelSize(this.ClientRectangle.Width, this.ClientRectangle.Height, false);
             this.Refresh();
         }
 

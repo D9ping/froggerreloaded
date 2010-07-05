@@ -20,12 +20,10 @@ namespace Frogger
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Drawing;
     using System.IO;
-    using System.Reflection;
-    using System.Xml;
     using System.Windows.Forms;
+    using System.Xml;
 
     public class Level
     {
@@ -243,11 +241,11 @@ namespace Frogger
         /// </summary>
         /// <param name="width">The new level width.</param>
         /// <param name="height">The new level height.</param>
-        public void SetLevelSize(int width, int height)
+        public void SetLevelSize(int width, int height, bool reloaddesign)
         {
             this.displayWidth = width;
             this.displayHeight = height;
-            if (!this.error)
+            if (!this.error && reloaddesign)
             {
                 LoadDesign();
             }
@@ -369,6 +367,7 @@ namespace Frogger
         public void DrawRiver(Graphics g, int locy, int numcourses)
         {
             SolidBrush brushRiver = new SolidBrush(Color.Blue);
+
             if ((numcourses < 9) && (numcourses > 0))
             {
                 Rectangle rectRiver = new Rectangle(0, locy, displayWidth, GetHeightRivir(numcourses));

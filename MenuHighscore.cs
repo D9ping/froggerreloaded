@@ -20,12 +20,11 @@ namespace Frogger
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Data;
     using System.Drawing;
-    using System.Windows.Forms;
     using System.IO;
-	
+    using System.Windows.Forms;
+
     /// <summary>
     /// Highscores screen
     /// </summary>
@@ -37,6 +36,7 @@ namespace Frogger
         private Label[] entries;
         private Label lbshowcurlvlscore;
         private const int marginbetweenhovbtns = 2;
+        private Panel pnl;
 
         #region Constructors (1)
 
@@ -50,6 +50,17 @@ namespace Frogger
             this.frmmenu = frmmenu;
             frmmenu.ToonLogo = false;
 
+            pnl = new Panel();
+            pnl.Location = new Point(10, 50);
+            //hovbtn default width is 320, so 340 for panel and 20px for optional scrollbar.
+            pnl.Size = new Size(340, frmmenu.ClientRectangle.Height - 150); 
+            pnl.Visible = true;
+            //pnl.BackColor = Color.LightGreen;
+            pnl.AutoScroll = true;
+            pnl.AutoSize = false;
+            frmmenu.Controls.Add(pnl);
+            //System.Windows.Forms.ScrollBar.DefaultForeColor = Color.Blue;
+
             highscoremenubtn = new List<HoverButton>();
             this.CreateLvlBtns();
 
@@ -57,8 +68,8 @@ namespace Frogger
             deletebtn.Click += new EventHandler(DeleteHighscoreAll);
             //frmmenu.Controls.Add(deletebtn);
 
-            int ypos = 80;
-            int xpos = 20; //frmmenu.Width / 2 - (highscoremenubtn[0].Width / 2);
+            int ypos = 0;
+            int xpos = 0;
             for (int i = 0; i < highscoremenubtn.Count; i++)
             {
                 highscoremenubtn[i].Location = new Point(xpos, ypos);
@@ -76,7 +87,8 @@ namespace Frogger
             foreach (HoverButton levelbtn in this.highscoremenubtn)
             {
                 levelbtn.SizeText = 32;
-                frmmenu.Controls.Add(levelbtn);
+                //frmmenu.Controls.Add(levelbtn);
+                pnl.Controls.Add(levelbtn);
             }
         }
 
@@ -97,9 +109,16 @@ namespace Frogger
             }
             lbshowcurlvlscore.Visible = false;
             lbshowcurlvlscore.Dispose();
+
+            pnl.Visible = false;
+            pnl.Dispose();
+
             ClearAllEntries();
         }
 
+        /// <summary>
+        /// Create a button for each level to get highscore for.
+        /// </summary>
         private void CreateLvlBtns()
         {
             string lvldir = Path.Combine(Directory.GetCurrentDirectory(), "levels");
@@ -127,9 +146,10 @@ namespace Frogger
             {
                 MessageBox.Show(dirnotfoundexc.Message);
             }
-            
-
-           
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "level directory cannot be read.");
+            }
         }
 
         /// <summary>

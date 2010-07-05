@@ -19,20 +19,17 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Frogger
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Text;
-	using System.Drawing;
-	using System.Windows.Forms;
-	using System.IO;
-	using System.Media;
-	
+    using System;
+    using System.Drawing;
+    using System.IO;
+    using System.Windows.Forms;
+
     public class Frog : MovingObject
     {
         #region Fields (7)
 
         private int jumpdistance, maxscreenwidth, maxscreenheight, treeVelocity;
-        private bool canmove = true, onTree;
+        private bool canmove = true, onTree = false, step = false;
         private Direction treeDir;
         private const int offscreenmargin = 20;
 
@@ -115,7 +112,16 @@ namespace Frogger
                 switch (dir)
                 {
                     case Direction.North:
-                        this.Pic = ResizesResources.images["kikker_west"];
+                        if (step)
+                        {
+                            this.Pic = ResizesResources.images["kikker_west"];
+                        }
+                        else
+                        {
+                            this.Pic = ResizesResources.images["kikker_east"];
+                        }
+                        step = !step;
+
                         //global::Frogger.Properties.Resources.kikker_west;
                         newposY = this.Location.Y - jumpdistance;
                         if (newposY + this.Height >= 0)
@@ -127,7 +133,7 @@ namespace Frogger
 #if windows
                                 soundmadeit = Application.StartupPath + "\\sounds\\frog_made_it.wav";
 #elif linux
-                            soundmadeit = Application.StartupPath + "/sounds/frog_made_it.wav";
+                                soundmadeit = Application.StartupPath + "/sounds/frog_made_it.wav";
 #endif
 
                                 if (File.Exists(soundmadeit))

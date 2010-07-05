@@ -17,11 +17,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 namespace Frogger
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Windows.Forms;
     using System.Drawing;
+    using System.Windows.Forms;
 
     public class MovingObject : UserControl
     {
@@ -41,7 +38,8 @@ namespace Frogger
             //Make transparant
             this.BackColor = Color.Transparent;
 
-            //this.AutoSize = true;
+            //todo: not good..
+            this.Anchor = AnchorStyles.None;
 
             this.DoubleBuffered = true;
             this.BringToFront();
