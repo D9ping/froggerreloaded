@@ -155,6 +155,7 @@ namespace Frogger
         /// <summary>
         /// Save the level design to a xml file with a the lvl extension.
         /// </summary>
+        /// <param name="levelname">the new name</param>
         /// <returns>true if succeded</returns>
         public bool SaveDesign(string levelname)
         {
@@ -169,7 +170,7 @@ namespace Frogger
                     }
                 }
             }
-            string lvlsdir = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels");
+            string lvlsdir = Program.GetLevelFolder();
             if (Directory.Exists(lvlsdir))
             {
                 string filenamepath = Path.Combine(lvlsdir, levelname + ".lvl");

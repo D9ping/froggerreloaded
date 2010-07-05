@@ -99,19 +99,8 @@ namespace Frogger
         /// </summary>
         private void CreateLvlPreviews()
         {
-            string filepath = Directory.GetCurrentDirectory() + "\\levels";
-
-            if (!Directory.Exists(filepath))
-            {
-                if (!this.errorshowed)
-                {
-                    MessageBox.Show("Error level folder cannot be found.");
-                    this.errorshowed = true;
-                }
-                return;
-            }
+            string filepath = Program.GetLevelFolder();
             string[] files = Directory.GetFiles(filepath);
-
             this.lvlpreviews = new LevelPreview[files.Length];
 
             preflvlprevwidth = ((this.frmmenu.ClientRectangle.Width - 180) / 3);

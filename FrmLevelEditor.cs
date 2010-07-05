@@ -314,19 +314,26 @@ namespace Frogger
         /// <param name="e"></param>
         private void hovbtnSaveFile_Click(object sender, EventArgs e)
         {
-            string lvldir = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels");
-            string newfile = bigTextboxFilename.Text + ".lvl";
-            if ((File.Exists(Path.Combine(lvldir, newfile)) == true) && (namealreadyexist == false))
+            if (!String.IsNullOrEmpty(bigTextboxFilename.Text))
             {
-                namealreadyexist = true;
-                savedlevel = true;
+                string lvldir = Program.GetLevelFolder(); //Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels");
+                string newfile = bigTextboxFilename.Text + ".lvl";
+                if ((File.Exists(Path.Combine(lvldir, newfile)) == true) && (namealreadyexist == false))
+                {
+                    namealreadyexist = true;
+                    savedlevel = true;
+                }
+                else
+                {
+                    savedlevel = level.SaveDesign(this.bigTextboxFilename.Text);
+                    namealreadyexist = false;
+                }
+                this.Refresh();
             }
             else
             {
-                savedlevel = level.SaveDesign(this.bigTextboxFilename.Text);
-                namealreadyexist = false;
+                lblTextEnterNewFilename.Text = "Enter a filename!";
             }
-            this.Refresh();
         }
 
         /// <summary>
@@ -398,34 +405,28 @@ namespace Frogger
         /// </param>
         private void hovbtnOpen_Click(object sender, EventArgs e)
         {
-            string lvldir = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels");
-            if (Directory.Exists(lvldir))
+            string lvldir = Program.GetLevelFolder(); //Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels");
+
+            DirectoryInfo lvldirinfo = new DirectoryInfo(lvldir);
+            List<FileInfo> files = new List<FileInfo>();
+            List<string> levelnamen = new List<string>();
+            files.AddRange(lvldirinfo.GetFiles("*.lvl"));
+            for (int i = 0; i < files.Count; i++)
             {
-                DirectoryInfo lvldirinfo = new DirectoryInfo(lvldir);
-                List<FileInfo> files = new List<FileInfo>();
-                List<string> levelnamen = new List<string>();
-                files.AddRange(lvldirinfo.GetFiles("*.lvl"));
-                for (int i = 0; i < files.Count; i++)
-                {
 #if windows
-                    if (!files[i].IsReadOnly)
-                    {
-                        levelnamen.Add(files[i].Name.Substring(0, files[i].Name.Length - 4));
-                    }
+                if (!files[i].IsReadOnly)
+                {
+                    levelnamen.Add(files[i].Name.Substring(0, files[i].Name.Length - 4));
+                }
 #elif linux
                 levelnamen.Add(files[i].Name.Substring(0,files[i].Name.Length-4));
 #endif
-                }
-                this.lbxFiles.Items.Clear();
-
-                foreach (string levelnaam in levelnamen)
-                {
-                    this.lbxFiles.Items.Add(levelnaam);
-                }
             }
-            else
+            this.lbxFiles.Items.Clear();
+
+            foreach (string levelnaam in levelnamen)
             {
-                throw new Exception("level folder not found.");
+                this.lbxFiles.Items.Add(levelnaam);
             }
 
             this.lbxFiles.Location = new Point(panelTools.Width + margin + padding, margin + padding);
@@ -436,6 +437,11 @@ namespace Frogger
             this.Refresh();
         }
 
+        /// <summary>
+        /// Requesten to open the selected file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void hovbtnOpenFile_Click(object sender, EventArgs e)
         {
             if (lbxFiles.SelectedIndex >= 0)

@@ -18,26 +18,21 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Frogger
 {
-	using System;
-	using System.Collections.Generic;
-	using System.ComponentModel;
-	using System.Data;
-	using System.Drawing;
-	using System.Text;
-	using System.Windows.Forms;
-	using System.Media;
-	using System.Runtime.InteropServices;
-	
+    using System;
+    using System.Drawing;
+    using System.Text;
+    using System.Windows.Forms;
+
     public partial class FrmGame : Form
     {
-		#region Fields (5) 
+        #region Fields (5)
 
         private FrmMenu frmmenu;
         private GameEngine game;
 
-		#endregion Fields 
+        #endregion Fields
 
-		#region Constructors (1) 
+        #region Constructors (1)
 
         /// <summary>
         /// Creating a new instance of FrmGame.
@@ -54,9 +49,9 @@ namespace Frogger
             this.Text = this.Text + " - level:" + lvlname + " - tier: " + tier.ToString();
         }
 
-		#endregion Constructors 
+        #endregion Constructors
 
-		#region Properties (2) 
+        #region Properties (2)
 
         /*
         public String TbEnterName
@@ -82,19 +77,9 @@ namespace Frogger
 
 		#endregion Properties 
 
-		#region Methods (9) 
+        #region Methods (9) 
 
-		// Public Methods (1) 
-
-        /// <summary>
-        /// Hide the frmGame and show the frmMenu in MenuState main again.
-        /// </summary>
-        //public void CloseGame()
-        //{
-           
-            
-        //}
-		// Private Methods (8) 
+        // Public Methods (1) 
 
         /// <summary>
         /// Form is closed.
@@ -201,7 +186,7 @@ namespace Frogger
             }
             else
             {
-                //still more than a minute left.
+                //still more than `10seconds left.
                 timestr.Append(this.game.sec.ToString());
                 lbTime.ForeColor = Color.LightGray;
             }

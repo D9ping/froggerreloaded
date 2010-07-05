@@ -655,6 +655,7 @@ namespace Frogger
         /// <param name="textregel1">the first line, big text</param>
         private void DrawGameOverScreen(Graphics g, string textline)
         {
+            
             Font fontregel1 = new Font("Flubber", 64);
             Font fontregel2 = new Font("Flubber", 24);
             SolidBrush sbdarkorange = new SolidBrush(System.Drawing.Color.DarkOrange);
@@ -666,9 +667,9 @@ namespace Frogger
 
             if (!this.screendraw)
             {
+                screendraw = true;
                 StopEngine(true);
                 CreateBackBtn();
-                screendraw = true;
                 frmgame.Refresh();
             }
 

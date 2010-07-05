@@ -121,13 +121,7 @@ namespace Frogger
         /// </summary>
         private void CreateLvlBtns()
         {
-            string lvldir = Path.Combine(Directory.GetCurrentDirectory(), "levels");
-
-            if (!Directory.Exists(lvldir))
-            {
-                MessageBox.Show("Error level folder cannot be found.");
-                return;
-            }
+            string lvldir = Program.GetLevelFolder(); //Path.Combine(Directory.GetCurrentDirectory(), "levels");
 
             string[] files;
             try
