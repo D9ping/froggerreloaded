@@ -114,7 +114,11 @@ namespace Frogger
         /// <returns></returns>
         static public string GetLevelFolder()
         {
-            string lvldir = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels");
+#if windows
+            string lvldir = Path.Combine(GetAppDataFolder(), "levels");
+#elif linux
+            string lvldir = "??"
+#endif
             if (Directory.Exists(lvldir))
             {
                 return lvldir;
@@ -122,6 +126,27 @@ namespace Frogger
             else
             {
                 throw new Exception("Cannot find level directory.");
+            }
+        }
+
+        /// <summary>
+        /// Gets the application data folder of froggerreloaded.
+        /// </summary>
+        /// <returns></returns>
+        static public string GetAppDataFolder()
+        {
+#if windows
+            string appdatadir = Path.Combine(System.Environment.GetEnvironmentVariable("APPDATA"),"froggerreloaded");
+#elif linux
+            string lvldir = "??";
+#endif
+            if (Directory.Exists(appdatadir))
+            {
+                return appdatadir;
+            }
+            else
+            {
+                throw new Exception("Cannot find froggerreloaded application data directory.");
             }
         }
 

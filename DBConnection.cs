@@ -24,6 +24,7 @@ namespace Frogger
 	using System.Text;
 	using System.Data;
 	using System.Data.OleDb;
+    using System.IO;
 
 	public static class DBConnection
 	{
@@ -117,8 +118,16 @@ namespace Frogger
 
         public static OleDbConnection GetConnection()
         {
-            string connectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=|DataDirectory|\\highscores.mdb;Persist Security Info=False;";
-
+            string databasefilepath = Path.Combine(Program.GetAppDataFolder(), "highscores.mdb");
+            string connectionString = "";
+            if (File.Exists(databasefilepath))
+            {
+                connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + databasefilepath + ";Persist Security Info=False;";
+            }
+            else
+            {
+                throw new Exception("Highscoren database not found.");
+            }
             try
             {
                 OleDbConnection connection = new OleDbConnection(connectionString);
