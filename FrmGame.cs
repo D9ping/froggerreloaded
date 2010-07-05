@@ -106,25 +106,25 @@ namespace Frogger
                 case Keys.A:
                     game.frog.Jump(Direction.East);
                     break;
-                case Keys.Left:
+                case Keys.Left://not working key
                     game.frog.Jump(Direction.East);
                     break;
                 case Keys.D:
                     game.frog.Jump(Direction.West);
                     break;
-                case Keys.Right:
+                case Keys.Right://not working key
                     game.frog.Jump(Direction.West);
                     break;
                 case Keys.S:
                     game.frog.Jump(Direction.South);
                     break;
-                case Keys.Down:
+                case Keys.Down://not working key
                     game.frog.Jump(Direction.South);
                     break;
                 case Keys.W:
                     game.frog.Jump(Direction.North);
                     break;
-                case Keys.Up:
+                case Keys.Up://not working key
                     game.frog.Jump(Direction.North);
                     break;
                 case Keys.Escape:

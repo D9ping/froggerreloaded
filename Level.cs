@@ -117,39 +117,32 @@ namespace Frogger
         /// </summary>
         private void LoadDesign()
         {
-            string appdir = Path.GetDirectoryName(Application.ExecutablePath);
-            if (Directory.Exists(appdir))
+            string file = Path.Combine(Program.GetLevelFolder(), this.naam + ".lvl");
+            if (File.Exists(file))
             {
-                string file = appdir + "\\levels\\" + this.naam + ".lvl";
-                if (File.Exists(file))
-                {
-                    XmlReader reader = new XmlTextReader(file);
-                    roads.Clear();
-                    rivirs.Clear();
+                XmlReader reader = new XmlTextReader(file);
+                roads.Clear();
+                rivirs.Clear();
 
-                    while (reader.Read())
+                while (reader.Read())
+                {
+                    if (reader.Name == "road")
                     {
-                        if (reader.Name == "road")
-                        {
-                            int pos = reader.ReadElementContentAsInt();
-                            roads.Add(this.displayHeight - GetHeightRoad() * (pos + 1));
-                        }
-                        else if (reader.Name == "rivir")
-                        {
-                            int pos = reader.ReadElementContentAsInt();
-                            rivirs.Add(this.displayHeight - GetHeightRivir(1) * (pos + 1));
-                        }
+                        int pos = reader.ReadElementContentAsInt();
+                        roads.Add(this.displayHeight - GetHeightRoad() * (pos + 1));
+                    }
+                    else if (reader.Name == "rivir")
+                    {
+                        int pos = reader.ReadElementContentAsInt();
+                        rivirs.Add(this.displayHeight - GetHeightRivir(1) * (pos + 1));
                     }
                 }
-                else if (!error)
-                {
-                    error = true;
-                    MessageBox.Show("Level " + file + " not found.");
-
-                }
             }
-
-            //throw new NotImplementedException();
+            else if (!error)
+            {
+                error = true;
+                //MessageBox.Show("Level " + file + " not found."); //removed can still cause a lot of messageboxes.
+            }
         }
 
         /// <summary>
@@ -350,13 +343,16 @@ namespace Frogger
         /// <param name="g"></param>
         public void Draw(Graphics g)
         {
-            foreach (int rivirlocY in this.rivirs)
+            if (!error)
             {
-                DrawRiver(g, rivirlocY, 1);
-            }
-            foreach (int roadlocY in this.roads)
-            {
-                DrawRoad(g, roadlocY);
+                foreach (int rivirlocY in this.rivirs)
+                {
+                    DrawRiver(g, rivirlocY, 1);
+                }
+                foreach (int roadlocY in this.roads)
+                {
+                    DrawRoad(g, roadlocY);
+                }
             }
         }
 

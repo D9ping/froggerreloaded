@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frogger", "Frogger.csproj", "{21476B03-9B47-4963-953D-F7076A7DE1BC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4289856C-42A4-4F40-8AA4-2C8473309486}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FroggerTests", "FroggerTests\FroggerTests.csproj", "{AB35B62B-06D3-4106-9D20-EE8CA97C2D5D}"
 EndProject
 Global

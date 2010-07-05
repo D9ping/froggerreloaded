@@ -21,11 +21,10 @@ namespace Frogger
 {
     using System;
     using System.Collections.Generic;
-    using System.Drawing;
-    using System.Windows.Forms;
-    using System.Runtime.InteropServices;
     using System.Data;
-    using System.IO;
+    using System.Drawing;
+    using System.Runtime.InteropServices;
+    using System.Windows.Forms;
 
     public class GameEngine
     {
@@ -68,6 +67,7 @@ namespace Frogger
             frmgame.Controls.Add(frog);
             bigtbName = new BigTextbox();
             bigtbName.Visible = false;
+            frmgame.Controls.Add(bigtbName);
 
             this.StartEngine();
         }
@@ -86,6 +86,7 @@ namespace Frogger
                 return gameupdate.Enabled;
             }
         }
+
 
         /// <summary>
         /// Returns the number of lives the player has left.
@@ -136,7 +137,7 @@ namespace Frogger
 
             if (win)
             {
-                //StopEngine(false);
+                StopEngine(true);
                 DrawWinScreen(g, CheckEnterName());
             }
 
@@ -585,21 +586,21 @@ namespace Frogger
             }
 
             frog = new Frog(0, Direction.North, initfrogheight, initfrogwidth, initfrogheight, frmgame);
-            int locX = 0;
+            int locX;
             int locY = 0;
             if (Program.fullscreen)
             {
                 locX = (Screen.PrimaryScreen.WorkingArea.Width / 2) - (frog.Width / 2);
-                locY = Screen.PrimaryScreen.WorkingArea.Height - frog.Height - frogbottommargin;
+                locY = (Screen.PrimaryScreen.WorkingArea.Height - frog.Height) - frogbottommargin;
             }
             else
             {
                 locX = (frmgame.ClientSize.Width / 2) - (frog.Width / 2);
                 locY = frmgame.ClientSize.Height - frog.Height - frogbottommargin;
             }
-
             frog.Location = new Point(locX, locY);
-            frog.Anchor = AnchorStyles.None;
+
+            //frog.Anchor = AnchorStyles.None;
             if (frog == null) { throw new Exception("frog not created."); }
             return frog;
         }
@@ -672,7 +673,8 @@ namespace Frogger
                 CreateBackBtn();
                 frmgame.Refresh();
             }
-
+            this.min = 0;
+            this.sec = 0;
         }
 
         /// <summary>
@@ -716,7 +718,6 @@ namespace Frogger
 
             if (this.screendraw == false)
             {
-                StopEngine(true);
                 if (entername)
                 {
                     ShowEnterHighscore();
@@ -777,8 +778,6 @@ namespace Frogger
                         InitSomeMvobjs();
                         ishit = false;
                         this.StartEngine();
-                        //timeupdate.Enabled = true;
-                        //gameupdate.Enabled = true;
                     }
                     else
                     {
@@ -1006,7 +1005,6 @@ namespace Frogger
             try
             {
                 frmgame.Controls.Add(lblText);
-                frmgame.Controls.Add(bigtbName);
                 frmgame.Controls.Add(hovbtnSubmit);
             }
             catch (Exception exc)

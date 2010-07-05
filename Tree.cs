@@ -18,11 +18,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Frogger
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Text;
-	using System.Drawing;
-	
+    using System.Drawing;
+
     /// <summary>
     /// A tree trunk obj.
     /// </summary>
@@ -38,9 +35,6 @@ namespace Frogger
         {
             this.Size = new Size(width, height);
             base.Pic = ResizesResources.images["treetrunk"];
-
-            //int i1 = base.pic.Width;
-            //int i2 = base.pic.Height;
         }
     }
 }

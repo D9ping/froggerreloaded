@@ -17,14 +17,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 namespace Frogger
 {
-	using System;
-	using System.Collections.Generic;
-	using System.ComponentModel;
-	using System.Drawing;
-	using System.Data;
-	using System.Text;
-	using System.Windows.Forms;
-	
+    using System.Drawing;
+    using System.Windows.Forms;
+
     public partial class LevelPreview : UserControl
     {
         private Level level;

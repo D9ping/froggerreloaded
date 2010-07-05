@@ -19,10 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 namespace Frogger
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Drawing;
-	
+
     public abstract class MenuScreen
     {
         #region Fields (1)

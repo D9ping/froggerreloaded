@@ -66,7 +66,10 @@ namespace Frogger
 
             deletebtn = new HoverButton("Delete all");
             deletebtn.Click += new EventHandler(DeleteHighscoreAll);
-            //frmmenu.Controls.Add(deletebtn);
+            deletebtn.Location = new Point(10, frmmenu.ClientRectangle.Height - 70);
+            deletebtn.Size = new Size(150, 40);
+            deletebtn.SizeText = 22;
+            frmmenu.Controls.Add(deletebtn);
 
             int ypos = 0;
             int xpos = 0;
@@ -87,7 +90,6 @@ namespace Frogger
             foreach (HoverButton levelbtn in this.highscoremenubtn)
             {
                 levelbtn.SizeText = 32;
-                //frmmenu.Controls.Add(levelbtn);
                 pnl.Controls.Add(levelbtn);
             }
         }
@@ -112,6 +114,8 @@ namespace Frogger
 
             pnl.Visible = false;
             pnl.Dispose();
+            deletebtn.Visible = false;
+            deletebtn.Dispose();
 
             ClearAllEntries();
         }
@@ -174,9 +178,17 @@ namespace Frogger
             DialogResult dlgres = MessageBox.Show("Are you sure you want to clear all highscores?", "sure?", MessageBoxButtons.YesNo);
             if (dlgres == DialogResult.Yes)
             {
-                DBConnection.SetData("DELETE * FROM HIGHSCORES");
-                ClearAllEntries();
-                MessageBox.Show("Highscore table is now empty.");
+                try
+                {
+                    DBConnection.SetData("DELETE * FROM HIGHSCORES");
+                    ClearAllEntries();
+                    MessageBox.Show("Highscore table is now empty.", "succeeded");
+                }
+                catch
+                {
+                    MessageBox.Show("Cannot delete all highscores.", "failed");
+                }
+                
             }
 
         }
@@ -210,6 +222,8 @@ namespace Frogger
         /// <param name="e"></param>
         public void GetHighscores(object sender, EventArgs e)
         {
+            this.frmmenu.BackColor = Color.DimGray;
+
             if (entries != null)
             {
                 foreach (Label curlbl in entries)

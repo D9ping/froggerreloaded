@@ -18,12 +18,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Frogger
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Text;
-	using System.Windows.Forms;
-	using System.Drawing;
-	
+    using System.Drawing;
+    using System.Windows.Forms;
+
     class MenuCredits : MenuScreen
     {
         private FrmMenu frmmenu;
@@ -55,7 +52,7 @@ namespace Frogger
 
             int locy = 250;
             for (int i = 0; i < lblcredits.Length; i++)
-			{
+            {
                 lblcredits[i].Location = new Point(frmmenu.Size.Width / 2 - lblcredits[i].Size.Width/2, locy);
                 if (i < 3)
                 {
@@ -68,7 +65,7 @@ namespace Frogger
                 lblcredits[i].AutoSize = true;
                 if (i == 2) locy += 36;
                 else locy += 28;
-			}
+            }
 
             frmmenu.Controls.AddRange(lblcredits);
         }
