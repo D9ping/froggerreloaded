@@ -28,17 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMenu));
             this.pbKikker = new System.Windows.Forms.PictureBox();
             this.pbLogo = new System.Windows.Forms.PictureBox();
             this.cbxTier = new System.Windows.Forms.ComboBox();
+            this.timerbackground = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pbKikker)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // pbKikker
             // 
-            this.pbKikker.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbKikker.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pbKikker.BackColor = System.Drawing.Color.Transparent;
             this.pbKikker.Image = global::Frogger.Properties.Resources.kikker_west;
             this.pbKikker.Location = new System.Drawing.Point(646, 40);
@@ -49,7 +51,9 @@
             // 
             // pbLogo
             // 
-            this.pbLogo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pbLogo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbLogo.BackColor = System.Drawing.Color.Transparent;
             this.pbLogo.Image = global::Frogger.Properties.Resources.logo_frogger_reloaded;
             this.pbLogo.Location = new System.Drawing.Point(0, 0);
             this.pbLogo.Name = "pbLogo";
@@ -80,6 +84,12 @@
             this.cbxTier.Visible = false;
             this.cbxTier.VisibleChanged += new System.EventHandler(this.cbxTier_VisibleChanged);
             // 
+            // timerbackground
+            // 
+            this.timerbackground.Enabled = true;
+            this.timerbackground.Interval = 20;
+            this.timerbackground.Tick += new System.EventHandler(this.timerbackground_Tick);
+            // 
             // FrmMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -95,7 +105,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "FrmMenu";
-            this.Text = "Frogger Reloaded";
+            this.Text = "Frogger Reloaded - beta version";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmMenu_Paint);
             this.Resize += new System.EventHandler(this.FrmMenu_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmMenu_KeyDown);
@@ -111,6 +121,7 @@
         private System.Windows.Forms.PictureBox pbLogo;
         private System.Windows.Forms.PictureBox pbKikker;
         public System.Windows.Forms.ComboBox cbxTier;
+        public System.Windows.Forms.Timer timerbackground;
     }
 }
 

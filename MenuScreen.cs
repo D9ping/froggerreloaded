@@ -18,36 +18,34 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Frogger
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Text;
-	using System.Drawing;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Drawing;
 	
     public abstract class MenuScreen
     {
-		#region Fields (1) 
-        
+        #region Fields (1)
+
         private FrmMenu frmmenu;
 
-		#endregion Fields 
+        #endregion Fields
 
-		#region Constructors (1) 
+        #region Constructors (1)
 
         public MenuScreen(FrmMenu frmmenu)
         {
-            this.frmmenu = frmmenu; 
+            this.frmmenu = frmmenu;
         }
 
-		#endregion Constructors 
+        #endregion Constructors
 
-		#region Methods (3) 
+        #region Methods (1)
 
-		// Public Methods (1) 
+        // Public Methods (1) 
 
         public abstract void ClearScreen();
-		// Private Methods (2) 
 
-
-		#endregion Methods 
+        #endregion Methods
     }
 }

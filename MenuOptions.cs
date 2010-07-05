@@ -27,17 +27,12 @@ namespace Frogger
     {
         private FrmMenu frmmenu;
         private BigCheckbox[] options;
-
+        private const int marginbigchx = 20;
         public MenuOptions(FrmMenu frmmenu)
             : base(frmmenu)
         {
             this.frmmenu = frmmenu;
 
-            int margin = 20;
-
-            //todo: get settings from windows registery.
-            //RegistryKey.RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Frogger\\", true);
-            //key.GetValue("fullscreen", null);
             bool sound = Frogger.Properties.Settings.Default.sound;
             bool fullscreen = Frogger.Properties.Settings.Default.fullscreen;
 
@@ -47,7 +42,7 @@ namespace Frogger
             options[0].Click += new EventHandler(ToggleSound);
 
             options[1] = new BigCheckbox("full screen", fullscreen);
-            options[1].Location = new Point(frmmenu.Width / 2 - (options[1].Width / 2), frmmenu.Height / 2 - (options[1].Height / 2) + options[1].Height + margin);
+            options[1].Location = new Point(frmmenu.Width / 2 - (options[1].Width / 2), frmmenu.Height / 2 - (options[1].Height / 2) + options[1].Height + marginbigchx);
             
             options[1].Click += new EventHandler(ToggleFullscreen);
 

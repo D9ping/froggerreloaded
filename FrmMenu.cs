@@ -15,18 +15,18 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows.Forms;
-//using Microsoft.Win32;
 
 namespace Frogger
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Drawing;
+    using System.Runtime.InteropServices;
+    using System.Text;
+    using System.Windows.Forms;
+
     public partial class FrmMenu : Form
     {
         #region Fields (3)
@@ -161,7 +161,6 @@ namespace Frogger
         {
             if (menuupdated)
             {
-
                 if (curmenu != null)
                 {
                     curmenu.ClearScreen();
@@ -252,6 +251,49 @@ namespace Frogger
                 menuupdated = true;
             }
             this.Refresh();
+        }
+
+        /// <summary>
+        /// background effect
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timerbackground_Tick(object sender, EventArgs e)
+        {
+            int red = this.BackColor.R;
+            int green = this.BackColor.G;
+            int blue = this.BackColor.B;
+            red = StepToColor(red, 0);
+            green = StepToColor(green, 128);
+            blue = StepToColor(blue, 0);
+            this.BackColor = Color.FromArgb(255, red, green, blue);
+        }
+
+        private int StepToColor(int curcolorval, int desirecolorval)
+        {
+            if (curcolorval > desirecolorval)
+            {
+                if (curcolorval - desirecolorval > 50)
+                {
+                    curcolorval = curcolorval - 2;
+                }
+                else
+                {
+                    curcolorval--;
+                }
+            }
+            else if (curcolorval < desirecolorval)
+            {
+                if (desirecolorval - curcolorval > 50)
+                {
+                    curcolorval = curcolorval + 2;
+                }
+                else
+                {
+                    curcolorval++;
+                }
+            }
+            return curcolorval;
         }
 
         #endregion Methods

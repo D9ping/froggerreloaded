@@ -18,14 +18,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 namespace Frogger
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Text;
-	using System.Data;
-	using System.Data.OleDb;
-	using System.Drawing;
-	using System.Windows.Forms;
-	using System.IO;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Data;
+    using System.Drawing;
+    using System.Windows.Forms;
+    using System.IO;
 	
     /// <summary>
     /// Highscores screen
@@ -56,6 +55,7 @@ namespace Frogger
 
             deletebtn = new HoverButton("Delete all");
             deletebtn.Click += new EventHandler(DeleteHighscoreAll);
+            //frmmenu.Controls.Add(deletebtn);
 
             int ypos = 80;
             int xpos = 20; //frmmenu.Width / 2 - (highscoremenubtn[0].Width / 2);
@@ -67,17 +67,17 @@ namespace Frogger
 
             lbshowcurlvlscore = new Label();
             lbshowcurlvlscore.Location = new Point(frmmenu.Width / 2, 5);
-            lbshowcurlvlscore.Font = new Font("Flubber", 28);
+            lbshowcurlvlscore.Font = new Font("Flubber", 40);
             lbshowcurlvlscore.ForeColor = Color.Brown;
             lbshowcurlvlscore.AutoSize = true;
             lbshowcurlvlscore.Text = "";
-
             frmmenu.Controls.Add(lbshowcurlvlscore);
+
             foreach (HoverButton levelbtn in this.highscoremenubtn)
             {
+                levelbtn.SizeText = 32;
                 frmmenu.Controls.Add(levelbtn);
             }
-            //frmmenu.Controls.AddRange(highscoremenubtn);
         }
 
         #endregion Constructors
