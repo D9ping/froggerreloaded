@@ -63,13 +63,14 @@ namespace Frogger
 
             this.DrawNumLives();
 
-            frog = CreateFrog();
-            frmgame.Controls.Add(frog);
+            
             bigtbName = new BigTextbox();
             bigtbName.Visible = false;
             frmgame.Controls.Add(bigtbName);
 
             this.StartEngine();
+            frog = CreateFrog();
+            frmgame.Controls.Add(frog);
         }
 
         #endregion Constructors
@@ -599,6 +600,10 @@ namespace Frogger
                 locY = frmgame.ClientSize.Height - frog.Height - frogbottommargin;
             }
             frog.Location = new Point(locX, locY);
+
+//#if DEBUG
+            //MessageBox.Show("x:"+locX+" y:"+locY);
+//#endif
 
             //frog.Anchor = AnchorStyles.None;
             if (frog == null) { throw new Exception("frog not created."); }

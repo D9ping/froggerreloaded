@@ -193,27 +193,27 @@ namespace Frogger
 
         }
 
-        /*
-         * Later features
-         * 
-         
+
         /// <summary>
         /// Delete highscore from particaler level
         /// </summary>
-        public bool DeleteHighscoreOneLevel(int level)
+        public void DeleteHighscoreOneLevel(int lvlname)
         {
-            throw new System.NotImplementedException();
+            DialogResult dlgres = MessageBox.Show("Are you sure you want to remove the highscores from "+lvlname, "sure?", MessageBoxButtons.YesNo);
+            if (dlgres == DialogResult.Yes)
+            {
+                try
+                {
+                    DBConnection.SetData("DELETE * FROM HIGHSCORES WHERE level = '"+lvlname+"'");
+                    ClearAllEntries();
+                    MessageBox.Show(lvlname+" has been delete from the highscores.", "succeeded");
+                }
+                catch
+                {
+                    MessageBox.Show("Cannot delete the highscores.", "failed");
+                }
+            }
         }
-
-        /// <summary>
-        /// Delete highscore from particaler tier
-        /// </summary>
-        public bool DeleteHighscoreOneNiveau(Tier tier)
-        {
-            throw new System.NotImplementedException();
-        }
-        
-        */
 
         /// <summary>
         /// Verkrijg highscore, (methode moet aan sjabooltje delegate EventHandler voldoen.)

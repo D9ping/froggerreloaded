@@ -44,9 +44,9 @@ namespace Frogger
         {
             InitializeComponent();
             this.frmmenu = frmmenu;
-            this.game = new GameEngine(lvlname, this, tier);
             Program.CheckFullScreen(this);
-            this.Text = this.Text + " - level:" + lvlname + " - tier: " + tier.ToString();
+            this.game = new GameEngine(lvlname, this, tier);
+            this.Text = this.Text + " - level: " + lvlname + " - tier: " + tier.ToString();
         }
 
         #endregion Constructors
