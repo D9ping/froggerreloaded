@@ -328,8 +328,8 @@ namespace Frogger
             frog.CanMove = false;
             foreach (MovingObject obj in movingobjs)
             {
-                if (frmgame.Controls.Contains(obj))
-                {
+                //if (frmgame.Controls.Contains(obj))
+                //{
                     switch (obj.Dir)
                     {
                         case Direction.East:
@@ -339,7 +339,7 @@ namespace Frogger
                             obj.Location = new Point(obj.Location.X - obj.Velocity, obj.Location.Y);
                             break;
                     }
-                    if ((obj.Location.X + obj.Width < 0) || (obj.Location.X > frmgame.Width + obj.Width))
+                    if ((obj.Location.X + obj.Width < 0) || (obj.Location.X > frmgame.ClientRectangle.Width + obj.Width))
                     {
                         frmgame.Controls.Remove(obj);
                     }
@@ -402,11 +402,11 @@ namespace Frogger
                             }
                         }
                     }
-                }
-                else if ((obj != null) && (obj.IsDisposed == false))
-                {
-                    frmgame.Controls.Add(obj);
-                }
+                //}
+                //else if ((obj != null) && (obj.IsDisposed == false))
+                //{
+                //    frmgame.Controls.Add(obj);
+                //}
             }
 
             if (frog.OnTree == false)
@@ -567,6 +567,7 @@ namespace Frogger
             {
                 car.Location = new Point(locX, roadLocY);
             }
+            frmgame.Controls.Add(car);
             return car;
         }
 
@@ -622,6 +623,7 @@ namespace Frogger
             int inittreeheight = level.GetHeightRivir(1);
             Tree treetrunk = new Tree(vel, direction, inittreewidth, inittreeheight);
             treetrunk.Location = new Point(locX, locY);
+            frmgame.Controls.Add(treetrunk);
             return treetrunk;
         }
 
