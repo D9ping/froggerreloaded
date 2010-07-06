@@ -29,8 +29,8 @@ namespace Frogger
     {
         private const int lineDistance = 100;
 
-        private List<int> rivirs;
         private List<int> roads;
+        private List<int> rivirs;
         private int displayWidth, displayHeight;
         private bool error = false;
         private string naam;
@@ -53,6 +53,7 @@ namespace Frogger
             {
                 LoadDesign();
             }
+            
         }
 
         /// <summary>
@@ -239,9 +240,12 @@ namespace Frogger
         {
             this.displayWidth = width;
             this.displayHeight = height;
-            if (!this.error && reloaddesign)
+            if (!this.error)
             {
-                LoadDesign();
+                if (reloaddesign)
+                {
+                    LoadDesign();
+                }
             }
         }
 
@@ -253,6 +257,29 @@ namespace Frogger
         public int GetPosRoad(int nr)
         {
             return this.roads[nr];
+        }
+
+
+        /// <summary>
+        /// Adds a road to the road list
+        /// if the road at pos. is not already added.
+        /// and there is no rivir at this position, if so
+        /// remove the rivir first.
+        /// </summary>
+        /// <param name="y">y position to add road</param>
+        public void AddRoad(int y)
+        {
+            if ((y >= 0) && (y <= displayHeight))
+            {
+                if (CheckIfAdded(this.rivirs, y))
+                {
+                    this.rivirs.Remove(y);
+                }
+                if (!CheckIfAdded(this.roads, y))
+                {
+                    this.roads.Add(y);
+                }
+            }
         }
 
         /// <summary>
@@ -273,28 +300,6 @@ namespace Frogger
                 if (!CheckIfAdded(this.rivirs, y))
                 {
                     this.rivirs.Add(y);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Adds a road to the road list
-        /// if the road at pos. is not already added.
-        /// and there is no rivir at this position, if so
-        /// remove the rivir first.
-        /// </summary>
-        /// <param name="y">y position to add road</param>
-        public void AddRoad(int y)
-        {
-            if ((y >= 0) && (y <= displayHeight))
-            {
-                if (CheckIfAdded(this.rivirs, y))
-                {
-                    this.rivirs.Remove(y);
-                }
-                if (!CheckIfAdded(this.roads, y))
-                {
-                    this.roads.Add(y);
                 }
             }
         }
@@ -347,8 +352,27 @@ namespace Frogger
             {
                 foreach (int rivirlocY in this.rivirs)
                 {
+                    
                     DrawRiver(g, rivirlocY, 1);
                 }
+                
+                /* optimizing stuff, work in process
+                for (int i = 0; i < this.rivirs.Count; i++)
+                {
+                    if (i >= 1)
+                    {
+                        if (rivirs[i] - (this.displayHeight / 10) == rivirs[i - 1]) 
+                        {
+                            DrawRiver(g, rivirs[i-1], 2);
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        DrawRiver(g, rivirs[i], 1);
+                    }
+                }
+                */
                 foreach (int roadlocY in this.roads)
                 {
                     DrawRoad(g, roadlocY);
