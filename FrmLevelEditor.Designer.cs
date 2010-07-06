@@ -39,6 +39,7 @@
             this.lblExtension = new System.Windows.Forms.Label();
             this.lblTextEnterNewFilename = new System.Windows.Forms.Label();
             this.lbxFiles = new System.Windows.Forms.ListBox();
+            this.hovbtnDelete = new Frogger.HoverButton();
             this.hovbtnOpenFile = new Frogger.HoverButton();
             this.hovbtnCancelSave = new Frogger.HoverButton();
             this.hovbtnSaveFile = new Frogger.HoverButton();
@@ -67,7 +68,8 @@
             this.hovbtnOpen.BackColor = System.Drawing.Color.LimeGreen;
             this.hovbtnOpen.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hovbtnOpen.ForeColor = System.Drawing.Color.Black;
-            this.hovbtnOpen.HoverbuttonText = "?";
+            this.hovbtnOpen.HoverbuttonSizeText = 32F;
+            this.hovbtnOpen.HoverbuttonText = "open";
             this.hovbtnOpen.Location = new System.Drawing.Point(7, 295);
             this.hovbtnOpen.Margin = new System.Windows.Forms.Padding(0);
             this.hovbtnOpen.Name = "hovbtnOpen";
@@ -89,8 +91,10 @@
             this.hovbtnSave.AllowDrop = true;
             this.hovbtnSave.BackColor = System.Drawing.Color.LimeGreen;
             this.hovbtnSave.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.hovbtnSave.Enabled = false;
             this.hovbtnSave.ForeColor = System.Drawing.Color.Black;
-            this.hovbtnSave.HoverbuttonText = "?";
+            this.hovbtnSave.HoverbuttonSizeText = 32F;
+            this.hovbtnSave.HoverbuttonText = "save";
             this.hovbtnSave.Location = new System.Drawing.Point(7, 370);
             this.hovbtnSave.Margin = new System.Windows.Forms.Padding(0);
             this.hovbtnSave.Name = "hovbtnSave";
@@ -104,7 +108,8 @@
             this.hovbtnBack.BackColor = System.Drawing.Color.LimeGreen;
             this.hovbtnBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hovbtnBack.ForeColor = System.Drawing.Color.Black;
-            this.hovbtnBack.HoverbuttonText = "?";
+            this.hovbtnBack.HoverbuttonSizeText = 32F;
+            this.hovbtnBack.HoverbuttonText = "back";
             this.hovbtnBack.Location = new System.Drawing.Point(9, 456);
             this.hovbtnBack.Margin = new System.Windows.Forms.Padding(0);
             this.hovbtnBack.Name = "hovbtnBack";
@@ -177,6 +182,23 @@
             this.lbxFiles.Size = new System.Drawing.Size(458, 120);
             this.lbxFiles.TabIndex = 14;
             this.lbxFiles.Visible = false;
+            this.lbxFiles.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbxFiles_MouseDoubleClick);
+            // 
+            // hovbtnDelete
+            // 
+            this.hovbtnDelete.AllowDrop = true;
+            this.hovbtnDelete.BackColor = System.Drawing.Color.LimeGreen;
+            this.hovbtnDelete.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.hovbtnDelete.ForeColor = System.Drawing.Color.Black;
+            this.hovbtnDelete.HoverbuttonSizeText = 20F;
+            this.hovbtnDelete.HoverbuttonText = "delete";
+            this.hovbtnDelete.Location = new System.Drawing.Point(417, 456);
+            this.hovbtnDelete.Margin = new System.Windows.Forms.Padding(0);
+            this.hovbtnDelete.Name = "hovbtnDelete";
+            this.hovbtnDelete.Size = new System.Drawing.Size(93, 75);
+            this.hovbtnDelete.TabIndex = 15;
+            this.hovbtnDelete.Visible = false;
+            this.hovbtnDelete.Click += new System.EventHandler(this.hovbtnDelete_Click);
             // 
             // hovbtnOpenFile
             // 
@@ -184,11 +206,12 @@
             this.hovbtnOpenFile.BackColor = System.Drawing.Color.LimeGreen;
             this.hovbtnOpenFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hovbtnOpenFile.ForeColor = System.Drawing.Color.Black;
-            this.hovbtnOpenFile.HoverbuttonText = "?";
-            this.hovbtnOpenFile.Location = new System.Drawing.Point(500, 456);
+            this.hovbtnOpenFile.HoverbuttonSizeText = 42F;
+            this.hovbtnOpenFile.HoverbuttonText = "Open";
+            this.hovbtnOpenFile.Location = new System.Drawing.Point(546, 456);
             this.hovbtnOpenFile.Margin = new System.Windows.Forms.Padding(0);
             this.hovbtnOpenFile.Name = "hovbtnOpenFile";
-            this.hovbtnOpenFile.Size = new System.Drawing.Size(210, 55);
+            this.hovbtnOpenFile.Size = new System.Drawing.Size(207, 75);
             this.hovbtnOpenFile.TabIndex = 13;
             this.hovbtnOpenFile.Visible = false;
             this.hovbtnOpenFile.Click += new System.EventHandler(this.hovbtnOpenFile_Click);
@@ -199,11 +222,12 @@
             this.hovbtnCancelSave.BackColor = System.Drawing.Color.LimeGreen;
             this.hovbtnCancelSave.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hovbtnCancelSave.ForeColor = System.Drawing.Color.Black;
-            this.hovbtnCancelSave.HoverbuttonText = "?";
-            this.hovbtnCancelSave.Location = new System.Drawing.Point(235, 456);
+            this.hovbtnCancelSave.HoverbuttonSizeText = 36F;
+            this.hovbtnCancelSave.HoverbuttonText = "cancel";
+            this.hovbtnCancelSave.Location = new System.Drawing.Point(204, 456);
             this.hovbtnCancelSave.Margin = new System.Windows.Forms.Padding(0);
             this.hovbtnCancelSave.Name = "hovbtnCancelSave";
-            this.hovbtnCancelSave.Size = new System.Drawing.Size(220, 53);
+            this.hovbtnCancelSave.Size = new System.Drawing.Size(196, 75);
             this.hovbtnCancelSave.TabIndex = 10;
             this.hovbtnCancelSave.Visible = false;
             this.hovbtnCancelSave.Click += new System.EventHandler(this.hovbtnCancelSave_Click);
@@ -214,11 +238,11 @@
             this.hovbtnSaveFile.BackColor = System.Drawing.Color.LimeGreen;
             this.hovbtnSaveFile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hovbtnSaveFile.ForeColor = System.Drawing.Color.Black;
-            this.hovbtnSaveFile.HoverbuttonText = "?";
+            this.hovbtnSaveFile.HoverbuttonSizeText = 42F;
             this.hovbtnSaveFile.Location = new System.Drawing.Point(487, 456);
             this.hovbtnSaveFile.Margin = new System.Windows.Forms.Padding(0);
             this.hovbtnSaveFile.Name = "hovbtnSaveFile";
-            this.hovbtnSaveFile.Size = new System.Drawing.Size(220, 53);
+            this.hovbtnSaveFile.Size = new System.Drawing.Size(220, 75);
             this.hovbtnSaveFile.TabIndex = 9;
             this.hovbtnSaveFile.Visible = false;
             this.hovbtnSaveFile.Click += new System.EventHandler(this.hovbtnSaveFile_Click);
@@ -239,6 +263,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Frogger.Properties.Resources.texure_grass;
             this.ClientSize = new System.Drawing.Size(784, 562);
+            this.Controls.Add(this.hovbtnDelete);
             this.Controls.Add(this.lbxFiles);
             this.Controls.Add(this.hovbtnOpenFile);
             this.Controls.Add(this.lblTextEnterNewFilename);
@@ -280,5 +305,6 @@
         private HoverButton hovbtnOpen;
         private HoverButton hovbtnOpenFile;
         private System.Windows.Forms.ListBox lbxFiles;
+        private HoverButton hovbtnDelete;
     }
 }

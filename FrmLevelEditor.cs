@@ -30,7 +30,7 @@ namespace Frogger
         private Level level;
         private FrmMenu frmmenu;
         private Timer redrawtmr;
-        private bool savinglevel = false, savedlevel, namealreadyexist = false, toolselected = false, openinglevel = false;
+        private bool savinglevel = false, savedlevel, namealreadyexist = false, toolselected = false, openinglevel = false, lvlchanged = false;
         private int mouseY = 0, mouseX = 0, selecteditemnr = -1;
         private const int margin = 20, padding = 50;
 
@@ -45,15 +45,15 @@ namespace Frogger
             InitializeComponent();
 
             this.hovbtnBack.HoverbuttonText = "Back";
-            this.hovbtnBack.SizeText = 24;
+            this.hovbtnBack.HoverbuttonSizeText = 24;
             this.hovbtnSave.HoverbuttonText = "Save";
-            this.hovbtnSave.SizeText = 24;
+            this.hovbtnSave.HoverbuttonSizeText = 24;
             this.hovbtnOpen.HoverbuttonText = "Open";
-            this.hovbtnOpen.SizeText = 24;
+            this.hovbtnOpen.HoverbuttonSizeText = 24;
             this.hovbtnOpenFile.HoverbuttonText = "Open";
-            this.hovbtnOpenFile.SizeText = 24;
+            this.hovbtnOpenFile.HoverbuttonSizeText = 24;
             this.hovbtnCancelSave.HoverbuttonText = "cancel";
-            this.hovbtnCancelSave.SizeText = 24;
+            this.hovbtnCancelSave.HoverbuttonSizeText = 24;
 
             this.level = new Level(this.ClientRectangle.Width, this.ClientRectangle.Height);
 
@@ -147,7 +147,6 @@ namespace Frogger
             selectitem.BackgroundImage = Frogger.Properties.Resources.selecteditem;
             this.toolselected = true;
             this.selecteditemnr = Convert.ToInt32(selectitem.Tag);
-
             lblInstructions.Text = "Click where you want it.";
         }
 
@@ -159,6 +158,7 @@ namespace Frogger
         private void hovbtnSave_Click(object sender, EventArgs e)
         {
             savinglevel = true;
+            lblTextEnterNewFilename.Text = "Enter a new name for this level:";
             this.Refresh();
         }
 
@@ -185,7 +185,6 @@ namespace Frogger
 
             if (savinglevel)
             {
-
                 Rectangle rect = new Rectangle(new Point(panelTools.Width + margin, margin), new Size(this.ClientRectangle.Width - panelTools.Width - (margin * 2), this.ClientRectangle.Height - (margin * 2)));
                 g.DrawRectangle(Pens.Black, rect);
 
@@ -231,6 +230,7 @@ namespace Frogger
                     {
                         g.FillRectangle(Brushes.LawnGreen, rect);
                         g.DrawString("Saved", new Font("Flubber", 36), Brushes.Black, new PointF(ClientRectangle.Width / 2, ClientRectangle.Height / 2));
+                        lvlchanged = false;
                     }
                 }
             }
@@ -249,10 +249,16 @@ namespace Frogger
             }
             else
             {
-                this.hovbtnSave.Enabled = true;
+                if (lvlchanged)
+                {
+                    this.hovbtnSave.Enabled = true;
+                }
+
                 this.hovbtnOpen.Enabled = true;
                 this.pnlAddRivir.Enabled = true;
                 this.pnlAddRoad.Enabled = true;
+
+                this.hovbtnDelete.Visible = false;
                 this.lblTextEnterNewFilename.Visible = false;
                 this.bigTextboxFilename.Visible = false;
                 this.lblExtension.Visible = false;
@@ -316,7 +322,7 @@ namespace Frogger
         {
             if (!String.IsNullOrEmpty(bigTextboxFilename.Text))
             {
-                string lvldir = Program.GetLevelFolder(); //Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "levels");
+                string lvldir = Program.GetLevelFolder();
                 string newfile = bigTextboxFilename.Text + ".lvl";
                 if ((File.Exists(Path.Combine(lvldir, newfile)) == true) && (namealreadyexist == false))
                 {
@@ -366,10 +372,12 @@ namespace Frogger
                         case 1:
                             this.level.AddRoad(newpos);
                             this.DeselectAllTools();
+                            this.lvlchanged = true;
                             break;
                         case 2:
                             this.level.AddRivir(newpos);
                             this.DeselectAllTools();
+                            this.lvlchanged = true;
                             break;
                         default:
                             //add nothing
@@ -428,7 +436,7 @@ namespace Frogger
             {
                 this.lbxFiles.Items.Add(levelnaam);
             }
-
+            this.hovbtnDelete.Visible = true;
             this.lbxFiles.Location = new Point(panelTools.Width + margin + padding, margin + padding);
             int widthfileslist = this.ClientRectangle.Width - panelTools.Width - (margin * 2) - (padding * 2);
             int heightfileslist = this.ClientRectangle.Height - (margin * 2) - this.hovbtnOpenFile.Height - (padding * 2);
@@ -448,11 +456,47 @@ namespace Frogger
             {
                 openinglevel = false;
                 this.level = new Level(lbxFiles.SelectedItem.ToString(), this.ClientRectangle.Width, ClientRectangle.Height - 2);
+                this.lvlchanged = false;
                 this.Refresh();
             }
             else
             {
                 lblInstructions.Text = "Please select a file to open.";
+            }
+        }
+
+        private void lbxFiles_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            hovbtnOpenFile_Click(sender, null);
+        }
+
+        private void hovbtnDelete_Click(object sender, EventArgs e)
+        {
+            DialogResult dlgresdelete = MessageBox.Show("Are you sure you want to\r\ndelete "+lbxFiles.SelectedItem.ToString()+" ?", "delete level", MessageBoxButtons.YesNo);
+            if (dlgresdelete == DialogResult.Yes)
+            {
+                string levelfile = Path.Combine(Program.GetLevelFolder(), lbxFiles.SelectedItem.ToString() + ".lvl");
+                if (File.Exists(levelfile))
+                {
+                    FileInfo fi = new FileInfo(levelfile);
+                    if (fi.Attributes == FileAttributes.System)
+                    {
+                        MessageBox.Show("Deletion aborted, level file appears to be a system file!", "fatal error");
+                        return;
+                    }
+                    try
+                    {
+                        File.Delete(levelfile);
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show(exc.Message, "error");
+                    }
+                    hovbtnOpen_Click(sender, e);
+                } else
+                {
+                    MessageBox.Show("Level file is missing.", "error");
+                }
             }
         }
     }

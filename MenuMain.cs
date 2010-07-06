@@ -53,7 +53,7 @@ namespace Frogger
             hoofdmenuknoppen[2] = new HoverButton("Options");
             //hoofdmenuknoppen[3] = new HoverButton("Credits");
             hoofdmenuknoppen[3] = new HoverButton("Level Editor");
-            hoofdmenuknoppen[3].SizeText = 34;
+            hoofdmenuknoppen[3].HoverbuttonSizeText = 34;
             hoofdmenuknoppen[4] = new HoverButton("Exit");
             hoofdmenuknoppen[0].Click += new EventHandler(CreateLevelMenu);
             hoofdmenuknoppen[1].Click += new EventHandler(CreateHighScore);

@@ -55,10 +55,17 @@ namespace Frogger
             //hovbtn default width is 320, so 340 for panel and 20px for optional scrollbar.
             pnl.Size = new Size(340, frmmenu.ClientRectangle.Height - 150); 
             pnl.Visible = true;
-            //pnl.BackColor = Color.LightGreen;
             pnl.AutoScroll = true;
             pnl.AutoSize = false;
-            frmmenu.Controls.Add(pnl);
+            try
+            {
+                frmmenu.Controls.Add(pnl);
+            }
+            catch
+            {
+                frmmenu.Menustate = MenuState.main;
+                frmmenu.MenuUpdated = true;
+            }
             //System.Windows.Forms.ScrollBar.DefaultForeColor = Color.Blue;
 
             highscoremenubtn = new List<HoverButton>();
@@ -68,7 +75,7 @@ namespace Frogger
             deletebtn.Click += new EventHandler(DeleteHighscoreAll);
             deletebtn.Location = new Point(10, frmmenu.ClientRectangle.Height - 70);
             deletebtn.Size = new Size(150, 40);
-            deletebtn.SizeText = 22;
+            deletebtn.HoverbuttonSizeText = 22;
             frmmenu.Controls.Add(deletebtn);
 
             int ypos = 0;
@@ -89,7 +96,7 @@ namespace Frogger
 
             foreach (HoverButton levelbtn in this.highscoremenubtn)
             {
-                levelbtn.SizeText = 32;
+                levelbtn.HoverbuttonSizeText = 32;
                 pnl.Controls.Add(levelbtn);
             }
         }
@@ -146,7 +153,7 @@ namespace Frogger
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "level directory cannot be read.");
+                MessageBox.Show(exc.Message, "Level directory cannot be read.");
             }
         }
 
@@ -222,7 +229,16 @@ namespace Frogger
         /// <param name="e"></param>
         public void GetHighscores(object sender, EventArgs e)
         {
-            this.frmmenu.BackColor = Color.DimGray;
+            Random rnd = new Random();
+            int n = rnd.Next(0, 2);
+            if (n == 1)
+            {
+                this.frmmenu.BackColor = Color.Black;
+            }
+            else
+            {
+                this.frmmenu.BackColor = Color.DarkOliveGreen;
+            }
 
             if (entries != null)
             {

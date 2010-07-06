@@ -61,7 +61,7 @@ namespace Frogger
         /// <summary>
         /// designtime properties.
         /// </summary>
-        [Description("The text of the HoverButton"), DefaultValue("test"), Category("design")]
+        [Description("The text of the HoverButton"), DefaultValue("?"), Category("design")]
         public string HoverbuttonText
         {
             get
@@ -74,8 +74,13 @@ namespace Frogger
             }
         }
 
-        public float SizeText
+        [Description("The textsize of the HoverButton"), DefaultValue(36), Category("design")]
+        public float HoverbuttonSizeText
         {
+            get
+            {
+                return this.lbButton.Font.Size;
+            }
             set
             {
                 this.lbButton.Font = new Font("Flubber", value);
