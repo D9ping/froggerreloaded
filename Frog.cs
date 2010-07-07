@@ -129,13 +129,7 @@ namespace Frogger
                             this.Location = new System.Drawing.Point(newposX, newposY);
                             if (this.Location.Y <= this.Height)
                             {
-                                string soundmadeit;
-#if windows
-                                soundmadeit = Application.StartupPath + "\\sounds\\frog_made_it.wav";
-#elif linux
-                                soundmadeit = Application.StartupPath + "/sounds/frog_made_it.wav";
-#endif
-
+                                string soundmadeit = Path.Combine(Program.GetSoundDir(), "frog_made_it.wav");
                                 if (File.Exists(soundmadeit))
                                 {
 #if windows

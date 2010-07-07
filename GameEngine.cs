@@ -25,6 +25,7 @@ namespace Frogger
     using System.Drawing;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
+    using System.IO;
 
     public class GameEngine
     {
@@ -63,7 +64,7 @@ namespace Frogger
 
             this.DrawNumLives();
 
-            
+
             bigtbName = new BigTextbox();
             bigtbName.Visible = false;
             frmgame.Controls.Add(bigtbName);
@@ -174,40 +175,40 @@ namespace Frogger
                 level.SetLevelSize(this.frmgame.ClientRectangle.Width, this.frmgame.ClientRectangle.Height, true);
             }
 
-            int kikkersizeX = frmgame.ClientSize.Width / 20;
-            int kikkersizeY = frmgame.ClientSize.Height / 20;
+            int kikkersizewidth = frmgame.ClientSize.Width / 20;
+            int kikkersizeheight = frmgame.ClientSize.Height / 20;
             if (Program.fullscreen)
             {
-                kikkersizeX = Screen.PrimaryScreen.WorkingArea.Width / 20;
-                kikkersizeY = Screen.PrimaryScreen.WorkingArea.Height / 20;
+                kikkersizewidth = Screen.PrimaryScreen.WorkingArea.Width / 20;
+                kikkersizeheight = Screen.PrimaryScreen.WorkingArea.Height / 20;
             }
-            ResizesResources.images.Add("kikker_west", ResizeImage(Frogger.Properties.Resources.kikker_west, kikkersizeX, kikkersizeY));
-            ResizesResources.images.Add("kikker_east", ResizeImage(Frogger.Properties.Resources.kikker_east, kikkersizeX, kikkersizeY));
-            ResizesResources.images.Add("frogdead_east", ResizeImage(Frogger.Properties.Resources.frogdead_east, kikkersizeX, kikkersizeY));
-            ResizesResources.images.Add("frogdead_west", ResizeImage(Frogger.Properties.Resources.frogdead_west, kikkersizeX, kikkersizeY));
-            ResizesResources.images.Add("frogdead_drunk", ResizeImage(Frogger.Properties.Resources.frogdead_drunk, kikkersizeX, kikkersizeY));
+            ResizesResources.images.Add("kikker_west", ResizeImage(Frogger.Properties.Resources.kikker_west, kikkersizewidth, kikkersizeheight));
+            ResizesResources.images.Add("kikker_east", ResizeImage(Frogger.Properties.Resources.kikker_east, kikkersizewidth, kikkersizeheight));
+            ResizesResources.images.Add("frogdead_east", ResizeImage(Frogger.Properties.Resources.frogdead_east, kikkersizewidth, kikkersizeheight));
+            ResizesResources.images.Add("frogdead_west", ResizeImage(Frogger.Properties.Resources.frogdead_west, kikkersizewidth, kikkersizeheight));
+            ResizesResources.images.Add("frogdead_drunk", ResizeImage(Frogger.Properties.Resources.frogdead_drunk, kikkersizewidth, kikkersizeheight));
             int treesizeheight = level.GetHeightRivir(1);
             int treesizewidth = treesizeheight * 3;
             ResizesResources.images.Add("treetrunk", ResizeImage(Frogger.Properties.Resources.treetrunk, treesizewidth, treesizeheight));
-            int carsizeX = frmgame.ClientRectangle.Width / 12;
+            int carsizewidth = frmgame.ClientRectangle.Width / 12;
             if (Program.fullscreen)
             {
-                carsizeX = Screen.PrimaryScreen.WorkingArea.Width / 12;
+                carsizewidth = Screen.PrimaryScreen.WorkingArea.Width / 12;
             }
-            int carsizeY = level.GetHeightRoad() / 2 - this.level.RoadlineHeight;
-            ResizesResources.images.Add("car_grey_east", ResizeImage(Frogger.Properties.Resources.car_grey_east, carsizeX, carsizeY));
-            ResizesResources.images.Add("car_grey_west", ResizeImage(Frogger.Properties.Resources.car_grey_west, carsizeX, carsizeY));
-            ResizesResources.images.Add("car_yellow_east", ResizeImage(Frogger.Properties.Resources.car_yellow_east, carsizeX, carsizeY));
-            ResizesResources.images.Add("car_yellow_west", ResizeImage(Frogger.Properties.Resources.car_yellow_west, carsizeX, carsizeY));
-            ResizesResources.images.Add("car_green_east", ResizeImage(Frogger.Properties.Resources.car_green_east, carsizeX, carsizeY));
-            ResizesResources.images.Add("car_green_west", ResizeImage(Frogger.Properties.Resources.car_green_west, carsizeX, carsizeY));
+            int carsizeheight = level.GetHeightRoad() / 2 - this.level.RoadlineHeight;
+            ResizesResources.images.Add("car_grey_east", ResizeImage(Frogger.Properties.Resources.car_grey_east, carsizewidth, carsizeheight));
+            ResizesResources.images.Add("car_grey_west", ResizeImage(Frogger.Properties.Resources.car_grey_west, carsizewidth, carsizeheight));
+            ResizesResources.images.Add("car_yellow_east", ResizeImage(Frogger.Properties.Resources.car_yellow_east, carsizewidth, carsizeheight));
+            ResizesResources.images.Add("car_yellow_west", ResizeImage(Frogger.Properties.Resources.car_yellow_west, carsizewidth, carsizeheight));
+            ResizesResources.images.Add("car_green_east", ResizeImage(Frogger.Properties.Resources.car_green_east, carsizewidth, carsizeheight));
+            ResizesResources.images.Add("car_green_west", ResizeImage(Frogger.Properties.Resources.car_green_west, carsizewidth, carsizeheight));
             int trunksizeX = frmgame.ClientRectangle.Width / 10;
             if (Program.fullscreen)
             {
                 trunksizeX = Screen.PrimaryScreen.WorkingArea.Width / 10;
             }
-            ResizesResources.images.Add("truck_east", ResizeImage(Frogger.Properties.Resources.truck_east, trunksizeX, carsizeY));
-            ResizesResources.images.Add("truck_west", ResizeImage(Frogger.Properties.Resources.truck_west, trunksizeX, carsizeY));
+            ResizesResources.images.Add("truck_east", ResizeImage(Frogger.Properties.Resources.truck_east, trunksizeX, carsizeheight));
+            ResizesResources.images.Add("truck_west", ResizeImage(Frogger.Properties.Resources.truck_west, trunksizeX, carsizeheight));
             if (initsettings)
             {
                 movingobjs = new List<MovingObject>();
@@ -276,7 +277,21 @@ namespace Frogger
                 //todo: resize all current objects.
                 for (int i = 0; i < movingobjs.Count; i++)
                 {
-                    //movingobjs[i]
+                    int mvobjtypenr = GetTypeObject(movingobjs[i]);
+                    switch (mvobjtypenr)
+                    {
+                        case 1:
+                            movingobjs[i].Pic = ResizeImage(movingobjs[i].Pic, carsizewidth, carsizeheight);
+                            movingobjs[i].Size = new Size(carsizewidth, carsizeheight);
+                            break;
+                        case 2:
+                            movingobjs[i].Pic = ResizeImage(movingobjs[i].Pic, treesizewidth, treesizeheight);
+                            movingobjs[i].Size = new Size(treesizewidth, treesizeheight);
+                            break;
+                        default:
+                            break;
+                    }
+                    movingobjs[i].Invalidate();
                 }
             }
 
@@ -330,78 +345,75 @@ namespace Frogger
             {
                 //if (frmgame.Controls.Contains(obj))
                 //{
-                    switch (obj.Dir)
-                    {
-                        case Direction.East:
-                            obj.Location = new Point(obj.Location.X + obj.Velocity, obj.Location.Y);
-                            break;
-                        case Direction.West:
-                            obj.Location = new Point(obj.Location.X - obj.Velocity, obj.Location.Y);
-                            break;
-                    }
-                    if ((obj.Location.X + obj.Width < 0) || (obj.Location.X > frmgame.ClientRectangle.Width + obj.Width))
-                    {
-                        frmgame.Controls.Remove(obj);
-                    }
-                    else
-                    {
-                        obj.Invalidate();
-                    }
+                switch (obj.Dir)
+                {
+                    case Direction.East:
+                        obj.Location = new Point(obj.Location.X + obj.Velocity, obj.Location.Y);
+                        break;
+                    case Direction.West:
+                        obj.Location = new Point(obj.Location.X - obj.Velocity, obj.Location.Y);
+                        break;
+                }
+                if ((obj.Location.X + obj.Width < 0) || (obj.Location.X > frmgame.ClientRectangle.Width + obj.Width))
+                {
+                    frmgame.Controls.Remove(obj);
+                }
+                else
+                {
+                    obj.Invalidate();
+                }
 
-                    if (DetectCollision(obj))
+                if (DetectCollision(obj))
+                {
+                    //car:
+                    //GetTypeObject(obj)
+                    if (obj is Car)
                     {
-                        //car:
-                        if (obj is Car)
+                        if (frog.Location.Y + frog.Size.Height >= obj.Location.Y + frogbottommargin)
                         {
-                            if (frog.Location.Y + frog.Size.Height >= obj.Location.Y + frogbottommargin)
+                            ishit = true;
+                            frog.CanMove = false;
+                            switch (obj.Dir)
                             {
-                                ishit = true;
-                                frog.CanMove = false;
-                                switch (obj.Dir)
-                                {
-                                    case Direction.East:
-                                        frog.Pic = ResizesResources.images["frogdead_west"];//Frogger.Properties.Resources.frogdead_east;
-                                        break;
-                                    case Direction.West:
-                                        frog.Pic = ResizesResources.images["frogdead_east"];//Frogger.Properties.Resources.frogdead_west;
-                                        break;
-                                }
-                                frog.Invalidate();
-                                if (Program.sound)
-                                {
-#if windows
-                                    sndPlaySound(Application.StartupPath + @"\sounds\punch.wav", 1); //1 = Async
-#elif linux
-                                    String soundbeep = Application.StartupPath + @"/sounds/punch.wav";
-                                    if (File.Exists(soundbeep))
-                                    {
-                                        System.Media.SoundPlayer playsnd = new System.Media.SoundPlayer(soundbeep);
-                                        playsnd.Play(); //issue cannot mix sound.
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Soundfile not found.");
-                                    }
-#endif
-                                }
+                                case Direction.East:
+                                    frog.Pic = ResizesResources.images["frogdead_west"];//Frogger.Properties.Resources.frogdead_east;
+                                    break;
+                                case Direction.West:
+                                    frog.Pic = ResizesResources.images["frogdead_east"];//Frogger.Properties.Resources.frogdead_west;
+                                    break;
                             }
-                        }
-                        //tree:
-                        else if (obj is Tree)
-                        {
-                            int widthmargin = frog.Width / 2;
-                            if ((obj.Location.X < frog.Location.X + widthmargin) && (obj.Location.X + obj.Width > frog.Location.X + widthmargin))
+                            frog.Invalidate();
+                            if (Program.sound)
                             {
-                                int heightmargin = frog.Height / 2;
-                                if ((obj.Location.Y < frog.Location.Y + heightmargin) && (obj.Location.Y + obj.Height > frog.Location.Y + heightmargin))
+#if windows
+                                sndPlaySound(Path.Combine(Program.GetSoundDir(), "punch.wav"), 1); //1 = Async
+#elif linux
+                                String soundbeep = Path.Combine(Program.GetSoundDir(), "punch.wav");
+                                if (File.Exists(soundbeep))
                                 {
-                                    frog.OnTree = true;
-                                    frog.TreeDir = obj.Dir;
-                                    frog.TreeVelocity = obj.Velocity;
+                                    System.Media.SoundPlayer playsnd = new System.Media.SoundPlayer(soundbeep);
+                                    playsnd.Play(); //issue cannot mix sound.
                                 }
+#endif
                             }
                         }
                     }
+                    //tree:
+                    else if (obj is Tree)
+                    {
+                        int widthmargin = frog.Width / 2;
+                        if ((obj.Location.X < frog.Location.X + widthmargin) && (obj.Location.X + obj.Width > frog.Location.X + widthmargin))
+                        {
+                            int heightmargin = frog.Height / 2;
+                            if ((obj.Location.Y < frog.Location.Y + heightmargin) && (obj.Location.Y + obj.Height > frog.Location.Y + heightmargin))
+                            {
+                                frog.OnTree = true;
+                                frog.TreeDir = obj.Dir;
+                                frog.TreeVelocity = obj.Velocity;
+                            }
+                        }
+                    }
+                }
                 //}
                 //else if ((obj != null) && (obj.IsDisposed == false))
                 //{
@@ -425,9 +437,9 @@ namespace Frogger
                         if (Program.sound)
                         {
 #if windows
-                            sndPlaySound(Application.StartupPath + @"\sounds\sink.wav", 1); //1 = Async
+                            sndPlaySound(Path.Combine(Program.GetSoundDir(), "sink.wav"), 1); //1 = Async
 #elif linux
-                            String sinkwav = Application.StartupPath + @"/sounds/sink.wav";
+                            String sinkwav = Path.Combine(Program.GetSoundDir(), "sink.wav");
                             System.Media.SoundPlayer sndply = new System.Media.SoundPlayer(sinkwav);
                             sndply.Play();
 #endif
@@ -456,6 +468,30 @@ namespace Frogger
             frog.CanMove = true;
         }
         // Private Methods (19) 
+
+        /// <summary>
+        /// Get the type of movingobject
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns>
+        /// 0 for unknown
+        /// 1 for car
+        /// 2 for Tree</returns>
+        private int GetTypeObject(MovingObject obj)
+        {
+            if (obj is Car)
+            {
+                return 1;
+            }
+            else if (obj is Tree)
+            {
+                return 2;
+            }
+            else
+            {
+                return 0;//unknown
+            }
+        }
 
         /// <summary>
         /// Check if the player needs to enter a name for the highscore or not.
@@ -602,9 +638,9 @@ namespace Frogger
             }
             frog.Location = new Point(locX, locY);
 
-//#if DEBUG
+            //#if DEBUG
             //MessageBox.Show("x:"+locX+" y:"+locY);
-//#endif
+            //#endif
 
             //frog.Anchor = AnchorStyles.None;
             if (frog == null) { throw new Exception("frog not created."); }
@@ -663,7 +699,7 @@ namespace Frogger
         /// <param name="textregel1">the first line, big text</param>
         private void DrawGameOverScreen(Graphics g, string textline)
         {
-            
+
             Font fontregel1 = new Font("Flubber", 64);
             Font fontregel2 = new Font("Flubber", 24);
             SolidBrush sbdarkorange = new SolidBrush(System.Drawing.Color.DarkOrange);

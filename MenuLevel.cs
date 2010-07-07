@@ -100,6 +100,10 @@ namespace Frogger
         private void CreateLvlPreviews()
         {
             string filepath = Program.GetLevelFolder();
+            if (String.IsNullOrEmpty(filepath))
+            {
+                return;
+            }
             string[] files = Directory.GetFiles(filepath);
             this.lvlpreviews = new LevelPreview[files.Length];
 

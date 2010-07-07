@@ -119,7 +119,7 @@ namespace Frogger
         private void LoadDesign()
         {
             string file = Path.Combine(Program.GetLevelFolder(), this.naam + ".lvl");
-            if (File.Exists(file))
+            if (File.Exists(file) && !String.IsNullOrEmpty(file))
             {
                 XmlReader reader = new XmlTextReader(file);
                 roads.Clear();
@@ -142,7 +142,7 @@ namespace Frogger
             else if (!error)
             {
                 error = true;
-                //MessageBox.Show("Level " + file + " not found."); //removed can still cause a lot of messageboxes.
+               // MessageBox.Show("Level " + file + " not found."); //removed can still cause a lot of messageboxes.
             }
         }
 

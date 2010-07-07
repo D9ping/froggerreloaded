@@ -109,6 +109,24 @@ namespace Frogger
         }
 
         /// <summary>
+        /// Get the folder with the sound files.
+        /// </summary>
+        /// <returns></returns>
+        static public string GetSoundDir()
+        {
+            string sounddir = Path.Combine(Application.StartupPath, "sounds");
+            if (Directory.Exists(sounddir))
+            {
+                return sounddir;
+            }
+            else
+            {
+                throw new Exception("Cannot find Sound directory.");
+            }
+
+        }
+
+        /// <summary>
         /// Get the folder with the levels
         /// </summary>
         /// <returns></returns>

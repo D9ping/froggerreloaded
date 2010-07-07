@@ -133,18 +133,14 @@ namespace Frogger
             this.Refresh();
             if (Program.sound)
             {
-#if windows
-                string soundbeep = Application.StartupPath + "\\sounds\\beep.wav";
-#elif linux
-				string soundbeep = Application.StartupPath + "./sounds/beep.wav";
-#endif
+                string soundbeep = Path.Combine(Program.GetSoundDir(), "beep.wav");
                 if (File.Exists(soundbeep))
                 {
 #if windows
                     sndPlaySound(soundbeep, 1); //1 = Async
 #elif linux
-					System.Media.SoundPlayer playsnd = new System.Media.SoundPlayer(soundbeep);
-					playsnd.Play(); //issue cannot mix sound.
+                    System.Media.SoundPlayer playsnd = new System.Media.SoundPlayer(soundbeep);
+                    playsnd.Play(); //issue cannot mix sound.
 #endif
                 }
                 else
