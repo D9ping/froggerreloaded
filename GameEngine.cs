@@ -230,7 +230,7 @@ namespace Frogger
                         secnewcar = 4;
                         secnewtree = 3;
                         carspeed = 6;
-                        this.min = 3;
+                        this.min = 2;
                         this.sec = 0;
                         break;
                     case Niveau.medium:
@@ -239,7 +239,7 @@ namespace Frogger
                         secnewtree = 4;
                         carspeed = 8;
                         this.min = 1;
-                        this.sec = 30;
+                        this.sec = 0;
                         break;
                     case Niveau.hard:
                         lives = 1;
@@ -247,7 +247,7 @@ namespace Frogger
                         secnewtree = 5;
                         carspeed = 10;
                         this.min = 0;
-                        this.sec = 45;
+                        this.sec = 30;
                         break;
                     case Niveau.elite:
                         lives = 0;
@@ -255,7 +255,7 @@ namespace Frogger
                         secnewtree = 6;
                         carspeed = 12;
                         this.min = 0;
-                        this.sec = 20;
+                        this.sec = 15;
                         break;
                     default:
                         throw new Exception("tier unknow.");
@@ -274,23 +274,37 @@ namespace Frogger
             }
             else
             {
-                //todo: resize all current objects.
                 for (int i = 0; i < movingobjs.Count; i++)
                 {
                     int mvobjtypenr = GetTypeObject(movingobjs[i]);
+
+                    //todo: re locate objects.
+                    int locX = movingobjs[i].Location.X;
+                    int locY = -200;
                     switch (mvobjtypenr)
                     {
                         case 1:
                             movingobjs[i].Pic = ResizeImage(movingobjs[i].Pic, carsizewidth, carsizeheight);
-                            movingobjs[i].Size = new Size(carsizewidth, carsizeheight);
+                            if (movingobjs[i].Dir == Direction.West)
+                            {
+                                locY = level.GetPosRoad(movingobjs[i].Pos);
+                            }
+                            else
+                            {
+                                locY = level.GetPosRoad(movingobjs[i].Pos) + 2 * level.RoadlineHeight + carsizeheight;
+                            }
+                            movingobjs[i].SetBounds(locX, locY, carsizewidth, carsizeheight);
                             break;
                         case 2:
                             movingobjs[i].Pic = ResizeImage(movingobjs[i].Pic, treesizewidth, treesizeheight);
-                            movingobjs[i].Size = new Size(treesizewidth, treesizeheight);
+                            locY = level.GetPosRivirs(movingobjs[i].Pos);
+                            movingobjs[i].SetBounds(locX, locY, treesizewidth, treesizeheight);
                             break;
                         default:
                             break;
                     }
+                    
+
                     movingobjs[i].Invalidate();
                 }
             }
@@ -577,7 +591,7 @@ namespace Frogger
         /// <param name="locX">The number of the road to added the car to</param>
         /// <param name="roadLocY">The random generator this to prevent getting right and left always the same color.</param>
         /// <returns>a car moving object</returns>
-        private MovingObject CreateCarRandomColor(int vel, Direction dir, int locX, int roadLocY, Random rndgen)
+        private MovingObject CreateCarRandomColor(int vel, Direction dir, int locX, int curroad, Random rndgen)
         {
             int carcolor = rndgen.Next(1, 5);
             int initcarheight = level.GetHeightRoad() / 2 - level.RoadlineHeight;
@@ -587,22 +601,24 @@ namespace Frogger
                 initcarwidth = Screen.PrimaryScreen.WorkingArea.Width / 12;
             }
 
-            Car car = new Car(carcolor, vel, dir, initcarwidth, initcarheight);
+            int locroadY = level.GetPosRoad(curroad);
+            Car car = new Car(carcolor, vel, curroad, dir, initcarwidth, initcarheight);
             if (car.IsTruck)
             {
                 initcarwidth = frmgame.ClientRectangle.Width / 8;
                 car.Size = new Size(initcarwidth, initcarheight);
             }
 
+            int locY = 0;
             if (dir == Direction.East)
             {
-                int locY = roadLocY + 2 * level.RoadlineHeight + initcarheight;
-                car.Location = new Point(locX, locY);
+                locY = locroadY + 2 * level.RoadlineHeight + initcarheight;
             }
             else if (dir == Direction.West)
             {
-                car.Location = new Point(locX, roadLocY);
+                locY = locroadY;
             }
+            car.Location = new Point(locX, locY);
             frmgame.Controls.Add(car);
             return car;
         }
@@ -623,7 +639,7 @@ namespace Frogger
                 initfrogwidth = Screen.PrimaryScreen.WorkingArea.Width / 20;
             }
 
-            frog = new Frog(0, Direction.North, initfrogheight, initfrogwidth, initfrogheight, frmgame);
+            frog = new Frog(0, Direction.North, -1, initfrogheight, initfrogwidth, initfrogheight, frmgame);
             int locX;
             int locY = 0;
             if (Program.fullscreen)
@@ -653,11 +669,14 @@ namespace Frogger
         /// <param name="vel">The velocity of the tree trunk</param>
         /// <param name="direction">The direction of the tree trunk</param>dd
         /// <returns>a tree trunk moving object</returns>
-        private MovingObject CreateTreeTrunk(int vel, Direction direction, int locX, int locY)
+        private MovingObject CreateTreeTrunk(int vel, Direction direction, int locX, int currivir)
         {
             int inittreewidth = level.GetHeightRivir(1) * 3;
             int inittreeheight = level.GetHeightRivir(1);
-            Tree treetrunk = new Tree(vel, direction, inittreewidth, inittreeheight);
+
+            int locY = level.GetPosRivirs(currivir);
+            Tree treetrunk = new Tree(vel, direction, currivir, inittreewidth, inittreeheight);
+
             treetrunk.Location = new Point(locX, locY);
             frmgame.Controls.Add(treetrunk);
             return treetrunk;
@@ -800,11 +819,11 @@ namespace Frogger
                         int rnddir = rndgen.Next(0, 2);
                         if (rnddir == 0)
                         {
-                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.East, -carwidth, level.GetPosRoad(curroad), rndgen));
+                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.East, -carwidth, curroad, rndgen)); //level.GetPosRoad(curroad)
                         }
                         else
                         {
-                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.West, frmgame.ClientSize.Width + carwidth, level.GetPosRoad(curroad), rndgen));
+                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.West, frmgame.ClientSize.Width + carwidth, curroad, rndgen)); //level.GetPosRoad(curroad)
                         }
                     }
                 }
@@ -841,28 +860,28 @@ namespace Frogger
                 {
                     if (curriver == 0)
                     {
-                        movingobjs.Add(CreateTreeTrunk(4, Direction.East, -treetrunkwidth, level.GetPosRivirs(curriver)));
+                        movingobjs.Add(CreateTreeTrunk(4, Direction.East, -treetrunkwidth, curriver)); //level.GetPosRivirs(curriver)
                     }
                     else if (curriver == 1)
                     {
-                        movingobjs.Add(CreateTreeTrunk(5, Direction.West, frmgame.ClientRectangle.Width, level.GetPosRivirs(curriver)));
+                        movingobjs.Add(CreateTreeTrunk(5, Direction.West, frmgame.ClientRectangle.Width, curriver)); //level.GetPosRivirs(curriver)
                     }
                     else if (curriver == 2)
                     {
-                        movingobjs.Add(CreateTreeTrunk(6, Direction.East, -treetrunkwidth, level.GetPosRivirs(curriver)));
+                        movingobjs.Add(CreateTreeTrunk(6, Direction.East, -treetrunkwidth, curriver)); //level.GetPosRivirs(curriver)
                     }
                     else if (curriver == 3)
                     {
-                        movingobjs.Add(CreateTreeTrunk(4, Direction.West, frmgame.ClientRectangle.Width, level.GetPosRivirs(curriver)));
+                        movingobjs.Add(CreateTreeTrunk(4, Direction.West, frmgame.ClientRectangle.Width, curriver)); // level.GetPosRivirs(curriver)
                     }
 
                     else if (curriver > 3 && curriver % 2 == 0) //even
                     {
-                        movingobjs.Add(CreateTreeTrunk(3, Direction.East, -treetrunkwidth, level.GetPosRivirs(curriver)));
+                        movingobjs.Add(CreateTreeTrunk(3, Direction.East, -treetrunkwidth, curriver)); // level.GetPosRivirs(curriver)
                     }
                     else if (curriver > 3)//odd and not 1 or 3
                     {
-                        movingobjs.Add(CreateTreeTrunk(5, Direction.West, frmgame.ClientRectangle.Width + treetrunkwidth, level.GetPosRivirs(curriver)));
+                        movingobjs.Add(CreateTreeTrunk(5, Direction.West, frmgame.ClientRectangle.Width + treetrunkwidth, curriver)); //level.GetPosRivirs(curriver)
                     }
 
                 }
@@ -971,11 +990,11 @@ namespace Frogger
                     {
                         if (locX > 0)
                         {
-                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.East, locX, level.GetPosRoad(curroad), rndgen));
+                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.East, locX, curroad, rndgen)); //level.GetPosRoad(curroad)
                         }
                         else if (locX < screenwidth)
                         {
-                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.West, locX, level.GetPosRoad(curroad), rndgen));
+                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.West, locX, curroad, rndgen)); //level.GetPosRoad(curroad)
                         }
 
                     }
@@ -983,11 +1002,11 @@ namespace Frogger
                     {
                         if (locX < screenwidth)
                         {
-                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.West, locX, level.GetPosRoad(curroad), rndgen));
+                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.West, locX, curroad, rndgen));  //level.GetPosRoad(curroad)
                         }
                         else if (locX > 0)
                         {
-                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.East, locX, level.GetPosRoad(curroad), rndgen));
+                            movingobjs.Add(CreateCarRandomColor(carspeed, Direction.East, locX, curroad, rndgen)); //level.GetPosRoad(curroad)
                         }
                     }
                 }
@@ -997,13 +1016,13 @@ namespace Frogger
             {
                 if (currivir % 2 == 0) //even
                 {
-                    movingobjs.Add(CreateTreeTrunk(5, Direction.East, screenwidth / 2, level.GetPosRivirs(currivir)));
+                    movingobjs.Add(CreateTreeTrunk(5, Direction.East, screenwidth / 2, currivir)); //level.GetPosRivirs(currivir)
                 }
                 else //odd
                 {
                     if (tier != Niveau.elite && tier != Niveau.hard)
                     {
-                        movingobjs.Add(CreateTreeTrunk(3, Direction.West, screenwidth / 2, level.GetPosRivirs(currivir)));
+                        movingobjs.Add(CreateTreeTrunk(3, Direction.West, screenwidth / 2, currivir)); //level.GetPosRivirs(currivir)
                     }
                 }
             }
@@ -1052,7 +1071,7 @@ namespace Frogger
             }
             catch (Exception exc)
             {
-                MessageBox.Show(exc.Message, "Error");
+                MessageBox.Show(exc.Message, "error");
             }
 
         }
