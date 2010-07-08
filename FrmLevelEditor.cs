@@ -283,7 +283,7 @@ namespace Frogger
         /// </summary>
         private int CalcPos(int loc)
         {
-            int heightmarkplace = this.ClientRectangle.Height / 10;
+            int heightmarkplace = CalcPieceHeight();
             int num = 0;
             for (int i = loc; i >= heightmarkplace; i -= heightmarkplace)
             {
@@ -299,6 +299,12 @@ namespace Frogger
             }
             int pos = heightmarkplace * num;
             return pos;
+        }
+
+        private int CalcPieceHeight()
+        {
+            int heightmarkplace = this.ClientRectangle.Height / 10;
+            return heightmarkplace;
         }
 
         /// <summary>
@@ -354,35 +360,46 @@ namespace Frogger
         /// <summary>
         /// There is clicked in the leveleditor, figure out if a tool is selected
         /// if so what tools and where then place it.
-        private void FrmLevelEditor_Click(object sender, EventArgs e)
+        private void FrmLevelEditor_Click(object sender, MouseEventArgs e)
         {
-            if (savedlevel)
+            if (e.Button == MouseButtons.Left)
             {
-                savedlevel = false;
-                savinglevel = false;
-                this.Refresh();
-            }
-            if (toolselected)
-            {
-                if (mouseY >= 0 && mouseY <= this.ClientRectangle.Height && mouseX >= this.panelTools.Width)
+                if (savedlevel)
                 {
-                    int newpos = CalcPos(mouseY);
-                    switch (selecteditemnr)
+                    savedlevel = false;
+                    savinglevel = false;
+                    this.Refresh();
+                }
+                if (toolselected)
+                {
+                    if (mouseY >= 0 && mouseY <= this.ClientRectangle.Height && mouseX >= this.panelTools.Width)
                     {
-                        case 1:
-                            this.level.AddRoad(newpos);
-                            this.DeselectAllTools();
-                            this.lvlchanged = true;
-                            break;
-                        case 2:
-                            this.level.AddRivir(newpos);
-                            this.DeselectAllTools();
-                            this.lvlchanged = true;
-                            break;
-                        default:
-                            //add nothing
-                            break;
+                        int newpos = CalcPos(mouseY);
+                        switch (selecteditemnr)
+                        {
+                            case 1:
+                                this.level.AddRoad(newpos);
+                                break;
+                            case 2:
+                                this.level.AddRivir(newpos);
+                                break;
+                            default:
+                                return;
+                        }
+                        this.DeselectAllTools();
+                        this.lvlchanged = true;
                     }
+                }
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                int pieceheight = CalcPieceHeight();
+                if ((mouseY >= pieceheight) && (mouseY <= (this.ClientRectangle.Height - pieceheight)) && (mouseX >= this.panelTools.Width))
+                {
+                    int atpos = CalcPos(mouseY);
+                    this.level.RemoveObj(atpos);
+                    //this.DeselectAllTools();
+                    this.lvlchanged = true;
                 }
             }
         }
