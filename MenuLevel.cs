@@ -125,7 +125,6 @@ namespace Frogger
             pbNavRight.Location = new Point(frmmenu.ClientRectangle.Width - Frogger.Properties.Resources.level_navigate_right.Width - 10, frmmenu.LogoPosBottom +50);
             pbNavRight.Size = new Size(Frogger.Properties.Resources.level_navigate_right.Width, preflvlprevwidth);
             pbNavRight.SizeMode = PictureBoxSizeMode.StretchImage;
-            //pbNavRight.SizeMode = PictureBoxSizeMode.AutoSize;
             pbNavRight.Click += new EventHandler(pbNavRight_Click);
             pbNavRight.MouseEnter += new EventHandler(pbNavRight_MouseEnter);
             pbNavRight.MouseLeave += new EventHandler(pbNavRight_MouseLeave);
