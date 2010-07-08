@@ -28,6 +28,8 @@
       <Path>
         <Point X="7.812" Y="1.691" />
         <Point X="7.812" Y="2.354" />
+        <Point X="8.448" Y="2.354" Type="JumpStart" />
+        <Point X="8.615" Y="2.354" Type="JumpEnd" />
         <Point X="9.5" Y="2.354" />
       </Path>
     </InheritanceLine>
@@ -37,7 +39,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>CAAAAAAAjiAQBAQCABSIEAACAAAACCAIAAACAACAAAE=</HashCode>
+      <HashCode>AAAAAAAAjCAAAAQAABCAAAACAAAACAAIAAACAAAAAAA=</HashCode>
       <FileName>FrmGame.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -45,25 +47,28 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Frogger.FrmMenu">
-    <Position X="3.75" Y="1" Width="1.75" />
+    <Position X="3.5" Y="1" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <InheritanceLine Type="System.Windows.Forms.Form" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="7.438" Y="1.691" />
-        <Point X="7.438" Y="2.863" />
-        <Point X="5.5" Y="2.863" />
+        <Point X="7.438" Y="2.066" />
+        <Point X="5.625" Y="2.066" />
+        <Point X="5.625" Y="1.751" />
+        <Point X="5.25" Y="1.751" />
       </Path>
     </InheritanceLine>
     <AssociationLine Name="curmenu" Type="Frogger.MenuScreen">
       <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
-        <Position X="0.06" Y="0.131" Height="0.182" Width="0.816" />
+        <Position X="0.131" Y="0.06" Height="0.182" Width="0.816" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EgAAQEMIACAAAAAOAICAAAECCAAAAAAIAAAAAAACEAA=</HashCode>
+      <HashCode>EgAAQEMIACAAEAAOAZCAAAUaCAAAAQAIAAAAAAACEAA=</HashCode>
       <FileName>FrmMenu.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -86,7 +91,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AACAABAAACAAAAADAACAABACEAAAAAAACgAgAIAAAAA=</HashCode>
+      <HashCode>AACAABAAACAAABADAACAAJACEAAAAAAACgAgAIAAAAA=</HashCode>
       <FileName>HoverButton.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -112,7 +117,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAIAIgAAAAABACAAAAAAAAAAQAAAAEAAA=</HashCode>
+      <HashCode>AAAAAAAAACAAIAIgAAACAJACAACAAAAAAAQAAAAEAAA=</HashCode>
       <FileName>MovingObject.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -141,7 +146,7 @@
       <Method Name="SetWindowPos" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAEAAAAAAAACAAAAAAEAAAAAAACBgQAAAA=</HashCode>
+      <HashCode>AAAAAAAACAAEAAAAAACACAAAAAAEEAAAAAACBgQAAAA=</HashCode>
       <FileName>Program.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -169,15 +174,8 @@
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
-    <AssociationLine Name="game" Type="Frogger.FrmGame" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="8.531" Y="6" />
-        <Point X="8.531" Y="4.312" />
-        <Point X="9.5" Y="4.312" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAACQABAAAAQAIAAACAAIAAAAAAAAAAA=</HashCode>
+      <HashCode>AAgAAAABAAQAAASwABAAEAEEIAAACQAIUAEAAYACAAA=</HashCode>
       <FileName>MenuLevel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -188,7 +186,7 @@
   <Class Name="Frogger.MenuHighscore">
     <Position X="2.5" Y="6" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAQAAAAAQAAAgAAAAAABACAAAAAAABAAEBAA=</HashCode>
+      <HashCode>AAAQAAAAAYAAAAAUAAAgAAAAAABACAAAABABBAAGBAA=</HashCode>
       <FileName>MenuHighscore.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -198,7 +196,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AEAAAAAAAAAAAAAQAAAAAAAQAAAACAAAAAAAAgAAAAA=</HashCode>
+      <HashCode>AEBAAAAAAAAAAAAQAAAAAAAQAAAACAAAAAAAAgAAAAA=</HashCode>
       <FileName>MenuOptions.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -208,6 +206,14 @@
       <Compartment Name="Methods" Collapsed="true" />
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
+    <AssociationLine Name="tier" Type="Frogger.Niveau" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.062" Y="5.5" />
+        <Point X="11.062" Y="5.125" />
+        <Point X="13.219" Y="5.125" />
+        <Point X="13.219" Y="3.623" />
+      </Path>
+    </AssociationLine>
     <AssociationLine Name="movingobjs" Type="Frogger.MovingObject" FixedFromPoint="true">
       <Path>
         <Point X="12" Y="5.938" />
@@ -217,16 +223,8 @@
         <Position X="-0.457" Y="-0.367" Height="0.182" Width="2.258" />
       </MemberNameLabel>
     </AssociationLine>
-    <AssociationLine Name="tier" Type="Frogger.Niveau" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="11.062" Y="5.5" />
-        <Point X="11.062" Y="5.125" />
-        <Point X="13.219" Y="5.125" />
-        <Point X="13.219" Y="3.623" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>YYGIkAAUCgCAQIqICEBAQAFAEyPIEiMCgAAsAABIAKA=</HashCode>
+      <HashCode>YYGIEIA0CgCQQIqYCERCQAFAEyOIEiMCgAAsAADIAaA=</HashCode>
       <FileName>GameEngine.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -250,22 +248,22 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAAAQAAAAAQAAAEAAGACAAAAAgACAAAA=</HashCode>
+      <HashCode>AAAgAAAAAAAAQAAQAAAAAQAAAEAACACAAAABgADAAAA=</HashCode>
       <FileName>MenuMain.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Frogger.Frog">
-    <Position X="18" Y="7.5" Width="1.5" />
+    <Position X="17.5" Y="7.25" Width="1.5" />
     <InheritanceLine Type="Frogger.MovingObject" ManuallyRouted="true" FixedFromPoint="true">
       <Path>
         <Point X="16.25" Y="6.375" />
         <Point X="16.932" Y="6.375" />
-        <Point X="16.932" Y="8.439" />
-        <Point X="18" Y="8.439" />
+        <Point X="16.932" Y="8.189" />
+        <Point X="17.5" Y="8.189" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAUCAAAgAAAgAAAAAAAAAwAAgAAAAAAAAAAAAAAgA=</HashCode>
+      <HashCode>AAAAUCAAAkAAAgAAACAAAAAwAAggAAAIAAAAAAAAAgA=</HashCode>
       <FileName>Frog.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -277,20 +275,20 @@
     <Position X="6.75" Y="1" Width="1.5" />
     <TypeIdentifier />
   </Class>
-  <Class Name="Frogger.Level">
+  <Class Name="Frogger.Level" Collapsed="true">
     <Position X="10" Y="9.5" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ACAQAAAgAAIAAxAAEAEBBKAAAAwBAAAAQAAAABAAAAA=</HashCode>
+      <HashCode>ACAQACCgAAICAhAAMAEBBKAIAAwBAAAIQAAAABAAAAA=</HashCode>
       <FileName>Level.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Frogger.LevelPreview">
     <Position X="7" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAAACAAQACAAEAAAAAAAAACAAAgAA=</HashCode>
+      <HashCode>AAAAAAAAAKAAAAAAgACAAAACAAEAAAAIAAAACAAAAAI=</HashCode>
       <FileName>LevelPreview.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
