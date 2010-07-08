@@ -30,8 +30,8 @@ namespace Frogger
         /// </summary>
         /// <param name="velocity"></param>
         /// <param name="direction"></param>
-        public Tree(int velocity, Direction direction, int width, int height)
-            :base(velocity, direction)
+        public Tree(int velocity, Direction direction, int pos, int width, int height)
+            :base(velocity, direction, pos)
         {
             this.Size = new Size(width, height);
             base.Pic = ResizesResources.images["treetrunk"];

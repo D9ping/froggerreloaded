@@ -51,32 +51,6 @@ namespace Frogger
 
         #endregion Constructors
 
-        #region Properties (2)
-
-        /*
-        public String TbEnterName
-        {
-            get
-            {
-                return this.tbHighscoreName.Text;
-            }
-        }
-
-        public bool VisibleTbEnterName
-        {
-            set
-            {
-                tbHighscoreName.Visible = value;
-            }
-            get
-            {
-                return tbHighscoreName.Visible; 
-            }
-        }
-         */
-
-		#endregion Properties 
-
         #region Methods (9) 
 
         // Public Methods (1) 
@@ -182,6 +156,16 @@ namespace Frogger
                 {
                     //less than 10s make red.
                     lbTime.ForeColor = Color.Red;
+                    int fontsize = Convert.ToInt32(lbTime.Font.Size);
+                    if (this.game.sec < 4 && this.game.sec>0)
+                    {
+                        //3s and less, make bold
+                        lbTime.Font = new Font(lbTime.Font.Name, fontsize, FontStyle.Bold);
+                    }
+                    else if (this.game.sec <= 0)
+                    {
+                        lbTime.Font = new Font(lbTime.Font.Name, fontsize, FontStyle.Regular);
+                    }
                 }
             }
             else

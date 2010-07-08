@@ -41,8 +41,8 @@ namespace Frogger
         /// <summary>
         /// create a frog.
         /// </summary>
-        public Frog(int velocity, Direction dir, int jumpdistance, int width, int height, Form frmgame)
-            : base(velocity, dir)
+        public Frog(int velocity, Direction dir, int pos, int jumpdistance, int width, int height, Form frmgame)
+            : base(velocity, dir, pos)
         {
             //Make transparant
             this.SetStyle(System.Windows.Forms.ControlStyles.SupportsTransparentBackColor, true);

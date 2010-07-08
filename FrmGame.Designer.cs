@@ -37,11 +37,11 @@
             this.lbTime.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lbTime.AutoSize = true;
             this.lbTime.BackColor = System.Drawing.Color.Transparent;
-            this.lbTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbTime.Font = new System.Drawing.Font("Arial", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbTime.ForeColor = System.Drawing.Color.LightGray;
             this.lbTime.Location = new System.Drawing.Point(703, 9);
             this.lbTime.Name = "lbTime";
-            this.lbTime.Size = new System.Drawing.Size(80, 37);
+            this.lbTime.Size = new System.Drawing.Size(78, 36);
             this.lbTime.TabIndex = 0;
             this.lbTime.Text = "0:00";
             // 

@@ -17,31 +17,36 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 */
 namespace Frogger
 {
+    using System;
     using System.Drawing;
     using System.Windows.Forms;
 
     public class MovingObject : UserControl
     {
         private int velocity = 0;
+        private int pos = -1;
         private Direction direction;
-		private Bitmap pic;
-		
+        private Bitmap pic;
+
         /// <summary>
         /// Creating a new instance of a movingobj.
         /// </summary>
-        public MovingObject(int velocity, Direction direction)
+        public MovingObject(int velocity, Direction direction, int pos)
         {
             this.velocity = velocity;
             this.direction = direction;
+            this.pos = pos;
+
             //Add transparancy support
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             //Make transparant
             this.BackColor = Color.Transparent;
 
             //todo: not good..
-            this.Anchor = AnchorStyles.None;
+            this.Anchor = AnchorStyles.Bottom;
 
             this.DoubleBuffered = true;
+
             this.BringToFront();
             InitializeComponent();
         }
@@ -62,22 +67,29 @@ namespace Frogger
             }
         }
 
+        public int Pos
+        {
+            get
+            {
+                return this.pos;
+            }
+        }
+
         /// <summary>
         /// De texture.
         /// </summary>
-        public Bitmap Pic 
-		{
-			get 
-			{
-				return this.pic; 
-			}
-			
-			set 
-			{
-				this.pic = value; 
-			}
-		}
+        public Bitmap Pic
+        {
+            get
+            {
+                return this.pic;
+            }
 
+            set
+            {
+                this.pic = value;
+            }
+        }
 
         /// <summary>
         /// cleanup memory
