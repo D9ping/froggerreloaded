@@ -53,7 +53,6 @@ namespace Frogger
             {
                 LoadDesign();
             }
-            
         }
 
         /// <summary>
@@ -130,7 +129,7 @@ namespace Frogger
                     if (reader.Name == "road")
                     {
                         int pos = reader.ReadElementContentAsInt();
-                        roads.Add(this.displayHeight - GetHeightRoad() * (pos + 1));
+                        roads.Add(this.displayHeight - GetHeightRoad() * (pos + 1));;
                     }
                     else if (reader.Name == "rivir")
                     {
@@ -236,15 +235,37 @@ namespace Frogger
         /// </summary>
         /// <param name="width">The new level width.</param>
         /// <param name="height">The new level height.</param>
-        public void SetLevelSize(int width, int height, bool reloaddesign)
+        public void SetLevelSize(int width, int height, bool reloadlvlfile)
         {
             this.displayWidth = width;
             this.displayHeight = height;
             if (!this.error)
             {
-                if (reloaddesign)
+                if (reloadlvlfile)
                 {
                     LoadDesign();
+                }
+                else
+                {
+                    for (int i = 0; i < this.roads.Count; i++)
+                    {
+                        int rownr = this.CalcNumRow(this.roads[i]);
+                        //this.roads[i] = rownr * (displayHeight / 10);
+                        int newy = rownr * (displayHeight / 10);
+                        if (!CheckIfAdded(this.roads, newy))
+                        {
+                            this.roads[i] = newy;
+                        }
+                    }
+                    for (int i = 0; i < this.rivirs.Count; i++)
+                    {
+                        int rownr = this.CalcNumRow(this.rivirs[i]);
+                        int newy = rownr * (displayHeight / 10);
+                        if (!CheckIfAdded(this.rivirs, newy))
+                        {
+                            this.rivirs[i] = newy;
+                        }
+                    }
                 }
             }
         }
@@ -305,6 +326,46 @@ namespace Frogger
         }
 
         /// <summary>
+        /// Remove a object(road or rivir etc)
+        /// </summary>
+        /// <param name="atposy">the top y-position the object is.</param>
+        /// <returns>true if succeeded</returns>
+        public bool RemoveObj(int atposy)
+        {
+            if (CheckIfAdded(this.roads, atposy))
+            {
+                this.roads.Remove(atposy);
+                return true;
+            }
+            else if (CheckIfAdded(this.rivirs, atposy))
+            {
+                this.rivirs.Remove(atposy);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Calculate the number of row based on the y coordinate.
+        /// </summary>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private int CalcNumRow(int y)
+        {
+            int npos = 0;
+            while (y >0)
+            {
+                y = y - this.GetHeightRoad();
+                npos++;
+                if (npos >= 8) { return npos; }
+            }
+            return npos;
+        }
+
+        /// <summary>
         /// Calculate the height of the rivir.
         /// </summary>
         /// <returns>the height in number of pixels</returns>
@@ -355,7 +416,6 @@ namespace Frogger
                     
                     DrawRiver(g, rivirlocY, 1);
                 }
-                
                 /* optimizing stuff, work in process
                 for (int i = 0; i < this.rivirs.Count; i++)
                 {
@@ -388,7 +448,7 @@ namespace Frogger
         public void DrawRiver(Graphics g, int locy, int numcourses)
         {
             SolidBrush brushRiver = new SolidBrush(Color.Blue);
-
+	if (this.naam == "maris") { brushRiver = new SolidBrush(Color.Purple); }//easter egg
             if ((numcourses < 9) && (numcourses > 0))
             {
                 Rectangle rectRiver = new Rectangle(0, locy, displayWidth, GetHeightRivir(numcourses));

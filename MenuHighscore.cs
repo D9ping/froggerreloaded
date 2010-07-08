@@ -30,15 +30,20 @@ namespace Frogger
     /// </summary>
     class MenuHighscore : MenuScreen
     {
-        private List<HoverButton> highscoremenubtn;
+		#region Fields (7) 
+
+        //private DeleteHandler deletehandler;
         private HoverButton deletebtn;
-        private FrmMenu frmmenu = null;
         private Label[] entries;
+        private FrmMenu frmmenu = null;
+        private List<HoverButton> highscoremenubtn;
         private Label lbshowcurlvlscore;
         private const int marginbetweenhovbtns = 2;
         private Panel pnl;
 
-        #region Constructors (1)
+		#endregion Fields 
+
+		#region Constructors (1) 
 
         /// <summary>
         /// Creating a new instance of MenuHighscore class.
@@ -72,10 +77,11 @@ namespace Frogger
             this.CreateLvlBtns();
 
             deletebtn = new HoverButton("Delete all");
-            deletebtn.Click += new EventHandler(DeleteHighscoreAll);
+            deletebtn.Tag = "";
+            deletebtn.Click += new EventHandler(DeleteHighscore_Click);
             deletebtn.Location = new Point(10, frmmenu.ClientRectangle.Height - 70);
-            deletebtn.Size = new Size(150, 40);
-            deletebtn.HoverbuttonSizeText = 22;
+            deletebtn.Size = new Size(200, 50);
+            deletebtn.HoverbuttonSizeText = 16;
             frmmenu.Controls.Add(deletebtn);
 
             int ypos = 0;
@@ -101,11 +107,11 @@ namespace Frogger
             }
         }
 
-        #endregion Constructors
+		#endregion Constructors 
 
-        #region Methods (7)
+		#region Methods (7) 
 
-        // Public Methods (6) 
+		// Public Methods (4) 
 
         /// <summary>
         /// Maak highscore scherm leeg.
@@ -127,51 +133,23 @@ namespace Frogger
             ClearAllEntries();
         }
 
-        /// <summary>
-        /// Create a button for each level to get highscore for.
-        /// </summary>
-        private void CreateLvlBtns()
+        private void DeleteHighscore_Click(object sender, EventArgs e)
         {
-            string lvldir = Program.GetLevelFolder(); //Path.Combine(Directory.GetCurrentDirectory(), "levels");
-
-            string[] files;
+            HoverButton hovbtn = (HoverButton)sender;
+            string lvlname = "";
             try
             {
-                files = Directory.GetFiles(lvldir);
-                for (int i = 0; i < files.Length; i++)
-                {
-                    string filelvlname = files[i].Substring(lvldir.Length + 1, files[i].Length - lvldir.Length - 5);
-                    HoverButton lvlbtn = new HoverButton(filelvlname);
-                    lvlbtn.Tag = filelvlname;
-                    lvlbtn.Click += new EventHandler(GetHighscores);
-                    highscoremenubtn.Add(lvlbtn);
-                }
+                lvlname = hovbtn.Tag.ToString();
             }
-            catch (DirectoryNotFoundException dirnotfoundexc)
-            {
-                MessageBox.Show(dirnotfoundexc.Message);
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message, "Level directory cannot be read.");
-            }
-        }
+            catch (Exception) { }
 
-        /// <summary>
-        /// Remove and make invisible all entries.
-        /// </summary>
-        private void ClearAllEntries()
-        {
-            if (entries != null)
+            if (String.IsNullOrEmpty(lvlname))
             {
-                foreach (Label curlbl in entries)
-                {
-                    if (curlbl != null)
-                    {
-                        curlbl.Visible = false;
-                        curlbl.Dispose();
-                    }
-                }
+                DeleteHighscoreAll();
+            }
+            else
+            {
+                DeleteHighscoreOneLevel(lvlname);
             }
         }
 
@@ -180,7 +158,7 @@ namespace Frogger
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void DeleteHighscoreAll(Object sender, EventArgs e)
+        private void DeleteHighscoreAll()
         {
             DialogResult dlgres = MessageBox.Show("Are you sure you want to clear all highscores?", "sure?", MessageBoxButtons.YesNo);
             if (dlgres == DialogResult.Yes)
@@ -197,14 +175,12 @@ namespace Frogger
                 }
                 
             }
-
         }
-
 
         /// <summary>
         /// Delete highscore from particaler level
         /// </summary>
-        public void DeleteHighscoreOneLevel(int lvlname)
+        public void DeleteHighscoreOneLevel(string lvlname)
         {
             DialogResult dlgres = MessageBox.Show("Are you sure you want to remove the highscores from "+lvlname, "sure?", MessageBoxButtons.YesNo);
             if (dlgres == DialogResult.Yes)
@@ -259,6 +235,8 @@ namespace Frogger
             string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = '" + btnclicked.Tag.ToString() + "' ORDER BY SPEELTIJD ASC";
             DataTable dt = DBConnection.ExecuteQuery(query, 4);
 
+            this.deletebtn.Tag = btnclicked.Tag;
+            this.deletebtn.HoverbuttonText = "clear " + lbshowcurlvlscore.Text;
 
             string tijddatum = "";
             string naam = "";
@@ -289,7 +267,56 @@ namespace Frogger
                 }
             }
         }
+		// Private Methods (3) 
 
-        #endregion Methods
+        /// <summary>
+        /// Remove and make invisible all entries.
+        /// </summary>
+        private void ClearAllEntries()
+        {
+            if (entries != null)
+            {
+                foreach (Label curlbl in entries)
+                {
+                    if (curlbl != null)
+                    {
+                        curlbl.Visible = false;
+                        curlbl.Dispose();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Create a button for each level to get highscore for.
+        /// </summary>
+        private void CreateLvlBtns()
+        {
+            string lvldir = Program.GetLevelFolder(); //Path.Combine(Directory.GetCurrentDirectory(), "levels");
+
+            string[] files;
+            try
+            {
+                files = Directory.GetFiles(lvldir);
+                for (int i = 0; i < files.Length; i++)
+                {
+                    string filelvlname = files[i].Substring(lvldir.Length + 1, files[i].Length - lvldir.Length - 5);
+                    HoverButton lvlbtn = new HoverButton(filelvlname);
+                    lvlbtn.Tag = filelvlname;
+                    lvlbtn.Click += new EventHandler(GetHighscores);
+                    highscoremenubtn.Add(lvlbtn);
+                }
+            }
+            catch (DirectoryNotFoundException dirnotfoundexc)
+            {
+                MessageBox.Show(dirnotfoundexc.Message);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "Level directory cannot be read.");
+            }
+        }
+
+		#endregion Methods 
     }
 }

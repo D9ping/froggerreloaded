@@ -165,6 +165,7 @@
     <Content Include="bin\Debug\sounds\punch.wav" />
     <Content Include="bin\Debug\sounds\sink.wav" />
     <Content Include="icon_frog.ico" />
+    <None Include="bin\Debug\levels\coolroad.lvl" />
     <None Include="bin\Debug\levels\highway.lvl" />
     <None Include="bin\Debug\levels\sea.lvl" />
     <None Include="Resources\car_green_east.png" />
