@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2010  Tom Postma, Gertjan Buijs
+Copyright (C) 2009-2011  Tom Postma, Gertjan Buijs
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#define windows //platform
+#define windows // platform
 
 namespace Frogger
 {
@@ -155,7 +155,7 @@ namespace Frogger
         /// </summary>
         public void SetupEngine(bool initsettings)
         {
-            //--start loading--
+            // --start loading--
             ResizesResources.images = new Dictionary<String, Bitmap>();
             ResizesResources.images.Clear();
 
@@ -182,6 +182,7 @@ namespace Frogger
                 kikkersizewidth = Screen.PrimaryScreen.WorkingArea.Width / 20;
                 kikkersizeheight = Screen.PrimaryScreen.WorkingArea.Height / 20;
             }
+
             ResizesResources.images.Add("kikker_west", ResizeImage(Frogger.Properties.Resources.kikker_west, kikkersizewidth, kikkersizeheight));
             ResizesResources.images.Add("kikker_east", ResizeImage(Frogger.Properties.Resources.kikker_east, kikkersizewidth, kikkersizeheight));
             ResizesResources.images.Add("frogdead_east", ResizeImage(Frogger.Properties.Resources.frogdead_east, kikkersizewidth, kikkersizeheight));
@@ -195,6 +196,7 @@ namespace Frogger
             {
                 carsizewidth = Screen.PrimaryScreen.WorkingArea.Width / 12;
             }
+
             int carsizeheight = level.GetHeightRoad() / 2 - this.level.RoadlineHeight;
             ResizesResources.images.Add("car_grey_east", ResizeImage(Frogger.Properties.Resources.car_grey_east, carsizewidth, carsizeheight));
             ResizesResources.images.Add("car_grey_west", ResizeImage(Frogger.Properties.Resources.car_grey_west, carsizewidth, carsizeheight));
@@ -207,6 +209,7 @@ namespace Frogger
             {
                 trunksizeX = Screen.PrimaryScreen.WorkingArea.Width / 10;
             }
+
             ResizesResources.images.Add("truck_east", ResizeImage(Frogger.Properties.Resources.truck_east, trunksizeX, carsizeheight));
             ResizesResources.images.Add("truck_west", ResizeImage(Frogger.Properties.Resources.truck_west, trunksizeX, carsizeheight));
             if (initsettings)
@@ -309,7 +312,7 @@ namespace Frogger
                 }
             }
 
-            //--done loading--
+            // --done loading--
         }
 
         /// <summary>
@@ -348,11 +351,20 @@ namespace Frogger
         }
 
         /// <summary>
+        /// Add a moving object.
+        /// </summary>
+        /// <param name="movobj">The moving object to add.</param>
+        public void AddMovingObj(MovingObject movobj)
+        {
+            this.movingobjs.Add(movobj);
+        }
+
+        /// <summary>
         /// Updates the position of every moving object.
         /// It also detects if object is hit, and make the right sound if enabled.
         /// And it detects if the frog is on the other side(win)
         /// </summary>
-        private void UpdatePositionMovingObjects()
+        public void UpdatePositionMovingObjects()
         {
             frog.CanMove = false;
             foreach (MovingObject obj in movingobjs)
@@ -541,7 +553,7 @@ namespace Frogger
         /// </summary>
         /// <param name="min"></param>
         /// <returns>true if time is up.</returns>
-        private bool CheckGameTime(int min)
+        public bool CheckGameTime(int min)
         {
             if (min < 0)
             {
@@ -558,7 +570,7 @@ namespace Frogger
         /// If this amount is less than 1, it will inform the player that the game is over.
         /// If that is the case, the GameEngine will close, and the main menu will open.
         /// </summary>
-        private bool CheckLives(int currentLives)
+        public bool CheckLives(int currentLives)
         {
             if ((currentLives < 1) && (tier != Niveau.freeplay))
             {
@@ -591,7 +603,7 @@ namespace Frogger
         /// <param name="locX">The number of the road to added the car to</param>
         /// <param name="roadLocY">The random generator this to prevent getting right and left always the same color.</param>
         /// <returns>a car moving object</returns>
-        private MovingObject CreateCarRandomColor(int vel, Direction dir, int locX, int curroad, Random rndgen)
+        public MovingObject CreateCarRandomColor(int vel, Direction dir, int locX, int curroad, Random rndgen)
         {
             int carcolor = rndgen.Next(1, 5);
             int initcarheight = level.GetHeightRoad() / 2 - level.RoadlineHeight;
@@ -629,7 +641,7 @@ namespace Frogger
         /// and the 
         /// </summary>
         /// <returns>a frog moving object</returns>
-        private Frog CreateFrog()
+        public Frog CreateFrog()
         {
             int initfrogheight = frmgame.ClientSize.Height / 20;
             int initfrogwidth = frmgame.ClientSize.Width / 20;
@@ -669,7 +681,7 @@ namespace Frogger
         /// <param name="vel">The velocity of the tree trunk</param>
         /// <param name="direction">The direction of the tree trunk</param>dd
         /// <returns>a tree trunk moving object</returns>
-        private MovingObject CreateTreeTrunk(int vel, Direction direction, int locX, int currivir)
+        public MovingObject CreateTreeTrunk(int vel, Direction direction, int locX, int currivir)
         {
             int inittreewidth = level.GetHeightRivir(1) * 3;
             int inittreeheight = level.GetHeightRivir(1);
@@ -686,7 +698,7 @@ namespace Frogger
         /// Detects collision when Frogger collides.
         /// </summary>
         /// <returns>Whether or not Frogger collides with a moving object</returns>
-        private bool DetectCollision(MovingObject mvobj)
+        public bool DetectCollision(MovingObject mvobj)
         {
             if (!mvobj.Disposing)
             {

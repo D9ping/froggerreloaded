@@ -487,33 +487,51 @@ namespace Frogger
             hovbtnOpenFile_Click(sender, null);
         }
 
+        /// <summary>
+        /// Delete the selected level file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void hovbtnDelete_Click(object sender, EventArgs e)
         {
-            DialogResult dlgresdelete = MessageBox.Show("Are you sure you want to\r\ndelete "+lbxFiles.SelectedItem.ToString()+" ?", "delete level", MessageBoxButtons.YesNo);
-            if (dlgresdelete == DialogResult.Yes)
+            if (lbxFiles.SelectedIndex >= 0)
             {
-                string levelfile = Path.Combine(Program.GetLevelFolder(), lbxFiles.SelectedItem.ToString() + ".lvl");
-                if (File.Exists(levelfile))
+                DialogResult dlgresdelete = MessageBox.Show("Are you sure you want to\r\ndelete " + lbxFiles.SelectedItem.ToString() + " ?", "delete level", MessageBoxButtons.YesNo);
+                if (dlgresdelete == DialogResult.Yes)
                 {
-                    FileInfo fi = new FileInfo(levelfile);
-                    if (fi.Attributes == FileAttributes.System)
+                    string levelfile = Path.Combine(Program.GetLevelFolder(), lbxFiles.SelectedItem.ToString() + ".lvl");
+                    if (File.Exists(levelfile))
                     {
-                        MessageBox.Show("Deletion aborted, level file appears to be a system file!", "fatal error");
-                        return;
+                        FileInfo fi = new FileInfo(levelfile);
+                        if (fi.Attributes == FileAttributes.System)
+                        {
+                            MessageBox.Show("Deletion aborted, level file appears to be a system file!", "fatal error");
+                            return;
+                        }
+                        try
+                        {
+                            File.Delete(levelfile);
+                        }
+                        catch (Exception exc)
+                        {
+                            MessageBox.Show(exc.Message, "error");
+                        }
+                        hovbtnOpen_Click(sender, e);
                     }
-                    try
+                    else
                     {
-                        File.Delete(levelfile);
+                        MessageBox.Show("Level file is missing.", "error");
                     }
-                    catch (Exception exc)
-                    {
-                        MessageBox.Show(exc.Message, "error");
-                    }
-                    hovbtnOpen_Click(sender, e);
-                } else
-                {
-                    MessageBox.Show("Level file is missing.", "error");
                 }
+            }
+        }
+
+        private void lbxFiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.hovbtnDelete.Enabled = false;
+            if (this.lbxFiles.SelectedIndex >= 0)
+            {
+                this.hovbtnDelete.Enabled = true;
             }
         }
     }

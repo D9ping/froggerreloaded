@@ -183,6 +183,7 @@
             this.lbxFiles.TabIndex = 14;
             this.lbxFiles.Visible = false;
             this.lbxFiles.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbxFiles_MouseDoubleClick);
+            this.lbxFiles.SelectedIndexChanged += new System.EventHandler(this.lbxFiles_SelectedIndexChanged);
             // 
             // hovbtnDelete
             // 
@@ -190,6 +191,7 @@
             this.hovbtnDelete.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.hovbtnDelete.BackColor = System.Drawing.Color.LimeGreen;
             this.hovbtnDelete.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.hovbtnDelete.Enabled = false;
             this.hovbtnDelete.ForeColor = System.Drawing.Color.Black;
             this.hovbtnDelete.HoverbuttonSizeText = 20F;
             this.hovbtnDelete.HoverbuttonText = "delete";
@@ -290,6 +292,7 @@
             this.panelTools.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

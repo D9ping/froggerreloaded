@@ -1,7 +1,7 @@
 #define AppName "Frogger Reloaded"
 #define AppNameShort = "froggerreloaded"
 #define AppUrl "http://code.google.com/p/froggerreloadded/"
-#define CurrentVersion = "1.0.0"
+#define CurrentVersion = "1.0.1"
 
 [Setup]
 AppId={{3CA63D69-FC83-4D9B-B46D-35E3AAFDA8EA}

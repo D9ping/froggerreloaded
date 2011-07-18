@@ -104,8 +104,7 @@ namespace FroggerTest
 
             MovingObject car = target.CreateCarRandomColor(0, direction, 100, 100, new Random()); //velocity is 0
             Assert.IsNotNull(car, "cannot create car.");
-
-            target.movingobjs.Add(car);
+            target.AddMovingObj(car);
 
             testfrog.Location = new Point(car.Location.X, car.Location.Y);
             if (target.NumObjects == 0) { Assert.Fail("no objects."); }

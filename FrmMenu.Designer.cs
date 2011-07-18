@@ -105,7 +105,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "FrmMenu";
-            this.Text = "Frogger Reloaded - beta version";
+            this.Text = "Frogger Reloaded";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FrmMenu_Paint);
             this.Resize += new System.EventHandler(this.FrmMenu_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmMenu_KeyDown);

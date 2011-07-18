@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (C) 2009-2010  Tom Postma
+Copyright (C) 2009-2011  Tom Postma
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ namespace Frogger
         #region Fields (9)
 
         private const int btnlvlmargin = 10;
-        private bool errorshowed = false;
         private FrmMenu frmmenu;
         private FrmGame game;
         private LevelPreview[] lvlpreviews;
