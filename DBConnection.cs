@@ -19,15 +19,14 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 namespace Frogger
 {
 	using System;
-	using System.Collections.Generic;
-	using System.Data.SqlClient;
-	using System.Text;
-	using System.Data;
+    using System.Data;
 	using System.Data.OleDb;
     using System.IO;
 
 	public static class DBConnection
 	{
+        public const string DBFILENAME = "highscores.mdb";
+
         /// <summary>
         /// Executes query.
         /// </summary>
@@ -118,7 +117,7 @@ namespace Frogger
 
         public static OleDbConnection GetConnection()
         {
-            string databasefilepath = Path.Combine(Program.GetAppDataFolder(), "highscores.mdb");
+            string databasefilepath = Path.Combine(Program.GetAppDataFolder(), DBFILENAME);
             string connectionString = "";
             if (File.Exists(databasefilepath))
             {

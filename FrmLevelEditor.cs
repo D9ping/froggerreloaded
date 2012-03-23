@@ -245,7 +245,13 @@ namespace Frogger
 
                 this.lbxFiles.Visible = true;
                 this.hovbtnCancelSave.Visible = true;
+                this.hovbtnCancelSave.Location = new Point(rectopenbox.X + (rectopenbox.Width / 2) - (hovbtnCancelSave.Width + hovbtnDelete.Width) + margin, rectopenbox.Height - hovbtnSaveFile.Height);
+
+                this.hovbtnDelete.Location = new Point(rectopenbox.X + (rectopenbox.Width / 2) - hovbtnDelete.Width + (margin * 2), rectopenbox.Height - hovbtnSaveFile.Height);
+                
                 this.hovbtnOpenFile.Visible = true;
+                this.hovbtnOpenFile.Location = new Point(rectopenbox.X + (rectopenbox.Width / 2) + (margin * 3), rectopenbox.Height - hovbtnSaveFile.Height);
+                
             }
             else
             {
@@ -398,7 +404,7 @@ namespace Frogger
                 {
                     int atpos = CalcPos(mouseY);
                     this.level.RemoveObj(atpos);
-                    //this.DeselectAllTools();
+                    ////this.DeselectAllTools();
                     this.lvlchanged = true;
                 }
             }

@@ -343,10 +343,11 @@ namespace Frogger
                 for (int i = 0; i < movingobjs.Count; i++)
                 {
                     frmgame.Controls.Remove(movingobjs[i]);
-                    movingobjs[i].Location = new Point(0, -200); //dont bother the game with not yet garbagecollected objects.
+                    movingobjs[i].Location = new Point(0, -200); // dont bother the game with not yet garbagecollected objects.
                     movingobjs[i].Dispose();
                 }
-                GC.Collect(); //soon
+
+                GC.Collect();
             }
         }
 
@@ -402,17 +403,18 @@ namespace Frogger
                             switch (obj.Dir)
                             {
                                 case Direction.East:
-                                    frog.Pic = ResizesResources.images["frogdead_west"];//Frogger.Properties.Resources.frogdead_east;
+                                    frog.Pic = ResizesResources.images["frogdead_west"];
                                     break;
                                 case Direction.West:
-                                    frog.Pic = ResizesResources.images["frogdead_east"];//Frogger.Properties.Resources.frogdead_west;
+                                    frog.Pic = ResizesResources.images["frogdead_east"];
                                     break;
                             }
+
                             frog.Invalidate();
                             if (Program.sound)
                             {
 #if windows
-                                sndPlaySound(Path.Combine(Program.GetSoundDir(), "punch.wav"), 1); //1 = Async
+                                sndPlaySound(Path.Combine(Program.GetSoundDir(), "punch.wav"), 1); // 1 = Async
 #elif linux
                                 String soundbeep = Path.Combine(Program.GetSoundDir(), "punch.wav");
                                 if (File.Exists(soundbeep))
@@ -473,6 +475,7 @@ namespace Frogger
                     }
                 }
             }
+
             if (frog.OnTree == true)
             {
                 switch (frog.TreeDir)
@@ -523,12 +526,18 @@ namespace Frogger
         /// Check if the player needs to enter a name for the highscore or not.
         /// </summary>
         /// <returns>true if the player can enter their name.</returns>
-        private Boolean CheckEnterName()
+        private bool CheckEnterName()
         {
+            if (!File.Exists(Path.Combine(Program.GetAppDataFolder(), DBConnection.DBFILENAME)))
+            {
+                // highscore database does not exist.
+                return false;
+            }
+
             bool entername = false;
             if (!screendraw)
             {
-                string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = '" + this.level.Naam + "' ORDER BY SPEELTIJD ASC";
+                string query = "SELECT * FROM HIGHSCORES WHERE LEVEL = '" + this.level.Naam.Replace("'", "") + "' ORDER BY SPEELTIJD ASC";
                 DataTable dt = DBConnection.ExecuteQuery(query, 4);
                 if (dt.Rows.Count >= 10)
                 {
@@ -544,6 +553,7 @@ namespace Frogger
                     entername = true;
                 }
             }
+
             return entername;
         }
 
@@ -630,6 +640,7 @@ namespace Frogger
             {
                 locY = locroadY;
             }
+
             car.Location = new Point(locX, locY);
             frmgame.Controls.Add(car);
             return car;
@@ -702,7 +713,10 @@ namespace Frogger
         {
             if (!mvobj.Disposing)
             {
-                if (frog == null) { throw new Exception("no frog created."); }
+                if (frog == null)
+                {
+                    throw new Exception("no frog created."); 
+                }
 
                 Point mvobjbovenlinks = new Point(mvobj.Location.X, mvobj.Location.Y);
                 Point mvobjbovenrechts = new Point(mvobj.Location.X + mvobj.Size.Width, mvobj.Location.Y);
@@ -747,6 +761,7 @@ namespace Frogger
                 CreateBackBtn();
                 frmgame.Refresh();
             }
+
             this.min = 0;
             this.sec = 0;
         }
@@ -800,6 +815,7 @@ namespace Frogger
                 {
                     CreateBackBtn();
                 }
+
                 this.screendraw = true;
                 frmgame.Refresh();
             }
@@ -897,6 +913,7 @@ namespace Frogger
                     }
 
                 }
+
                 ticktree = 0;
             }
             else
@@ -954,8 +971,9 @@ namespace Frogger
         /// <param name="e"></param>
         private void hovbtnSubmit_Click(object sender, EventArgs e)
         {
+            string playername = this.bigtbName.Text.Trim().Replace("'", "");
             string insertquery = "INSERT INTO HIGHSCORES VALUES (\"" + DateTime.Now.ToString() + "\", \"" +
-                this.bigtbName.Text.Trim() + "\", " + this.GetGameTime() + ", '" + this.level.Naam + "')";
+                playername + "\", " + this.GetGameTime() + ", '" + this.level.Naam.Replace("'", "") + "')";
             DBConnection.SetData(insertquery);
             frmgame.Close();
         }
@@ -984,6 +1002,7 @@ namespace Frogger
                     carsperroad = 12;
                     break;
             }
+
             Random rndgen = new Random();
 
             int screenwidth = frmgame.ClientSize.Width;
@@ -1081,9 +1100,9 @@ namespace Frogger
                 frmgame.Controls.Add(lblText);
                 frmgame.Controls.Add(hovbtnSubmit);
             }
-            catch (Exception exc)
+            catch (ArgumentException argexc)
             {
-                MessageBox.Show(exc.Message, "error");
+                MessageBox.Show(argexc.Message, "error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }

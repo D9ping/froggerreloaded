@@ -203,16 +203,27 @@ namespace Frogger
                 this.frmmenu.Controls.Remove(lvlpreviews[c]);
             }
             int locX = 80;
-            
-            for (int i = viewindexlvl; i < viewindexlvl + 3; i++)
-            {
-                this.lvlpreviews[i].Visible = true;
-                this.lvlpreviews[i].Size = new Size(preflvlprevwidth, preflvlprevwidth);
-                this.lvlpreviews[i].Location = new Point(locX, 250);
 
-                locX += preflvlprevwidth + 10;
+            if (lvlpreviews.Length > 0)
+            {
+
+                for (int i = viewindexlvl; i < viewindexlvl + 3; i++)
+                {
+                    if (i < lvlpreviews.Length)
+                    {
+                        this.lvlpreviews[i].Visible = true;
+                        this.lvlpreviews[i].Size = new Size(preflvlprevwidth, preflvlprevwidth);
+                        this.lvlpreviews[i].Location = new Point(locX, 250);
+
+                        locX += preflvlprevwidth + 10;
+                    }
+                }
+                this.frmmenu.Controls.AddRange(lvlpreviews);
             }
-            this.frmmenu.Controls.AddRange(lvlpreviews);
+            else
+            {
+                // their are no levels in the level directory.
+            }
         }
 
         /// <summary>

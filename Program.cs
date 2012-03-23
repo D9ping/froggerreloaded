@@ -28,8 +28,7 @@ namespace Frogger
 	
     public static class ResizesResources
     {
-        //een soort lijst van geresized images, scheelt cpu power!
-        static public Dictionary<String, Bitmap> images;
+        public static Dictionary<String, Bitmap> images;
     }
 
     static class Program
@@ -52,6 +51,7 @@ namespace Frogger
             {
                 MessageBox.Show("The font for this game does not exist. Try to reinstall the game.", "font missing", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
             Application.Run(new FrmMenu());
         }
 
@@ -88,7 +88,7 @@ namespace Frogger
 #if windows
             string fontdir = Path.Combine(System.Environment.GetEnvironmentVariable("windir"), "fonts");
 #elif linux
-            string fontdir = "/usr/share/fonts????";
+            string fontdir = "/usr/share/fonts/truetype/freefont/";
 #endif
             if (Directory.Exists(fontdir))
             {
@@ -114,7 +114,8 @@ namespace Frogger
         /// <returns></returns>
         static public string GetSoundDir()
         {
-            string sounddir = Path.Combine(Application.StartupPath, "sounds");
+            const string SOUNDFOLDER = "sounds";
+            string sounddir = Path.Combine(Application.StartupPath, SOUNDFOLDER);
             if (Directory.Exists(sounddir))
             {
                 return sounddir;
@@ -132,19 +133,16 @@ namespace Frogger
         /// <returns></returns>
         static public string GetLevelFolder()
         {
-#if windows
-            string lvldir = Path.Combine(GetAppDataFolder(), "levels");
-#elif linux
-            string lvldir = "??"
-#endif
-            if (Directory.Exists(lvldir))
+            const string LEVELFOLDERNAME = "levels";
+            string lvldir = Path.Combine(GetAppDataFolder(), LEVELFOLDERNAME);
+
+            if (!Directory.Exists(lvldir))
             {
-                return lvldir;
+                Directory.CreateDirectory(lvldir);
+                //throw new Exception("Cannot find level directory.");
             }
-            else
-            {
-                throw new Exception("Cannot find level directory.");
-            }
+
+            return lvldir;
         }
 
         /// <summary>
@@ -153,19 +151,18 @@ namespace Frogger
         /// <returns></returns>
         static public string GetAppDataFolder()
         {
+            const string APPDATAFOLDERNAME = "froggerreloaded";
 #if windows
-            string appdatadir = Path.Combine(System.Environment.GetEnvironmentVariable("APPDATA"),"froggerreloaded");
+            string appdatadir = Path.Combine(System.Environment.GetEnvironmentVariable("APPDATA"), APPDATAFOLDERNAME);
 #elif linux
-            string lvldir = "??";
+            string lvldir = Path.Combine(System.Environment.GetEnvironmentVariable("HOME"), "."+APPDATAFOLDERNAME);;
 #endif
-            if (Directory.Exists(appdatadir))
+            if (!Directory.Exists(appdatadir))
             {
-                return appdatadir;
+                Directory.CreateDirectory(appdatadir);
             }
-            else
-            {
-                throw new Exception("Cannot find froggerreloaded application data directory.");
-            }
+            
+            return appdatadir;
         }
 
         //This is unmangement code needed for real fullscreen. hidden taskbar etc.

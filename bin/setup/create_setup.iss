@@ -62,8 +62,8 @@ Name: {commondesktop}\Frogger Reloaded; Filename: {app}\Frogger.exe; Tasks: desk
 Filename: {app}\Frogger.exe; Description: {cm:LaunchProgram,Frogger Reloaded}; Flags: nowait postinstall skipifsilent
 
 [CustomMessages]
-english.dotnetmissing=This setup requires the .NET Framework v2.0. Please download and install the  .NET framework v2.0 and run this setup again. Do you want to download the .NET framework v2.0 now?
-dutch.dotnetmissing=Deze setup heeft .NET framework v2.0 nodig. download en installeer .NET framework v2.0 en voer dan deze setup opnieuw uit. Wil je .NET framework v2.0 nu downloaden?
+english.dotnetmissing=FroggerReloaded requires the .NET Framework v2.0 with ServicePack 2 or higher. Please download and install .NET framework v2.0 and run this setup again. Do you want to go to the website of .NET framework v2.0 to download .NET framework v2.0 now?
+dutch.dotnetmissing=FroggerReloaded heeft .NET framework v2.0 met ServicePack2 en hoger nodig. Download en installeer .NET framework v2.0 en voer dan deze setup opnieuw uit. Wil je nu naar de website van .NET framework v2.0 gaan om .NET framework v2.0 to downloaden?
 
 [Code]
 function InitializeSetup(): Boolean;
@@ -73,54 +73,35 @@ var
     Result1 : Boolean;
 begin
 
-	NetFrameWorkInstalled := RegKeyExists(HKLM,'SOFTWARE\Microsoft\.NETFramework\policy\v2.0');
-	if NetFrameWorkInstalled =true then
-	begin
-		Result := true;
-	end;
+    NetFrameWorkInstalled := RegKeyExists(HKLM,'SOFTWARE\Microsoft\.NETFramework\policy\v2.0');
+    if NetFrameWorkInstalled =true then
+    begin
+        Result := true;
+    end;
 
-	if NetFrameWorkInstalled = false then
-	begin
-		NetFrameWorkInstalled := RegKeyExists(HKLM,'SOFTWARE\Microsoft\.NETFramework\policy\v2.0');
-		if NetFrameWorkInstalled =true then
-		begin
-			Result := true;
-		end;
+    if NetFrameWorkInstalled = false then
+    begin
+        NetFrameWorkInstalled := RegKeyExists(HKLM,'SOFTWARE\Microsoft\.NETFramework\policy\v2.0');
+        if NetFrameWorkInstalled =true then
+        begin
+            Result := true;
+        end;
 
-		if NetFrameWorkInstalled =false then
-			begin
-				//Result1 := (ExpandConstant('{cm:dotnetmissing}'), mbConfirmation, MB_YESNO) = idYes;
-				Result1 := MsgBox(ExpandConstant('{cm:dotnetmissing}'),
-						mbConfirmation, MB_YESNO) = idYes;
-				if Result1 =false then
-				begin
-					Result:=false;
-				end
-				else
-				begin
-					Result:=false;
-					ShellExec('open',
-					'http://download.microsoft.com/download/5/6/7/567758a3-759e-473e-bf8f-52154438565a/dotnetfx.exe',
-					'','',SW_SHOWNORMAL,ewNoWait,ErrorCode);
+        if NetFrameWorkInstalled =false then
+            begin
+                Result1 := MsgBox(ExpandConstant('{cm:dotnetmissing}'),
+                    mbConfirmation, MB_YESNO) = idYes;
+                if Result1 =false then
+                begin
+                    Result:=false;
+                End
+                else
+                begin
+                    Result:=false;
+                    ShellExec('open',
+                    'http://download.microsoft.com/download/5/6/7/567758a3-759e-473e-bf8f-52154438565a/dotnetfx.exe',
+                        '','',SW_SHOWNORMAL,ewNoWait,ErrorCode);
                 end;
             end;
-	end;
+    end;
 end;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

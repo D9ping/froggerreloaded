@@ -80,27 +80,27 @@ namespace Frogger
                 case Keys.A:
                     game.frog.Jump(Direction.East);
                     break;
-                case Keys.Left://not working key
-                    game.frog.Jump(Direction.East);
-                    break;
+                //case Keys.Left:
+                //    game.frog.Jump(Direction.East);
+                //    break;
                 case Keys.D:
                     game.frog.Jump(Direction.West);
                     break;
-                case Keys.Right://not working key
-                    game.frog.Jump(Direction.West);
-                    break;
+                //case Keys.Right:
+                //    game.frog.Jump(Direction.West);
+                //    break;
                 case Keys.S:
                     game.frog.Jump(Direction.South);
                     break;
-                case Keys.Down://not working key
-                    game.frog.Jump(Direction.South);
-                    break;
+                //case Keys.Down:
+                //    game.frog.Jump(Direction.South);
+                //    break;
                 case Keys.W:
                     game.frog.Jump(Direction.North);
                     break;
-                case Keys.Up://not working key
-                    game.frog.Jump(Direction.North);
-                    break;
+                //case Keys.Up:
+                //    game.frog.Jump(Direction.North);
+                //    break;
                 case Keys.Escape:
                     this.Close();
                     break;
@@ -154,12 +154,12 @@ namespace Frogger
                 timestr.Append("0" + this.game.sec.ToString());
                 if (this.game.min == 0)
                 {
-                    //less than 10s make red.
+                    // less than 10s make red.
                     lbTime.ForeColor = Color.Red;
                     int fontsize = Convert.ToInt32(lbTime.Font.Size);
                     if (this.game.sec < 4 && this.game.sec>0)
                     {
-                        //3s and less, make bold
+                        // 3s and less, make bold
                         lbTime.Font = new Font(lbTime.Font.Name, fontsize, FontStyle.Bold);
                     }
                     else if (this.game.sec <= 0)
@@ -170,7 +170,7 @@ namespace Frogger
             }
             else
             {
-                //still more than `10seconds left.
+                // still more than `10seconds left.
                 timestr.Append(this.game.sec.ToString());
                 lbTime.ForeColor = Color.LightGray;
             }

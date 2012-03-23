@@ -130,7 +130,7 @@ namespace Frogger
                             if (this.Location.Y <= this.Height)
                             {
                                 string soundmadeit = Path.Combine(Program.GetSoundDir(), "frog_made_it.wav");
-                                if (File.Exists(soundmadeit))
+                                if (File.Exists(soundmadeit) && Program.sound)
                                 {
 #if windows
                                     GameEngine.sndPlaySound(soundmadeit, 1);

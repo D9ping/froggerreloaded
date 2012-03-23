@@ -30,20 +30,19 @@ namespace Frogger
     /// </summary>
     class MenuHighscore : MenuScreen
     {
-		#region Fields (7) 
+        #region Fields (7)
 
-        //private DeleteHandler deletehandler;
+        private const int marginbetweenhovbtns = 2;
         private HoverButton deletebtn;
         private Label[] entries;
         private FrmMenu frmmenu = null;
         private List<HoverButton> highscoremenubtn;
-        private Label lbshowcurlvlscore;
-        private const int marginbetweenhovbtns = 2;
+        private Label lbshowcurlvlscore;        
         private Panel pnl;
 
-		#endregion Fields 
+        #endregion Fields
 
-		#region Constructors (1) 
+        #region Constructors (1)
 
         /// <summary>
         /// Creating a new instance of MenuHighscore class.
@@ -58,7 +57,7 @@ namespace Frogger
             pnl = new Panel();
             pnl.Location = new Point(10, 50);
             //hovbtn default width is 320, so 340 for panel and 20px for optional scrollbar.
-            pnl.Size = new Size(340, frmmenu.ClientRectangle.Height - 150); 
+            pnl.Size = new Size(340, frmmenu.ClientRectangle.Height - 150);
             pnl.Visible = true;
             pnl.AutoScroll = true;
             pnl.AutoSize = false;
@@ -100,18 +99,27 @@ namespace Frogger
             lbshowcurlvlscore.Text = "";
             frmmenu.Controls.Add(lbshowcurlvlscore);
 
+            bool lblbtnenabled = true;
+            if (!File.Exists(Path.Combine(Program.GetAppDataFolder(), DBConnection.DBFILENAME)))
+            {
+                lblbtnenabled = false;
+            }
+
             foreach (HoverButton levelbtn in this.highscoremenubtn)
             {
                 levelbtn.HoverbuttonSizeText = 32;
+                levelbtn.Enabled = lblbtnenabled;
                 pnl.Controls.Add(levelbtn);
             }
+
+            this.deletebtn.Enabled = lblbtnenabled;
         }
 
-		#endregion Constructors 
+        #endregion Constructors
 
-		#region Methods (7) 
+        #region Methods (7)
 
-		// Public Methods (4) 
+        // Public Methods (4) 
 
         /// <summary>
         /// Maak highscore scherm leeg.
@@ -173,7 +181,7 @@ namespace Frogger
                 {
                     MessageBox.Show("Cannot delete all highscores.", "failed");
                 }
-                
+
             }
         }
 
@@ -182,14 +190,14 @@ namespace Frogger
         /// </summary>
         public void DeleteHighscoreOneLevel(string lvlname)
         {
-            DialogResult dlgres = MessageBox.Show("Are you sure you want to remove the highscores from "+lvlname, "sure?", MessageBoxButtons.YesNo);
+            DialogResult dlgres = MessageBox.Show("Are you sure you want to remove the highscores from " + lvlname, "sure?", MessageBoxButtons.YesNo);
             if (dlgres == DialogResult.Yes)
             {
                 try
                 {
-                    DBConnection.SetData("DELETE * FROM HIGHSCORES WHERE level = '"+lvlname+"'");
+                    DBConnection.SetData("DELETE * FROM HIGHSCORES WHERE level = '" + lvlname + "'");
                     ClearAllEntries();
-                    MessageBox.Show(lvlname+" has been delete from the highscores.", "succeeded");
+                    MessageBox.Show(lvlname + " has been delete from the highscores.", "succeeded");
                 }
                 catch
                 {
@@ -267,7 +275,7 @@ namespace Frogger
                 }
             }
         }
-		// Private Methods (3) 
+        // Private Methods (3) 
 
         /// <summary>
         /// Remove and make invisible all entries.
@@ -317,6 +325,6 @@ namespace Frogger
             }
         }
 
-		#endregion Methods 
+        #endregion Methods
     }
 }

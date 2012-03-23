@@ -22,7 +22,6 @@ namespace Frogger
     using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
-    using System.Windows.Forms;
     using System.Xml;
 
     public class Level
@@ -129,7 +128,7 @@ namespace Frogger
                     if (reader.Name == "road")
                     {
                         int pos = reader.ReadElementContentAsInt();
-                        roads.Add(this.displayHeight - GetHeightRoad() * (pos + 1));;
+                        roads.Add(this.displayHeight - GetHeightRoad() * (pos + 1));
                     }
                     else if (reader.Name == "rivir")
                     {
