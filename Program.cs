@@ -131,7 +131,7 @@ namespace Frogger
         /// Get the folder with the levels
         /// </summary>
         /// <returns></returns>
-        static public string GetLevelFolder()
+        public static string GetLevelFolder()
         {
             const string LEVELFOLDERNAME = "levels";
             string lvldir = Path.Combine(GetAppDataFolder(), LEVELFOLDERNAME);
@@ -139,10 +139,44 @@ namespace Frogger
             if (!Directory.Exists(lvldir))
             {
                 Directory.CreateDirectory(lvldir);
-                //throw new Exception("Cannot find level directory.");
+
+                ExtractFile(lvldir, "basic1.lvl", Frogger.Properties.Resources.lvl_basic1);
+                ExtractFile(lvldir, "basic2.lvl", Frogger.Properties.Resources.lvl_basic2);
+                ExtractFile(lvldir, "basic3.lvl", Frogger.Properties.Resources.lvl_basic3);
+                ExtractFile(lvldir, "coolroad.lvl", Frogger.Properties.Resources.lvl_coolroad);
+                ExtractFile(lvldir, "highway.lvl", Frogger.Properties.Resources.lvl_highway);
+                ExtractFile(lvldir, "sea.lvl", Frogger.Properties.Resources.lvl_sea);
             }
 
             return lvldir;
+        }
+
+        /// <summary>
+        /// Extract level file
+        /// </summary>
+        /// <param name="lvldir"></param>
+        /// <param name="filename"></param>
+        /// <param name="lvlresources"></param>
+        private static void ExtractFile(string folder, string filename, byte[] resource)
+        {
+            string filepath =  Path.Combine(folder, filename);
+            if (!File.Exists(filepath))
+            {
+                System.IO.FileStream writer = null;
+                try
+                {
+                    writer = new System.IO.FileStream(filepath, System.IO.FileMode.Create, System.IO.FileAccess.Write);
+                    writer.Write(resource, 0, resource.Length);                    
+                    writer.Flush();
+                }
+                finally
+                {
+                    if (writer != null)
+                    {
+                        writer.Close();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -153,13 +187,26 @@ namespace Frogger
         {
             const string APPDATAFOLDERNAME = "froggerreloaded";
 #if windows
+            // todo
             string appdatadir = Path.Combine(System.Environment.GetEnvironmentVariable("APPDATA"), APPDATAFOLDERNAME);
+            if (!String.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("ProgramData")))
+            {
+                appdatadir = Path.Combine(System.Environment.GetEnvironmentVariable("APPDATA"), APPDATAFOLDERNAME);
+            }            
 #elif linux
             string lvldir = Path.Combine(System.Environment.GetEnvironmentVariable("HOME"), "."+APPDATAFOLDERNAME);;
 #endif
             if (!Directory.Exists(appdatadir))
             {
-                Directory.CreateDirectory(appdatadir);
+                try
+                {
+                    Directory.CreateDirectory(appdatadir);
+
+                    ExtractFile(appdatadir, "highscores.mdb", Frogger.Properties.Resources.highscores);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                }
             }
             
             return appdatadir;

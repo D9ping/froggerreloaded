@@ -23,7 +23,7 @@ echo 7-zip(7z.exe) should be installed in: %path7z%
 pause
 IF NOT EXIST %path7z% GOTO NO7ZDIR
 
-%path7z% a -tzip "%cd%\bin\source\src_froggerreloaded_v%VERSION%.zip" -r %cd%\*.cs %cd%\*.resx %cd%\*.config %cd%\*.sln %cd%\*.csproj %cd%\*.eqconfig %cd%\*.png  %cd%\*.jpg %cd%\*.ico %cd%\*.bat %cd%\*.xsd %cd%\*.manifest %cd%\*.iss %cd%\*.settings %cd%\*.csproj.user %cd%\*.in
+%path7z% a -tzip "%cd%\bin\source\src_froggerreloaded_v%VERSION%.zip" -r %cd%\*.cs %cd%\*.resx %cd%\*.config %cd%\*.sln %cd%\*.csproj %cd%\*.eqconfig %cd%\*.png  %cd%\*.jpg %cd%\*.ico %cd%\*.bat %cd%\*.xsd %cd%\*.iss %cd%\*.settings %cd%\*.csproj.user %cd%\*.in
 
 echo done.
 pause

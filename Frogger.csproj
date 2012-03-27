@@ -158,17 +158,14 @@
     <None Include="Resources\texture_water.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\levels\basic1.lvl" />
-    <Content Include="bin\Debug\levels\basic2.lvl" />
-    <Content Include="bin\Debug\levels\basic3.lvl" />
+    <None Include="bin\Debug\highscores.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="bin\Debug\sounds\beep.wav" />
     <Content Include="bin\Debug\sounds\frog_made_it.wav" />
     <Content Include="bin\Debug\sounds\punch.wav" />
     <Content Include="bin\Debug\sounds\sink.wav" />
     <Content Include="icon_frog.ico" />
-    <None Include="bin\Debug\levels\coolroad.lvl" />
-    <None Include="bin\Debug\levels\highway.lvl" />
-    <None Include="bin\Debug\levels\sea.lvl" />
     <None Include="Resources\car_green_east.png" />
     <None Include="Resources\car_green_west.png" />
     <Content Include="Resources\car_grey_east.png" />

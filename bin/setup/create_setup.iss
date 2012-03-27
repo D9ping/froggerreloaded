@@ -44,14 +44,14 @@ Source: ..\Debug\sounds\frog_made_it.wav; DestDir: {app}\sounds\; Flags: ignorev
 Source: ..\Debug\sounds\punch.wav; DestDir: {app}\sounds\; Flags: ignoreversion
 Source: ..\Debug\sounds\sink.wav; DestDir: {app}\sounds\; Flags: ignoreversion
 Source: ..\..\Resources\Flubber.ttf; DestDir: {fonts}; FontInstall: Flubber; Flags: onlyifdoesntexist uninsneveruninstall
-
-Source: ..\Debug\highscores.mdb; DestDir: {userappdata}\froggerreloaded\; Flags: ignoreversion
-Source: ..\Debug\levels\basic1.lvl; DestDir: {userappdata}\froggerreloaded\levels\; Flags: ignoreversion
-Source: ..\Debug\levels\basic2.lvl; DestDir: {userappdata}\froggerreloaded\levels\; Flags: ignoreversion
-Source: ..\Debug\levels\basic3.lvl; DestDir: {userappdata}\froggerreloaded\levels\; Flags: ignoreversion
-Source: ..\Debug\levels\coolroad.lvl; DestDir: {userappdata}\froggerreloaded\levels\; Flags: ignoreversion
-Source: ..\Debug\levels\highway.lvl; DestDir: {userappdata}\froggerreloaded\levels\; Flags: ignoreversion
-Source: ..\Debug\levels\sea.lvl; DestDir: {userappdata}\froggerreloaded\levels\; Flags: ignoreversion
+; currently embedded in Frogger.exe executable and then extracted to %appdata%\froggerreloaded\ so it work for every user on the system.
+;Source: ..\Debug\highscores.mdb; DestDir: {userappdata}\froggerreloaded\; Flags: ignoreversion
+;Source: ..\Debug\levels\basic1.lvl; DestDir: {userappdata}\froggerreloaded\levels\; Flags: ignoreversion
+;Source: ..\Debug\levels\basic2.lvl; DestDir: {userappdata}\froggerreloaded\levels\; Flags: ignoreversion
+;Source: ..\Debug\levels\basic3.lvl; DestDir: {userappdata}\froggerreloaded\levels\; Flags: ignoreversion
+;Source: ..\Debug\levels\coolroad.lvl; DestDir: {userappdata}\froggerreloaded\levels\; Flags: ignoreversion
+;Source: ..\Debug\levels\highway.lvl; DestDir: {userappdata}\froggerreloaded\levels\; Flags: ignoreversion
+;Source: ..\Debug\levels\sea.lvl; DestDir: {userappdata}\froggerreloaded\levels\; Flags: ignoreversion
 
 [Icons]
 Name: {group}\Frogger Reloaded; Filename: {app}\Frogger.exe
@@ -98,9 +98,7 @@ begin
                 else
                 begin
                     Result:=false;
-                    ShellExec('open',
-                    'http://download.microsoft.com/download/5/6/7/567758a3-759e-473e-bf8f-52154438565a/dotnetfx.exe',
-                        '','',SW_SHOWNORMAL,ewNoWait,ErrorCode);
+                    ShellExec('open','http://download.microsoft.com/download/5/6/7/567758a3-759e-473e-bf8f-52154438565a/dotnetfx.exe','','',SW_SHOWNORMAL,ewNoWait,ErrorCode);
                 end;
             end;
     end;
